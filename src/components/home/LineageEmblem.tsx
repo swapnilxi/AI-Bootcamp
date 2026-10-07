@@ -3,7 +3,7 @@ export function LineageEmblem({ className = "w-32 h-32 sm:w-40 sm:h-40" }: { cla
   return (
     <svg
       viewBox="0 0 160 160"
-      className={`draw-on text-orange fill-none stroke-current filter drop-shadow-[0_0_8px_var(--orange-glow,rgba(249, 115, 22,0.32))] ${className}`}
+      className={`draw-on text-cream fill-none stroke-current filter drop-shadow-[0_0_8px_var(--orange-glow,rgba(249, 115, 22,0.32))] ${className}`}
       strokeWidth="1.2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -51,7 +51,7 @@ export function LineageEmblem({ className = "w-32 h-32 sm:w-40 sm:h-40" }: { cla
         height="52"
         rx="8"
         strokeWidth="1.5"
-        className="fill-orange/5"
+        className="fill-cream/5"
       />
 
       {/* 6. Processor Bus Pins (Top, Bottom, Left, Right) */}

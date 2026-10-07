@@ -26,6 +26,9 @@ const SCRUB = 0.7;
 const DIM_OPACITY = 0.5;
 const DIM_SCALE = 0.965;
 const ACTIVE_SCALE = 1.02;
+/** How far below its settled position a card sits before it activates, so each
+ *  one reads as rising into place rather than just fading/scaling up. */
+const RISE_PX = 28;
 /** Activation crossings at which the rim glint fires and re-arms. */
 const GLINT_ON = 0.9;
 const GLINT_OFF = 0.45;
@@ -75,6 +78,7 @@ export function ProcessScene() {
 
       const setOpacity = steps.map((el) => gsap.quickSetter(el, "opacity"));
       const setScale = steps.map((el) => gsap.quickSetter(el, "scale"));
+      const setY = steps.map((el) => gsap.quickSetter(el, "y", "px"));
       const lit = steps.map(() => false);
 
       /** Horizontal distance the track travels to bring the last card to centre. */
@@ -105,6 +109,7 @@ export function ProcessScene() {
           marks[i]?.style.setProperty("--glow-lit", activation.toFixed(3));
           setOpacity[i](DIM_OPACITY + (1 - DIM_OPACITY) * activation);
           setScale[i](DIM_SCALE + (ACTIVE_SCALE - DIM_SCALE) * activation);
+          setY[i]((1 - activation) * RISE_PX);
 
           // One glint as a card takes over, re-armed once it has clearly handed off
           if (!lit[i] && activation >= GLINT_ON) {
