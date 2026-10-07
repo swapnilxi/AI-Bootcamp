@@ -216,7 +216,7 @@ export function AdminAvailability() {
               type="checkbox"
               checked={settings.requireApproval}
               onChange={(e) => setSettings({ ...settings, requireApproval: e.target.checked })}
-              className="mt-1 w-4 h-4 min-h-0 accent-[#FF7315]"
+              className="mt-1 w-4 h-4 min-h-0 accent-[#F97316]"
             />
             <span>
               <span className="block text-sm text-ink">Require approval</span>

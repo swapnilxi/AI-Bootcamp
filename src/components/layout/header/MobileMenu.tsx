@@ -54,7 +54,7 @@ export function MobileMenu({ open, pathname, session, onClose }: MobileMenuProps
           <div
             aria-hidden="true"
             className="pointer-events-none absolute -top-40 right-[-30%] w-[520px] h-[520px] rounded-full opacity-50 blur-[90px]"
-            style={{ background: "radial-gradient(circle, rgba(255, 115, 21,0.16), transparent 65%)" }}
+            style={{ background: "radial-gradient(circle, rgba(249, 115, 22,0.16), transparent 65%)" }}
           />
 
           <div className="relative mx-auto max-w-xl">

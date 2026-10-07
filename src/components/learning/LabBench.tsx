@@ -95,7 +95,7 @@ export function LabBench({
                   step={p.step}
                   value={values[p.name]}
                   onChange={(e) => set(p.name, Number(e.target.value))}
-                  className="w-full accent-[#FF7315]"
+                  className="w-full accent-[#F97316]"
                 />
               )}
 

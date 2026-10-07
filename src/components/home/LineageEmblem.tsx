@@ -3,7 +3,7 @@ export function LineageEmblem({ className = "w-32 h-32 sm:w-40 sm:h-40" }: { cla
   return (
     <svg
       viewBox="0 0 160 160"
-      className={`draw-on text-orange fill-none stroke-current filter drop-shadow-[0_0_8px_var(--orange-glow,rgba(255,115,21,0.32))] ${className}`}
+      className={`draw-on text-orange fill-none stroke-current filter drop-shadow-[0_0_8px_var(--orange-glow,rgba(249, 115, 22,0.32))] ${className}`}
       strokeWidth="1.2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -31,10 +31,10 @@ export function LineageEmblem({ className = "w-32 h-32 sm:w-40 sm:h-40" }: { cla
         <circle cx="80" cy="80" r="58" strokeDasharray="6 14" opacity="0.3" />
 
         {/* Orbiting data nodes at diagonals */}
-        <circle cx="42" cy="42" r="2" fill="var(--orange, #FF7315)" />
-        <circle cx="118" cy="42" r="2" fill="var(--orange, #FF7315)" />
-        <circle cx="118" cy="118" r="2" fill="var(--orange, #FF7315)" />
-        <circle cx="42" cy="118" r="2" fill="var(--orange, #FF7315)" />
+        <circle cx="42" cy="42" r="2" fill="var(--orange, #F97316)" />
+        <circle cx="118" cy="42" r="2" fill="var(--orange, #F97316)" />
+        <circle cx="118" cy="118" r="2" fill="var(--orange, #F97316)" />
+        <circle cx="42" cy="118" r="2" fill="var(--orange, #F97316)" />
 
         {/* Diagonal bus traces */}
         <line x1="44" y1="44" x2="54" y2="54" opacity="0.4" />
@@ -99,7 +99,7 @@ export function LineageEmblem({ className = "w-32 h-32 sm:w-40 sm:h-40" }: { cla
       />
 
       {/* 9. Central Processing Core Ring */}
-      <circle cx="80" cy="80" r="8" stroke="var(--orange, #FF7315)" strokeWidth="1.2" />
+      <circle cx="80" cy="80" r="8" stroke="var(--orange, #F97316)" strokeWidth="1.2" />
 
       {/* 10. Live Pulsing Core Tensor Emitter */}
       <circle
@@ -107,7 +107,7 @@ export function LineageEmblem({ className = "w-32 h-32 sm:w-40 sm:h-40" }: { cla
         cx="80"
         cy="80"
         r="4"
-        fill="var(--orange, #FF7315)"
+        fill="var(--orange, #F97316)"
       />
     </svg>
   );

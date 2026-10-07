@@ -515,7 +515,7 @@ function BookingDrawer({ id, onClose, onChanged }: { id: string; onClose: () => 
               <label className="sm:col-span-2 flex items-center gap-2 text-sm text-text-muted">
                 <input
                   type="checkbox"
-                  className="w-4 h-4 min-h-0 accent-[#FF7315]"
+                  className="w-4 h-4 min-h-0 accent-[#F97316]"
                   checked={"whatsappOptIn" in edit ? !!edit.whatsappOptIn : b.whatsappOptIn}
                   onChange={(e) => setEdit({ ...edit, whatsappOptIn: e.target.checked })}
                 />

@@ -13,7 +13,7 @@ export function createGlowTexture(size = 128): THREE.CanvasTexture {
   grad.addColorStop(0, "rgba(255,255,255,1)");
   grad.addColorStop(0.15, "rgba(255, 246, 240,0.85)");
   grad.addColorStop(0.4, "rgba(255, 166, 114,0.28)");
-  grad.addColorStop(1, "rgba(255, 115, 21,0)");
+  grad.addColorStop(1, "rgba(249, 115, 22,0)");
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, size, size);
   return new THREE.CanvasTexture(canvas);

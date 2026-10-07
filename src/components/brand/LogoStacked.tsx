@@ -47,14 +47,14 @@ export function LogoStacked({
       aria-hidden={decorative ? true : undefined}
     >
       <defs>
-        <circle id={dotId} cx="100" cy="42" r="7" fill="var(--gold, #FF7315)" />
+        <circle id={dotId} cx="100" cy="42" r="7" fill="var(--gold, #F97316)" />
 
         {hasGlow && (
           <>
             <radialGradient id={haloId} cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="var(--gold, #FF7315)" stopOpacity={haloCenterOpacity} />
-              <stop offset="45%" stopColor="var(--gold, #FF7315)" stopOpacity={haloMidOpacity} />
-              <stop offset="100%" stopColor="var(--gold, #FF7315)" stopOpacity={0} />
+              <stop offset="0%" stopColor="var(--gold, #F97316)" stopOpacity={haloCenterOpacity} />
+              <stop offset="45%" stopColor="var(--gold, #F97316)" stopOpacity={haloMidOpacity} />
+              <stop offset="100%" stopColor="var(--gold, #F97316)" stopOpacity={0} />
             </radialGradient>
 
             <filter id={bloomId} x="-50%" y="-50%" width="200%" height="200%">
@@ -84,7 +84,7 @@ export function LogoStacked({
         {/* 2. Star Bloom */}
         {hasGlow && (
           <circle cx="100" cy="100" r="13"
-            fill="var(--gold, #FF7315)"
+            fill="var(--gold, #F97316)"
             opacity={bloomOpacity}
             filter={`url(#${bloomId})`}
           />
@@ -95,14 +95,14 @@ export function LogoStacked({
           cx="100"
           cy="100"
           r="92"
-          stroke="var(--gold, #FF7315)"
+          stroke="var(--gold, #F97316)"
           strokeWidth="1.8"
         />
         <circle
           cx="100"
           cy="100"
           r="76"
-          stroke="var(--gold, #FF7315)"
+          stroke="var(--gold, #F97316)"
           strokeWidth="1.0"
           opacity="0.6"
         />
@@ -114,16 +114,16 @@ export function LogoStacked({
         <use href={`#${dotId}`} xlinkHref={`#${dotId}`} transform="rotate(300 100 100)" />
 
         {/* 4. Secondary Star */}
-        <polygon points="100,42 150.2,71 150.2,129 100,158 49.8,129 49.8,71" opacity={0.45} stroke="var(--gold, #FF7315)"
+        <polygon points="100,42 150.2,71 150.2,129 100,158 49.8,129 49.8,71" opacity={0.45} stroke="var(--gold, #F97316)"
           strokeWidth="1.6"
           strokeLinejoin="round" fill="none" />
-          <path d="M100 85L100 50M113 92.5L143.3 75M113 107.5L143.3 125M100 115L100 150M87 107.5L56.7 125M87 92.5L56.7 75" stroke="var(--gold, #FF7315)"
+          <path d="M100 85L100 50M113 92.5L143.3 75M113 107.5L143.3 125M100 115L100 150M87 107.5L56.7 125M87 92.5L56.7 75" stroke="var(--gold, #F97316)"
           strokeWidth="1.6"
           strokeLinejoin="round" strokeLinecap="round" />
 
         {/* 5. Main Star */}
         <circle cx="100" cy="100" r="13"
-          fill="var(--gold, #FF7315)"
+          fill="var(--gold, #F97316)"
         />
 
         {/* 6. Center Gem */}
@@ -138,17 +138,17 @@ export function LogoStacked({
           y1="224"
           x2="152"
           y2="224"
-          stroke="var(--gold, #FF7315)"
+          stroke="var(--gold, #F97316)"
           strokeWidth="1"
         />
         {outlined ? (
-          <path d={BRAND_OUTLINES.stacked.the} fill="var(--gold, #FF7315)" />
+          <path d={BRAND_OUTLINES.stacked.the} fill="var(--gold, #F97316)" />
         ) : (
           <text
             x="180"
             y="229"
             textAnchor="middle"
-            fill="var(--gold, #FF7315)"
+            fill="var(--gold, #F97316)"
             style={{
               fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
               fontSize: "15px",
@@ -164,19 +164,19 @@ export function LogoStacked({
           y1="224"
           x2="242"
           y2="224"
-          stroke="var(--gold, #FF7315)"
+          stroke="var(--gold, #F97316)"
           strokeWidth="1"
         />
 
         {/* BOOTCAMP */}
         {outlined ? (
-          <path d={BRAND_OUTLINES.stacked.ms} fill="var(--gold, #FF7315)" />
+          <path d={BRAND_OUTLINES.stacked.ms} fill="var(--gold, #F97316)" />
         ) : (
           <text
             x="180"
             y="269"
             textAnchor="middle"
-            fill="var(--gold, #FF7315)"
+            fill="var(--gold, #F97316)"
             style={{
               fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
               fontSize: "28px",
@@ -196,13 +196,13 @@ export function LogoStacked({
               y1="291"
               x2="270"
               y2="291"
-              stroke="var(--gold, #FF7315)"
+              stroke="var(--gold, #F97316)"
               strokeWidth="0.8"
               opacity="0.6"
             />
             <polygon
               points="180,288.5 182.5,291 180,293.5 177.5,291"
-              fill="var(--gold, #FF7315)"
+              fill="var(--gold, #F97316)"
             />
             {outlined ? (
               <path d={BRAND_OUTLINES.stacked.tag} fill="var(--text-muted, #A8A399)" />

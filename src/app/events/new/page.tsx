@@ -493,7 +493,7 @@ function CreateEventForm() {
                     <button
                         type="submit"
                         disabled={submitting}
-                        className="inline-flex items-center gap-2 rounded-xl bg-cream px-8 py-3.5 text-sm font-semibold text-black transition-colors hover:bg-[#FFB073] disabled:opacity-60"
+                        className="inline-flex items-center gap-2 rounded-xl bg-cream px-8 py-3.5 text-sm font-semibold text-black transition-colors hover:bg-cream/90 disabled:opacity-60"
                     >
                         {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
                         {submitting ? "Submitting..." : isAdmin ? "Publish Event" : "Submit for Approval"}

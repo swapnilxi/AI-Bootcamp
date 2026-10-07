@@ -304,7 +304,7 @@ export default function RequestEventPage() {
                         <button
                             type="submit"
                             disabled={submitting}
-                            className="inline-flex items-center gap-2 rounded-xl bg-cream px-8 py-3.5 text-sm font-semibold text-black transition-colors hover:bg-[#FFB073] disabled:opacity-60"
+                            className="inline-flex items-center gap-2 rounded-xl bg-cream px-8 py-3.5 text-sm font-semibold text-black transition-colors hover:bg-cream/90 disabled:opacity-60"
                         >
                             {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
                             {submitting ? "Submitting..." : "Submit Request"}
@@ -351,7 +351,7 @@ export default function RequestEventPage() {
                                     <div className="flex shrink-0 gap-2">
                                         <Link
                                             href={`/events/new?requestId=${req.id}`}
-                                            className="inline-flex items-center gap-1.5 rounded-xl bg-cream px-4 py-2 text-xs font-semibold text-black hover:bg-[#FFB073]"
+                                            className="inline-flex items-center gap-1.5 rounded-xl bg-cream px-4 py-2 text-xs font-semibold text-black hover:bg-cream/90"
                                         >
                                             <PlusCircle className="h-3.5 w-3.5" />
                                             Plan Event

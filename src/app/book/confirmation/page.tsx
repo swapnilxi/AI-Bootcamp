@@ -276,7 +276,7 @@ function ConfirmationContent() {
               href={getGoogleCalendarUrl()}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-gold text-black hover:bg-[#FFB073] text-sm font-semibold transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-cream text-black hover:bg-cream/90 text-sm font-semibold transition-colors"
             >
               <Calendar className="w-4 h-4" />
               Add to Google Calendar
@@ -330,7 +330,7 @@ function ConfirmationContent() {
                         "Your new time has been requested. We'll confirm it shortly."
                       )
                     }
-                    className="px-5 py-2.5 rounded-xl bg-gold hover:bg-[#FFB073] text-black text-sm font-semibold disabled:opacity-40"
+                    className="px-5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-black text-sm font-semibold disabled:opacity-40"
                   >
                     {busy ? "Saving…" : "Confirm new time"}
                   </button>

@@ -147,7 +147,7 @@ export default function LessonPage() {
         </p>
         <Link
           href={`/courses/${courseId}`}
-          className="inline-block px-5 py-2.5 rounded-xl bg-cream text-black text-sm font-semibold hover:bg-[#FFB073] transition-colors"
+          className="inline-block px-5 py-2.5 rounded-xl bg-cream text-black text-sm font-semibold hover:bg-cream/90 transition-colors"
         >
           {locked ? "View class & enroll" : "Back to class"}
         </Link>
@@ -184,7 +184,7 @@ export default function LessonPage() {
               </div>
               <div className="h-1 rounded-full bg-white/5 overflow-hidden">
                 <div
-                  className="h-full rounded-full bg-[linear-gradient(90deg,#DC4C00,#FFD2A8)] transition-[width] duration-700"
+                  className="h-full rounded-full bg-[linear-gradient(90deg,#F0E6D4,#FFFFFF)] transition-[width] duration-700"
                   style={{ width: `${pct}%` }}
                 />
               </div>
@@ -277,7 +277,7 @@ export default function LessonPage() {
                 href={video.src}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 py-10 text-cream hover:text-[#FFD2A8] transition-colors"
+                className="flex items-center justify-center gap-2 py-10 text-cream hover:text-[#FED7AA] transition-colors"
               >
                 <PlayCircle className="w-6 h-6" />
                 <span className="font-medium">Open lesson video</span>
@@ -331,7 +331,7 @@ export default function LessonPage() {
                     : router.push(`/courses/${courseId}/lessons/${nextId}`)
                 }
                 disabled={saving}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-cream hover:bg-[#FFB073] text-black text-sm font-semibold transition-colors disabled:opacity-50"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-cream hover:bg-cream/90 text-black text-sm font-semibold transition-colors disabled:opacity-50"
               >
                 {canTrack && !lesson.isCompleted ? "Complete & continue" : "Next lesson"}
                 <ArrowRight className="w-4 h-4" />
@@ -340,14 +340,14 @@ export default function LessonPage() {
               <button
                 onClick={() => toggleComplete("finish")}
                 disabled={saving}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-cream hover:bg-[#FFB073] text-black text-sm font-semibold transition-colors disabled:opacity-50"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-cream hover:bg-cream/90 text-black text-sm font-semibold transition-colors disabled:opacity-50"
               >
                 Complete course
               </button>
             ) : (
               <Link
                 href={`/courses/${courseId}`}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-cream hover:bg-[#FFB073] text-black text-sm font-semibold transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-cream hover:bg-cream/90 text-black text-sm font-semibold transition-colors"
               >
                 Return to course
               </Link>

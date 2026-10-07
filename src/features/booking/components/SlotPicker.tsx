@@ -195,7 +195,7 @@ export function SlotPicker({ serviceId, value, onChange, onTimezone }: SlotPicke
                   }}
                   className={`min-h-0 h-[76px] rounded-xl border flex flex-col items-center justify-center gap-0.5 transition-all duration-300 ${
                     active
-                      ? "border-gold bg-gold/15 text-gold shadow-[0_0_18px_-6px_rgba(255,115,21,0.5)]"
+                      ? "border-gold bg-gold/15 text-gold shadow-[0_0_18px_-6px_rgba(249, 115, 22,0.5)]"
                       : d.available
                       ? "border-white/10 bg-black/40 text-text hover:border-gold/50"
                       : "border-white/[0.04] text-text-muted/40 cursor-not-allowed"
@@ -310,7 +310,7 @@ export function SlotPicker({ serviceId, value, onChange, onTimezone }: SlotPicke
                   onClick={() => onChange({ date: selectedDate!, time: s.time, start: s.start })}
                   className={`min-h-[48px] rounded-xl border px-3 py-2 text-sm font-medium transition-all duration-300 flex flex-col items-center justify-center ${
                     active
-                      ? "bg-gold text-black border-gold shadow-[0_8px_20px_-10px_rgba(255,115,21,0.7)]"
+                      ? "bg-gold text-black border-gold shadow-[0_8px_20px_-10px_rgba(249, 115, 22,0.7)]"
                       : "border-white/10 bg-black/40 text-text hover:border-gold/50 hover:-translate-y-0.5"
                   }`}
                   aria-pressed={active}

@@ -43,7 +43,7 @@ function Quiz({ endpoint }: { endpoint: string }) {
         <button
           onClick={generate}
           disabled={loading}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gold hover:bg-[#FFB073] text-black text-sm font-semibold transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-black text-sm font-semibold transition-colors disabled:opacity-50"
         >
           <Sparkles className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
           {loading ? "Writing your quiz…" : "Generate quiz"}

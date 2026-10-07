@@ -559,7 +559,7 @@ export function ProfileSectionsEditor({
           <button
             onClick={handleSave}
             disabled={saving}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gold hover:bg-[#FFB073] text-black text-xs font-semibold shadow-md transition-all disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-black text-xs font-semibold shadow-md transition-all disabled:opacity-50"
           >
             {saved ? (
               <><Check className="w-4 h-4" /> Saved!</>
@@ -588,7 +588,7 @@ export function ProfileSectionsEditor({
           </p>
           <button
             onClick={() => setShowPicker(true)}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gold hover:bg-[#FFB073] text-black text-xs font-semibold shadow-md"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-black text-xs font-semibold shadow-md"
           >
             <Plus className="w-4 h-4" /> Add Your First Section
           </button>

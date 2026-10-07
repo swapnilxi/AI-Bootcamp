@@ -40,12 +40,12 @@ export function AiGlowIcon({
 
   const glowStyle =
     glow === "subtle"
-      ? "filter drop-shadow-[0_0_5px_var(--orange-glow,rgba(255,115,21,0.35))]"
+      ? "filter drop-shadow-[0_0_5px_var(--orange-glow,rgba(249, 115, 22,0.35))]"
       : "";
 
   return (
     <div
-      className={`inline-flex items-center justify-center border transition-all duration-300 ${sizeClasses[size]} bg-orange/10 border-orange/30 text-orange shadow-[0_0_14px_-2px_var(--orange-soft,rgba(255,115,21,0.18))] hover:border-orange hover:shadow-[0_0_20px_0_var(--orange-glow,rgba(255,115,21,0.3))] ${className}`}
+      className={`inline-flex items-center justify-center border transition-all duration-300 ${sizeClasses[size]} bg-orange/10 border-orange/30 text-orange shadow-[0_0_14px_-2px_var(--orange-soft,rgba(249, 115, 22,0.18))] hover:border-orange hover:shadow-[0_0_20px_0_var(--orange-glow,rgba(249, 115, 22,0.3))] ${className}`}
     >
       <svg
         width={svgSizes[size]}

@@ -95,7 +95,7 @@
   left: calc(var(--card-pad-x) + var(--badge) + var(--line-gap));
   width: calc(100% + var(--step-gap, 1.25rem) - var(--badge) - 2 * var(--line-gap));
   height: 1px;
-  background: rgba(255, 115, 21, 0.18);
+  background: rgba(249, 115, 22, 0.18);
   pointer-events: none;
   z-index: 10;
 }
@@ -136,11 +136,11 @@
   transform: scaleX(var(--line-fill, 0));
   background: linear-gradient(
     90deg,
-    rgba(255, 115, 21, 0.25) 0%,
-    rgba(255, 210, 168, 0.85) 70%,
+    rgba(249, 115, 22, 0.25) 0%,
+    rgba(254, 215, 170, 0.85) 70%,
     rgba(255, 246, 240, 1) 100%
   );
-  box-shadow: 0 0 8px rgba(255, 143, 66, 0.4);
+  box-shadow: 0 0 8px rgba(251, 146, 60, 0.4);
   transition: transform 0.12s linear;
 }
 
@@ -152,8 +152,8 @@
   width: 5px;
   height: 5px;
   border-radius: 9999px;
-  background: #FFF6ED;
-  box-shadow: 0 0 6px #FF8F42, 0 0 12px #FF8F42;
+  background: #FFF7ED;
+  box-shadow: 0 0 6px #FB923C, 0 0 12px #FB923C;
   opacity: calc(var(--line-fill, 0) > 0.02 ? 1 : 0);
   transition: opacity 0.2s ease;
 }
@@ -162,9 +162,9 @@
   transform: scaleX(1);
   background: linear-gradient(
     90deg,
-    rgba(255, 115, 21, 0.1) 0%,
-    rgba(255, 210, 168, 0.5) 50%,
-    rgba(255, 115, 21, 0.1) 100%
+    rgba(249, 115, 22, 0.1) 0%,
+    rgba(254, 215, 170, 0.5) 50%,
+    rgba(249, 115, 22, 0.1) 100%
   );
   background-size: 200% 100%;
   animation: lineShimmer 3.5s ease-in-out infinite;
@@ -255,7 +255,7 @@
   inset: 0;
   transform-origin: left;
   transform: scaleX(var(--scene-p, 0));
-  background: linear-gradient(90deg, rgba(255, 115, 21, 0.25), rgba(255, 210, 168, 0.85));
+  background: linear-gradient(90deg, rgba(249, 115, 22, 0.25), rgba(254, 215, 170, 0.85));
 }
 .scene-marks {
   display: flex;
@@ -264,7 +264,7 @@
   letter-spacing: 0.22em;
 }
 .scene-mark {
-  color: rgba(255, 115, 21, calc(0.3 + 0.7 * var(--glow-lit)));
+  color: rgba(249, 115, 22, calc(0.3 + 0.7 * var(--glow-lit)));
 }
 
 /* ------------------------------------------------------------------ */
@@ -285,7 +285,7 @@
   display: block;
   width: 2.5rem;
   height: 1px;
-  background: linear-gradient(90deg, rgba(255, 115, 21, 0.7), rgba(255, 115, 21, 0));
+  background: linear-gradient(90deg, rgba(249, 115, 22, 0.7), rgba(249, 115, 22, 0));
   animation: cueDrift 2.6s var(--ease-in-out) infinite;
 }
 @keyframes cueDrift {

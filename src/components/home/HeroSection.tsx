@@ -19,7 +19,7 @@ export function HeroSection() {
         data-speed="0.3"
         style={{
           background:
-            "radial-gradient(circle, rgba(255, 115, 21, 0.10) 0%, rgba(255, 115, 21, 0.03) 45%, transparent 70%)",
+            "radial-gradient(circle, rgba(249, 115, 22, 0.10) 0%, rgba(249, 115, 22, 0.03) 45%, transparent 70%)",
         }}
         aria-hidden="true"
       />
@@ -40,7 +40,7 @@ export function HeroSection() {
 
             <h1 className="font-serif text-[clamp(2.25rem,8.5vw,3.75rem)] lg:text-[clamp(3.5rem,5.2vw,4.5rem)] font-normal text-text tracking-tight leading-[1.1] text-balance">
               {HERO.headlineWords.map((word, i) => (
-                <React.Fragment key={word}>
+                <React.Fragment key={i}>
                   <span className="word-mask">
                     <span style={revealDelay(200 + i * 70)}>{word}</span>
                   </span>{" "}

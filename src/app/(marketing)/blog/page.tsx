@@ -183,7 +183,7 @@ export default function BlogListingPage() {
 
                   <Link
                     href={`/blog/${featuredPost.slug}`}
-                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gold hover:bg-[#FFB073] text-black font-semibold text-sm transition-all shadow-sm"
+                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-sm transition-all shadow-sm"
                   >
                     <span>Read Full Essay</span>
                     <ArrowRight className="w-4 h-4" />

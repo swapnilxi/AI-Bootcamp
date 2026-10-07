@@ -11,8 +11,8 @@
   pointer-events: none;
   transform-origin: 0 50%;
   transform: scaleX(0);
-  background: linear-gradient(90deg, rgba(255, 115, 21, 0), #ff7315 40%, #ffebd4);
-  box-shadow: 0 0 8px rgba(255, 115, 21, 0.35);
+  background: linear-gradient(90deg, rgba(249, 115, 22, 0), #F97316 40%, #FFEDD5);
+  box-shadow: 0 0 8px rgba(249, 115, 22, 0.35);
 }
 
 /* Soft orange glow that trails the cursor tip (driven by MotionEffects) */
@@ -27,9 +27,9 @@
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(255, 236, 222, 0.22) 0%,
-    rgba(255, 115, 21, 0.1) 35%,
-    rgba(255, 115, 21, 0.03) 60%,
+    rgba(255, 237, 213, 0.22) 0%,
+    rgba(249, 115, 22, 0.1) 35%,
+    rgba(249, 115, 22, 0.03) 60%,
     transparent 72%
   );
   mix-blend-mode: screen;
@@ -63,10 +63,10 @@
   pointer-events: none;
   background: linear-gradient(
     180deg,
-    rgba(255, 115, 21, 0) 0%,
-    rgba(255, 115, 21, 0.15) 16%,
-    rgba(255, 115, 21, 0.15) 84%,
-    rgba(255, 115, 21, 0) 100%
+    rgba(249, 115, 22, 0) 0%,
+    rgba(249, 115, 22, 0.15) 16%,
+    rgba(249, 115, 22, 0.15) 84%,
+    rgba(249, 115, 22, 0) 100%
   );
   opacity: 0;
   transition: opacity var(--dur-base) var(--ease-soft);
@@ -85,8 +85,8 @@
   border-radius: 50%;
   background: var(--cream);
   box-shadow:
-    0 0 10px 2px rgba(255, 217, 193, 0.5),
-    0 0 22px 7px rgba(255, 115, 21, 0.2);
+    0 0 10px 2px rgba(254, 215, 170, 0.5),
+    0 0 22px 7px rgba(249, 115, 22, 0.2);
 }
 /* A short trail, so the spark reads as having come from above */
 .scroll-spark::before {
@@ -97,7 +97,7 @@
   width: 1px;
   height: 44px;
   transform: translateX(-50%);
-  background: linear-gradient(180deg, rgba(255, 115, 21, 0), rgba(255, 220, 197, 0.45));
+  background: linear-gradient(180deg, rgba(249, 115, 22, 0), rgba(255, 220, 197, 0.45));
 }
 /* Slow halo, so it still has life when the page is still */
 .scroll-spark::after {
@@ -105,7 +105,7 @@
   position: absolute;
   inset: -3px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 115, 21, 0.35);
+  border: 1px solid rgba(249, 115, 22, 0.35);
   animation: sparkPulse 2.8s var(--ease-in-out) infinite;
 }
 @keyframes sparkPulse {
@@ -141,45 +141,26 @@
 }
 
 /* ================================================================== */
-/* Metallic orange text                                                */
-/*  .text-gold-metal  static metallic gradient, sweeps once on .group hover */
-/*  .text-shimmer     continuous slow sweep — hero accents only        */
-/*                                                                     */
-/*  Both run cream through orange rather than orange through cream: the */
-/*  letterforms stay bright and legible, and the orange reads as the    */
-/*  light coming off them.                                              */
+/* Accent text                                                         */
+/*  .text-gold-metal / .text-shimmer   a cream core with an orange glow, */
+/*  the same "light source" recipe as .neon-text — used for emphasis    */
+/*  words, stat numerals and accent numbers. Static and legible rather   */
+/*  than an animated sweep: orange stays strictly a glow, never a fill.  */
 /* ================================================================== */
 .text-gold-metal,
 .text-shimmer {
-  background: linear-gradient(
-    110deg,
-    #ff7315 0%,
-    #ffd2a8 26%,
-    #faf6f0 44%,
-    #fdfaf6 50%,
-    #faf6f0 56%,
-    #ffd2a8 74%,
-    #ff7315 100%
-  );
-  background-size: 260% 100%;
-  background-position: 100% 0;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-.text-shimmer {
-  animation: textShimmer 7s var(--ease-soft) var(--shimmer-delay, 1.6s) infinite;
+  color: var(--cream);
+  text-shadow:
+    0 0 6px rgba(249, 115, 22, 0.5),
+    0 0 18px rgba(249, 115, 22, 0.3),
+    0 0 40px rgba(249, 115, 22, 0.16);
+  transition: text-shadow var(--dur-slow) var(--ease-out);
 }
 .group:hover .text-gold-metal {
-  animation: textShimmerOnce 1.3s var(--ease-soft);
-}
-@keyframes textShimmer {
-  0% { background-position: 100% 0; }
-  45%, 100% { background-position: -60% 0; }
-}
-@keyframes textShimmerOnce {
-  from { background-position: 100% 0; }
-  to { background-position: -60% 0; }
+  text-shadow:
+    0 0 8px rgba(249, 115, 22, 0.65),
+    0 0 22px rgba(249, 115, 22, 0.4),
+    0 0 48px rgba(249, 115, 22, 0.22);
 }
 
 /* ================================================================== */
@@ -244,7 +225,7 @@
   right: 0;
   bottom: 10px;
   height: 1px;
-  background: linear-gradient(90deg, transparent, #ff7315, transparent);
+  background: linear-gradient(90deg, transparent, #F97316, transparent);
   transform: scaleX(0);
   transition: transform var(--dur-base) var(--ease-out);
 }
@@ -267,7 +248,7 @@
 .shimmer-line {
   position: relative;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 115, 21, 0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(249, 115, 22, 0.3), transparent);
   overflow: hidden;
 }
 .shimmer-line::after {
@@ -320,7 +301,7 @@
   width: 100%;
   height: 100%;
   opacity: 0;
-  filter: drop-shadow(0 0 8px rgba(250, 246, 240, 0.75)) drop-shadow(0 0 18px rgba(255, 115, 21, 0.35));
+  filter: drop-shadow(0 0 8px rgba(250, 246, 240, 0.75)) drop-shadow(0 0 18px rgba(249, 115, 22, 0.35));
   animation: starJourneyIn var(--dur-reveal) var(--ease-out) 240ms forwards;
 }
 .star-journey__mark svg {
@@ -347,22 +328,22 @@
 .neon-text {
   color: var(--cream);
   text-shadow:
-    0 0 6px rgba(255, 115, 21, 0.55),
-    0 0 18px rgba(255, 115, 21, 0.35),
-    0 0 42px rgba(255, 115, 21, 0.18);
+    0 0 6px rgba(249, 115, 22, 0.55),
+    0 0 18px rgba(249, 115, 22, 0.35),
+    0 0 42px rgba(249, 115, 22, 0.18);
 }
 
 .neon-dot {
   background: var(--cream);
   box-shadow:
     0 0 6px 1px rgba(250, 246, 240, 0.8),
-    0 0 14px 3px rgba(255, 115, 21, 0.55),
-    0 0 30px 8px rgba(255, 115, 21, 0.22);
+    0 0 14px 3px rgba(249, 115, 22, 0.55),
+    0 0 30px 8px rgba(249, 115, 22, 0.22);
 }
 
 /* A hairline that glows, for dividers under headings. */
 .neon-rule {
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--cream), transparent);
-  box-shadow: 0 0 10px rgba(255, 115, 21, 0.5);
+  box-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
 }

@@ -262,7 +262,7 @@ export default function EventDetailPage() {
                         aria-pressed={event.isInterested}
                         className={`inline-flex items-center justify-center gap-2 rounded-xl px-8 py-3.5 text-sm font-semibold transition-colors disabled:opacity-60 ${event.isInterested
                             ? "border border-emerald-500/40 bg-emerald-500/10 text-emerald-300"
-                            : "bg-cream text-black hover:bg-[#FFB073]"
+                            : "bg-cream text-black hover:bg-cream/90"
                             }`}
                     >
                         <Heart className={`h-4 w-4 ${event.isInterested ? "fill-current" : ""}`} />

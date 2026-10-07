@@ -274,7 +274,7 @@ export function LessonManager({ courseId }: { courseId: string }) {
           type="checkbox"
           checked={draft.isPreview}
           onChange={(e) => setDraft({ ...draft, isPreview: e.target.checked })}
-          className="w-4 h-4 min-h-0 accent-[#FF7315]"
+          className="w-4 h-4 min-h-0 accent-[#F97316]"
         />
         Free preview: visible to everyone, even without enrollment
       </label>

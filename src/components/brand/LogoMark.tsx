@@ -42,15 +42,15 @@ export function LogoMark({
       aria-hidden={decorative ? true : undefined}
     >
       <defs>
-        <circle id={dotId} cx="100" cy="42" r={7 * strokeMultiplier} fill="var(--gold, #FF7315)" />
+        <circle id={dotId} cx="100" cy="42" r={7 * strokeMultiplier} fill="var(--gold, #F97316)" />
 
         {hasGlow && (
           <>
             {/* Ambient Halo Radial Gradient */}
             <radialGradient id={haloId} cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="var(--gold, #FF7315)" stopOpacity={haloCenterOpacity} />
-              <stop offset="45%" stopColor="var(--gold, #FF7315)" stopOpacity={haloMidOpacity} />
-              <stop offset="100%" stopColor="var(--gold, #FF7315)" stopOpacity={0} />
+              <stop offset="0%" stopColor="var(--gold, #F97316)" stopOpacity={haloCenterOpacity} />
+              <stop offset="45%" stopColor="var(--gold, #F97316)" stopOpacity={haloMidOpacity} />
+              <stop offset="100%" stopColor="var(--gold, #F97316)" stopOpacity={0} />
             </radialGradient>
 
             {/* Star Bloom Gaussian Blur Filter */}
@@ -69,7 +69,7 @@ export function LogoMark({
       {/* Layer 2: Star Bloom (Blurred gold star directly behind solid star) */}
       {hasGlow && (
         <circle cx="100" cy="100" r="13"
-          fill="var(--gold, #FF7315)"
+          fill="var(--gold, #F97316)"
           opacity={bloomOpacity}
           filter={`url(#${bloomId})`}
         />
@@ -80,14 +80,14 @@ export function LogoMark({
         cx="100"
         cy="100"
         r="92"
-        stroke="var(--gold, #FF7315)"
+        stroke="var(--gold, #F97316)"
         strokeWidth={1.8 * strokeMultiplier}
       />
       <circle
         cx="100"
         cy="100"
         r="76"
-        stroke="var(--gold, #FF7315)"
+        stroke="var(--gold, #F97316)"
         strokeWidth={1.0 * strokeMultiplier}
         opacity="0.6"
       />
@@ -100,16 +100,16 @@ export function LogoMark({
       <use href={`#${dotId}`} xlinkHref={`#${dotId}`} transform="rotate(300 100 100)" />
 
       {/* Layer 4: Secondary star (line only, rotated 45 deg) */}
-      <polygon points="100,42 150.2,71 150.2,129 100,158 49.8,129 49.8,71" opacity={0.45} stroke="var(--gold, #FF7315)"
+      <polygon points="100,42 150.2,71 150.2,129 100,158 49.8,129 49.8,71" opacity={0.45} stroke="var(--gold, #F97316)"
         strokeWidth={1.6 * strokeMultiplier}
         strokeLinejoin="round" fill="none" />
-          <path d="M100 85L100 50M113 92.5L143.3 75M113 107.5L143.3 125M100 115L100 150M87 107.5L56.7 125M87 92.5L56.7 75" stroke="var(--gold, #FF7315)"
+          <path d="M100 85L100 50M113 92.5L143.3 75M113 107.5L143.3 125M100 115L100 150M87 107.5L56.7 125M87 92.5L56.7 75" stroke="var(--gold, #F97316)"
         strokeWidth={1.6 * strokeMultiplier}
         strokeLinejoin="round" strokeLinecap="round" />
 
       {/* Layer 5: Main star (Solid Gold) */}
       <circle cx="100" cy="100" r="13"
-        fill="var(--gold, #FF7315)"
+        fill="var(--gold, #F97316)"
       />
 
       {/* Layer 6: hub core */}

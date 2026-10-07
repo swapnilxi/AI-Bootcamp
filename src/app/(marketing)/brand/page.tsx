@@ -43,7 +43,7 @@ export default function BrandPreviewPage() {
           <div className="flex items-center gap-3 bg-black-raised border border-black-line rounded-lg px-4 py-2.5">
             <span className="w-5 h-5 rounded-full bg-gold" />
             <div>
-              <div className="text-xs font-mono font-medium text-text">#FF7315</div>
+              <div className="text-xs font-mono font-medium text-text">#F97316</div>
               <div className="text-[10px] text-text-muted uppercase tracking-wider">Accent Gold & Glow</div>
             </div>
           </div>

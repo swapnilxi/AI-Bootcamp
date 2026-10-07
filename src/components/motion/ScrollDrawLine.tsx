@@ -42,7 +42,7 @@ export function ScrollDrawLine({ className = "" }: { className?: string }) {
     <div ref={root} className={`relative h-px ${className}`} aria-hidden="true">
       <div className="absolute inset-0 bg-white/[0.06]" />
       <div className="draw-fill absolute inset-0 origin-left bg-gradient-to-r from-gold/10 via-gold/70 to-gold/10" />
-      <span className="draw-spark absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#ffebd4] shadow-[0_0_12px_3px_rgba(255,115,21,0.6)]" />
+      <span className="draw-spark absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#FFEDD5] shadow-[0_0_12px_3px_rgba(249, 115, 22,0.6)]" />
     </div>
   );
 }

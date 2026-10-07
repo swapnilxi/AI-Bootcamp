@@ -57,7 +57,7 @@ export default function NewClassPage() {
         </p>
         <Link
           href="/courses"
-          className="inline-block px-5 py-2.5 rounded-xl bg-cream text-black text-sm font-medium hover:bg-[#FFB073] transition-colors"
+          className="inline-block px-5 py-2.5 rounded-xl bg-cream text-black text-sm font-medium hover:bg-cream/90 transition-colors"
         >
           Return to Classes
         </Link>
@@ -321,7 +321,7 @@ export default function NewClassPage() {
           <button
             type="submit"
             disabled={loading}
-            className="flex-1 py-3 rounded-xl bg-cream hover:bg-[#FFB073] text-black font-semibold text-sm shadow-md transition-all disabled:opacity-50"
+            className="flex-1 py-3 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-sm shadow-md transition-all disabled:opacity-50"
           >
             {loading ? "Publishing Class..." : "Publish AI Engineering Class"}
           </button>

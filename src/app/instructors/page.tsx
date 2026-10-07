@@ -130,7 +130,7 @@ export default function InstructorsPage() {
               session.user?.role === "INSTRUCTOR" || session.user?.role === "ADMIN" || session.user?.role === "SUPER_ADMIN" ? (
                 <Link
                   href="/dashboard/instructor"
-                  className="px-6 py-3.5 rounded-xl bg-cream hover:bg-[#FFB073] text-black font-semibold text-sm transition-all shadow-md flex items-center gap-2"
+                  className="px-6 py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-sm transition-all shadow-md flex items-center gap-2"
                 >
                   <GraduationCap className="w-4 h-4" />
                   <span>Open Teaching Studio</span>
@@ -138,7 +138,7 @@ export default function InstructorsPage() {
               ) : (
                 <Link
                   href="/profile#instructor-activation"
-                  className="px-6 py-3.5 rounded-xl bg-cream hover:bg-[#FFB073] text-black font-semibold text-sm transition-all shadow-md flex items-center gap-2"
+                  className="px-6 py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-sm transition-all shadow-md flex items-center gap-2"
                 >
                   <Sparkles className="w-4 h-4" />
                   <span>Activate Mentor Profile</span>
@@ -148,7 +148,7 @@ export default function InstructorsPage() {
               <div className="flex flex-wrap items-center gap-3">
                 <Link
                   href="/register?role=instructor"
-                  className="px-6 py-3.5 rounded-xl bg-cream hover:bg-[#FFB073] text-black font-semibold text-sm transition-all shadow-md flex items-center gap-2"
+                  className="px-6 py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-sm transition-all shadow-md flex items-center gap-2"
                 >
                   <span>Register as Instructor / Mentor</span>
                   <ArrowRight className="w-4 h-4" />
@@ -246,7 +246,7 @@ export default function InstructorsPage() {
                   }}
                   role="button"
                   tabIndex={0}
-                  className="editorial-card rounded-2xl p-6 sm:p-7 flex flex-col justify-between border border-white/[0.08] hover:border-gold/40 transition-all duration-300 hover:shadow-[0_12px_40px_-15px_rgba(255,143,66,0.15)] group relative overflow-hidden cursor-pointer focus:outline-none focus:ring-1 focus:ring-gold/40"
+                  className="editorial-card rounded-2xl p-6 sm:p-7 flex flex-col justify-between border border-white/[0.08] hover:border-gold/40 transition-all duration-300 hover:shadow-[0_12px_40px_-15px_rgba(251, 146, 60,0.15)] group relative overflow-hidden cursor-pointer focus:outline-none focus:ring-1 focus:ring-gold/40"
                 >
                   {/* Top-Right Sparkle Button with Hover Tooltip: Chat with AI version */}
                   <button
@@ -380,7 +380,7 @@ export default function InstructorsPage() {
                           e.stopPropagation();
                           setSelectedMentor(inst);
                         }}
-                        className="px-3.5 py-2.5 rounded-xl bg-cream hover:bg-[#FFB073] text-black text-xs font-semibold shadow-md transition-colors flex items-center gap-1.5 shrink-0"
+                        className="px-3.5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-black text-xs font-semibold shadow-md transition-colors flex items-center gap-1.5 shrink-0"
                       >
                         <Calendar className="w-3.5 h-3.5" />
                         <span>Book 1:1</span>

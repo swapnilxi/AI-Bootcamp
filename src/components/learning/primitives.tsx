@@ -90,7 +90,7 @@ export function ProgressBar({
         aria-label={label ?? "Progress"}
       >
         <div
-          className="h-full rounded-full bg-[linear-gradient(90deg,#DC4C00,#FF7315_55%,#FFB073)] transition-[width] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+          className="h-full rounded-full bg-[linear-gradient(90deg,#F0E6D4,#FAF6F0_55%,#FFFFFF)] transition-[width] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
           style={{ width: `${pct}%` }}
         />
       </div>

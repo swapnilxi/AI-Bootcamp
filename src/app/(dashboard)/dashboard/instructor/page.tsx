@@ -180,7 +180,7 @@ export default function InstructorDashboardPage() {
         <div className="flex flex-wrap items-center gap-3 shrink-0">
           <Link
             href="/courses/new"
-            className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gold hover:bg-[#FFB073] text-black text-xs font-semibold uppercase tracking-wider transition-colors shadow-md"
+            className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-cream hover:bg-cream/90 text-black text-xs font-semibold uppercase tracking-wider transition-colors shadow-md"
           >
             <Plus className="w-4 h-4" /> Create Class
           </Link>
@@ -400,7 +400,7 @@ export default function InstructorDashboardPage() {
             <p className="text-sm text-text-muted">You aren&apos;t teaching any classes yet.</p>
             <Link
               href="/courses/new"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gold hover:bg-[#FFB073] text-black text-xs font-semibold transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-black text-xs font-semibold transition-colors"
             >
               <Plus className="w-4 h-4" /> Create your first class
             </Link>

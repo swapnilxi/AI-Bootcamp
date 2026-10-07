@@ -3,7 +3,7 @@ import { Line2 } from "three/examples/jsm/lines/Line2.js";
 import { LineGeometry } from "three/examples/jsm/lines/LineGeometry.js";
 import { LineMaterial } from "three/examples/jsm/lines/LineMaterial.js";
 import { DisposableBag } from "./disposables";
-import { CREAM, ORANGE, ORANGE_BRIGHT, ORANGE_HOT, ORANGE_PALE } from "./palette";
+import { CREAM, CREAM_WARM, ORANGE, ORANGE_BRIGHT, ORANGE_HOT, ORANGE_PALE } from "./palette";
 
 /**
  * The hero's neural globe.
@@ -108,10 +108,9 @@ export function createNeuralScene(glowTex: THREE.Texture, bag: DisposableBag): N
   /*  other, which is what turns a sphere of dots into something that   */
   /*  reads as a nebula: a wide disc with a ring standing through it.   */
   /*  They live outside `shell` so they can drift at their own rate.    */
-  /*  Each ring is a crisp cream core over a wider orange glow — the    */
-  /*  same core/halo pairing used everywhere else in this scene — drawn */
-  /*  with true screen-space line widths (Line2) so they read as a      */
-  /*  deliberate, thick ring rather than a thin wireframe hairline.      */
+  /*  Each ring is a crisp cream core over a softer warm-white rim glow, */
+  /*  drawn with true screen-space line widths (Line2) so they read as a */
+  /*  deliberate ring rather than a thin wireframe hairline.             */
   /* ---------------------------------------------------------------- */
   const orbits = new THREE.Group();
   const orbitMat = bag.add(
@@ -119,17 +118,17 @@ export function createNeuralScene(glowTex: THREE.Texture, bag: DisposableBag): N
       color: CREAM,
       transparent: true,
       opacity: 0.55,
-      linewidth: 2.6,
+      linewidth: 1.5,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     })
   );
   const orbitGlowMat = bag.add(
     new LineMaterial({
-      color: ORANGE,
+      color: CREAM_WARM,
       transparent: true,
       opacity: 0.22,
-      linewidth: 7.5,
+      linewidth: 4,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     })
@@ -139,17 +138,17 @@ export function createNeuralScene(glowTex: THREE.Texture, bag: DisposableBag): N
       color: CREAM,
       transparent: true,
       opacity: 0.2,
-      linewidth: 1.8,
+      linewidth: 1.1,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     })
   );
   const orbitFaintGlowMat = bag.add(
     new LineMaterial({
-      color: ORANGE,
+      color: CREAM_WARM,
       transparent: true,
       opacity: 0.1,
-      linewidth: 5,
+      linewidth: 2.8,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     })
@@ -164,8 +163,8 @@ export function createNeuralScene(glowTex: THREE.Texture, bag: DisposableBag): N
     return pts;
   };
 
-  // One ring = one shared geometry drawn twice: the wide orange glow behind,
-  // the crisp cream core in front. Grouped so the pair moves as one.
+  // One ring = one shared geometry drawn twice: the soft warm-white glow
+  // behind, the crisp cream core in front. Grouped so the pair moves as one.
   const ringAt = (radius: number, coreMat: LineMaterial, glowMat: LineMaterial) => {
     const geo = bag.add(new LineGeometry());
     geo.setPositions(circlePositions(radius));

@@ -38,13 +38,13 @@ export function renderEmailHtml(heading: string, paragraphs: string[], cta?: { l
     .map((p) => `<p style="margin:0 0 14px;color:#d9d3c7;font-size:15px;line-height:1.6">${escapeHtml(p).replace(/\n/g, "<br>")}</p>`)
     .join("");
   const button = cta
-    ? `<p style="margin:22px 0 6px"><a href="${cta.url}" style="display:inline-block;background:#FF7315;color:#0B0B0D;text-decoration:none;font-weight:600;padding:12px 22px;border-radius:6px;font-size:14px">${escapeHtml(cta.label)}</a></p>`
+    ? `<p style="margin:22px 0 6px"><a href="${cta.url}" style="display:inline-block;background:#F97316;color:#0B0B0D;text-decoration:none;font-weight:600;padding:12px 22px;border-radius:6px;font-size:14px">${escapeHtml(cta.label)}</a></p>`
     : "";
   return `<!doctype html><html><body style="margin:0;background:#0B0B0D;padding:28px 12px;font-family:Helvetica,Arial,sans-serif">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
 <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;background:#141417;border:1px solid #26262B;border-radius:10px">
 <tr><td style="padding:26px 30px 8px;border-bottom:1px solid #26262B">
-<p style="margin:0;color:#FF7315;font-family:Georgia,serif;font-size:20px;letter-spacing:1px">${BRAND}</p></td></tr>
+<p style="margin:0;color:#F97316;font-family:Georgia,serif;font-size:20px;letter-spacing:1px">${BRAND}</p></td></tr>
 <tr><td style="padding:26px 30px">
 <h1 style="margin:0 0 16px;color:#F2EDE3;font-family:Georgia,serif;font-weight:normal;font-size:24px">${escapeHtml(heading)}</h1>
 ${body}${button}

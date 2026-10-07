@@ -177,7 +177,7 @@ export default function ClassDetailPage() {
       <div className="max-w-md mx-auto my-20 p-8 rounded-2xl bg-black-raised/80 backdrop-blur-sm border border-white/[0.07] text-center space-y-4 shadow-sm">
         <AlertCircle className="w-10 h-10 text-cream mx-auto" />
         <h2 className="font-serif text-2xl font-bold text-ink">Class Not Found</h2>
-        <Link href="/courses" className="inline-block px-5 py-2.5 rounded-xl bg-cream text-black text-sm font-medium hover:bg-[#FFB073] transition-colors">
+        <Link href="/courses" className="inline-block px-5 py-2.5 rounded-xl bg-cream text-black text-sm font-medium hover:bg-cream/90 transition-colors">
           Return to Classes Catalog
         </Link>
       </div>
@@ -338,7 +338,7 @@ export default function ClassDetailPage() {
           <div className="pt-4 flex flex-wrap items-center gap-5">
             <Link
               href={`/courses/${classData.id}/lessons/${resumeLesson.id}`}
-              className="px-8 py-3.5 rounded-xl bg-cream hover:bg-[#FFB073] text-black font-semibold text-sm shadow-md flex items-center gap-2 transition-all"
+              className="px-8 py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-sm shadow-md flex items-center gap-2 transition-all"
             >
               <PlayCircle className="w-4 h-4" />
               <span>
@@ -359,7 +359,7 @@ export default function ClassDetailPage() {
                 </div>
                 <div className="h-1.5 rounded-full bg-white/5 overflow-hidden">
                   <div
-                    className="h-full rounded-full bg-[linear-gradient(90deg,#DC4C00,#FFD2A8)] transition-[width] duration-700"
+                    className="h-full rounded-full bg-[linear-gradient(90deg,#F0E6D4,#FFFFFF)] transition-[width] duration-700"
                     style={{ width: `${progressPct}%` }}
                   />
                 </div>
@@ -374,7 +374,7 @@ export default function ClassDetailPage() {
             {classData.isPasswordProtected ? (
               <button
                 onClick={() => setUnlockModalOpen(true)}
-                className="px-8 py-3.5 rounded-xl bg-cream hover:bg-[#FFB073] text-black font-semibold text-sm shadow-md flex items-center gap-2 transition-all"
+                className="px-8 py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-sm shadow-md flex items-center gap-2 transition-all"
               >
                 <KeyRound className="w-4 h-4" />
                 <span>Enter Class Access Key to Enroll</span>
@@ -382,7 +382,7 @@ export default function ClassDetailPage() {
             ) : classData.isSubscriberOnly && !isSubscriber ? (
               <Link
                 href="/dashboard/subscriber"
-                className="px-8 py-3.5 rounded-xl bg-cream hover:bg-[#FFB073] text-black font-semibold text-sm shadow-md flex items-center gap-2 transition-all"
+                className="px-8 py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-sm shadow-md flex items-center gap-2 transition-all"
               >
                 <Sparkles className="w-4 h-4" />
                 <span>Join Subscriber Tier to Access</span>
@@ -391,7 +391,7 @@ export default function ClassDetailPage() {
               <button
                 onClick={handleEnroll}
                 disabled={enrolling}
-                className="px-8 py-3.5 rounded-xl bg-cream hover:bg-[#FFB073] text-black font-semibold text-sm shadow-md flex items-center gap-2 transition-all disabled:opacity-50"
+                className="px-8 py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-sm shadow-md flex items-center gap-2 transition-all disabled:opacity-50"
               >
                 <CheckCircle2 className="w-4 h-4" />
                 <span>{enrolling ? "Enrolling..." : "Enroll in Course"}</span>
@@ -440,7 +440,7 @@ export default function ClassDetailPage() {
             {classData.canManage && (
               <Link
                 href={`/courses/${classData.id}/edit#lessons`}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-cream hover:bg-[#FFB073] text-black font-semibold text-xs transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-xs transition-colors"
               >
                 Add the first lesson
               </Link>
@@ -545,7 +545,7 @@ export default function ClassDetailPage() {
             {classData.isPasswordProtected && (
               <button
                 onClick={() => setUnlockModalOpen(true)}
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-cream hover:bg-[#FFB073] text-black font-semibold text-sm transition-colors shadow-sm"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-sm transition-colors shadow-sm"
               >
                 <KeyRound className="w-4 h-4" />
                 <span>Unlock Classroom</span>

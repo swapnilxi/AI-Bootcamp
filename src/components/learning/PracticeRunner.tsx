@@ -269,7 +269,7 @@ export function PracticeRunner({
                 <button
                   onClick={submit}
                   disabled={selected === null || submitting}
-                  className="inline-flex min-h-0 items-center gap-2 rounded-full bg-[linear-gradient(180deg,#FFB073_0%,#FF7315_55%,#DC4C00_100%)] px-6 py-2.5 text-sm font-semibold text-black transition-transform hover:-translate-y-0.5 disabled:opacity-40 disabled:hover:translate-y-0"
+                  className="inline-flex min-h-0 items-center gap-2 rounded-full bg-[linear-gradient(180deg,#FFFFFF_0%,#FAF6F0_55%,#F0E6D4_100%)] px-6 py-2.5 text-sm font-semibold text-black transition-transform hover:-translate-y-0.5 disabled:opacity-40 disabled:hover:translate-y-0"
                 >
                   {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
                   Check answer

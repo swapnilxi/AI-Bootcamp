@@ -239,7 +239,7 @@ export function ClassCard({ classItem, userRole }: ClassCardProps) {
               </div>
               <div className="h-1.5 overflow-hidden rounded-full bg-white/[0.06]">
                 <div
-                  className="h-full rounded-full bg-[linear-gradient(90deg,#DC4C00,#FFD2A8)] transition-[width] duration-700"
+                  className="h-full rounded-full bg-[linear-gradient(90deg,#F0E6D4,#FFFFFF)] transition-[width] duration-700"
                   style={{ width: `${progressPct}%` }}
                 />
               </div>

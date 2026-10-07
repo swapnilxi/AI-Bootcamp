@@ -292,7 +292,7 @@ export function InstructorAiChatModal({
 
   return createPortal(
     <div data-lenis-prevent className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-2xl h-[min(760px,calc(100vh-2rem))] max-h-[90vh] bg-[#121217] border border-cream/15 rounded-3xl shadow-[0_20px_60px_-15px_rgba(255,143,66,0.25)] flex flex-col overflow-hidden text-ink">
+      <div className="relative w-full max-w-2xl h-[min(760px,calc(100vh-2rem))] max-h-[90vh] bg-[#121217] border border-cream/15 rounded-3xl shadow-[0_20px_60px_-15px_rgba(251, 146, 60,0.25)] flex flex-col overflow-hidden text-ink">
         {/* Glow ambient background */}
         <div className="absolute top-0 right-0 w-80 h-80 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -401,7 +401,7 @@ export function InstructorAiChatModal({
                   type="button"
                   onClick={handleExtractStyle}
                   disabled={extractingStyle}
-                  className="px-2.5 py-1 rounded-full bg-gold hover:bg-[#FFB073] text-black font-semibold text-[11px] flex items-center gap-1.5 transition-colors shadow-sm disabled:opacity-50"
+                  className="px-2.5 py-1 rounded-full bg-cream hover:bg-cream/90 text-black font-semibold text-[11px] flex items-center gap-1.5 transition-colors shadow-sm disabled:opacity-50"
                 >
                   {extractingStyle ? (
                     <>
@@ -462,7 +462,7 @@ export function InstructorAiChatModal({
                 type="button"
                 onClick={handleSaveSettings}
                 disabled={savingSettings}
-                className="px-4 py-1.5 rounded-full bg-gold hover:bg-[#FFB073] text-black font-semibold text-xs transition-colors flex items-center gap-1.5 shadow-md disabled:opacity-50"
+                className="px-4 py-1.5 rounded-full bg-cream hover:bg-cream/90 text-black font-semibold text-xs transition-colors flex items-center gap-1.5 shadow-md disabled:opacity-50"
               >
                 {savingSettings ? "Saving…" : "Save AI Persona"}
               </button>
@@ -486,7 +486,7 @@ export function InstructorAiChatModal({
         {/* Message Thread */}
         <div
           ref={messagesContainerRef}
-          className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-5 space-y-4 overscroll-contain [scrollbar-width:thin] [scrollbar-color:rgba(255,143,66,0.4)_transparent]"
+          className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-5 space-y-4 overscroll-contain [scrollbar-width:thin] [scrollbar-color:rgba(251, 146, 60,0.4)_transparent]"
         >
           {messages.map((msg) => {
             const isBot = msg.role === "assistant";
@@ -599,7 +599,7 @@ export function InstructorAiChatModal({
             <button
               type="submit"
               disabled={loading || !inputValue.trim()}
-              className="p-3 rounded-2xl bg-gold hover:bg-[#FFB073] text-black font-semibold shadow-md transition-all disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+              className="p-3 rounded-2xl bg-cream hover:bg-cream/90 text-black font-semibold shadow-md transition-all disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
               title="Send Message"
             >
               <Send className="w-4 h-4" />

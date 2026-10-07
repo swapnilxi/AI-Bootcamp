@@ -79,20 +79,20 @@ export function HeroNetworkFallback() {
       <svg viewBox="0 0 300 300" className="w-full h-full" aria-hidden="true">
         <defs>
           <radialGradient id="nn-halo">
-            <stop offset="0%" stopColor="var(--orange, #FF7315)" stopOpacity="0.55" />
-            <stop offset="100%" stopColor="var(--orange, #FF7315)" stopOpacity="0" />
+            <stop offset="0%" stopColor="var(--orange, #F97316)" stopOpacity="0.55" />
+            <stop offset="100%" stopColor="var(--orange, #F97316)" stopOpacity="0" />
           </radialGradient>
           <radialGradient id="nn-core-glow">
             <stop offset="0%" stopColor="var(--cream, #FAF6F0)" stopOpacity="0.5" />
-            <stop offset="45%" stopColor="var(--orange, #FF7315)" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="var(--orange, #FF7315)" stopOpacity="0" />
+            <stop offset="45%" stopColor="var(--orange, #F97316)" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="var(--orange, #F97316)" stopOpacity="0" />
           </radialGradient>
         </defs>
 
         {/* Globe shell */}
         <g
           className="nn-shell"
-          stroke="var(--orange, #FF7315)"
+          stroke="var(--orange, #F97316)"
           fill="none"
           style={{ transformOrigin: "150px 150px", animation: "nnSpin 54s linear infinite" }}
         >
@@ -116,7 +116,7 @@ export function HeroNetworkFallback() {
         </g>
 
         {/* Resting edges */}
-        <g stroke="var(--orange, #FF7315)" strokeWidth="0.55" opacity="0.2">
+        <g stroke="var(--orange, #F97316)" strokeWidth="0.55" opacity="0.2">
           {EDGES.map((e) => (
             <line key={e.key} x1={e.a.x} y1={e.a.y} x2={e.b.x} y2={e.b.y} />
           ))}

@@ -52,13 +52,13 @@ function ServiceCard({ service, featured, className = "", delayMs }: ServiceCard
       style={revealDelay(delayMs)}
     >
       {featured && (
-        <span className="badge-sheen absolute -top-3 left-6 sm:left-8 px-3.5 py-0.5 rounded-full text-[10px] uppercase tracking-[0.18em] font-bold text-black bg-[linear-gradient(180deg,#FFE5D1,#FF7315)] shadow-[0_2px_10px_rgba(255,115,21,0.3)]">
+        <span className="badge-sheen absolute -top-3 left-6 sm:left-8 px-3.5 py-0.5 rounded-full text-[10px] uppercase tracking-[0.18em] font-bold text-black bg-[linear-gradient(180deg,#FFE5D1,#F97316)] shadow-[0_2px_10px_rgba(249, 115, 22,0.3)]">
           Most Popular
         </span>
       )}
       <div>
-        <div className="card-icon w-14 h-14 mb-6 flex items-center justify-center text-orange rounded-2xl border border-orange/30 bg-orange/10 shadow-[0_0_16px_-2px_rgba(255,115,21,0.22)] transition-all duration-300 group-hover:scale-105 group-hover:border-orange group-hover:shadow-[0_0_22px_0_rgba(255,115,21,0.32)]">
-          <Icon name={service.iconName} variant="line" size={26} className="filter drop-shadow-[0_0_4px_rgba(255,115,21,0.4)]" />
+        <div className="card-icon w-14 h-14 mb-6 flex items-center justify-center text-orange rounded-2xl border border-orange/30 bg-orange/10 shadow-[0_0_16px_-2px_rgba(249, 115, 22,0.22)] transition-all duration-300 group-hover:scale-105 group-hover:border-orange group-hover:shadow-[0_0_22px_0_rgba(249, 115, 22,0.32)]">
+          <Icon name={service.iconName} variant="line" size={26} className="filter drop-shadow-[0_0_4px_rgba(249, 115, 22,0.4)]" />
         </div>
 
         <span className="text-[11px] uppercase tracking-wider font-semibold text-text-muted block mb-2">

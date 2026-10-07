@@ -402,7 +402,7 @@ function BookingWizard() {
                     type="checkbox"
                     checked={whatsappOptIn}
                     onChange={(e) => setWhatsappOptIn(e.target.checked)}
-                    className="mt-0.5 w-4 h-4 min-h-0 accent-[#FF7315]"
+                    className="mt-0.5 w-4 h-4 min-h-0 accent-[#F97316]"
                   />
                   <span>Send me confirmation and reminders on WhatsApp as well as email.</span>
                 </label>

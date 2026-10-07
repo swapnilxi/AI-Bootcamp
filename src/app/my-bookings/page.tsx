@@ -160,7 +160,7 @@ export default function MyBookingsPage() {
                     href={b.meetingLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-gold text-black text-xs font-semibold hover:bg-[#FFB073] transition-colors"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-cream text-black text-xs font-semibold hover:bg-cream/90 transition-colors"
                   >
                     <Video className="w-4 h-4" />
                     <span>Join Video Session</span>
