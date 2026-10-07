@@ -67,7 +67,7 @@ export default function ServicesPage() {
             onClick={() => setActiveCategory(cat)}
             className={`px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider transition-all min-h-[44px] ${
               activeCategory === cat
-                ? "bg-gold text-black shadow-sm"
+                ? "bg-gold text-[#0C0B0A] shadow-sm"
                 : "bg-black-raised text-text-muted border border-black-line hover:border-gold hover:text-text"
             }`}
           >

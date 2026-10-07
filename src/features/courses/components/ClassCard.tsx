@@ -9,7 +9,6 @@ import {
   Lock,
   Sparkles,
   CheckCircle2,
-  User,
   ChevronRight,
   BookOpen,
   Settings2,
@@ -18,6 +17,7 @@ import {
 import { isSubscriberRole } from "@/lib/roles";
 import { PasswordUnlockModal } from "./PasswordUnlockModal";
 import { CLASS_ROUTES } from "../routes";
+import { Avatar } from "@/components/ui/Avatar";
 
 export interface ClassItem {
   id: string;
@@ -135,7 +135,7 @@ export function ClassCard({ classItem, userRole }: ClassCardProps) {
     "transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 " +
     "focus-visible:ring-gold/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black-raised " +
     "disabled:opacity-60 disabled:cursor-not-allowed";
-  const ctaPrimary = `${ctaBase} bg-cream text-black hover:bg-cream/90`;
+  const ctaPrimary = `${ctaBase} bg-cream text-[#0C0B0A] hover:bg-cream/90`;
   const ctaGhost =
     `${ctaBase} border border-white/10 bg-white/[0.02] text-ink font-medium hover:border-gold/60 hover:bg-white/[0.04]`;
 
@@ -223,7 +223,12 @@ export function ClassCard({ classItem, userRole }: ClassCardProps) {
             </div>
             {classItem.instructor && (
               <div className="flex items-center gap-2">
-                <User className="h-4 w-4 shrink-0 text-text-muted" />
+                <Avatar
+                  src={classItem.instructor.avatarUrl}
+                  name={classItem.instructor.name}
+                  size="xs"
+                  radius="full"
+                />
                 <span className="truncate text-ink/80">
                   {classItem.instructor.name || "Master Instructor"}
                 </span>

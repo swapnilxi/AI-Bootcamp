@@ -221,7 +221,7 @@ export default function BrandPreviewPage() {
               <div className="p-6 space-y-4">
                 <div className="text-[11px] uppercase tracking-[0.2em] text-text-muted">Traditional Sessions</div>
                 <h3 className="font-serif text-2xl text-text leading-tight">Align Your Journey With the Stars.</h3>
-                <div className="w-full py-2.5 bg-gold text-black text-center text-xs font-semibold uppercase tracking-wider rounded-sm">
+                <div className="w-full py-2.5 bg-gold text-[#0C0B0A] text-center text-xs font-semibold uppercase tracking-wider rounded-sm">
                   Book a Session
                 </div>
               </div>
@@ -253,7 +253,7 @@ export default function BrandPreviewPage() {
               <div className="p-5 space-y-3">
                 <div className="text-[10px] uppercase tracking-[0.2em] text-text-muted">AI Practice</div>
                 <h3 className="font-serif text-xl text-text leading-tight">Classical Consultative AI Engineering</h3>
-                <div className="w-full py-2 bg-gold text-black text-center text-xs font-semibold uppercase tracking-wider rounded-sm">
+                <div className="w-full py-2 bg-gold text-[#0C0B0A] text-center text-xs font-semibold uppercase tracking-wider rounded-sm">
                   Book Session
                 </div>
               </div>

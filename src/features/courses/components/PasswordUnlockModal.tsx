@@ -132,7 +132,7 @@ export function PasswordUnlockModal({
             <button
               type="submit"
               disabled={loading || success}
-              className="px-5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-xs shadow-sm transition-all disabled:opacity-50"
+              className="px-5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold text-xs shadow-sm transition-all disabled:opacity-50"
             >
               {loading ? "Verifying..." : "Unlock Class"}
             </button>

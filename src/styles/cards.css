@@ -124,7 +124,8 @@
 .editorial-card:hover::after,
 .card-premium:hover::after,
 .editorial-card.is-lit::after,
-.card-premium.is-lit::after {
+.card-premium.is-lit::after,
+.editorial-card.is-visible::after {
   animation: rimGlint 1.6s var(--ease-soft);
 }
 

@@ -39,6 +39,7 @@ import { MentorBookingModal } from "@/features/booking";
 import { InstructorAiChatModal } from "@/components/ai/InstructorAiChatModal";
 import { ProfileSectionsRenderer } from "@/components/profile/ProfileSectionsRenderer";
 import type { ProfileSection } from "@/types/profileSections";
+import { Avatar } from "@/components/ui/Avatar";
 
 interface ClassOutline {
   id: string;
@@ -339,7 +340,7 @@ export default function InstructorProfilePage({
         </p>
         <Link
           href="/instructors"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-cream text-black font-semibold text-sm hover:bg-cream/90 transition-colors"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-cream text-[#0C0B0A] font-semibold text-sm hover:bg-cream/90 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" /> Back to instructors
         </Link>
@@ -424,17 +425,14 @@ export default function InstructorProfilePage({
             {/* Identity & Bio Summary */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-8">
               <div className="relative shrink-0 group">
-                {instructor.avatarUrl ? (
-                  <img
-                    src={instructor.avatarUrl}
-                    alt={instructor.name || "Mentor"}
-                    className="w-28 h-28 sm:w-36 sm:h-36 rounded-3xl object-cover border-2 border-cream/40 shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]"
-                  />
-                ) : (
-                  <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-3xl bg-black-raised border-2 border-cream/40 text-cream flex items-center justify-center font-serif text-5xl font-bold shrink-0 shadow-inner">
-                    {instructor.name ? instructor.name.charAt(0).toUpperCase() : "M"}
-                  </div>
-                )}
+                <Avatar
+                  src={instructor.avatarUrl}
+                  name={instructor.name}
+                  size="xl"
+                  radius="3xl"
+                  glow
+                  className="border-2 shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]"
+                />
 
                 {/* Online 24/7 AI Badge */}
                 <button
@@ -497,7 +495,7 @@ export default function InstructorProfilePage({
                 <div className="flex flex-col gap-2.5 w-full">
                   <Link
                     href="/dashboard/instructor"
-                    className="px-6 py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all text-center"
+                    className="px-6 py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all text-center"
                   >
                     <GraduationCap className="w-4 h-4" />
                     <span>Enter Teaching Studio</span>
@@ -514,9 +512,9 @@ export default function InstructorProfilePage({
                 <>
                   <button
                     onClick={() => setIsBookingOpen(true)}
-                    className="px-7 py-4 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-xs uppercase tracking-widest transition-all shadow-[0_10px_30px_rgba(251, 146, 60,0.25)] hover:shadow-[0_15px_40px_rgba(251, 146, 60,0.4)] flex items-center justify-center gap-2.5 group"
+                    className="px-7 py-4 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold text-xs uppercase tracking-widest transition-all shadow-[0_10px_30px_rgba(251, 146, 60,0.25)] hover:shadow-[0_15px_40px_rgba(251, 146, 60,0.4)] flex items-center justify-center gap-2.5 group"
                   >
-                    <Calendar className="w-4 h-4 text-black group-hover:scale-110 transition-transform" />
+                    <Calendar className="w-4 h-4 text-[#0C0B0A] group-hover:scale-110 transition-transform" />
                     <span>Book 1:1 Session</span>
                   </button>
 
@@ -622,13 +620,13 @@ export default function InstructorProfilePage({
                     onClick={() => setSelectedModality(spec)}
                     className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs transition-all ${
                       isSelected
-                        ? "bg-cream text-black shadow-[0_4px_20px_rgba(251, 146, 60,0.35)] scale-105 font-bold border border-cream"
+                        ? "bg-cream text-[#0C0B0A] shadow-[0_4px_20px_rgba(251, 146, 60,0.35)] scale-105 font-bold border border-cream"
                         : "bg-white/[0.04] hover:bg-white/[0.09] text-ink/90 border border-white/10 hover:border-gold/30 font-medium"
                     }`}
                   >
-                    <Tag className={`w-3.5 h-3.5 ${isSelected ? "text-black" : "text-cream"}`} />
+                    <Tag className={`w-3.5 h-3.5 ${isSelected ? "text-[#0C0B0A]" : "text-cream"}`} />
                     <span>{spec}</span>
-                    {isSelected && <Check className="w-3.5 h-3.5 text-black stroke-[3]" />}
+                    {isSelected && <Check className="w-3.5 h-3.5 text-[#0C0B0A] stroke-[3]" />}
                   </button>
                 );
               })}
@@ -660,7 +658,7 @@ export default function InstructorProfilePage({
                     </button>
                     <button
                       onClick={() => setIsBookingOpen(true)}
-                      className="px-4 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-black text-xs font-semibold shadow-md transition-colors flex items-center gap-1.5"
+                      className="px-4 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] text-xs font-semibold shadow-md transition-colors flex items-center gap-1.5"
                     >
                       <Calendar className="w-3.5 h-3.5" />
                       <span>Include in 1:1</span>
@@ -743,7 +741,7 @@ export default function InstructorProfilePage({
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${
                     activeTab === tab.id
-                      ? "bg-cream text-black shadow-md"
+                      ? "bg-cream text-[#0C0B0A] shadow-md"
                       : "text-text-muted hover:text-ink hover:bg-white/5"
                   }`}
                 >
@@ -879,7 +877,7 @@ export default function InstructorProfilePage({
                 </span>
                 <button
                   onClick={() => setIsBookingOpen(true)}
-                  className="px-5 py-2.5 rounded-xl bg-cream text-black font-semibold text-xs uppercase tracking-wider hover:bg-cream/90 transition-colors"
+                  className="px-5 py-2.5 rounded-xl bg-cream text-[#0C0B0A] font-semibold text-xs uppercase tracking-wider hover:bg-cream/90 transition-colors"
                 >
                   Schedule Private Session →
                 </button>
@@ -1049,7 +1047,7 @@ export default function InstructorProfilePage({
             {isSelf && (
               <Link
                 href="/courses/new"
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-cream text-black font-semibold text-xs hover:bg-cream/90 transition-colors"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-cream text-[#0C0B0A] font-semibold text-xs hover:bg-cream/90 transition-colors"
               >
                 <span>+ Create Class</span>
               </Link>
@@ -1131,7 +1129,7 @@ export default function InstructorProfilePage({
 
                       <Link
                         href={`/courses/${cls.id}`}
-                        className="px-4 py-2 rounded-xl bg-cream/15 hover:bg-cream text-cream hover:text-black font-semibold text-xs tracking-wider uppercase transition-all flex items-center gap-1.5"
+                        className="px-4 py-2 rounded-xl bg-cream/15 hover:bg-cream text-cream hover:text-[#0C0B0A] font-semibold text-xs tracking-wider uppercase transition-all flex items-center gap-1.5"
                       >
                         <span>View Curriculum</span>
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -1190,17 +1188,7 @@ export default function InstructorProfilePage({
         <div className="fixed bottom-0 inset-x-0 z-40 bg-[#121217]/95 border-t border-cream/20 backdrop-blur-md py-3 px-4 sm:px-8 shadow-2xl animate-fade-in">
           <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
             <div className="flex items-center gap-3 min-w-0">
-              {instructor.avatarUrl ? (
-                <img
-                  src={instructor.avatarUrl}
-                  alt={instructor.name || "Mentor"}
-                  className="w-10 h-10 rounded-xl object-cover border border-cream/30 shrink-0"
-                />
-              ) : (
-                <div className="w-10 h-10 rounded-xl bg-cream/10 border border-cream/20 text-cream flex items-center justify-center font-serif text-sm font-bold shrink-0">
-                  {instructor.name?.charAt(0) || "M"}
-                </div>
-              )}
+              <Avatar src={instructor.avatarUrl} name={instructor.name} size="sm" radius="xl" />
               <div className="min-w-0">
                 <div className="font-serif text-sm text-ink truncate font-medium">
                   {instructor.name}
@@ -1225,9 +1213,9 @@ export default function InstructorProfilePage({
 
               <button
                 onClick={() => setIsBookingOpen(true)}
-                className="px-5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-black text-xs font-semibold uppercase tracking-wider shadow-md transition-colors flex items-center gap-1.5"
+                className="px-5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] text-xs font-semibold uppercase tracking-wider shadow-md transition-colors flex items-center gap-1.5"
               >
-                <Calendar className="w-3.5 h-3.5 text-black" />
+                <Calendar className="w-3.5 h-3.5 text-[#0C0B0A]" />
                 <span>Book 1:1</span>
               </button>
             </div>

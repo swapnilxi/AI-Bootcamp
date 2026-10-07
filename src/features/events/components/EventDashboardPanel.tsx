@@ -68,7 +68,7 @@ export function EventDashboardPanel() {
                         key={t.value}
                         onClick={() => setTab(t.value)}
                         className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${tab === t.value
-                                ? "bg-gold text-black shadow-sm"
+                                ? "bg-gold text-[#0C0B0A] shadow-sm"
                                 : "border border-white/[0.07] bg-black-raised/80 text-ink hover:border-gold"
                             }`}
                     >
@@ -187,7 +187,7 @@ function EventRow({
                                 onClick={() => decide("APPROVED")}
                                 disabled={busy !== null}
                                 aria-label={`Approve ${event.title}`}
-                                className="inline-flex items-center gap-1.5 rounded-lg bg-cream px-3 py-2 text-xs font-semibold text-black transition-colors hover:bg-cream/90 disabled:opacity-60"
+                                className="inline-flex items-center gap-1.5 rounded-lg bg-cream px-3 py-2 text-xs font-semibold text-[#0C0B0A] transition-colors hover:bg-cream/90 disabled:opacity-60"
                             >
                                 {busy === "approve" ? (
                                     <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -297,7 +297,7 @@ function RequestList({
                             {canPlan && request.status === "OPEN" && !request.eventId && (
                                 <Link
                                     href={`/events/new?requestId=${request.id}`}
-                                    className="inline-flex items-center gap-1.5 rounded-lg bg-cream px-3 py-2 text-xs font-semibold text-black transition-colors hover:bg-cream/90"
+                                    className="inline-flex items-center gap-1.5 rounded-lg bg-cream px-3 py-2 text-xs font-semibold text-[#0C0B0A] transition-colors hover:bg-cream/90"
                                 >
                                     <CalendarPlus className="h-3.5 w-3.5" />
                                     Plan it

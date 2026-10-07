@@ -234,7 +234,7 @@ function ClientDrawer({ id, onClose, onChanged }: { id: string; onClose: () => v
             {canEdit && (
               <div className="flex items-center justify-end gap-3">
                 {saved && <span className="text-xs text-emerald-300">Saved</span>}
-                <button disabled={saving} className="px-5 py-2 rounded-xl bg-cream hover:bg-cream/90 text-black text-sm font-semibold disabled:opacity-40">
+                <button disabled={saving} className="px-5 py-2 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] text-sm font-semibold disabled:opacity-40">
                   {saving ? "Saving…" : "Save profile"}
                 </button>
               </div>
@@ -250,7 +250,7 @@ function ClientDrawer({ id, onClose, onChanged }: { id: string; onClose: () => v
               <button
                 onClick={send}
                 disabled={sending || !subject.trim() || !message.trim() || channels.length === 0}
-                className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-cream hover:bg-cream/90 text-black text-sm font-semibold disabled:opacity-40"
+                className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] text-sm font-semibold disabled:opacity-40"
               >
                 <Send className="w-4 h-4" /> {sending ? "Sending…" : "Send"}
               </button>

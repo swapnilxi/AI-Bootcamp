@@ -298,7 +298,7 @@ export function AdminClassesReview() {
                           })
                         }
                         disabled={busyId === cls.id}
-                        className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-semibold shadow-md transition-colors flex items-center gap-1.5"
+                        className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#0C0B0A] text-xs font-semibold shadow-md transition-colors flex items-center gap-1.5"
                       >
                         <CheckCircle2 className="w-3.5 h-3.5" />
                         <span>Approve Class</span>
@@ -391,7 +391,7 @@ export function AdminClassesReview() {
                                 {!isModApproved && (
                                   <button
                                     onClick={() => handleModuleAction(cls.id, lesson.id, "APPROVED")}
-                                    className="px-3 py-1.5 rounded-full bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-black border border-emerald-500/30 text-xs font-medium transition-all"
+                                    className="px-3 py-1.5 rounded-full bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-[#0C0B0A] border border-emerald-500/30 text-xs font-medium transition-all"
                                   >
                                     Approve Module
                                   </button>

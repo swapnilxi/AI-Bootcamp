@@ -160,7 +160,7 @@ export function AdminAvailability() {
             <button
               disabled={saving}
               onClick={() => put({ weeklyHours: hours }, "Weekly hours saved")}
-              className="px-5 py-2 rounded-xl bg-cream hover:bg-cream/90 text-black text-sm font-semibold disabled:opacity-40"
+              className="px-5 py-2 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] text-sm font-semibold disabled:opacity-40"
             >
               Save weekly hours
             </button>
@@ -270,7 +270,7 @@ export function AdminAvailability() {
             <button
               disabled={saving}
               onClick={() => put({ settings }, "Booking rules saved")}
-              className="px-5 py-2 rounded-xl bg-cream hover:bg-cream/90 text-black text-sm font-semibold disabled:opacity-40"
+              className="px-5 py-2 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] text-sm font-semibold disabled:opacity-40"
             >
               Save rules
             </button>

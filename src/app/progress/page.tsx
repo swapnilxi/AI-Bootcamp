@@ -57,7 +57,7 @@ export default async function ProgressPage() {
           </div>
           <Link
             href={snap.nextAction.href}
-            className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[linear-gradient(180deg,#FFFFFF_0%,#FAF6F0_55%,#F0E6D4_100%)] px-7 py-3.5 text-sm font-semibold text-black transition-transform hover:-translate-y-0.5"
+            className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[linear-gradient(180deg,#FFFFFF_0%,#FAF6F0_55%,#F0E6D4_100%)] px-7 py-3.5 text-sm font-semibold text-[#0C0B0A] transition-transform hover:-translate-y-0.5"
           >
             Go
             <ArrowRight className="h-4 w-4" />

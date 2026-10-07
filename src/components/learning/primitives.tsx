@@ -171,7 +171,7 @@ export function CatalogueCard({
       className={`editorial-card ${glow} group flex flex-col gap-4 p-6 rounded-2xl h-full`}
     >
       <div className="flex-1 space-y-3">
-        <h3 className="font-serif text-xl text-text leading-snug group-hover:text-gold transition-colors">
+        <h3 className="text-gold-metal font-sans text-lg font-semibold tracking-tight leading-snug">
           {title}
         </h3>
         <p className="text-sm leading-relaxed text-text-muted">{summary}</p>

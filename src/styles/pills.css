@@ -11,8 +11,8 @@
   align-items: center;
   gap: 0.5rem;
   border-radius: var(--radius-pill);
-  border: 1px solid rgba(var(--cream-rgb), 0.1);
-  background-color: rgba(var(--cream-rgb), 0.04);
+  border: 1px solid rgba(var(--text-rgb), 0.1);
+  background-color: rgba(var(--text-rgb), 0.04);
   padding: 0.3rem 0.85rem;
   line-height: 1.4;
   white-space: nowrap;
@@ -23,9 +23,9 @@
   color: var(--orange);
 }
 .pill-cream {
-  border-color: rgba(var(--cream-rgb), 0.22);
-  background-color: rgba(var(--cream-rgb), 0.08);
-  color: var(--cream);
+  border-color: rgba(var(--text-rgb), 0.22);
+  background-color: rgba(var(--text-rgb), 0.08);
+  color: var(--text);
   backdrop-filter: blur(8px);
 }
 .pill-ai {

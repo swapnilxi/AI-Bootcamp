@@ -60,23 +60,27 @@ const config: Config = {
         "3xl": "2rem",
       },
       colors: {
-        cream,
-        white: cream,
+        // `cream` (and its `white` alias) carries body/heading text — the same
+        // role as `text` — so both resolve to the theme-aware ink variable and
+        // flip correctly between dark and light mode instead of staying a fixed
+        // off-white that would vanish against a light background.
+        cream: { ...cream, DEFAULT: "rgb(var(--text-rgb-ch) / <alpha-value>)" },
+        white: { ...cream, DEFAULT: "rgb(var(--text-rgb-ch) / <alpha-value>)" },
         black: {
-          DEFAULT: "#0C0B0A",
-          raised: "#151311",
-          card: "#161412",
-          line: "rgba(245, 237, 224, 0.12)",
+          DEFAULT: "rgb(var(--black-rgb-ch) / <alpha-value>)",
+          raised: "rgb(var(--black-raised-rgb-ch) / <alpha-value>)",
+          card: "rgb(var(--black-card-rgb-ch) / <alpha-value>)",
+          line: "var(--black-line)",
         },
         orange,
         gold: orange,
         amber: orange,
         text: {
-          DEFAULT: "#FAF6F0",
-          muted: "#D8CBB4",
+          DEFAULT: "rgb(var(--text-rgb-ch) / <alpha-value>)",
+          muted: "rgb(var(--text-muted-rgb-ch) / <alpha-value>)",
         },
         ink: {
-          DEFAULT: "#FAF6F0",
+          DEFAULT: "rgb(var(--text-rgb-ch) / <alpha-value>)",
           50: "#151311",
           100: "rgba(245, 237, 224, 0.12)",
           200: "#D8CBB4",

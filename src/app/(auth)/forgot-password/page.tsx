@@ -112,7 +112,7 @@ export default function ForgotPasswordPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 rounded-xl bg-[linear-gradient(180deg,#FFFFFF_0%,#FAF6F0_55%,#F0E6D4_100%)] hover:brightness-110 text-black font-semibold text-sm shadow-lg shadow-black/40 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full py-3 rounded-xl bg-[linear-gradient(180deg,#FFFFFF_0%,#FAF6F0_55%,#F0E6D4_100%)] hover:brightness-110 text-[#0C0B0A] font-semibold text-sm shadow-lg shadow-black/40 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
             >
               {loading ? "Transmitting..." : "Send Reset Token"}
             </button>

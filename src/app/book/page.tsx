@@ -156,7 +156,7 @@ function BookingWizard() {
           >
             <span
               className={`w-7 h-7 rounded-full flex items-center justify-center text-xs ${
-                step >= 1 ? "bg-gold text-black" : "bg-mist text-ink/60"
+                step >= 1 ? "bg-gold text-[#0C0B0A]" : "bg-mist text-ink/60"
               }`}
             >
               1
@@ -173,7 +173,7 @@ function BookingWizard() {
           >
             <span
               className={`w-7 h-7 rounded-full flex items-center justify-center text-xs ${
-                step >= 2 ? "bg-gold text-black" : "bg-mist text-ink/60"
+                step >= 2 ? "bg-gold text-[#0C0B0A]" : "bg-mist text-ink/60"
               }`}
             >
               2
@@ -190,7 +190,7 @@ function BookingWizard() {
           >
             <span
               className={`w-7 h-7 rounded-full flex items-center justify-center text-xs ${
-                step === 3 ? "bg-gold text-black" : "bg-mist text-ink/60"
+                step === 3 ? "bg-gold text-[#0C0B0A]" : "bg-mist text-ink/60"
               }`}
             >
               3

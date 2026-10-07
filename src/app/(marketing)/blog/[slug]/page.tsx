@@ -97,7 +97,7 @@ export default function BlogDetailPage() {
         </p>
         <Link
           href="/blog"
-          className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gold text-black font-semibold text-sm"
+          className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gold text-[#0C0B0A] font-semibold text-sm"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Return to Journal</span>

@@ -83,7 +83,7 @@ export default function SubscriberDashboardPage() {
           </div>
           <Link
             href="/courses"
-            className="px-5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-xs shrink-0 shadow-sm transition-colors"
+            className="px-5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold text-xs shrink-0 shadow-sm transition-colors"
           >
             Explore courses
           </Link>

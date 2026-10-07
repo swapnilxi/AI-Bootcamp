@@ -173,7 +173,7 @@ export default function AdminDashboardPage() {
         <button
           onClick={() => setActiveTab("bookings")}
           className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${activeTab === "bookings"
-            ? "bg-cream text-black shadow-sm"
+            ? "bg-cream text-[#0C0B0A] shadow-sm"
             : "text-ink/70 hover:text-ink hover:bg-mist/40"
             }`}
         >
@@ -186,14 +186,14 @@ export default function AdminDashboardPage() {
         </button>
         <button
           onClick={() => setActiveTab("clients")}
-          className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${activeTab === "clients" ? "bg-cream text-black shadow-sm" : "text-ink/70 hover:text-ink hover:bg-mist/40"
+          className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${activeTab === "clients" ? "bg-cream text-[#0C0B0A] shadow-sm" : "text-ink/70 hover:text-ink hover:bg-mist/40"
             }`}
         >
           Clients
         </button>
         <button
           onClick={() => setActiveTab("availability")}
-          className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${activeTab === "availability" ? "bg-cream text-black shadow-sm" : "text-ink/70 hover:text-ink hover:bg-mist/40"
+          className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${activeTab === "availability" ? "bg-cream text-[#0C0B0A] shadow-sm" : "text-ink/70 hover:text-ink hover:bg-mist/40"
             }`}
         >
           Availability
@@ -201,7 +201,7 @@ export default function AdminDashboardPage() {
         <button
           onClick={() => setActiveTab("faculty")}
           className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5 ${activeTab === "faculty"
-            ? "bg-cream text-black shadow-sm"
+            ? "bg-cream text-[#0C0B0A] shadow-sm"
             : "text-ink/70 hover:text-ink hover:bg-mist/40"
             }`}
         >
@@ -218,7 +218,7 @@ export default function AdminDashboardPage() {
         <button
           onClick={() => setActiveTab("curriculum")}
           className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5 ${activeTab === "curriculum"
-            ? "bg-cream text-black shadow-sm"
+            ? "bg-cream text-[#0C0B0A] shadow-sm"
             : "text-ink/70 hover:text-ink hover:bg-mist/40"
             }`}
         >
@@ -235,7 +235,7 @@ export default function AdminDashboardPage() {
         <button
           onClick={() => setActiveTab("events")}
           className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5 ${activeTab === "events"
-            ? "bg-cream text-black shadow-sm"
+            ? "bg-cream text-[#0C0B0A] shadow-sm"
             : "text-ink/70 hover:text-ink hover:bg-mist/40"
             }`}
         >
@@ -252,7 +252,7 @@ export default function AdminDashboardPage() {
         <button
           onClick={() => setActiveTab("services")}
           className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${activeTab === "services"
-            ? "bg-cream text-black shadow-sm"
+            ? "bg-cream text-[#0C0B0A] shadow-sm"
             : "text-ink/70 hover:text-ink hover:bg-mist/40"
             }`}
         >
@@ -261,7 +261,7 @@ export default function AdminDashboardPage() {
         <button
           onClick={() => setActiveTab("classes")}
           className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${activeTab === "classes"
-            ? "bg-cream text-black shadow-sm"
+            ? "bg-cream text-[#0C0B0A] shadow-sm"
             : "text-ink/70 hover:text-ink hover:bg-mist/40"
             }`}
         >

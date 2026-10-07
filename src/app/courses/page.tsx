@@ -58,7 +58,7 @@ export default function ClassesCatalogPage() {
             onClick={() => setActiveFilter("all")}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
               activeFilter === "all"
-                ? "bg-cream text-black shadow-sm"
+                ? "bg-cream text-[#0C0B0A] shadow-sm"
                 : "bg-black-raised/80 backdrop-blur-sm text-ink border border-white/[0.07] hover:border-gold"
             }`}
           >
@@ -68,7 +68,7 @@ export default function ClassesCatalogPage() {
             onClick={() => setActiveFilter("free")}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
               activeFilter === "free"
-                ? "bg-cream text-black shadow-sm"
+                ? "bg-cream text-[#0C0B0A] shadow-sm"
                 : "bg-black-raised/80 backdrop-blur-sm text-ink border border-white/[0.07] hover:border-gold"
             }`}
           >
@@ -78,7 +78,7 @@ export default function ClassesCatalogPage() {
             onClick={() => setActiveFilter("subscriber")}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
               activeFilter === "subscriber"
-                ? "bg-cream text-black shadow-sm"
+                ? "bg-cream text-[#0C0B0A] shadow-sm"
                 : "bg-black-raised/80 backdrop-blur-sm text-ink border border-white/[0.07] hover:border-gold"
             }`}
           >
@@ -88,7 +88,7 @@ export default function ClassesCatalogPage() {
             onClick={() => setActiveFilter("protected")}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
               activeFilter === "protected"
-                ? "bg-cream text-black shadow-sm"
+                ? "bg-cream text-[#0C0B0A] shadow-sm"
                 : "bg-black-raised/80 backdrop-blur-sm text-ink border border-white/[0.07] hover:border-gold"
             }`}
           >
@@ -99,7 +99,7 @@ export default function ClassesCatalogPage() {
               onClick={() => setActiveFilter("mine")}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                 activeFilter === "mine"
-                  ? "bg-cream text-black shadow-sm"
+                  ? "bg-cream text-[#0C0B0A] shadow-sm"
                   : "bg-black-raised/80 backdrop-blur-sm text-ink border border-white/[0.07] hover:border-gold"
               }`}
             >
@@ -111,7 +111,7 @@ export default function ClassesCatalogPage() {
               onClick={() => setActiveFilter("teaching")}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                 activeFilter === "teaching"
-                  ? "bg-cream text-black shadow-sm"
+                  ? "bg-cream text-[#0C0B0A] shadow-sm"
                   : "bg-black-raised/80 backdrop-blur-sm text-ink border border-white/[0.07] hover:border-gold"
               }`}
             >

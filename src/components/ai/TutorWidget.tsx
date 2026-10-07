@@ -82,7 +82,7 @@ export function TutorWidget() {
         <button
           onClick={() => setOpen(true)}
           aria-label="Open AI Tutor"
-          className="fixed bottom-5 right-5 z-[60] inline-flex items-center gap-2.5 pl-4 pr-5 py-3 rounded-full bg-[linear-gradient(180deg,#FFFFFF_0%,#FAF6F0_55%,#F0E6D4_100%)] text-black font-semibold text-sm shadow-[0_10px_30px_-8px_rgba(249, 115, 22,0.55)] hover:-translate-y-0.5 transition-transform"
+          className="fixed bottom-5 right-5 z-[60] inline-flex items-center gap-2.5 pl-4 pr-5 py-3 rounded-full bg-[linear-gradient(180deg,#FFFFFF_0%,#FAF6F0_55%,#F0E6D4_100%)] text-[#0C0B0A] font-semibold text-sm shadow-[0_10px_30px_-8px_rgba(249, 115, 22,0.55)] hover:-translate-y-0.5 transition-transform"
         >
           <GraduationCap className="w-4 h-4" />
           AI Tutor

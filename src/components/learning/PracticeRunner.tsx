@@ -256,7 +256,7 @@ export function PracticeRunner({
                     aria-label={`Confidence ${n} of 5`}
                     className={`min-h-0 h-8 w-8 rounded-full border text-xs font-semibold transition-colors ${
                       confidence === n
-                        ? "border-cream bg-cream text-black"
+                        ? "border-cream bg-cream text-[#0C0B0A]"
                         : "border-white/15 text-text-muted hover:border-gold/50 hover:text-gold"
                     }`}
                   >
@@ -269,7 +269,7 @@ export function PracticeRunner({
                 <button
                   onClick={submit}
                   disabled={selected === null || submitting}
-                  className="inline-flex min-h-0 items-center gap-2 rounded-full bg-[linear-gradient(180deg,#FFFFFF_0%,#FAF6F0_55%,#F0E6D4_100%)] px-6 py-2.5 text-sm font-semibold text-black transition-transform hover:-translate-y-0.5 disabled:opacity-40 disabled:hover:translate-y-0"
+                  className="inline-flex min-h-0 items-center gap-2 rounded-full bg-[linear-gradient(180deg,#FFFFFF_0%,#FAF6F0_55%,#F0E6D4_100%)] px-6 py-2.5 text-sm font-semibold text-[#0C0B0A] transition-transform hover:-translate-y-0.5 disabled:opacity-40 disabled:hover:translate-y-0"
                 >
                   {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
                   Check answer

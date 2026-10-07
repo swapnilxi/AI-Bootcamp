@@ -165,7 +165,7 @@ export function LabBench({
                   <span
                     className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-[11px] font-semibold transition-colors ${
                       complete
-                        ? "border-cream bg-cream text-black"
+                        ? "border-cream bg-cream text-[#0C0B0A]"
                         : "border-cream/30 text-text-muted"
                     }`}
                   >

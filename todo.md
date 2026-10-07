@@ -1,7 +1,7 @@
 # AI Bootcamp – Todo & Roadmap
 
 ## ✅ Completed
-- [x] Instructor / Healer public profile landing pages (hero, bio, chips, modality deep-dives)
+
 - [x] Click-to-open instructor/healer profile from cards on /instructors
 - [x] AI Twin consultation modal (ReactMarkdown formatting, body scroll lock, isolated scroll)
 - [x] Custom profile sections editor (predefined templates + fully custom)
@@ -227,3 +227,721 @@ NEXT_DIST_DIR=.next-dev npm run dev -- -p 3006
 - [ ] Global command/search palette (Cmd+K) for classes, practitioners and pages
 - [ ] Breadcrumbs and a "back" affordance on deep pages (lessons, class edit, instructor profile)
 - [ ] Consistent notification bell with unread count for booking and approval updates
+
+
+Absolutely. Here is the **master feature checklist** you can use as the reference/spec checklist while building your version.
+
+# Certification Learning Platform — Master Feature Checklist
+
+## 1. Authentication & Account
+
+- [ ] Email/password registration
+- [ ] Email/password login
+- [ ] Google OAuth login
+- [ ] Logout
+- [ ] Forgot password
+- [ ] Reset password
+- [ ] User profile
+- [ ] Persistent login/session
+- [ ] Account settings
+- [ ] User-specific progress storage
+- [ ] User-specific attempt history
+
+---
+
+## 2. Homepage / Landing Page
+
+- [ ] Premium hero section
+- [ ] Clear product positioning
+- [ ] Primary CTA — Start Learning
+- [ ] Primary CTA — Practice
+- [ ] CTA — Take Mock Exam
+- [ ] Certification overview
+- [ ] Certification cards
+- [ ] Domain/skill overview
+- [ ] Learning methodology section
+- [ ] Practice methodology section
+- [ ] Adaptive learning explanation
+- [ ] Scenario-based learning explanation
+- [ ] Trust / credibility section
+- [ ] FAQ
+- [ ] Footer navigation
+- [ ] Login/Register CTA
+- [ ] Responsive mobile layout
+
+---
+
+# 3. Certification System
+
+- [ ] Certification listing page
+- [ ] Individual certification landing page
+- [ ] Certification overview
+- [ ] Exam objectives
+- [ ] Exam domains
+- [ ] Domain weight percentages
+- [ ] Exam question count
+- [ ] Exam duration
+- [ ] Passing score
+- [ ] Exam cost
+- [ ] Exam delivery information
+- [ ] Eligibility information
+- [ ] Official exam resources
+- [ ] Certification-specific study plan
+
+---
+
+# 4. Certification Navigation
+
+Each certification should have:
+
+- [ ] Overview
+- [ ] Exam Guide
+- [ ] Study Guides
+- [ ] Concepts
+- [ ] Practice
+- [ ] Domain Practice
+- [ ] Adaptive Practice
+- [ ] Readiness Check
+- [ ] Mock Exams
+- [ ] Case Studies
+- [ ] References / Cheat Sheets
+- [ ] FAQ
+
+---
+
+# 5. Study Guide System
+
+- [ ] Study guide library
+- [ ] Guides grouped by domain
+- [ ] Individual guide pages
+- [ ] Estimated reading time
+- [ ] Breadcrumb navigation
+- [ ] Table of contents
+- [ ] Previous/next guide navigation
+- [ ] Related guides
+- [ ] Related concepts
+- [ ] Key takeaways
+- [ ] Practical examples
+- [ ] Architecture examples
+- [ ] Code examples
+- [ ] Decision rules
+- [ ] Common mistakes
+- [ ] Exam tips
+- [ ] FAQ per guide
+- [ ] "Practice this topic" CTA
+- [ ] Bookmark/save guide
+
+---
+
+# 6. Concept Library
+
+- [ ] Global concept library
+- [ ] Concept cards
+- [ ] Concept search
+- [ ] Concept filtering
+- [ ] Concept categories
+- [ ] Definition
+- [ ] Why it matters
+- [ ] When to use
+- [ ] When not to use
+- [ ] Practical example
+- [ ] Exam relevance
+- [ ] Common trap
+- [ ] Related concepts
+- [ ] Similar concepts
+- [ ] Detailed explanation
+- [ ] Practice questions for concept
+- [ ] Copy concept as Markdown
+
+---
+
+# 7. "Frequently Confused" Concepts
+
+- [ ] Confused-concept library
+- [ ] A vs B comparisons
+- [ ] Difference table
+- [ ] When to use A
+- [ ] When to use B
+- [ ] Common exam trap
+- [ ] Example scenario
+- [ ] Quick decision rule
+- [ ] Practice question
+
+Examples:
+
+- [ ] Tools vs structured output
+- [ ] Hooks vs tools
+- [ ] CLAUDE.md vs rules
+- [ ] Resume vs compact vs new session
+- [ ] Context window vs memory
+- [ ] Chaining vs dynamic decomposition
+
+---
+
+# 8. Question Bank
+
+- [ ] Central question database
+- [ ] Question categories
+- [ ] Certification mapping
+- [ ] Domain mapping
+- [ ] Objective mapping
+- [ ] Difficulty level
+- [ ] Question type
+- [ ] Scenario-based questions
+- [ ] Single-choice questions
+- [ ] Multiple-choice questions
+- [ ] True/false
+- [ ] Matching
+- [ ] Sorting
+- [ ] Ordering
+- [ ] Scenario branching
+
+---
+
+# 9. Question Metadata
+
+Every question should support:
+
+- [ ] Question ID
+- [ ] Certification
+- [ ] Domain
+- [ ] Objective
+- [ ] Difficulty
+- [ ] Question type
+- [ ] Scenario
+- [ ] Options
+- [ ] Correct answer
+- [ ] Correct-answer explanation
+- [ ] Individual distractor explanations
+- [ ] Related concept
+- [ ] Related guide
+- [ ] Tags
+- [ ] Source/reference
+- [ ] Creation date
+- [ ] Last reviewed date
+
+---
+
+# 10. Practice Engine
+
+- [ ] Start practice
+- [ ] Select certification
+- [ ] Select domain
+- [ ] Select difficulty
+- [ ] Select question count
+- [ ] Mixed practice
+- [ ] Domain practice
+- [ ] Objective practice
+- [ ] Concept practice
+- [ ] Random practice
+- [ ] Timed practice
+- [ ] Untimed practice
+- [ ] Question navigation
+- [ ] Progress indicator
+- [ ] Submit answer
+- [ ] Explanation after answer
+- [ ] Correct/incorrect state
+- [ ] Next question
+- [ ] Retry incorrect questions
+
+---
+
+# 11. Answer Explanation System
+
+After answering:
+
+- [ ] Correct/incorrect indicator
+- [ ] Correct answer
+- [ ] Why correct
+- [ ] Why option A is wrong
+- [ ] Why option B is wrong
+- [ ] Why option C is wrong
+- [ ] Why option D is wrong
+- [ ] Concept explanation
+- [ ] Exam trap
+- [ ] Decision rule
+- [ ] Related study guide
+- [ ] Practice this concept
+- [ ] Next question
+
+---
+
+# 12. Confidence Tracking
+
+Before/after answering:
+
+- [ ] Low confidence
+- [ ] Medium confidence
+- [ ] High confidence
+
+Track:
+
+- [ ] Confidence + correct
+- [ ] Confidence + incorrect
+- [ ] Low confidence + correct
+- [ ] Low confidence + incorrect
+- [ ] High-confidence mistakes
+
+Specially identify:
+
+- [ ] **Confident + Wrong**
+- [ ] **Uncertain + Wrong**
+
+---
+
+# 13. Domain Practice
+
+- [ ] Domain listing
+- [ ] Domain description
+- [ ] Domain weight
+- [ ] Domain question count
+- [ ] Domain practice
+- [ ] Domain score
+- [ ] Domain accuracy
+- [ ] Domain history
+- [ ] Domain weaknesses
+- [ ] Domain recommendations
+- [ ] Retry domain
+- [ ] Practice weak domain
+
+---
+
+# 14. Adaptive Practice
+
+- [ ] Track historical accuracy
+- [ ] Track objective accuracy
+- [ ] Track domain accuracy
+- [ ] Track recency
+- [ ] Track difficulty
+- [ ] Track confidence
+- [ ] Identify weak objectives
+- [ ] Identify weak domains
+- [ ] Calculate weakness score
+- [ ] Recommend next questions
+- [ ] Prioritize recently missed concepts
+- [ ] Prioritize high-confidence mistakes
+- [ ] Adjust difficulty
+- [ ] Adaptive question selection
+- [ ] Personalized practice set
+
+### Adaptive algorithm
+
+- [ ] Accuracy
+- [ ] Domain importance
+- [ ] Objective importance
+- [ ] Recency
+- [ ] Confidence error
+- [ ] Difficulty
+- [ ] Question history
+
+---
+
+# 15. Daily Question
+
+- [ ] Question of the day
+- [ ] Daily scenario
+- [ ] Submit answer
+- [ ] Explanation
+- [ ] Domain
+- [ ] Concept
+- [ ] Daily completion
+- [ ] Daily streak
+- [ ] Previous daily questions
+- [ ] Practice similar questions
+
+---
+
+# 16. Mock Exams
+
+- [ ] Mock exam listing
+- [ ] Multiple mock exams
+- [ ] Exam simulation mode
+- [ ] Exam timer
+- [ ] Question counter
+- [ ] Progress indicator
+- [ ] All-domain questions
+- [ ] Scenario questions
+- [ ] Single-choice questions
+- [ ] Multiple-response questions
+- [ ] Question navigation
+- [ ] Flag question
+- [ ] Review unanswered
+- [ ] Submit exam
+- [ ] Auto grading
+- [ ] Final score
+- [ ] Domain breakdown
+- [ ] Objective breakdown
+- [ ] Question review
+- [ ] Detailed explanations
+- [ ] Weak-area identification
+- [ ] Mock history
+
+---
+
+# 17. Readiness Assessment
+
+- [ ] Readiness check
+- [ ] Rate confidence per domain
+- [ ] 1–5 confidence scale
+- [ ] Domain weighting
+- [ ] Weighted readiness score
+- [ ] Strong domains
+- [ ] Weak domains
+- [ ] Priority areas
+- [ ] Recommended study topics
+- [ ] Readiness history
+- [ ] Reassessment
+- [ ] Progress comparison
+
+---
+
+# 18. Enterprise Case Studies
+
+- [ ] Case-study library
+- [ ] Healthcare scenario
+- [ ] Insurance scenario
+- [ ] FinTech scenario
+- [ ] Retail scenario
+- [ ] Government scenario
+- [ ] Manufacturing scenario
+- [ ] Shared business context
+- [ ] Architecture context
+- [ ] Multiple linked questions
+- [ ] Changing requirements
+- [ ] Changing constraints
+- [ ] Architecture decisions
+- [ ] Confidence rating
+- [ ] Case-study score
+- [ ] Detailed explanation
+- [ ] Decision analysis
+- [ ] Case-study completion tracking
+
+---
+
+# 19. Search
+
+- [ ] Global search
+- [ ] Search guides
+- [ ] Search concepts
+- [ ] Search questions
+- [ ] Search mock exams
+- [ ] Search case studies
+- [ ] Search references
+- [ ] Search certifications
+- [ ] Search suggestions
+- [ ] Search results grouping
+- [ ] Content-type filtering
+- [ ] Certification filtering
+- [ ] Domain filtering
+
+---
+
+# 20. Dashboard
+
+## Personal Dashboard
+
+- [ ] Overall readiness
+- [ ] Current certification
+- [ ] Overall accuracy
+- [ ] Questions answered
+- [ ] Questions remaining
+- [ ] Study time
+- [ ] Current streak
+- [ ] Domain performance
+- [ ] Weak domains
+- [ ] Strong domains
+- [ ] Recent activity
+- [ ] Mock scores
+- [ ] Readiness score
+- [ ] Recommended next action
+
+### "What should I do next?"
+
+- [ ] Recommended guide
+- [ ] Recommended concept
+- [ ] Recommended practice
+- [ ] Recommended mock
+- [ ] Recommended case study
+
+---
+
+# 21. Progress Analytics
+
+- [ ] Overall accuracy
+- [ ] Domain accuracy
+- [ ] Objective accuracy
+- [ ] Question difficulty performance
+- [ ] Average question time
+- [ ] Mock scores
+- [ ] Readiness score
+- [ ] Study time
+- [ ] Attempt history
+- [ ] Accuracy over time
+- [ ] Domain improvement over time
+- [ ] Weakness trend
+- [ ] Confidence vs accuracy
+- [ ] High-confidence mistakes
+- [ ] Learning streak
+
+---
+
+# 22. Study Plan
+
+- [ ] Create study plan
+- [ ] Exam date
+- [ ] Target certification
+- [ ] Daily study goal
+- [ ] Weekly study goal
+- [ ] Recommended guides
+- [ ] Recommended practice
+- [ ] Recommended mocks
+- [ ] Recommended case studies
+- [ ] Progress against plan
+- [ ] Daily tasks
+- [ ] Weekly milestones
+- [ ] Automatic plan adjustment
+
+---
+
+# 23. References / Cheat Sheets
+
+- [ ] Domain blueprint
+- [ ] Exam cheat sheet
+- [ ] Flashcards
+- [ ] Study plan
+- [ ] Decision matrices
+- [ ] Architecture patterns
+- [ ] Judgment traps
+- [ ] Quick-reference guides
+- [ ] Printable references
+- [ ] Downloadable PDF
+- [ ] Markdown export
+
+---
+
+# 24. AI Features — Recommended Upgrade
+
+- [ ] AI tutor
+- [ ] Ask about a concept
+- [ ] Explain like I'm five
+- [ ] Explain at architect level
+- [ ] Generate examples
+- [ ] Generate scenarios
+- [ ] Explain why answer is wrong
+- [ ] Compare two concepts
+- [ ] AI-generated practice
+- [ ] AI-generated revision
+- [ ] Personalized study recommendations
+- [ ] AI study-plan generation
+- [ ] Voice explanation
+- [ ] AI conversation history
+
+---
+
+# 25. Gamification
+
+- [ ] Daily streak
+- [ ] Weekly streak
+- [ ] Learning milestones
+- [ ] Badges
+- [ ] XP
+- [ ] Domain mastery
+- [ ] Certification mastery
+- [ ] Completion percentage
+- [ ] Achievement system
+- [ ] Personal best
+- [ ] Progress celebrations
+
+---
+
+# 26. Content Management / Admin
+
+- [ ] Admin login
+- [ ] Certification management
+- [ ] Domain management
+- [ ] Guide management
+- [ ] Concept management
+- [ ] Question management
+- [ ] Mock management
+- [ ] Case-study management
+- [ ] Reference management
+- [ ] Question tagging
+- [ ] Difficulty management
+- [ ] Source/reference management
+- [ ] Publish/unpublish
+- [ ] Draft system
+- [ ] Content versioning
+- [ ] Review status
+- [ ] Fact-check status
+
+---
+
+# 27. Question Quality System
+
+- [ ] Question review workflow
+- [ ] Content reviewer
+- [ ] Technical reviewer
+- [ ] Source verification
+- [ ] Difficulty validation
+- [ ] Distractor validation
+- [ ] Duplicate detection
+- [ ] Outdated-question detection
+- [ ] User-reported question issue
+- [ ] Question feedback
+- [ ] Question analytics
+
+---
+
+# 28. Trust & Integrity
+
+- [ ] Original content policy
+- [ ] No leaked exam questions
+- [ ] Source attribution
+- [ ] Fact-checking
+- [ ] Content review dates
+- [ ] Transparent scoring
+- [ ] No fake score predictions
+- [ ] Secure answer keys
+- [ ] Server-side grading
+- [ ] Randomized options
+- [ ] Question randomization
+- [ ] Anti-cheating measures
+- [ ] Responsible certification disclaimer
+
+---
+
+# 29. Feedback & Support
+
+- [ ] Feedback form
+- [ ] Report broken content
+- [ ] Report content error
+- [ ] Suggest feature
+- [ ] Contact support
+- [ ] FAQ
+- [ ] Support page
+- [ ] Contribution/donation option
+
+---
+
+# 30. UI / UX
+
+- [ ] Responsive design
+- [ ] Mobile-first
+- [ ] Desktop layout
+- [ ] Dark mode
+- [ ] Light mode
+- [ ] Liquid glass surfaces
+- [ ] Glass cards
+- [ ] Subtle backdrop blur
+- [ ] Premium typography
+- [ ] Clear hierarchy
+- [ ] Consistent spacing
+- [ ] Consistent buttons
+- [ ] Consistent cards
+- [ ] Consistent badges
+- [ ] Progress animations
+- [ ] Micro-interactions
+- [ ] Skeleton loading
+- [ ] Empty states
+- [ ] Error states
+- [ ] Success states
+- [ ] Keyboard accessibility
+- [ ] Screen-reader accessibility
+
+---
+
+# 31. Navigation
+
+- [ ] Global header
+- [ ] Certification selector
+- [ ] Search
+- [ ] Learn
+- [ ] Practice
+- [ ] Mock Exams
+- [ ] Dashboard
+- [ ] Profile
+- [ ] Mobile navigation
+- [ ] Breadcrumbs
+- [ ] Sidebar navigation
+- [ ] Previous/Next navigation
+
+---
+
+# 32. Technical / Performance
+
+- [ ] Fast page load
+- [ ] SEO-friendly pages
+- [ ] Server-side rendering where appropriate
+- [ ] Static content generation
+- [ ] Lazy loading
+- [ ] Image optimization
+- [ ] Code splitting
+- [ ] Caching
+- [ ] Secure authentication
+- [ ] Secure answer keys
+- [ ] API authorization
+- [ ] Rate limiting
+- [ ] Error monitoring
+- [ ] Analytics
+- [ ] Database backups
+
+---
+
+# 33. SEO / Content Discovery
+
+- [ ] SEO metadata
+- [ ] Open Graph metadata
+- [ ] Structured data
+- [ ] Certification landing pages
+- [ ] Domain landing pages
+- [ ] Concept pages
+- [ ] Guide pages
+- [ ] Question pages where appropriate
+- [ ] Internal linking
+- [ ] Sitemap
+- [ ] Robots.txt
+- [ ] Canonical URLs
+- [ ] Search-friendly URLs
+
+---
+
+# 34. The Core Product Loop
+
+This should be considered the **highest-priority feature checklist**:
+
+- [ ] Learn
+- [ ] Practice
+- [ ] Get explanation
+- [ ] Track result
+- [ ] Track confidence
+- [ ] Identify weakness
+- [ ] Recommend next topic
+- [ ] Practice weakness
+- [ ] Take mock
+- [ ] Analyze mock
+- [ ] Update readiness
+- [ ] Repeat
+
+### Final experience
+
+```text
+Learn
+  ↓
+Practice
+  ↓
+Understand
+  ↓
+Measure
+  ↓
+Find Weakness
+  ↓
+Adaptive Practice
+  ↓
+Mock Exam
+  ↓
+Readiness
+  ↓
+Certification
+```
+
+This is the **master checklist I'd use as the product requirements baseline** for your reference implementation.

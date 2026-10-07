@@ -27,7 +27,7 @@ export function ServiceCard({ service, featured = false }: ServiceCardProps) {
       }`}
     >
       {featured && (
-        <span className="absolute -top-3 left-8 px-3 py-0.5 rounded-full text-[11px] font-semibold uppercase tracking-wider bg-cream text-black">
+        <span className="absolute -top-3 left-8 px-3 py-0.5 rounded-full text-[11px] font-semibold uppercase tracking-wider bg-cream text-[#0C0B0A]">
           Most Requested
         </span>
       )}

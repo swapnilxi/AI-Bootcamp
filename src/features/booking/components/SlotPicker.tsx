@@ -310,7 +310,7 @@ export function SlotPicker({ serviceId, value, onChange, onTimezone }: SlotPicke
                   onClick={() => onChange({ date: selectedDate!, time: s.time, start: s.start })}
                   className={`min-h-[48px] rounded-xl border px-3 py-2 text-sm font-medium transition-all duration-300 flex flex-col items-center justify-center ${
                     active
-                      ? "bg-gold text-black border-gold shadow-[0_8px_20px_-10px_rgba(249, 115, 22,0.7)]"
+                      ? "bg-gold text-[#0C0B0A] border-gold shadow-[0_8px_20px_-10px_rgba(249, 115, 22,0.7)]"
                       : "border-white/10 bg-black/40 text-text hover:border-gold/50 hover:-translate-y-0.5"
                   }`}
                   aria-pressed={active}
@@ -320,11 +320,11 @@ export function SlotPicker({ serviceId, value, onChange, onTimezone }: SlotPicke
                     {fmtTime(s.start, activeTz)}
                   </span>
                   {activeTz !== (tz || "America/New_York") ? (
-                    <span className={`text-[10px] ${active ? "text-black/70" : "text-text-muted"}`}>
+                    <span className={`text-[10px] ${active ? "text-[#0C0B0A]/70" : "text-text-muted"}`}>
                       ({fmtTime(s.start, tz || "America/New_York")} Virginia/ET)
                     </span>
                   ) : (
-                    <span className={`text-[10px] ${active ? "text-black/70" : "text-text-muted"}`}>
+                    <span className={`text-[10px] ${active ? "text-[#0C0B0A]/70" : "text-text-muted"}`}>
                       Eastern Time
                     </span>
                   )}

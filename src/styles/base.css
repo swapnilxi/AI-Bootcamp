@@ -42,9 +42,9 @@ textarea {
 input,
 select,
 textarea {
-  background-color: rgba(var(--cream-rgb), 0.035);
+  background-color: rgba(var(--text-rgb), 0.035);
   color: var(--text);
-  border: 1px solid rgba(var(--cream-rgb), 0.12);
+  border: 1px solid rgba(var(--text-rgb), 0.12);
 }
 
 input::placeholder,
@@ -64,7 +64,7 @@ textarea:focus-visible {
 
 /* Luxury text selection */
 ::selection {
-  background-color: var(--cream);
+  background-color: var(--text);
   color: var(--black);
 }
 

@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { MentorBookingModal } from "@/features/booking";
 import { InstructorAiChatModal } from "@/components/ai/InstructorAiChatModal";
+import { Avatar } from "@/components/ui/Avatar";
 
 interface InstructorItem {
   id: string;
@@ -130,7 +131,7 @@ export default function InstructorsPage() {
               session.user?.role === "INSTRUCTOR" || session.user?.role === "ADMIN" || session.user?.role === "SUPER_ADMIN" ? (
                 <Link
                   href="/dashboard/instructor"
-                  className="px-6 py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-sm transition-all shadow-md flex items-center gap-2"
+                  className="px-6 py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold text-sm transition-all shadow-md flex items-center gap-2"
                 >
                   <GraduationCap className="w-4 h-4" />
                   <span>Open Teaching Studio</span>
@@ -138,7 +139,7 @@ export default function InstructorsPage() {
               ) : (
                 <Link
                   href="/profile#instructor-activation"
-                  className="px-6 py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-sm transition-all shadow-md flex items-center gap-2"
+                  className="px-6 py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold text-sm transition-all shadow-md flex items-center gap-2"
                 >
                   <Sparkles className="w-4 h-4" />
                   <span>Activate Mentor Profile</span>
@@ -148,7 +149,7 @@ export default function InstructorsPage() {
               <div className="flex flex-wrap items-center gap-3">
                 <Link
                   href="/register?role=instructor"
-                  className="px-6 py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-sm transition-all shadow-md flex items-center gap-2"
+                  className="px-6 py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold text-sm transition-all shadow-md flex items-center gap-2"
                 >
                   <span>Register as Instructor / Mentor</span>
                   <ArrowRight className="w-4 h-4" />
@@ -183,7 +184,7 @@ export default function InstructorsPage() {
               onClick={() => setActiveFilter("ALL")}
               className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
                 activeFilter === "ALL"
-                  ? "bg-cream text-black shadow-md font-semibold"
+                  ? "bg-cream text-[#0C0B0A] shadow-md font-semibold"
                   : "text-text-muted hover:text-white"
               }`}
             >
@@ -193,7 +194,7 @@ export default function InstructorsPage() {
               onClick={() => setActiveFilter("INSTRUCTOR")}
               className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
                 activeFilter === "INSTRUCTOR"
-                  ? "bg-cream text-black shadow-md font-semibold"
+                  ? "bg-cream text-[#0C0B0A] shadow-md font-semibold"
                   : "text-text-muted hover:text-white"
               }`}
             >
@@ -203,7 +204,7 @@ export default function InstructorsPage() {
               onClick={() => setActiveFilter("MENTOR")}
               className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
                 activeFilter === "MENTOR"
-                  ? "bg-emerald-400 text-black shadow-md font-semibold"
+                  ? "bg-emerald-400 text-[#0C0B0A] shadow-md font-semibold"
                   : "text-text-muted hover:text-white"
               }`}
             >
@@ -268,29 +269,25 @@ export default function InstructorsPage() {
                   <div className="space-y-5">
                     {/* Top Identity Row */}
                     <div className="flex items-start gap-4">
-                      {inst.avatarUrl ? (
-                        <div className="relative shrink-0">
-                          <img
-                            src={inst.avatarUrl}
-                            alt={inst.name || "Mentor"}
-                            className="w-20 h-20 rounded-2xl object-cover border border-cream/30 shadow-lg group-hover:scale-105 transition-transform duration-300"
-                          />
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedAiInstructor(inst);
-                            }}
-                            className="absolute -bottom-1 -right-1 p-1 rounded-full bg-black border border-purple-500/50 hover:border-gold hover:scale-110 transition-all text-purple-300 hover:text-gold"
-                            title="Chat with AI version"
-                          >
-                            <Sparkles className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="w-20 h-20 rounded-2xl bg-black-raised border border-cream/20 text-cream flex items-center justify-center font-serif text-2xl font-bold shrink-0 shadow-inner group-hover:border-gold transition-colors">
-                          {inst.name ? inst.name.charAt(0).toUpperCase() : "M"}
-                        </div>
-                      )}
+                      <div className="relative shrink-0">
+                        <Avatar
+                          src={inst.avatarUrl}
+                          name={inst.name}
+                          size="lg"
+                          glow
+                          className="shadow-lg group-hover:scale-105 group-hover:border-gold transition-transform duration-300"
+                        />
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedAiInstructor(inst);
+                          }}
+                          className="absolute -bottom-1 -right-1 p-1 rounded-full bg-black border border-purple-500/50 hover:border-gold hover:scale-110 transition-all text-purple-300 hover:text-gold"
+                          title="Chat with AI version"
+                        >
+                          <Sparkles className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
 
                       <div className="space-y-1 min-w-0 flex-1 pr-16 sm:pr-20">
                         <div className="flex items-center gap-2 flex-wrap">
@@ -380,7 +377,7 @@ export default function InstructorsPage() {
                           e.stopPropagation();
                           setSelectedMentor(inst);
                         }}
-                        className="px-3.5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-black text-xs font-semibold shadow-md transition-colors flex items-center gap-1.5 shrink-0"
+                        className="px-3.5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] text-xs font-semibold shadow-md transition-colors flex items-center gap-1.5 shrink-0"
                       >
                         <Calendar className="w-3.5 h-3.5" />
                         <span>Book 1:1</span>

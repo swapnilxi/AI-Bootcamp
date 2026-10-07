@@ -52,7 +52,7 @@ function ServiceCard({ service, featured, className = "", delayMs }: ServiceCard
       style={revealDelay(delayMs)}
     >
       {featured && (
-        <span className="badge-sheen absolute -top-3 left-6 sm:left-8 px-3.5 py-0.5 rounded-full text-[10px] uppercase tracking-[0.18em] font-bold text-black bg-[linear-gradient(180deg,#FFE5D1,#F97316)] shadow-[0_2px_10px_rgba(249, 115, 22,0.3)]">
+        <span className="badge-sheen absolute -top-3 left-6 sm:left-8 px-3.5 py-0.5 rounded-full text-[10px] uppercase tracking-[0.18em] font-bold text-[#0C0B0A] bg-[linear-gradient(180deg,#FFE5D1,#F97316)] shadow-[0_2px_10px_rgba(249, 115, 22,0.3)]">
           Most Popular
         </span>
       )}

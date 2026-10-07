@@ -123,7 +123,7 @@ export function ChatThread({
         <button
           type="submit"
           disabled={streaming || !input.trim()}
-          className="shrink-0 w-11 h-11 rounded-xl bg-cream hover:bg-cream/90 text-black flex items-center justify-center transition-colors disabled:opacity-40"
+          className="shrink-0 w-11 h-11 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] flex items-center justify-center transition-colors disabled:opacity-40"
           aria-label="Send"
         >
           <ArrowUp className="w-4 h-4" />

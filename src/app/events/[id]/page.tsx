@@ -20,6 +20,7 @@ import {
 import { EVENT_ROUTES, formatEventDate, formatEventTime } from "@/features/events";
 import type { EventDetail } from "@/features/events";
 import { Button } from "@/components/ui/Button";
+import { Avatar } from "@/components/ui/Avatar";
 import { EventApprovalPanel } from "@/features/events/components/EventApprovalPanel";
 
 export default function EventDetailPage() {
@@ -231,18 +232,7 @@ export default function EventDetailPage() {
             {/* Host */}
             {event.host && (
                 <div className="mb-10 flex items-center gap-4 rounded-2xl border border-mist bg-black-raised/40 p-6">
-                    {event.host.avatarUrl ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                            src={event.host.avatarUrl}
-                            alt={event.host.name ?? "Host"}
-                            className="h-14 w-14 rounded-full object-cover"
-                        />
-                    ) : (
-                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-cream/10 font-serif text-xl text-cream">
-                            {(event.host.name || "M").charAt(0)}
-                        </div>
-                    )}
+                    <Avatar src={event.host.avatarUrl} name={event.host.name} size="md" radius="full" />
                     <div>
                         <p className="text-xs uppercase tracking-wide text-ink/50">Hosted by</p>
                         <p className="mt-1 font-serif text-lg text-ink">
@@ -262,7 +252,7 @@ export default function EventDetailPage() {
                         aria-pressed={event.isInterested}
                         className={`inline-flex items-center justify-center gap-2 rounded-xl px-8 py-3.5 text-sm font-semibold transition-colors disabled:opacity-60 ${event.isInterested
                             ? "border border-emerald-500/40 bg-emerald-500/10 text-emerald-300"
-                            : "bg-cream text-black hover:bg-cream/90"
+                            : "bg-cream text-[#0C0B0A] hover:bg-cream/90"
                             }`}
                     >
                         <Heart className={`h-4 w-4 ${event.isInterested ? "fill-current" : ""}`} />

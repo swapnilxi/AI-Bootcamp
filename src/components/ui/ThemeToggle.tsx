@@ -34,7 +34,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
 
   if (!mounted) {
     return (
-      <div className={`w-9 h-9 rounded-full bg-cream-soft border border-line ${className}`} />
+      <div className={`w-9 h-9 rounded-full bg-black-raised/60 border border-black-line ${className}`} />
     );
   }
 
@@ -47,11 +47,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
-      className={`relative inline-flex items-center justify-center w-9 h-9 rounded-full transition-colors duration-200 border ${
-        isDark
-          ? "bg-black-raised/80 border-cream-border text-cream hover:border-orange hover:shadow-[0_0_12px_rgba(249, 115, 22,0.25)]"
-          : "bg-surface-elevated/90 border-line-strong text-ink hover:border-orange hover:shadow-[0_0_12px_rgba(234, 88, 12,0.2)]"
-      } ${className}`}
+      className={`relative inline-flex items-center justify-center w-9 h-9 rounded-full transition-colors duration-200 border border-black-line bg-black-raised/80 text-cream hover:border-orange hover:shadow-[0_0_12px_rgba(249,115,22,0.25)] ${className}`}
     >
       {isDark ? (
         /* Sun Icon for Dark Mode (click to switch to Light) */

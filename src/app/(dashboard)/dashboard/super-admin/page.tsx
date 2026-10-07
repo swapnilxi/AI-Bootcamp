@@ -145,7 +145,7 @@ export default function SuperAdminDashboardPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/dashboard/admin"
-              className="px-5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-xs font-semibold text-black transition-colors shadow-sm"
+              className="px-5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-xs font-semibold text-[#0C0B0A] transition-colors shadow-sm"
             >
               Sessions & Bookings Agenda
             </Link>
@@ -299,7 +299,7 @@ export default function SuperAdminDashboardPage() {
             <button
               type="submit"
               disabled={savingSetting}
-              className="w-full py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-xs shadow-sm flex items-center justify-center gap-2 transition-all disabled:opacity-50"
+              className="w-full py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold text-xs shadow-sm flex items-center justify-center gap-2 transition-all disabled:opacity-50"
             >
               <Save className="w-3.5 h-3.5" />
               <span>{savingSetting ? "Saving Parameter..." : "Save Configuration"}</span>

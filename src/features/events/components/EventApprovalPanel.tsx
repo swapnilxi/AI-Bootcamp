@@ -96,7 +96,7 @@ export function EventApprovalPanel({ event, onUpdated }: EventApprovalPanelProps
                         type="button"
                         onClick={() => decide("APPROVED")}
                         disabled={busy !== null}
-                        className="inline-flex items-center gap-2 rounded-xl bg-cream px-6 py-2.5 text-sm font-semibold text-black transition-colors hover:bg-cream/90 disabled:opacity-60"
+                        className="inline-flex items-center gap-2 rounded-xl bg-cream px-6 py-2.5 text-sm font-semibold text-[#0C0B0A] transition-colors hover:bg-cream/90 disabled:opacity-60"
                     >
                         {busy === "approve" ? (
                             <Loader2 className="h-4 w-4 animate-spin" />

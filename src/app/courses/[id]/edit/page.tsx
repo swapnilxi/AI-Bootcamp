@@ -102,7 +102,7 @@ export default function EditClassPage() {
         <h2 className="font-serif text-2xl font-bold text-ink">Only this class&apos;s instructor or an administrator can edit it</h2>
         <Link
           href={`/courses/${id}`}
-          className="inline-block px-5 py-2.5 rounded-xl bg-cream text-black text-sm font-medium hover:bg-cream/90 transition-colors"
+          className="inline-block px-5 py-2.5 rounded-xl bg-cream text-[#0C0B0A] text-sm font-medium hover:bg-cream/90 transition-colors"
         >
           Return to Class
         </Link>
@@ -369,7 +369,7 @@ export default function EditClassPage() {
           <button
             type="submit"
             disabled={saving}
-            className="flex-1 py-3 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+            className="flex-1 py-3 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2 disabled:opacity-50"
           >
             <Save className="w-4 h-4" />
             <span>{saving ? "Saving Changes..." : "Save Class Details"}</span>

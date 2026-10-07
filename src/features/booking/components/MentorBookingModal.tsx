@@ -237,7 +237,7 @@ export function MentorBookingModal({
 
             <button
               onClick={onClose}
-              className="w-full py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-sm transition-colors shadow-md"
+              className="w-full py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold text-sm transition-colors shadow-md"
             >
               Done & Return to Directory
             </button>
@@ -402,7 +402,7 @@ export function MentorBookingModal({
               <button
                 type="submit"
                 disabled={loading || loadingSlots || availableSlots.length === 0 || !time}
-                className="w-full py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-sm transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold text-sm transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {loading ? (
                   <>

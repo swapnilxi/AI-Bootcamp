@@ -289,7 +289,7 @@ export function LessonManager({ courseId }: { courseId: string }) {
         <button
           type="submit"
           disabled={busy}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-black text-sm font-semibold transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] text-sm font-semibold transition-colors disabled:opacity-50"
         >
           <Save className="w-4 h-4" />
           {busy ? "Saving…" : "Save lesson"}
@@ -313,7 +313,7 @@ export function LessonManager({ courseId }: { courseId: string }) {
         {editingId !== "new" && (
           <button
             onClick={startNew}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-black text-sm font-semibold transition-colors"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] text-sm font-semibold transition-colors"
           >
             <Plus className="w-4 h-4" /> Add lesson
           </button>

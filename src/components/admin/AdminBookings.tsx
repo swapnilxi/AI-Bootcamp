@@ -126,7 +126,7 @@ export function AdminBookings({ onPendingCount }: { onPendingCount?: (n: number)
               key={key}
               onClick={() => setView(key)}
               className={`min-h-0 px-4 py-2 rounded-full text-xs font-semibold border transition-colors ${
-                view === key ? "bg-cream text-black border-cream" : "border-white/10 text-text-muted hover:text-text"
+                view === key ? "bg-cream text-[#0C0B0A] border-cream" : "border-white/10 text-text-muted hover:text-text"
               }`}
             >
               {label}
@@ -450,7 +450,7 @@ function BookingDrawer({ id, onClose, onChanged }: { id: string; onClose: () => 
                       if (panel === "reschedule" && slot) act({ action: "reschedule", date: slot.date, time: slot.time, message: note, channels });
                       if (panel === "message") act({ kind: "custom", message: note, channels }, `/api/bookings/${id}/notify`, "POST");
                     }}
-                    className="px-5 py-2 rounded-xl bg-cream hover:bg-cream/90 text-black text-sm font-semibold disabled:opacity-40"
+                    className="px-5 py-2 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] text-sm font-semibold disabled:opacity-40"
                   >
                     {busy
                       ? "Working…"
@@ -537,7 +537,7 @@ function BookingDrawer({ id, onClose, onChanged }: { id: string; onClose: () => 
                       ),
                     })
                   }
-                  className="px-5 py-2 rounded-xl bg-cream hover:bg-cream/90 text-black text-sm font-semibold disabled:opacity-40"
+                  className="px-5 py-2 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] text-sm font-semibold disabled:opacity-40"
                 >
                   Save details
                 </button>
@@ -595,7 +595,7 @@ function ActionButton({
       onClick={onClick}
       disabled={disabled}
       className={`min-h-0 inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold border transition-colors disabled:opacity-40 ${
-        primary ? "bg-cream text-black border-cream hover:bg-cream/90" : "border-white/10 text-text hover:border-gold/40 hover:text-gold"
+        primary ? "bg-cream text-[#0C0B0A] border-cream hover:bg-cream/90" : "border-white/10 text-text hover:border-gold/40 hover:text-gold"
       }`}
     >
       <ActionIcon className="w-4 h-4" /> {label}

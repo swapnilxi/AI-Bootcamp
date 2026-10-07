@@ -57,7 +57,7 @@ function LoginForm() {
           onClick={() => setActiveTab("learner")}
           className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all ${
             activeTab === "learner"
-              ? "bg-cream text-black shadow-sm"
+              ? "bg-cream text-[#0C0B0A] shadow-sm"
               : "text-text-muted hover:text-ink"
           }`}
         >
@@ -73,7 +73,7 @@ function LoginForm() {
           }}
           className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
             activeTab === "instructor"
-              ? "bg-cream text-black shadow-sm"
+              ? "bg-cream text-[#0C0B0A] shadow-sm"
               : "text-text-muted hover:text-ink"
           }`}
         >

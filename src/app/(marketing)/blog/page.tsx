@@ -107,7 +107,7 @@ export default function BlogListingPage() {
               onClick={() => setActiveCategory(cat.id)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                 activeCategory === cat.id
-                  ? "bg-gold text-black shadow-sm font-semibold"
+                  ? "bg-gold text-[#0C0B0A] shadow-sm font-semibold"
                   : "bg-black-raised/80 backdrop-blur-sm text-ink border border-white/[0.07] hover:border-gold"
               }`}
             >
@@ -183,7 +183,7 @@ export default function BlogListingPage() {
 
                   <Link
                     href={`/blog/${featuredPost.slug}`}
-                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-sm transition-all shadow-sm"
+                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold text-sm transition-all shadow-sm"
                   >
                     <span>Read Full Essay</span>
                     <ArrowRight className="w-4 h-4" />

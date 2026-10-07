@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import Image from "next/image";
 import { useSession } from "next-auth/react";
 import ReactMarkdown from "react-markdown";
 import {
@@ -19,6 +20,7 @@ import {
   Shield,
   MessageSquare,
 } from "lucide-react";
+import { Avatar } from "@/components/ui/Avatar";
 
 interface Instructor {
   id: string;
@@ -301,18 +303,8 @@ export function InstructorAiChatModal({
         <div className="relative z-10 px-5 py-4 border-b border-white/10 flex items-center justify-between bg-black/40 backdrop-blur-sm">
           <div className="flex items-center gap-3.5 min-w-0">
             <div className="relative shrink-0">
-              {instructor.avatarUrl ? (
-                <img
-                  src={instructor.avatarUrl}
-                  alt={instructor.name || "Instructor"}
-                  className="w-12 h-12 rounded-2xl object-cover border border-cream/30 shadow-md"
-                />
-              ) : (
-                <div className="w-12 h-12 rounded-2xl bg-cream/10 border border-cream/20 text-text flex items-center justify-center font-serif text-lg font-bold">
-                  {instructor.name?.charAt(0) || "M"}
-                </div>
-              )}
-              <div className="absolute -bottom-1 -right-1 p-0.5 rounded-full bg-emerald-500 text-black border-2 border-black" title="AI Twin Online 24/7">
+              <Avatar src={instructor.avatarUrl} name={instructor.name} size="md" className="shadow-md" />
+              <div className="absolute -bottom-1 -right-1 p-0.5 rounded-full bg-emerald-500 text-[#0C0B0A] border-2 border-black" title="AI Twin Online 24/7">
                 <Sparkles className="w-3 h-3 text-white" />
               </div>
             </div>
@@ -339,7 +331,7 @@ export function InstructorAiChatModal({
                 onClick={() => setShowSettings(!showSettings)}
                 className={`p-2 rounded-xl transition-all ${
                   showSettings
-                    ? "bg-cream text-black"
+                    ? "bg-cream text-[#0C0B0A]"
                     : "text-text-muted hover:text-gold hover:bg-white/5"
                 }`}
                 title="Manage AI Persona Context & Chatting Style"
@@ -401,7 +393,7 @@ export function InstructorAiChatModal({
                   type="button"
                   onClick={handleExtractStyle}
                   disabled={extractingStyle}
-                  className="px-2.5 py-1 rounded-full bg-cream hover:bg-cream/90 text-black font-semibold text-[11px] flex items-center gap-1.5 transition-colors shadow-sm disabled:opacity-50"
+                  className="px-2.5 py-1 rounded-full bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold text-[11px] flex items-center gap-1.5 transition-colors shadow-sm disabled:opacity-50"
                 >
                   {extractingStyle ? (
                     <>
@@ -462,7 +454,7 @@ export function InstructorAiChatModal({
                 type="button"
                 onClick={handleSaveSettings}
                 disabled={savingSettings}
-                className="px-4 py-1.5 rounded-full bg-cream hover:bg-cream/90 text-black font-semibold text-xs transition-colors flex items-center gap-1.5 shadow-md disabled:opacity-50"
+                className="px-4 py-1.5 rounded-full bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold text-xs transition-colors flex items-center gap-1.5 shadow-md disabled:opacity-50"
               >
                 {savingSettings ? "Saving…" : "Save AI Persona"}
               </button>
@@ -496,13 +488,9 @@ export function InstructorAiChatModal({
                 className={`flex gap-3 ${isBot ? "justify-start" : "justify-end"} animate-fade-in`}
               >
                 {isBot && (
-                  <div className="shrink-0 w-8 h-8 rounded-xl bg-cream/10 border border-cream/20 text-text flex items-center justify-center shadow-sm">
+                  <div className="relative shrink-0 w-8 h-8 rounded-xl bg-cream/10 border border-cream/20 text-text flex items-center justify-center shadow-sm overflow-hidden">
                     {instructor.avatarUrl ? (
-                      <img
-                        src={instructor.avatarUrl}
-                        alt="Avatar"
-                        className="w-full h-full rounded-xl object-cover"
-                      />
+                      <Image src={instructor.avatarUrl} alt="Avatar" fill unoptimized sizes="32px" className="object-cover" />
                     ) : (
                       <Sparkles className="w-4 h-4 text-text" />
                     )}
@@ -513,7 +501,7 @@ export function InstructorAiChatModal({
                   className={`max-w-[85%] sm:max-w-[80%] rounded-2xl p-4 sm:p-4.5 text-xs sm:text-sm leading-relaxed ${
                     isBot
                       ? "bg-white/[0.04] border border-white/10 text-ink/90 shadow-sm"
-                      : "bg-gold text-black font-medium shadow-md ml-auto"
+                      : "bg-gold text-[#0C0B0A] font-medium shadow-md ml-auto"
                   }`}
                 >
                   {isBot ? (
@@ -525,7 +513,7 @@ export function InstructorAiChatModal({
                   )}
                   <span
                     className={`block text-[10px] mt-2 ${
-                      isBot ? "text-text-muted text-right" : "text-black/60 text-right"
+                      isBot ? "text-text-muted text-right" : "text-[#0C0B0A]/60 text-right"
                     }`}
                   >
                     {msg.timestamp}
@@ -599,7 +587,7 @@ export function InstructorAiChatModal({
             <button
               type="submit"
               disabled={loading || !inputValue.trim()}
-              className="p-3 rounded-2xl bg-cream hover:bg-cream/90 text-black font-semibold shadow-md transition-all disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+              className="p-3 rounded-2xl bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold shadow-md transition-all disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
               title="Send Message"
             >
               <Send className="w-4 h-4" />

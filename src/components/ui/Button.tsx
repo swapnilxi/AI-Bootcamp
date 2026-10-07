@@ -32,7 +32,7 @@ export function Button({
   const variantClasses = {
     // Primary: solid cream/ivory pill with black text; orange appears only as the glow
     primary:
-      "btn-sheen text-black border border-cream-200/60 bg-[linear-gradient(180deg,#FFFFFF_0%,#FAF6F0_55%,#F0E6D4_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_6px_20px_-10px_rgba(249, 115, 22,0.4)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.7),0_10px_30px_-8px_rgba(249, 115, 22,0.55)] hover:-translate-y-0.5 active:translate-y-0 font-semibold",
+      "btn-sheen text-[#0C0B0A] border border-cream-200/60 bg-[linear-gradient(180deg,#FFFFFF_0%,#FAF6F0_55%,#F0E6D4_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_6px_20px_-10px_rgba(249, 115, 22,0.4)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.7),0_10px_30px_-8px_rgba(249, 115, 22,0.55)] hover:-translate-y-0.5 active:translate-y-0 font-semibold",
     // Secondary: cream outline with cream text; orange only lights up on hover as a glow
     secondary:
       "btn-sheen bg-white/[0.02] backdrop-blur-sm text-cream border border-cream/40 hover:border-cream/70 hover:bg-cream/[0.06] hover:shadow-[0_0_18px_-4px_rgba(249, 115, 22,0.45)] hover:-translate-y-0.5 active:translate-y-0",

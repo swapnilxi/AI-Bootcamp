@@ -16,6 +16,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import Link from "next/link";
+import { Avatar } from "@/components/ui/Avatar";
 
 interface Mentor {
   id: string;
@@ -137,7 +138,7 @@ export function AdminMentors() {
             <button
               onClick={() => setStatusFilter("ALL")}
               className={`px-3 py-1.5 rounded-full transition-all ${
-                statusFilter === "ALL" ? "bg-cream text-black font-semibold" : "text-text-muted hover:text-white"
+                statusFilter === "ALL" ? "bg-cream text-[#0C0B0A] font-semibold" : "text-text-muted hover:text-white"
               }`}
             >
               All
@@ -146,7 +147,7 @@ export function AdminMentors() {
               onClick={() => setStatusFilter("PENDING")}
               className={`px-3 py-1.5 rounded-full transition-all flex items-center gap-1.5 ${
                 statusFilter === "PENDING"
-                  ? "bg-cream text-black font-semibold"
+                  ? "bg-cream text-[#0C0B0A] font-semibold"
                   : "text-text-muted hover:text-white"
               }`}
             >
@@ -160,7 +161,7 @@ export function AdminMentors() {
             <button
               onClick={() => setStatusFilter("APPROVED")}
               className={`px-3 py-1.5 rounded-full transition-all ${
-                statusFilter === "APPROVED" ? "bg-emerald-400 text-black font-semibold" : "text-text-muted hover:text-white"
+                statusFilter === "APPROVED" ? "bg-emerald-400 text-[#0C0B0A] font-semibold" : "text-text-muted hover:text-white"
               }`}
             >
               Approved
@@ -168,7 +169,7 @@ export function AdminMentors() {
             <button
               onClick={() => setStatusFilter("REJECTED")}
               className={`px-3 py-1.5 rounded-full transition-all ${
-                statusFilter === "REJECTED" ? "bg-red-400 text-black font-semibold" : "text-text-muted hover:text-white"
+                statusFilter === "REJECTED" ? "bg-red-400 text-[#0C0B0A] font-semibold" : "text-text-muted hover:text-white"
               }`}
             >
               Declined
@@ -213,17 +214,7 @@ export function AdminMentors() {
                 className="p-5 sm:p-6 rounded-2xl bg-black-raised/80 border border-white/[0.08] hover:border-gold/30 transition-all flex flex-col lg:flex-row lg:items-center justify-between gap-6"
               >
                 <div className="flex items-start gap-4 flex-1 min-w-0">
-                  {p.avatarUrl ? (
-                    <img
-                      src={p.avatarUrl}
-                      alt={p.name || "Mentor"}
-                      className="w-16 h-16 rounded-2xl object-cover border border-cream/25 shrink-0 shadow-md"
-                    />
-                  ) : (
-                    <div className="w-16 h-16 rounded-2xl bg-cream/10 border border-cream/25 text-cream flex items-center justify-center font-serif text-2xl font-bold shrink-0">
-                      {p.name?.charAt(0) || "P"}
-                    </div>
-                  )}
+                  <Avatar src={p.avatarUrl} name={p.name} size="lg" className="shadow-md" />
 
                   <div className="space-y-1.5 min-w-0 flex-1">
                     <div className="flex items-center gap-2 flex-wrap">
@@ -301,7 +292,7 @@ export function AdminMentors() {
                       <button
                         onClick={() => handleApproval(p.id, "APPROVED")}
                         disabled={busyId === p.id}
-                        className="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-semibold shadow-md transition-colors flex items-center gap-1.5 disabled:opacity-50"
+                        className="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#0C0B0A] text-xs font-semibold shadow-md transition-colors flex items-center gap-1.5 disabled:opacity-50"
                       >
                         <UserCheck className="w-4 h-4" />
                         <span>Approve Profile</span>
@@ -332,7 +323,7 @@ export function AdminMentors() {
                     <button
                       onClick={() => handleApproval(p.id, "APPROVED")}
                       disabled={busyId === p.id}
-                      className="px-4 py-2 rounded-xl bg-cream hover:bg-cream/90 text-black text-xs font-semibold transition-colors flex items-center gap-1.5"
+                      className="px-4 py-2 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] text-xs font-semibold transition-colors flex items-center gap-1.5"
                     >
                       <UserCheck className="w-4 h-4" />
                       <span>Reinstate & Approve</span>

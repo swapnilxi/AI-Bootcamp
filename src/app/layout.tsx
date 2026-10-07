@@ -76,7 +76,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${cormorant.variable} ${inter.variable}`} suppressHydrationWarning>
-      <body className="bg-black text-text min-h-screen flex flex-col font-sans selection:bg-gold selection:text-black overflow-x-hidden" suppressHydrationWarning>
+      <body className="bg-black text-text min-h-screen flex flex-col font-sans selection:bg-gold selection:text-[#0C0B0A] overflow-x-hidden" suppressHydrationWarning>
         <Providers>
           <SmoothScrollProvider>
             <StarfieldBackground />
