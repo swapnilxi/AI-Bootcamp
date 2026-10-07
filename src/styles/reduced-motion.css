@@ -1,0 +1,44 @@
+/* Reduced-motion overrides: everything renders static and visible. Keep this file imported last. */
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .intro,
+  .page-enter,
+  .word-mask > span {
+    opacity: 1 !important;
+    translate: none !important;
+    transform: none !important;
+    filter: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+  .reveal .eyebrow-line {
+    transform: none !important;
+  }
+  .text-shimmer,
+  .group:hover .text-gold-metal,
+  .shimmer-line::after,
+  .btn-sheen-auto::after,
+  .badge-sheen::after,
+  .card-featured,
+  .grain-overlay,
+  .spin-slow,
+  .draw-on .pulse-dot {
+    animation: none !important;
+  }
+  .card-premium {
+    transform: none !important;
+  }
+  .magnetic {
+    transform: none !important;
+  }
+  /* The travelling star stays where it starts: a logo detail in the hero. */
+  .star-journey__mark {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+  .draw-on * {
+    stroke-dashoffset: 0 !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,184 @@
+/* hero.css — Hero section (starfield, glow, headline mask, CTAs, stats, sphere container) and the credentials marquee. */
+
+/* =============================================================
+   HERO
+   ============================================================= */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex; align-items: center;
+  padding: calc(var(--header-h) + var(--safe-t) + 3rem) 0 4.5rem;
+  overflow: hidden;
+  isolation: isolate;
+}
+.hero-bg { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.stars-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero-glow {
+  position: absolute; right: -10%; top: 50%;
+  width: min(45rem, 120%); height: min(45rem, 120vw); aspect-ratio: 1; transform: translateY(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,164,92,0.11) 0%, rgba(200,164,92,0.035) 40%, transparent 68%);
+  filter: blur(20px);
+}
+.hero-vignette {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(200,164,92,0.05), transparent 60%),
+    linear-gradient(180deg, transparent 70%, var(--bg) 100%);
+}
+
+.hero-grid {
+  display: grid; grid-template-columns: 1fr; gap: 3rem; align-items: center;
+}
+@media (min-width: 1024px) {
+  .hero-grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 2rem; }
+}
+@media (min-width: 1200px) {
+  .hero-grid { grid-template-columns: minmax(0, 1fr) 25rem; gap: 3rem; }
+}
+
+
+.hero-content { min-width: 0; }
+.hero h1 {
+  font-size: clamp(2.7rem, 5.6vw + 0.4rem, 5.1rem);
+  font-weight: 300;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.8rem;
+}
+.wm { display: inline-block; overflow: hidden; vertical-align: top; padding: 0.06em 0.02em 0.12em; margin: -0.06em -0.02em -0.12em; }
+.wm > span { display: inline-block; will-change: transform; }
+
+.text-shimmer {
+  font-style: italic;
+  background: linear-gradient(110deg, #b08d4a 0%, #c8a45c 32%, #ecd9a8 46%, #fbf3de 50%, #ecd9a8 54%, #c8a45c 68%, #b08d4a 100%);
+  background-size: 260% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  padding-right: 0.02em;
+  animation: textShimmer 7s var(--ease-soft) 1.8s infinite;
+}
+@keyframes textShimmer { 0% { background-position: 100% 0; } 45%, 100% { background-position: -60% 0; } }
+
+.hero-lede {
+  font-size: clamp(1rem, 0.4vw + 0.95rem, 1.16rem);
+  color: var(--muted);
+  max-width: 33rem;
+  line-height: 1.75;
+  margin-bottom: 2.4rem;
+}
+.hero-actions { display: flex; flex-wrap: wrap; gap: 0.85rem; margin-bottom: 3.4rem; }
+@media (max-width: 599px) {
+  .hero-actions { flex-direction: column; align-items: stretch; }
+  .hero-actions .magnetic, .hero-actions .btn { width: 100%; }
+}
+/* Tertiary WhatsApp action: a quiet text link (still a 48px target) so it never reads as a wrapped button.
+   Where the column is too narrow for three actions it sits on its own line, left-aligned under the CTAs. */
+@media (min-width: 600px) {
+  .hero-wa { border-color: transparent; background: none; padding: 0 0.5rem; }
+  .hero-wa::before {
+    content: ""; position: absolute; left: 0.5rem; right: 0.5rem; bottom: 12px; height: 1px;
+    background: rgba(200,164,92,0.35); transform-origin: left; transition: transform .6s var(--ease-out), background-color .4s;
+  }
+}
+@media (min-width: 600px) and (hover: hover) and (pointer: fine) {
+  .hero-wa:hover { border-color: transparent; }
+  .hero-wa:hover::before { background: var(--gold); }
+}
+
+.hero-metrics-wrap { max-width: 33rem; }
+.shimmer-line {
+  position: relative; height: 1px; margin-bottom: 1.8rem; overflow: hidden;
+  background: linear-gradient(90deg, rgba(200,164,92,0.5), rgba(200,164,92,0.1) 70%, transparent);
+}
+.shimmer-line::after {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 30%;
+  background: linear-gradient(90deg, transparent, rgba(251,243,222,0.9), transparent);
+  animation: lineSweep 5s var(--ease-soft) 2.4s infinite;
+  transform: translateX(-100%);
+}
+@keyframes lineSweep { 0% { transform: translateX(-100%); } 40%, 100% { transform: translateX(400%); } }
+
+.hero-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; }
+.metric .num {
+  display: block;
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(1.7rem, 2.6vw, 2.35rem); line-height: 1;
+  color: var(--gold);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.metric .lbl {
+  display: block; margin-top: 0.55rem;
+  font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--muted); line-height: 1.4;
+}
+
+.hero-visual { position: relative; display: flex; align-items: center; justify-content: center; min-width: 0; }
+#hero-canvas-container {
+  position: relative;
+  width: 100%; max-width: 26rem; aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+}
+#hero-canvas-container canvas { width: 100% !important; height: 100% !important; }
+@media (max-width: 1023px) { #hero-canvas-container { max-width: 20rem; } }
+@supports not (aspect-ratio: 1 / 1) {
+  #hero-canvas-container { height: 20rem; }
+  .hero-glow { height: 45rem; }
+}
+
+.static-hero-fallback {
+  position: absolute; inset: 12%;
+  border: 1px solid rgba(200,164,92,0.7); border-radius: 50%;
+}
+.static-hero-fallback::before, .static-hero-fallback::after {
+  content: ""; position: absolute; border-radius: 50%;
+}
+.static-hero-fallback::before { inset: 8%; border: 1px dashed rgba(200,164,92,0.35); }
+.static-hero-fallback::after { inset: 0; border: 1px solid rgba(200,164,92,0.45); transform: rotateX(70deg) rotate(-23deg); }
+
+.scroll-cue {
+  position: absolute; left: 50%; bottom: 1.6rem; transform: translateX(-50%);
+  display: none; flex-direction: column; align-items: center; gap: 0.6rem;
+  font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted);
+}
+.scroll-cue i { display: block; width: 1px; height: 38px; background: linear-gradient(var(--gold), transparent); transform-origin: top; animation: cue 2.6s var(--ease-out) infinite; }
+@keyframes cue { 0% { transform: scaleY(0); opacity: 1; } 70% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1); opacity: 0; } }
+@media (min-width: 1024px) and (min-height: 900px) { .scroll-cue { display: flex; } }
+
+/* =============================================================
+   MARQUEE
+   ============================================================= */
+.marquee {
+  position: relative; overflow: hidden;
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  background: linear-gradient(180deg, #0D0D10, #0B0B0D);
+  padding: 1.15rem 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+.marquee-track { display: flex; width: max-content; animation: marquee 48s linear infinite; }
+@media (hover: hover) and (pointer: fine) { .marquee:hover .marquee-track { animation-play-state: paused; } }
+.marquee-group { display: flex; align-items: center; flex: none; list-style: none; }
+.marquee-group li {
+  display: inline-flex; align-items: center; white-space: nowrap;
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: 1.2rem; color: rgba(242,237,227,0.72); letter-spacing: 0.02em;
+}
+.marquee-group li::after {
+  content: "\2726"; font-style: normal; font-size: 0.6rem; color: var(--gold);
+  margin: 0 2.1rem; opacity: 0.85;
+}
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+/* Short landscape phones/tablets: keep text and sphere side by side, compact type, no forced full height. */
+@media (min-width: 600px) and (max-height: 500px) and (orientation: landscape) {
+  .hero { min-height: 0; padding: calc(var(--header-h) + var(--safe-t) + 1.75rem) 0 3rem; }
+  .hero-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 14rem); gap: 1.5rem; align-items: start; }
+  .hero h1 { font-size: clamp(2.1rem, 3.4vw + 0.9rem, 3.1rem); margin-bottom: 1.1rem; }
+  .hero-lede { margin-bottom: 1.5rem; }
+  .hero-actions { margin-bottom: 2rem; }
+  #hero-canvas-container { max-width: 14rem; }
+}

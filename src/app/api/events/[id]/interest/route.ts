@@ -1,0 +1,1 @@
+export { POST, DELETE } from "@/features/events/server/routes/event-interest";

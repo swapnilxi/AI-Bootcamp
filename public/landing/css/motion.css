@@ -1,0 +1,48 @@
+/* motion.css — Motion layer: film grain, scroll progress hairline, JS-only initial animation states, reduced-motion overrides. */
+
+/* =============================================================
+   GLOBAL ATMOSPHERE: grain, progress
+   ============================================================= */
+.grain {
+  position: fixed; inset: 0; z-index: 150; pointer-events: none; overflow: hidden;
+}
+.grain::before {
+  content: ""; position: absolute; inset: -50%;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grainShift 1.2s steps(6) infinite;
+}
+@keyframes grainShift {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -3%); }
+  60% { transform: translate(-2%, -1%); }
+  80% { transform: translate(3%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+
+.scroll-progress {
+  position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 120;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(200,164,92,0) 0%, var(--gold-lo) 20%, var(--gold-hi) 100%);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  box-shadow: 0 0 10px rgba(217, 185, 119, 0.45);
+}
+
+
+/* =============================================================
+   JS-ONLY INITIAL STATES (never applied without JS / reduced motion)
+   ============================================================= */
+.js [data-reveal]:not(.revealed) { opacity: 0; transform: translateY(24px); filter: blur(6px); }
+.js [data-hero] { opacity: 0; transform: translateY(18px); }
+.js .hero h1 .wm > span { transform: translateY(110%); }
+.js #hero-canvas-container { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  .text-shimmer { animation: none; background-position: 40% 0; }
+  .grain::before { animation: none; }
+  .marquee-track { animation: none; }
+  .marquee { overflow-x: auto; }
+}

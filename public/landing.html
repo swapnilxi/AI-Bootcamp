@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>AI Bootcamp | Consultative Astrologer & Academy</title>
+  <meta name="description" content="Evidence-based, traditional Vedic and Western astrological consultations for career, relationships, and personal life timing.">
+  <meta name="theme-color" content="#0B0B0D">
+
+  <!-- Must stay inline: runs before first paint. Enables animation-only hidden states only when JS runs and
+       motion is allowed, and is the 4s failsafe that reveals everything if the animation stack never boots. -->
+  <script>
+    (function () {
+      var d = document.documentElement;
+      var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!reduce) {
+        d.classList.add("js");
+        setTimeout(function () {
+          if (!d.classList.contains("anim-ready")) d.classList.remove("js");
+        }, 4000);
+      }
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Styles (relative paths: work at /landing.html, /landing and as a static folder deploy) -->
+  <link rel="stylesheet" href="landing/css/tokens.css">
+  <link rel="stylesheet" href="landing/css/base.css">
+  <link rel="stylesheet" href="landing/css/components.css">
+  <link rel="stylesheet" href="landing/css/header.css">
+  <link rel="stylesheet" href="landing/css/hero.css">
+  <link rel="stylesheet" href="landing/css/sections.css">
+  <link rel="stylesheet" href="landing/css/footer.css">
+  <link rel="stylesheet" href="landing/css/motion.css">
+
+  <!-- Libraries (CDN) -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
+
+  <!-- Page modules: classic deferred scripts sharing window.AIBootcamp (no bundler needed). main.js boots last. -->
+  <script defer src="landing/js/config.js"></script>
+  <script defer src="landing/js/smooth-scroll.js"></script>
+  <script defer src="landing/js/header.js"></script>
+  <script defer src="landing/js/effects.js"></script>
+  <script defer src="landing/js/reveal.js"></script>
+  <script defer src="landing/js/starfield.js"></script>
+  <script defer src="landing/js/hero-sphere.js"></script>
+  <script defer src="landing/js/main.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Reusable logo mark -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="logomark" viewBox="0 0 100 100" fill="none">
+      <circle cx="50" cy="50" r="47" stroke="currentColor" stroke-width="1.4"/>
+      <circle cx="50" cy="50" r="41" stroke="currentColor" stroke-width="0.9"/>
+      <g fill="currentColor">
+        <circle cx="94.0" cy="50.0" r="1.3"/><circle cx="88.1" cy="72.0" r="1.3"/><circle cx="72.0" cy="88.1" r="1.3"/>
+        <circle cx="50.0" cy="94.0" r="1.3"/><circle cx="28.0" cy="88.1" r="1.3"/><circle cx="11.9" cy="72.0" r="1.3"/>
+        <circle cx="6.0" cy="50.0" r="1.3"/><circle cx="11.9" cy="28.0" r="1.3"/><circle cx="28.0" cy="11.9" r="1.3"/>
+        <circle cx="50.0" cy="6.0" r="1.3"/><circle cx="72.0" cy="11.9" r="1.3"/><circle cx="88.1" cy="28.0" r="1.3"/>
+      </g>
+      <line x1="50" y1="5" x2="50" y2="95" stroke="currentColor" stroke-width="0.75" opacity="0.45"/>
+      <line x1="5" y1="50" x2="95" y2="50" stroke="currentColor" stroke-width="0.75" opacity="0.45"/>
+      <g fill="currentColor">
+        <polygon points="50,50 48,39 50,23 52,39" transform="rotate(45 50 50)"/>
+        <polygon points="50,50 48,39 50,23 52,39" transform="rotate(135 50 50)"/>
+        <polygon points="50,50 48,39 50,23 52,39" transform="rotate(225 50 50)"/>
+        <polygon points="50,50 48,39 50,23 52,39" transform="rotate(315 50 50)"/>
+      </g>
+      <path d="M 50,13 Q 50,42 83,50 Q 50,58 50,87 Q 50,58 17,50 Q 50,42 50,13 Z" fill="currentColor"/>
+      <circle cx="50" cy="50" r="2.8" fill="#0B0B0D"/>
+    </symbol>
+  </svg>
+
+  <div class="scroll-progress" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- Editorial Header -->
+  <header class="site-header" id="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="#" class="brand" id="brand-link" aria-label="AI Bootcamp, home">
+          <svg class="brand-mark" aria-hidden="true"><use href="#logomark"/></svg>
+          <span class="wordmark" aria-hidden="true">
+            <span class="wm-the">THE</span>
+            <span class="wm-name">AI BOOTCAMP</span>
+          </span>
+        </a>
+
+        <nav class="nav-primary" aria-label="Primary">
+          <ul class="nav-links">
+            <li><a href="#services">Consultations</a></li>
+            <li><a href="#process">Process</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </nav>
+
+        <div class="nav-actions">
+          <a href="#" class="btn btn-ghost nav-portal" id="nav-login-btn">Portal</a>
+          <span class="magnetic" data-magnetic="0.25">
+            <a href="#" class="btn btn-gold" id="nav-book-btn"><span class="label-long">Book a Consultation</span><span class="label-short">Book</span></a>
+          </span>
+          <button class="burger" type="button" id="menu-toggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+            <span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile overlay menu -->
+  <div class="mobile-menu" id="mobile-menu" data-lenis-prevent role="dialog" aria-modal="true" aria-label="Site menu" hidden>
+    <nav aria-label="Mobile">
+      <ul class="mm-links">
+        <li class="mm-item"><a href="#services"><small>01</small>Consultations</a></li>
+        <li class="mm-item"><a href="#process"><small>02</small>Process</a></li>
+        <li class="mm-item"><a href="#about"><small>03</small>About</a></li>
+        <li class="mm-item"><a href="#faq"><small>04</small>FAQ</a></li>
+      </ul>
+    </nav>
+    <div class="mm-actions">
+      <a href="#" class="btn btn-gold btn-block mm-item app-book-link">Book a Consultation <span class="arrow" aria-hidden="true">&rarr;</span></a>
+      <a href="#" class="btn btn-ghost btn-block mm-item app-portal-link">Client Portal</a>
+      <a href="https://wa.me/15551234567?text=Hello%2C%20I%20would%20like%20to%20inquire%20about%20an%20astrological%20consultation" target="_blank" rel="noopener noreferrer" class="btn btn-quiet btn-block mm-item">WhatsApp Direct</a>
+    </div>
+    <p class="mm-foot mm-item">Confidential 1-on-1 consultations &middot; Mon &ndash; Fri: 10:00 &ndash; 18:00</p>
+  </div>
+
+  <main id="main">
+    <!-- Hero Section with restrained Three.js gold armillary sphere -->
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="hero-bg" aria-hidden="true">
+        <canvas id="celestial-stars-canvas" class="stars-canvas"></canvas>
+        <div class="hero-glow"></div>
+        <div class="hero-vignette"></div>
+      </div>
+
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-content">
+            <span class="eyebrow" data-hero>Consultative &amp; Traditional Astrology</span>
+            <h1 id="hero-title">
+              <span class="wm"><span>Clarity</span></span>
+              <span class="wm"><span>for</span></span>
+              <span class="wm"><span>Life&apos;s</span></span>
+              <span class="wm"><span>Significant</span></span>
+              <span class="wm"><span><span class="text-shimmer">Transitions</span>.</span></span>
+            </h1>
+            <p class="hero-lede" data-hero>
+              Traditional Vedic and Western astrological consultations for career decisions, vocational pivots, and relationship timing. Grounded, confidential, and evidence-based.
+            </p>
+
+            <div class="hero-actions" data-hero>
+              <span class="magnetic" data-magnetic="0.35">
+                <a href="#" class="btn btn-gold sheen-auto" id="hero-book-btn">Book a Consultation <span class="arrow" aria-hidden="true">&rarr;</span></a>
+              </span>
+              <a href="#" class="btn btn-ghost" id="hero-services-btn">Explore Offerings</a>
+              <a
+                href="https://wa.me/15551234567?text=Hello%2C%20I%20would%20like%20to%20inquire%20about%20an%20astrological%20consultation"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-quiet hero-wa"
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.7.5-.1 1.5-.6 1.8-1.2.2-.6.2-1.1.1-1.2l-.5-.3z"/></svg>
+                WhatsApp Direct
+              </a>
+            </div>
+
+            <div class="hero-metrics-wrap" data-hero>
+              <div class="shimmer-line" aria-hidden="true"></div>
+              <div class="hero-metrics">
+                <div class="metric">
+                  <span class="num" data-count="15" data-suffix="+">15+</span>
+                  <span class="lbl">Years Clinical Practice</span>
+                </div>
+                <div class="metric">
+                  <span class="num" data-count="4500" data-suffix="+">4,500+</span>
+                  <span class="lbl">Natal Consultations</span>
+                </div>
+                <div class="metric">
+                  <span class="num">1-on-1</span>
+                  <span class="lbl">Confidential &amp; Recorded</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Single restrained Three.js gold armillary sphere -->
+          <div class="hero-visual">
+            <div id="hero-canvas-container" role="img" aria-label="Rotating gold armillary sphere">
+              <div class="static-hero-fallback" id="static-fallback"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scroll-cue" aria-hidden="true"><span>Scroll</span><i></i></div>
+    </section>
+
+    <!-- Credentials marquee -->
+    <div class="marquee" aria-label="Disciplines practised">
+      <div class="marquee-track">
+        <ul class="marquee-group">
+          <li>Parashari</li><li>Jaimini</li><li>Hellenistic</li><li>Muhurta</li><li>Synastry</li>
+          <li>Dashamsha D10</li><li>Nakshatra</li><li>Vimshottari Dasha</li><li>Transits</li><li>Birth-Time Rectification</li>
+        </ul>
+        <ul class="marquee-group" aria-hidden="true">
+          <li>Parashari</li><li>Jaimini</li><li>Hellenistic</li><li>Muhurta</li><li>Synastry</li>
+          <li>Dashamsha D10</li><li>Nakshatra</li><li>Vimshottari Dasha</li><li>Transits</li><li>Birth-Time Rectification</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Core Services Trio -->
+    <section id="services" aria-labelledby="services-title">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow" data-reveal>Consultation Menu</span>
+          <h2 id="services-title" data-reveal>Personal Consultation Offerings</h2>
+          <p data-reveal>
+            Every session is conducted one-on-one, recorded in high definition, and includes written chart diagrams and timing roadmaps.
+          </p>
+        </div>
+
+        <div class="services-grid">
+          <article class="card service-card" data-reveal>
+            <div class="service-head">
+              <span class="service-tag">Life Path &amp; Natal</span>
+              <span class="service-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4" opacity=".5"/><circle cx="12" cy="12" r="2.2"/></svg>
+              </span>
+            </div>
+            <h3>Comprehensive Natal Blueprint</h3>
+            <div class="service-price">$180 <span>/ 60-Minute Session</span></div>
+            <p>In-depth analysis of your core psychological archetype, soul purpose, rising sign, and 3-to-5 year planetary timing horizons.</p>
+            <a href="#" class="btn btn-ghost btn-block app-book-link">Book this Session <span class="arrow" aria-hidden="true">&rarr;</span></a>
+          </article>
+
+          <article class="card service-card is-featured" data-reveal>
+            <span class="card-top-line" aria-hidden="true"></span>
+            <div class="service-head">
+              <span class="service-tag">Career &amp; Vocation</span>
+              <span class="service-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 20h18"/><path d="M6 20V11M10.5 20V7M15 20v-6M19.5 20V4" /><path d="m4 9 5-4 5 4 6-6" opacity=".55"/></svg>
+              </span>
+            </div>
+            <h3>Career &amp; Strategic Life Timing</h3>
+            <div class="service-price">$150 <span>/ 45-Minute Session</span></div>
+            <p>Focused evaluation of your 10th house, D10 Dashamsha chart, and upcoming Jupiter/Saturn transits for career pivots and venture launches.</p>
+            <a href="#" class="btn btn-gold btn-block app-book-link">Book this Session <span class="arrow" aria-hidden="true">&rarr;</span></a>
+          </article>
+
+          <article class="card service-card" data-reveal>
+            <div class="service-head">
+              <span class="service-tag">Partnerships</span>
+              <span class="service-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/></svg>
+              </span>
+            </div>
+            <h3>Relationship Compatibility &amp; Synastry</h3>
+            <div class="service-price">$210 <span>/ 60-Minute Session</span></div>
+            <p>Dual-chart examination analyzing planetary harmony, communication hurdles, and emotional resonance for couples and co-founders.</p>
+            <a href="#" class="btn btn-ghost btn-block app-book-link">Book this Session <span class="arrow" aria-hidden="true">&rarr;</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Three-Step Process -->
+    <section id="process" class="section-alt" aria-labelledby="process-title">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow" data-reveal>Simple &amp; Seamless</span>
+          <h2 id="process-title" data-reveal>How The Consultation Works</h2>
+          <p data-reveal>Under 2 minutes to book with no account creation required.</p>
+        </div>
+
+        <div class="process-wrap" id="process-list">
+        <div class="process-track" aria-hidden="true"><i></i></div>
+        <ol class="process">
+          <li class="process-step" data-reveal>
+            <span class="process-num" aria-hidden="true">01</span>
+            <h3>Select Time &amp; Share Details</h3>
+            <p>Choose an available slot from our live calendar. Enter your name, email, and birth coordinates (date, exact time, and location).</p>
+          </li>
+          <li class="process-step" data-reveal>
+            <span class="process-num" aria-hidden="true">02</span>
+            <h3>Private 1-on-1 Consultation</h3>
+            <p>Meet with the Master Astrologer via Zoom or audio. Discuss your core life questions in an empathetic, rigorous advisory setting.</p>
+          </li>
+          <li class="process-step" data-reveal>
+            <span class="process-num" aria-hidden="true">03</span>
+            <h3>Recording &amp; Roadmap</h3>
+            <p>Receive your permanent session recording, natal chart diagram packet, and remedial timing notes within 24 hours.</p>
+          </li>
+        </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Astrologer Snippet -->
+    <section id="about" aria-labelledby="about-title">
+      <div class="container">
+        <div class="card about-card" data-reveal>
+          <div class="about-emblem" aria-hidden="true">
+            <span class="ring"></span>
+            <span class="ring ring-2"></span>
+            <svg class="orbit-mark"><use href="#logomark"/></svg>
+            <div class="about-monogram">MS</div>
+          </div>
+          <div class="about-text">
+            <span class="eyebrow">Astrologer Lineage</span>
+            <h2 id="about-title">A Grounded, Consultative Approach</h2>
+            <p>
+              Trained under traditional masters of Vedic (Parashari &amp; Jaimini) and classical Western Hellenistic astrology, my practice combines rigorous astronomical calculations with practical life strategy.
+            </p>
+            <p>
+              We do not engage in fatalistic or sensational predictions. The goal of every consultation is clarity, self-knowledge, and actionable timing.
+            </p>
+            <a href="#" class="btn btn-ghost" id="about-read-more">Learn More About the Practice <span class="arrow" aria-hidden="true">&rarr;</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Verified Reflections / Testimonials -->
+    <section class="section-alt" id="testimonials" aria-labelledby="testimonials-title">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow" data-reveal>Client Reflections</span>
+          <h2 id="testimonials-title" data-reveal>Quiet Observations From Clients</h2>
+          <p data-reveal>Unsolicited feedback from executives, founders, and seekers.</p>
+        </div>
+
+        <div class="testimonial-grid">
+          <figure class="card testimonial-card" data-reveal>
+            <div>
+              <blockquote class="testimonial-quote">
+                &ldquo;The timing analysis for my company departure was precise to the month. More than prediction, it gave me calm confidence during a chaotic restructuring.&rdquo;
+              </blockquote>
+            </div>
+            <figcaption class="testimonial-author">&mdash; Founder &amp; Managing Director, London</figcaption>
+          </figure>
+
+          <figure class="card testimonial-card" data-reveal>
+            <div>
+              <blockquote class="testimonial-quote">
+                &ldquo;Zero fluff, zero superstition. Just an articulate, deeply grounded reading of my chart that clarified two years of vocational fog.&rdquo;
+              </blockquote>
+            </div>
+            <figcaption class="testimonial-author">&mdash; Strategy Director, New York</figcaption>
+          </figure>
+
+          <figure class="card testimonial-card" data-reveal>
+            <div>
+              <blockquote class="testimonial-quote">
+                &ldquo;The synastry session helped my fianc&eacute; and I understand our recurring communication friction in a constructive, empathetic light.&rdquo;
+              </blockquote>
+            </div>
+            <figcaption class="testimonial-author">&mdash; Client, San Francisco</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Accordion -->
+    <section id="faq" aria-labelledby="faq-title">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow" data-reveal>Plain Language</span>
+          <h2 id="faq-title" data-reveal>Frequently Asked Questions</h2>
+          <p data-reveal>Everything you need to know prior to scheduling.</p>
+        </div>
+
+        <div class="faq-list" data-reveal>
+          <details class="faq-item" open>
+            <summary class="faq-question">
+              <span>What if I do not have my exact birth time?</span>
+              <span class="toggle" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-answer"><div class="faq-answer-inner">
+              An exact birth time from a birth record is ideal. If your time is approximate within an hour, we can still read your major planetary periods and divisional charts through preliminary rectification.
+            </div></div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">
+              <span>How does the virtual consultation work?</span>
+              <span class="toggle" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-answer"><div class="faq-answer-inner">
+              Sessions take place via high-definition private Zoom video call or phone audio. You will receive an immediate calendar invitation with the meeting link.
+            </div></div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">
+              <span>Can I reschedule if my schedule changes?</span>
+              <span class="toggle" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-answer"><div class="faq-answer-inner">
+              Yes, appointments can be freely rescheduled up to 24 hours prior to the session through the link in your booking confirmation receipt.
+            </div></div>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col footer-brand">
+          <div class="brand">
+            <svg class="brand-mark" aria-hidden="true"><use href="#logomark"/></svg>
+            <span class="wordmark">
+              <span class="wm-the">THE</span>
+              <span class="wm-name">AI BOOTCAMP</span>
+            </span>
+          </div>
+          <p>
+            Traditional consultative astrology for life transitions. Confidential 1-on-1 consultations and classical academy masterclasses.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Consultations</h4>
+          <ul>
+            <li><a href="#" class="footer-book-link">Natal Chart Blueprint</a></li>
+            <li><a href="#" class="footer-book-link">Career &amp; Vocation Timing</a></li>
+            <li><a href="#" class="footer-book-link">Relationship Synastry</a></li>
+            <li><a href="#" class="footer-services-link">View All Offerings</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Practice</h4>
+          <ul>
+            <li><a href="#" id="footer-about-link">About Lineage</a></li>
+            <li><a href="#" id="footer-classes-link">Academy Classes</a></li>
+            <li><a href="#" id="footer-contact-link">Contact &amp; Inquiries</a></li>
+            <li><a href="#" id="footer-portal-link">Client Portal Login</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Direct Inquiries</h4>
+          <ul>
+            <li><a href="https://wa.me/15551234567" target="_blank" rel="noopener noreferrer">WhatsApp: +1 (555) 123-4567</a></li>
+            <li><a href="mailto:consult@aibootcamp.dev">consult@aibootcamp.dev</a></li>
+            <li class="footer-hours">Hours: Mon &ndash; Fri: 10:00 &ndash; 18:00</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; <span id="year"></span> AI Bootcamp Astrological Practice. All consultations are confidential advisory sessions.</div>
+        <div>Strict Privacy Protocol &bull; Recorded 1-on-1 Sessions</div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,64 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Dependencies
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# Testing
+/coverage
+/.nyc_output
+
+# Next.js build output
+.next/
+.next-*/
+out/
+build/
+dist/
+
+# Production
+/build
+
+# Debug & logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+lerna-debug.log*
+
+# Environment files
+.env
+.env*.local
+!.env.example
+
+# Vercel
+.vercel/
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.pem
+
+# IDE / Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Prisma: SQLite db (prisma/dev.db) is committed so it deploys on Vercel
+prisma/*.db-journal
+.vercel
+.env*
+
+# Local database backups taken before a destructive reseed
+prisma/*.db.backup-*

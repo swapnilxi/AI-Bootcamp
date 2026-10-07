@@ -1,0 +1,381 @@
+/* Card surfaces: editorial card, premium glass card (spotlight + tilt), icon medallion, featured rotating border, badge glint. */
+
+/* ================================================================== */
+/* Corner glow                                                         */
+/*                                                                     */
+/*  Every card is lit from one corner. Four variables place that light: */
+/*   --glow-x / --glow-y    where it comes from                        */
+/*   --glow-ox / --glow-oy  which way the outer bloom spills           */
+/*   --glow-edge            hairline alpha where the light lands       */
+/*   --glow-rim             the floor it settles to everywhere else —  */
+/*                          low, but never zero, so the card keeps a   */
+/*                          defined edge the whole way round           */
+/*                                                                     */
+/*  Two scalars then ride on top, and neither is set by hand in CSS:   */
+/*   --glow-lit             0 → 1, written by scroll (ScrollTrigger).  */
+/*                          Never transitioned: the scrub does the     */
+/*                          smoothing, so a transition here would only */
+/*                          fight it.                                  */
+/*   --cursor-lit           0 → 1 on hover, transitioned. Carries the  */
+/*                          cursor spotlight and border light, which   */
+/*                          lets both pseudo-elements stay at opacity  */
+/*                          1 and keep painting the static rim.        */
+/*                                                                     */
+/*  Default corner is the top left; add .glow-tr / .glow-bl / .glow-br */
+/*  / .glow-l / .glow-r to a card to move it.                          */
+/* ================================================================== */
+@property --glow-edge {
+  syntax: "<number>";
+  initial-value: 0.45;
+  inherits: true;
+}
+@property --glow-rim {
+  syntax: "<number>";
+  initial-value: 0.26;
+  inherits: true;
+}
+@property --glow-lit {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: true;
+}
+@property --cursor-lit {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: true;
+}
+
+.editorial-card,
+.card-premium {
+  --glow-x: 0%;
+  --glow-y: 0%;
+  --glow-ox: -14px;
+  --glow-oy: -14px;
+  --glow-edge: 0.45;
+  --glow-rim: 0.26;
+  --glow-lit: 0;
+  --cursor-lit: 0;
+
+  /* Derived: the lit scalar only ever brightens what is already there */
+  --hot: calc(var(--glow-edge) + 0.24 * var(--glow-lit));
+  --ring: calc(var(--glow-rim) + 0.12 * var(--glow-lit));
+  --bloom: calc(0.24 + 0.26 * var(--glow-lit));
+}
+
+/* ------------------------------------------------------------------ */
+/* The rim, shared by both card types                                   */
+/*  Four stacked gradients on a masked ring, brightest at the glow      */
+/*  corner and grading down to a quiet hairline on the far side. The    */
+/*  top layer is a glint that sweeps the border on hover or when scroll */
+/*  lights the card.                                                    */
+/* ------------------------------------------------------------------ */
+.editorial-card::after,
+.card-premium::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  padding: 1px;
+  border-radius: inherit;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-size: 38% 100%, auto, auto, auto, auto;
+  background-position: -70% 0, 0 0, 0 0, 0 0, 0 0;
+  background-image:
+    /* travelling glint */
+    linear-gradient(
+      100deg,
+      rgba(255, 246, 240, 0) 18%,
+      rgba(255, 246, 240, 0.7) 50%,
+      rgba(255, 246, 240, 0) 82%
+    ),
+    /* border light under the cursor */
+    radial-gradient(
+      220px circle at var(--mx, 50%) var(--my, 0%),
+      rgba(255, 210, 168, calc(0.5 * var(--cursor-lit))),
+      rgba(255, 210, 168, 0) 65%
+    ),
+    /* hot edge where the light lands */
+    radial-gradient(
+      60% 125% at var(--glow-x) var(--glow-y),
+      rgba(255, 237, 225, var(--hot)),
+      rgba(250, 171, 129, calc(var(--hot) * 0.42)) 34%,
+      rgba(255, 115, 21, 0) 78%
+    ),
+    /* long falloff, so the rim grades instead of stepping */
+    radial-gradient(
+      160% 190% at var(--glow-x) var(--glow-y),
+      rgba(246, 177, 139, calc(var(--ring) * 1.2)),
+      rgba(234, 169, 132, var(--ring)) 52%,
+      rgba(220, 155, 123, calc(var(--ring) * 0.62)) 100%
+    ),
+    /* floor: no edge ever disappears entirely */
+    linear-gradient(rgba(227, 162, 128, calc(var(--ring) * 0.5)) 0 0);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+/* A glint runs the border once, on hover or as scroll lights the card */
+@keyframes rimGlint {
+  from { background-position: -70% 0, 0 0, 0 0, 0 0, 0 0; }
+  to { background-position: 170% 0, 0 0, 0 0, 0 0, 0 0; }
+}
+.editorial-card:hover::after,
+.card-premium:hover::after,
+.editorial-card.is-lit::after,
+.card-premium.is-lit::after {
+  animation: rimGlint 1.6s var(--ease-soft);
+}
+
+/* ------------------------------------------------------------------ */
+/* Editorial card                                                       */
+/* ------------------------------------------------------------------ */
+.editorial-card {
+  position: relative;
+  background-color: var(--black-raised);
+  border: 1px solid transparent;
+  border-radius: var(--radius-card);
+  box-shadow:
+    0 14px 30px -26px rgba(0, 0, 0, 0.9),
+    var(--glow-ox) var(--glow-oy) 64px -32px rgba(255, 115, 21, var(--bloom));
+  transition:
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow var(--dur-fast) cubic-bezier(0.16, 1, 0.3, 1),
+    --glow-edge var(--dur-fast) cubic-bezier(0.16, 1, 0.3, 1),
+    --glow-rim var(--dur-fast) cubic-bezier(0.16, 1, 0.3, 1),
+    --cursor-lit var(--dur-base) var(--ease-soft);
+}
+
+/* Inner wash: a bloom at the corner over a wide, barely-there halo */
+.editorial-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image:
+    radial-gradient(
+      56% 44% at var(--glow-x) var(--glow-y),
+      rgba(255, 210, 168, calc(0.085 + 0.055 * var(--glow-lit))),
+      rgba(255, 115, 21, 0) 72%
+    ),
+    radial-gradient(
+      130% 110% at var(--glow-x) var(--glow-y),
+      rgba(255, 115, 21, calc(0.03 + 0.025 * var(--glow-lit))),
+      rgba(255, 115, 21, 0) 62%
+    );
+}
+
+/* Keep card content above the glow layers */
+.editorial-card > :not(.absolute) {
+  position: relative;
+}
+
+.editorial-card:hover {
+  --glow-edge: 0.62;
+  --glow-rim: 0.4;
+  --cursor-lit: 1;
+  transform: translateY(-2px);
+}
+
+/* ================================================================== */
+/* Premium cards                                                        */
+/*  - glass surface + corner wash, all clipped to the padding box so    */
+/*    none of it tints the body through the translucent glass           */
+/*  - cursor spotlight (--mx/--my from MotionEffects)                   */
+/*  - micro 3D tilt (--rx/--ry)                                         */
+/* ================================================================== */
+.card-premium {
+  position: relative;
+  border: 1px solid transparent;
+  border-radius: var(--radius-panel);
+  background-clip: padding-box;
+  background-image:
+    /* spotlight under the cursor */
+    radial-gradient(
+      360px circle at var(--mx, 50%) var(--my, 0%),
+      rgba(255, 115, 21, calc(0.085 * var(--cursor-lit))),
+      rgba(255, 115, 21, 0) 55%
+    ),
+    /* corner wash */
+    radial-gradient(
+      56% 46% at var(--glow-x) var(--glow-y),
+      rgba(255, 210, 168, calc(0.1 + 0.06 * var(--glow-lit))),
+      rgba(255, 115, 21, 0) 72%
+    ),
+    radial-gradient(
+      130% 110% at var(--glow-x) var(--glow-y),
+      rgba(255, 115, 21, calc(0.032 + 0.028 * var(--glow-lit))),
+      rgba(255, 115, 21, 0) 62%
+    ),
+    /* glass */
+    linear-gradient(180deg, rgba(31, 29, 27, 0.74), rgba(16, 15, 14, 0.74));
+  box-shadow:
+    inset 0 1px 0 rgba(250, 246, 240, 0.03),
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    0 16px 36px -28px rgba(0, 0, 0, 0.9),
+    var(--glow-ox) var(--glow-oy) 74px -32px rgba(255, 115, 21, var(--bloom));
+  transform: perspective(1200px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg))
+    translateY(var(--lift, 0px));
+  transition:
+    transform var(--dur-slow) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out),
+    --glow-edge var(--dur-fast) var(--ease-soft),
+    --glow-rim var(--dur-fast) var(--ease-soft),
+    --cursor-lit var(--dur-base) var(--ease-soft);
+  --mx: 50%;
+  --my: 0%;
+}
+.card-premium:hover {
+  --lift: -4px;
+  --glow-edge: 0.66;
+  --glow-rim: 0.42;
+  --cursor-lit: 1;
+}
+.card-premium > :not(.absolute) {
+  position: relative;
+}
+
+/* Icon medallion inside cards. Its colours are derived from --glow-lit so the  */
+/* medallion scrubs with the card rather than switching at a threshold; the      */
+/* transition is short so it does not trail the rim during a scrub.              */
+.card-icon {
+  position: relative;
+  z-index: 20;
+  border-color: rgba(255, 115, 21, calc(0.3 + 0.4 * var(--glow-lit)));
+  background-color: #0d0d10;
+  box-shadow: 0 0 calc(10px + 14px * var(--glow-lit)) -4px
+    rgba(255, 115, 21, calc(0.05 + 0.3 * var(--glow-lit)));
+  transition:
+    transform var(--dur-slow) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-soft),
+    background-color var(--dur-fast) var(--ease-soft),
+    box-shadow var(--dur-fast) var(--ease-out);
+}
+.group:hover .card-icon {
+  transform: translateY(-2px) rotate(-6deg);
+  border-color: rgba(255, 115, 21, 0.5);
+  background-color: rgba(255, 115, 21, 0.08);
+  box-shadow: 0 0 18px -4px rgba(255, 115, 21, 0.35);
+}
+
+/* Featured card: slow rotating orange border + breathing ambient glow.    */
+/* Its conic border is the statement, so the shared rim steps back to let  */
+/* it read.                                                               */
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+.card-featured {
+  --glow-edge: 0.12;
+  --glow-rim: 0.05;
+  border-color: transparent;
+  background:
+    radial-gradient(
+        56% 46% at var(--glow-x) var(--glow-y),
+        rgba(255, 210, 168, calc(0.09 + 0.05 * var(--glow-lit))),
+        rgba(255, 115, 21, 0) 72%
+      )
+      padding-box,
+    linear-gradient(180deg, rgba(31, 29, 27, 0.95), rgba(16, 15, 14, 0.95)) padding-box,
+    conic-gradient(
+        from var(--angle),
+        rgba(255, 115, 21, 0.18),
+        rgba(255, 210, 168, 0.75) 8%,
+        rgba(255, 115, 21, 0.18) 20%,
+        rgba(255, 115, 21, 0.18) 55%,
+        rgba(255, 210, 168, 0.45) 65%,
+        rgba(255, 115, 21, 0.18) 78%
+      )
+      border-box;
+  animation:
+    rotateBorder 12s linear infinite,
+    breatheGlow 5s var(--ease-in-out) infinite;
+}
+.card-featured:hover {
+  --glow-edge: 0.2;
+  border-color: transparent;
+}
+@keyframes rotateBorder {
+  to { --angle: 360deg; }
+}
+@keyframes breatheGlow {
+  0%, 100% {
+    box-shadow:
+      inset 0 1px 0 rgba(250, 246, 240, 0.04),
+      var(--glow-ox) var(--glow-oy) 74px -32px rgba(255, 115, 21, var(--bloom)),
+      0 0 32px -14px rgba(255, 115, 21, 0.18);
+  }
+  50% {
+    box-shadow:
+      inset 0 1px 0 rgba(250, 246, 240, 0.06),
+      var(--glow-ox) var(--glow-oy) 88px -28px rgba(255, 115, 21, calc(var(--bloom) + 0.1)),
+      0 0 56px -12px rgba(255, 115, 21, 0.3);
+  }
+}
+
+/* Badge with a periodic glint */
+.badge-sheen {
+  overflow: hidden;
+  isolation: isolate;
+}
+.badge-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 35%, rgba(250, 246, 240, 0.6) 50%, transparent 65%);
+  transform: translateX(-130%);
+  animation: autoSheen 5s var(--ease-in-out) 1.5s infinite;
+}
+
+/* ------------------------------------------------------------------ */
+/* Scroll-walked cards                                                  */
+/*  For a row the reader is stepped through one card at a time. The     */
+/*  resting state drops well below the site-wide rim so an unlit card   */
+/*  reads as genuinely waiting, and --glow-lit carries a much wider     */
+/*  swing. Every other card on the site keeps its own tuning.           */
+/* ------------------------------------------------------------------ */
+.glow-walk {
+  --glow-edge: 0.14;
+  --glow-rim: 0.09;
+  --hot: calc(var(--glow-edge) + 0.62 * var(--glow-lit));
+  --ring: calc(var(--glow-rim) + 0.3 * var(--glow-lit));
+  --bloom: calc(0.04 + 0.4 * var(--glow-lit));
+}
+
+/* Which corner the light comes from — defaults to .glow-tl */
+.glow-tl { --glow-x: 0%; --glow-y: 0%; --glow-ox: -14px; --glow-oy: -14px; }
+.glow-tr { --glow-x: 100%; --glow-y: 0%; --glow-ox: 14px; --glow-oy: -14px; }
+.glow-bl { --glow-x: 0%; --glow-y: 100%; --glow-ox: -14px; --glow-oy: 14px; }
+.glow-br { --glow-x: 100%; --glow-y: 100%; --glow-ox: 14px; --glow-oy: 14px; }
+.glow-l { --glow-x: -5%; --glow-y: 50%; --glow-ox: -16px; --glow-oy: 0px; }
+.glow-r { --glow-x: 105%; --glow-y: 50%; --glow-ox: 16px; --glow-oy: 0px; }
+
+/* Touch screens: hover states "stick" after a tap, so cards stay at rest */
+@media (hover: none) {
+  .card-premium:hover {
+    --lift: 0px;
+    --cursor-lit: 0;
+  }
+  .editorial-card:hover {
+    --cursor-lit: 0;
+    transform: none;
+  }
+  .editorial-card:hover::after,
+  .card-premium:hover::after {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .editorial-card::after,
+  .card-premium::after {
+    animation: none !important;
+  }
+  /* No scroll walk runs, so the row settles at a readable middle instead of dark */
+  .glow-walk {
+    --glow-lit: 0.55;
+  }
+}

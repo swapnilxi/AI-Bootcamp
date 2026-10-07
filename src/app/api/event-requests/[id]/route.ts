@@ -1,0 +1,1 @@
+export { GET, PATCH, DELETE } from "@/features/events/server/routes/event-request-detail";

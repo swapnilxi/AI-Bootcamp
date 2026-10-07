@@ -1,0 +1,303 @@
+/* Pinned scroll scenes: a section that holds the viewport while the reader is
+   walked through it sideways. Card surfaces themselves live in cards.css. */
+
+/* ================================================================== */
+/* Horizontal story track                                              */
+/*                                                                     */
+/*  The markup is a plain responsive grid by default, which is what     */
+/*  renders without JS and under reduced motion. The scene only becomes */
+/*  a horizontal track once the script confirms it can run and sets     */
+/*  data-scene="on", so nothing depends on JS to be readable.           */
+/*                                                                     */
+/*  The hold is native `position: sticky`, not ScrollTrigger's pin.     */
+/*  <body> carries overflow-x: hidden, which makes the body a scroll    */
+/*  container; a pin would place its fixed element against the wrong    */
+/*  box and throw the section off screen. Sticky has no such quarrel,   */
+/*  needs no pin-spacer, and the script only has to scrub the track.    */
+/*  The section is tall by --scene-travel, which the script measures.   */
+/* ================================================================== */
+[data-scene="on"].scene {
+  height: calc(100vh + var(--scene-travel, 0px));
+  height: calc(100svh + var(--scene-travel, 0px));
+}
+[data-scene="on"] .scene-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  padding-block: clamp(1.5rem, 5vh, 4rem);
+}
+
+.scene-track {
+  --step-w: 80vw;
+  --step-gap: 1.25rem;
+  display: grid;
+  gap: var(--step-gap);
+}
+@media (min-width: 640px) {
+  .scene-track {
+    --step-w: 56vw;
+    --step-gap: 1.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .scene-track {
+    /* Narrow enough that the next card always peeks in from the right, which is
+       what tells the reader there is somewhere to scroll to. */
+    --step-w: clamp(19rem, 26vw, 24rem);
+    --step-gap: 2rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Settled mid-state, so a row the scene never drives still reads as designed */
+.scene-card {
+  --glow-lit: 0.5;
+}
+
+/* Scene running: one track the pin walks sideways. The inline padding parks
+   the first card dead centre at x=0, which is what the centre-based
+   activation below is measured against. */
+[data-scene="on"] .scene-track {
+  display: flex;
+  grid-template-columns: none;
+  padding-inline: calc(50% - var(--step-w) / 2);
+  will-change: transform;
+}
+[data-scene="on"] .scene-step {
+  flex: 0 0 var(--step-w);
+  width: var(--step-w);
+}
+[data-scene="on"] .scene-card {
+  --glow-lit: 0;
+}
+.scene-step {
+  will-change: opacity, transform;
+}
+
+/* ------------------------------------------------------------------ */
+/* Progressive line connecting card 01 to card 02, 03...               */
+/* ------------------------------------------------------------------ */
+/* The line is derived from the card's own padding and the number badge, so it
+   leaves one badge's right edge and stops short of the next badge's left edge.
+   Fixed offsets are what used to run it straight through the numerals. */
+.scene-step {
+  --badge: 3rem; /* the w-12 number badge */
+  --card-pad-x: 1.5rem; /* p-6 */
+  --card-pad-y: 1.5rem;
+  --line-gap: 0.5rem; /* air either side of a badge */
+}
+
+.scene-step-line {
+  position: absolute;
+  top: calc(var(--card-pad-y) + var(--badge) / 2);
+  left: calc(var(--card-pad-x) + var(--badge) + var(--line-gap));
+  width: calc(100% + var(--step-gap, 1.25rem) - var(--badge) - 2 * var(--line-gap));
+  height: 1px;
+  background: rgba(255, 115, 21, 0.18);
+  pointer-events: none;
+  z-index: 10;
+}
+
+@media (min-width: 640px) {
+  .scene-step {
+    --card-pad-x: 2rem; /* sm:p-8 */
+    --card-pad-y: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .scene-step {
+    --card-pad-x: 2.5rem; /* lg:p-10 */
+    --card-pad-y: 2.5rem;
+  }
+}
+
+/* Short viewports tighten the card padding, so the line follows it in. */
+@media (max-height: 840px) {
+  [data-scene="on"] .scene-step {
+    --card-pad-x: 1.6rem;
+    --card-pad-y: 1.4rem;
+  }
+}
+
+@media (max-height: 680px) {
+  [data-scene="on"] .scene-step {
+    --card-pad-x: 1.3rem;
+    --card-pad-y: 1.1rem;
+  }
+}
+
+.scene-step-line-fill {
+  position: absolute;
+  inset: 0;
+  transform-origin: left;
+  transform: scaleX(var(--line-fill, 0));
+  background: linear-gradient(
+    90deg,
+    rgba(255, 115, 21, 0.25) 0%,
+    rgba(255, 210, 168, 0.85) 70%,
+    rgba(255, 246, 240, 1) 100%
+  );
+  box-shadow: 0 0 8px rgba(255, 143, 66, 0.4);
+  transition: transform 0.12s linear;
+}
+
+.scene-step-line-fill::after {
+  content: "";
+  position: absolute;
+  right: -2px;
+  top: -2px;
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background: #FFF6ED;
+  box-shadow: 0 0 6px #FF8F42, 0 0 12px #FF8F42;
+  opacity: calc(var(--line-fill, 0) > 0.02 ? 1 : 0);
+  transition: opacity 0.2s ease;
+}
+
+:not([data-scene="on"]) .scene-step-line-fill {
+  transform: scaleX(1);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 115, 21, 0.1) 0%,
+    rgba(255, 210, 168, 0.5) 50%,
+    rgba(255, 115, 21, 0.1) 100%
+  );
+  background-size: 200% 100%;
+  animation: lineShimmer 3.5s ease-in-out infinite;
+}
+
+@keyframes lineShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media (max-width: 1023px) {
+  :not([data-scene="on"]) .scene-step-line {
+    display: none;
+  }
+}
+
+/* Copy brightens with the card it sits in, so the active step gains contrast
+   rather than just gaining glow */
+.scene-step .step-title {
+  color: rgba(242, 237, 227, calc(0.66 + 0.34 * var(--glow-lit)));
+}
+.scene-step .step-body {
+  color: rgba(168, 163, 153, calc(0.68 + 0.32 * var(--glow-lit)));
+}
+
+/* ------------------------------------------------------------------ */
+/* Short viewports                                                      */
+/*  The stage is exactly one viewport tall and clips, so on a laptop or  */
+/*  a landscape phone the heading is the first thing to be cut off.      */
+/*  Everything tightens with the available height rather than overflow.  */
+/* ------------------------------------------------------------------ */
+.scene-head {
+  margin-bottom: 2rem;
+}
+@media (max-height: 840px) {
+  [data-scene="on"] .scene-stage {
+    padding-block: 1rem;
+  }
+  .scene-head {
+    margin-bottom: 1.1rem;
+  }
+  .scene-head h2 {
+    font-size: clamp(1.5rem, 4.2vh, 2.75rem);
+    line-height: 1.14;
+  }
+  .scene-head p {
+    margin-top: 0.5rem;
+    font-size: 0.9375rem;
+  }
+  [data-scene="on"] .scene-card {
+    padding: 1.4rem 1.6rem;
+  }
+  .scene-progress {
+    gap: 0.5rem;
+  }
+}
+@media (max-height: 680px) {
+  .scene-head {
+    margin-bottom: 0.75rem;
+  }
+  .scene-head p {
+    font-size: 0.875rem;
+  }
+  [data-scene="on"] .scene-card {
+    padding: 1.1rem 1.3rem;
+  }
+  .scene-cue {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Progress rail: 01 ── 02 ── 03                                       */
+/* ------------------------------------------------------------------ */
+.scene-progress {
+  position: relative;
+  display: grid;
+  gap: 0.75rem;
+}
+.scene-rail {
+  position: relative;
+  height: 1px;
+  background: rgba(250, 246, 240, 0.07);
+}
+.scene-rail::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform-origin: left;
+  transform: scaleX(var(--scene-p, 0));
+  background: linear-gradient(90deg, rgba(255, 115, 21, 0.25), rgba(255, 210, 168, 0.85));
+}
+.scene-marks {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.6875rem;
+  letter-spacing: 0.22em;
+}
+.scene-mark {
+  color: rgba(255, 115, 21, calc(0.3 + 0.7 * var(--glow-lit)));
+}
+
+/* ------------------------------------------------------------------ */
+/* Entry cue — fades out the moment the walk begins                     */
+/* ------------------------------------------------------------------ */
+.scene-cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  opacity: calc(1 - var(--scene-p, 0) * 14);
+  pointer-events: none;
+}
+.scene-cue-line {
+  display: block;
+  width: 2.5rem;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 115, 21, 0.7), rgba(255, 115, 21, 0));
+  animation: cueDrift 2.6s var(--ease-in-out) infinite;
+}
+@keyframes cueDrift {
+  0%, 100% { transform: translateX(0); opacity: 0.5; }
+  50% { transform: translateX(5px); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-cue {
+    display: none;
+  }
+  .scene-cue-line {
+    animation: none;
+  }
+}

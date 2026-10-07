@@ -1,0 +1,368 @@
+/* Decorative effects: scroll progress, cursor glow, film grain, metallic text, sheens, magnetic/nudge, nav underline, section bands. */
+
+/* Scroll progress hairline (driven by MotionEffects) */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  z-index: 70;
+  pointer-events: none;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, rgba(255, 115, 21, 0), #ff7315 40%, #ffebd4);
+  box-shadow: 0 0 8px rgba(255, 115, 21, 0.35);
+}
+
+/* Soft orange glow that trails the cursor tip (driven by MotionEffects) */
+.cursor-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 56px;
+  height: 56px;
+  z-index: 65;
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 236, 222, 0.22) 0%,
+    rgba(255, 115, 21, 0.1) 35%,
+    rgba(255, 115, 21, 0.03) 60%,
+    transparent 72%
+  );
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-soft);
+  will-change: transform;
+}
+.cursor-glow[data-visible="true"] {
+  opacity: 1;
+}
+@media (pointer: coarse) {
+  .cursor-glow {
+    display: none;
+  }
+}
+
+/* ================================================================== */
+/* Scroll companion                                                    */
+/*  A spark that descends a faint hairline as the page scrolls, so the  */
+/*  reader's position has a physical marker rather than only the bar at */
+/*  the top. Driven by --p on the rail, written once per frame by the   */
+/*  same rAF that moves the progress hairline.                          */
+/* ================================================================== */
+.scroll-rail {
+  position: fixed;
+  right: 1.35rem;
+  top: 19vh;
+  height: 58vh;
+  width: 1px;
+  z-index: 55;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 115, 21, 0) 0%,
+    rgba(255, 115, 21, 0.15) 16%,
+    rgba(255, 115, 21, 0.15) 84%,
+    rgba(255, 115, 21, 0) 100%
+  );
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-soft);
+}
+.scroll-rail[data-visible="true"] {
+  opacity: 1;
+}
+
+.scroll-spark {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--p, 0) * 100%);
+  width: 5px;
+  height: 5px;
+  margin: -2.5px 0 0 -2.5px;
+  border-radius: 50%;
+  background: var(--cream);
+  box-shadow:
+    0 0 10px 2px rgba(255, 217, 193, 0.5),
+    0 0 22px 7px rgba(255, 115, 21, 0.2);
+}
+/* A short trail, so the spark reads as having come from above */
+.scroll-spark::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  width: 1px;
+  height: 44px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, rgba(255, 115, 21, 0), rgba(255, 220, 197, 0.45));
+}
+/* Slow halo, so it still has life when the page is still */
+.scroll-spark::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 115, 21, 0.35);
+  animation: sparkPulse 2.8s var(--ease-in-out) infinite;
+}
+@keyframes sparkPulse {
+  0%, 100% { transform: scale(1); opacity: 0.55; }
+  50% { transform: scale(1.8); opacity: 0; }
+}
+@media (max-width: 479px) {
+  .scroll-rail { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-spark::after { animation: none; }
+}
+
+/* ================================================================== */
+/* Film grain — removes the flat digital look                          */
+/* ================================================================== */
+.grain-overlay {
+  position: fixed;
+  inset: -50%;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grainShift 1.2s steps(6) infinite;
+}
+@keyframes grainShift {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -3%); }
+  60% { transform: translate(-2%, -1%); }
+  80% { transform: translate(3%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ================================================================== */
+/* Metallic orange text                                                */
+/*  .text-gold-metal  static metallic gradient, sweeps once on .group hover */
+/*  .text-shimmer     continuous slow sweep — hero accents only        */
+/*                                                                     */
+/*  Both run cream through orange rather than orange through cream: the */
+/*  letterforms stay bright and legible, and the orange reads as the    */
+/*  light coming off them.                                              */
+/* ================================================================== */
+.text-gold-metal,
+.text-shimmer {
+  background: linear-gradient(
+    110deg,
+    #ff7315 0%,
+    #ffd2a8 26%,
+    #faf6f0 44%,
+    #fdfaf6 50%,
+    #faf6f0 56%,
+    #ffd2a8 74%,
+    #ff7315 100%
+  );
+  background-size: 260% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.text-shimmer {
+  animation: textShimmer 7s var(--ease-soft) var(--shimmer-delay, 1.6s) infinite;
+}
+.group:hover .text-gold-metal {
+  animation: textShimmerOnce 1.3s var(--ease-soft);
+}
+@keyframes textShimmer {
+  0% { background-position: 100% 0; }
+  45%, 100% { background-position: -60% 0; }
+}
+@keyframes textShimmerOnce {
+  from { background-position: 100% 0; }
+  to { background-position: -60% 0; }
+}
+
+/* ================================================================== */
+/* Sheen — a diagonal glint across buttons and badges                  */
+/* ================================================================== */
+.btn-sheen {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.btn-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    rgba(250, 246, 240, 0.4) 48%,
+    rgba(250, 246, 240, 0.1) 53%,
+    transparent 65%
+  );
+  transform: translateX(-130%);
+  pointer-events: none;
+}
+.btn-sheen:hover::after {
+  transform: translateX(130%);
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+.btn-sheen-auto::after {
+  animation: autoSheen 6s var(--ease-in-out) 2.6s infinite;
+}
+@keyframes autoSheen {
+  0% { transform: translateX(-130%); }
+  22%, 100% { transform: translateX(130%); }
+}
+
+/* Magnetic wrapper (MotionEffects writes the transform) */
+.magnetic {
+  transition: transform var(--dur-base) var(--ease-out);
+  will-change: transform;
+}
+
+/* Arrow nudge inside hovered buttons/links */
+.group:hover .nudge {
+  transform: translateX(3px);
+}
+.nudge {
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+/* Nav links: hairline that grows from the centre */
+.nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 10px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #ff7315, transparent);
+  transform: scaleX(0);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* Translucent section band, so the starfield stays visible behind it */
+.section-band {
+  background: linear-gradient(
+    180deg,
+    rgba(11, 11, 13, 0.3),
+    rgba(16, 16, 19, 0.55),
+    rgba(11, 11, 13, 0.3)
+  );
+  border-color: rgba(250, 246, 240, 0.05);
+}
+
+/* Hairline with a travelling glint */
+.shimmer-line {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 115, 21, 0.3), transparent);
+  overflow: hidden;
+}
+.shimmer-line::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 25%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 246, 240, 0.8), transparent);
+  animation: lineGlint 6s var(--ease-in-out) infinite;
+}
+@keyframes lineGlint {
+  0% { transform: translateX(-100%); }
+  55%, 100% { transform: translateX(400%); }
+}
+
+/* ================================================================== */
+/* Travelling star                                                     */
+/*  The logo's own 4-point star leaves the hero eyebrow, crosses the    */
+/*  page with the reader and settles above the footer's first line.     */
+/*  StarJourney writes transform and opacity; the rest is only looks.   */
+/* ================================================================== */
+.star-journey {
+  --star-journey-size: 40px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 30;
+  width: var(--star-journey-size);
+  height: var(--star-journey-size);
+  margin: calc(var(--star-journey-size) / -2) 0 0 calc(var(--star-journey-size) / -2);
+  color: var(--cream);
+  pointer-events: none;
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+}
+.star-journey[data-state="hidden"] {
+  display: none;
+}
+@media (max-width: 639px) {
+  .star-journey {
+    --star-journey-size: 30px;
+  }
+}
+
+/* Arrives with the eyebrow it belongs to rather than ahead of it. */
+.star-journey__mark {
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  filter: drop-shadow(0 0 8px rgba(250, 246, 240, 0.75)) drop-shadow(0 0 18px rgba(255, 115, 21, 0.35));
+  animation: starJourneyIn var(--dur-reveal) var(--ease-out) 240ms forwards;
+}
+.star-journey__mark svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+@keyframes starJourneyIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+/* ================================================================== */
+/* Neon                                                                */
+/*  A cream core with an orange halo. Used wherever an element should   */
+/*  read as a source of light — the travelling star, active markers,    */
+/*  accent numerals — as opposed to an orange interactive accent.       */
+/* ================================================================== */
+.neon-text {
+  color: var(--cream);
+  text-shadow:
+    0 0 6px rgba(255, 115, 21, 0.55),
+    0 0 18px rgba(255, 115, 21, 0.35),
+    0 0 42px rgba(255, 115, 21, 0.18);
+}
+
+.neon-dot {
+  background: var(--cream);
+  box-shadow:
+    0 0 6px 1px rgba(250, 246, 240, 0.8),
+    0 0 14px 3px rgba(255, 115, 21, 0.55),
+    0 0 30px 8px rgba(255, 115, 21, 0.22);
+}
+
+/* A hairline that glows, for dividers under headings. */
+.neon-rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cream), transparent);
+  box-shadow: 0 0 10px rgba(255, 115, 21, 0.5);
+}

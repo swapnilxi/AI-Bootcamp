@@ -1,0 +1,88 @@
+/* Pill language: controls are capsules, surfaces are generously rounded.
+   Imported last so it settles the shape of anything the utilities set. */
+
+/* ================================================================== */
+/* The utility                                                         */
+/*  .pill on a span/a/button gives the standard chip: capsule edge,     */
+/*  hairline border, quiet surface. .pill-accent fills it with orange.  */
+/* ================================================================== */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(var(--cream-rgb), 0.1);
+  background-color: rgba(var(--cream-rgb), 0.04);
+  padding: 0.3rem 0.85rem;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.pill-accent {
+  border-color: rgba(var(--orange-rgb), 0.35);
+  background-color: rgba(var(--orange-rgb), 0.1);
+  color: var(--orange);
+}
+.pill-cream {
+  border-color: rgba(var(--cream-rgb), 0.22);
+  background-color: rgba(var(--cream-rgb), 0.08);
+  color: var(--cream);
+  backdrop-filter: blur(8px);
+}
+.pill-ai {
+  border-color: rgba(var(--orange-rgb), 0.3);
+  background-color: rgba(var(--orange-rgb), 0.08);
+  color: var(--orange);
+  box-shadow: 0 0 14px -3px var(--orange-glow);
+}
+.pill-solid {
+  border-color: rgba(var(--orange-rgb), 0.6);
+  background: linear-gradient(180deg, var(--orange-bright) 0%, var(--orange) 55%, var(--orange-deep) 100%);
+  color: var(--black);
+}
+
+/* ================================================================== */
+/* Form controls                                                       */
+/*  Single-line fields become capsules; anything that holds wrapped     */
+/*  text keeps a card radius so the first and last lines are not        */
+/*  pinched by the curve.                                               */
+/* ================================================================== */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+select {
+  border-radius: var(--radius-pill);
+  padding-inline: 1.05rem;
+}
+
+textarea {
+  border-radius: var(--radius-card);
+}
+
+/* The focus ring is drawn outside the box, so it follows the capsule */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline-offset: 3px;
+}
+
+/* ================================================================== */
+/* Nav                                                                 */
+/*  Header links sit in their own capsule on hover rather than only     */
+/*  growing a hairline, which keeps the nav in the same shape family.   */
+/* ================================================================== */
+.nav-link {
+  border-radius: var(--radius-pill);
+  padding-inline: 0.85rem;
+  transition: background-color var(--dur-base) var(--ease-soft);
+}
+.nav-link:hover {
+  background-color: rgba(var(--orange-rgb), 0.08);
+}
+
+/* ================================================================== */
+/* Surfaces                                                            */
+/*  Scene step cards and the FAQ rows inherit the card radius so the    */
+/*  page reads as one rounded system.                                   */
+/* ================================================================== */
+.scene-card,
+.scene-step {
+  border-radius: var(--radius-panel);
+}

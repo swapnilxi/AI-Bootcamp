@@ -1,0 +1,959 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+// ====================================================================
+// Enums
+// ====================================================================
+
+enum Role {
+  USER
+  SUBSCRIBER
+  INSTRUCTOR
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  RESCHEDULED
+  CANCELLED
+}
+
+/// How hard a piece of learning content is. `PRODUCTION` is reserved for work
+/// that mirrors what a team would actually ship.
+enum Difficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  PRODUCTION
+}
+
+/// Editorial lifecycle shared by every authored learning object.
+enum ContentStatus {
+  DRAFT
+  REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+/// What kind of course this is, so the catalogue can be filtered by intent
+/// rather than only by topic.
+enum CourseKind {
+  FOUNDATION
+  TECHNICAL
+  DEEP_DIVE
+  PROJECT
+  CRASH
+  INTERVIEW
+  ARCHITECTURE
+  CAREER
+}
+
+/// The hands-on environments in AI Labs.
+enum LabKind {
+  LLM
+  RAG
+  AGENT
+  MULTI_AGENT
+  VISION
+  EVALUATION
+}
+
+/// The shapes a practice question can take. Together these replace the old
+/// single-format exam bank with something that can rehearse reasoning, code
+/// and system design, not just recall.
+enum PracticeKind {
+  CONCEPT
+  SCENARIO
+  CODING
+  ARCHITECTURE
+  DEBUGGING
+  DESIGN
+  INTERVIEW
+  CASE_STUDY
+}
+
+/// The checklist every project is walked through.
+enum ProjectStage {
+  REQUIREMENTS
+  ARCHITECTURE
+  IMPLEMENTATION
+  TESTING
+  DEPLOYMENT
+}
+
+/// A learner's standing on one node of the skill graph.
+enum SkillState {
+  LOCKED
+  AVAILABLE
+  IN_PROGRESS
+  MASTERED
+}
+
+/// What a bookmark points at, so My Library can hold mixed content.
+enum BookmarkKind {
+  LESSON
+  COURSE
+  PATH
+  PROJECT
+  LAB
+  QUESTION
+  CONCEPT
+}
+
+// ====================================================================
+// People
+// ====================================================================
+
+model User {
+  id                 String       @id @default(cuid())
+  name               String?
+  email              String       @unique
+  password           String // bcrypt hash
+  role               Role         @default(USER)
+  avatarUrl          String?
+  bio                String?
+  phone              String?
+  timezone           String?      @default("America/New_York")
+  resetToken         String?      @unique
+  resetTokenExpires  DateTime?
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+
+  // Mentor profile. A mentor runs 1-on-1 sessions, reviews code and projects,
+  // and may author courses.
+  mentorType         String?      @default("INSTRUCTOR") // "INSTRUCTOR" | "MENTOR" | "BOTH"
+  specialties        String? // e.g. "RAG, AI Agents, Evaluation"
+  sessionPrice       Decimal?     @default(120.0)
+  sessionDuration    Int?         @default(60) // minutes
+  approvalStatus     String       @default("APPROVED") // "PENDING" | "APPROVED" | "REJECTED"
+  rejectionReason    String?
+  approvalNudgesCount Int         @default(0)
+  lastNudgedAt       DateTime?
+
+  // AI Tutor persona exposed on a mentor's public profile
+  aiChatEnabled      Boolean      @default(true)
+  aiSystemPrompt     String?
+  aiChatStyle        String?
+  aiGreeting         String?
+  aiSampleQuestions  String?
+
+  // Custom Profile Sections (JSON array stored as string for SQLite compatibility)
+  profileSections    String?      @default("[]")
+
+  // ---- Learning state ----------------------------------------------
+  /// Where the learner is headed. Drives the "what next" on the dashboard.
+  activePathId       String?
+  activePath         LearningPath? @relation("ActivePath", fields: [activePathId], references: [id], onDelete: SetNull)
+  /// Consecutive days with at least one completed learning action.
+  streakDays         Int          @default(0)
+  lastActiveOn       DateTime?
+  xp                 Int          @default(0)
+
+  enrollments        Enrollment[]
+  entitlements       Entitlement[]
+  createdCourses     Course[]     @relation("CourseInstructor")
+  lessonProgress     LessonProgress[]
+  pathEnrollments    PathEnrollment[]
+  practiceAttempts   PracticeAttempt[]
+  labRuns            LabRun[]
+  projectSubmissions ProjectSubmission[]
+  skills             UserSkill[]
+  bookmarks          Bookmark[]
+  tutorThreads       TutorThread[]
+
+  bookings           Booking[]    @relation("ClientBookings")
+  assignedBookings   Booking[]    @relation("AssignedMentor")
+  blogPosts          BlogPost[]
+
+  // Cohort events (kickoffs, live workshops, demo days)
+  hostedEvents       Event[]      @relation("EventHost")
+  reviewedEvents     Event[]      @relation("EventReviewer")
+  eventInterests     EventInterest[]
+  eventRequestsMade  EventRequest[] @relation("EventRequester")
+  eventRequestsTagged EventRequest[] @relation("EventRequestAssignee")
+}
+
+// ====================================================================
+// Curriculum: Path → Course → Module → Lesson
+// ====================================================================
+
+/// A career track: the spine of the product. A learner picks one and the
+/// platform sequences everything else against it.
+model LearningPath {
+  id             String        @id @default(cuid())
+  slug           String        @unique
+  title          String
+  tagline        String
+  description    String
+  outcome        String // what the learner can do at the end
+  difficulty     Difficulty    @default(BEGINNER)
+  estimatedWeeks Int           @default(12)
+  iconName       String        @default("path")
+  status         ContentStatus @default(PUBLISHED)
+  order          Int           @default(0)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  courses        Course[]
+  milestones     PathMilestone[]
+  projects       Project[]
+  bootcamps      Bootcamp[]
+  enrollments    PathEnrollment[]
+  activeFor      User[]        @relation("ActivePath")
+
+  @@index([status, order])
+}
+
+/// A checkpoint inside a path, so progress reads as a journey rather than a
+/// percentage.
+model PathMilestone {
+  id       String       @id @default(cuid())
+  pathId   String
+  path     LearningPath @relation(fields: [pathId], references: [id], onDelete: Cascade)
+  title    String
+  summary  String
+  order    Int          @default(0)
+
+  @@index([pathId, order])
+}
+
+model PathEnrollment {
+  id         String       @id @default(cuid())
+  userId     String
+  pathId     String
+  startedAt  DateTime     @default(now())
+  completedAt DateTime?
+
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  path       LearningPath @relation(fields: [pathId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, pathId])
+}
+
+/// A course inside a path. This is the old `Class` model, carried forward with
+/// the learning metadata the new lesson experience needs.
+model Course {
+  id                   String        @id @default(cuid())
+  title                String
+  slug                 String        @unique
+  description          String
+  content              String // Course overview, materials & notes
+  syllabus             String?
+  kind                 CourseKind    @default(TECHNICAL)
+  difficulty           Difficulty    @default(BEGINNER)
+  estimatedHours       Int           @default(6)
+  objectives           Json          @default("[]")
+  technologies         Json          @default("[]")
+  prerequisites        Json          @default("[]")
+  order                Int           @default(0)
+
+  pathId               String?
+  path                 LearningPath? @relation(fields: [pathId], references: [id], onDelete: SetNull)
+
+  schedule             DateTime
+  durationMinutes      Int           @default(60)
+  price                Decimal       @default(0.0) // 0.00 indicates free
+  isSubscriberOnly     Boolean       @default(false)
+  isPasswordProtected  Boolean       @default(false)
+  passwordHash         String?
+  instructorId         String
+  instructor           User          @relation("CourseInstructor", fields: [instructorId], references: [id])
+  approvalStatus       String        @default("APPROVED") // "PENDING" | "APPROVED" | "REJECTED"
+  isPublished          Boolean       @default(true)
+  rejectionReason      String?
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+
+  enrollments          Enrollment[]
+  entitlements         Entitlement[]
+  modules              Module[]
+  lessons              Lesson[]
+  practiceQuestions    PracticeQuestion[]
+  skills               CourseSkill[]
+  bootcampWeeks        BootcampWeek[]
+
+  @@index([pathId, order])
+}
+
+/// A group of lessons inside a course.
+model Module {
+  id        String   @id @default(cuid())
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  title     String
+  summary   String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  lessons   Lesson[]
+
+  @@index([courseId, order])
+}
+
+/// A single lesson. `moduleId` is optional so a course can stay flat while it
+/// is being authored, and gain modules later without a migration.
+model Lesson {
+  id              String        @id @default(cuid())
+  courseId        String
+  moduleId        String?
+  title           String
+  summary         String?
+  content         String // Lesson body (plain text, line breaks preserved)
+  videoUrl        String?
+  durationMinutes Int?
+  order           Int           @default(0)
+  isPreview       Boolean       @default(false)
+
+  // The lesson experience from the spec: every lesson states what it is for,
+  // what it costs in time, and what the learner should walk away with.
+  objective       String?
+  difficulty      Difficulty    @default(BEGINNER)
+  estimatedMinutes Int          @default(15)
+  prerequisites   Json          @default("[]")
+  keyTakeaways    Json          @default("[]")
+  commonMistakes  Json          @default("[]")
+  codeExample     String?
+
+  approvalStatus  String        @default("APPROVED") // "PENDING" | "APPROVED" | "REJECTED"
+  rejectionReason String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  course          Course        @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  module          Module?       @relation(fields: [moduleId], references: [id], onDelete: SetNull)
+  progress        LessonProgress[]
+  practiceQuestions PracticeQuestion[]
+  skills          LessonSkill[]
+
+  @@index([courseId, order])
+  @@index([moduleId, order])
+}
+
+model LessonProgress {
+  id          String   @id @default(cuid())
+  userId      String
+  lessonId    String
+  completedAt DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+}
+
+model Enrollment {
+  id                   String   @id @default(cuid())
+  userId               String
+  courseId             String
+  unlockedWithPassword Boolean  @default(false)
+  enrolledAt           DateTime @default(now())
+
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course               Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
+}
+
+/// Proof that a user has paid for (or been granted) access to a paid course.
+model Entitlement {
+  id              String    @id @default(cuid())
+  userId          String
+  courseId        String
+  source          String    @default("stripe") // "stripe" | "admin_grant" | "comp"
+  amountPaid      Int?
+  currency        String?
+  providerRef     String?   @unique
+  grantedAt       DateTime  @default(now())
+  expiresAt       DateTime?
+  grantedById     String?
+
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course          Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
+  @@index([courseId])
+}
+
+// ====================================================================
+// Skill graph
+// ====================================================================
+
+/// One node on the AI skill graph (Python → ML → Transformers → RAG → Agents …).
+model Skill {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  name          String
+  description   String
+  category      String   @default("Core") // Core | ML | GenAI | Agents | Engineering
+  order         Int      @default(0)
+  createdAt     DateTime @default(now())
+
+  /// Edges out of this node: skills that require it.
+  unlocks       SkillPrerequisite[] @relation("PrerequisiteSkill")
+  /// Edges into this node: skills it requires.
+  requires      SkillPrerequisite[] @relation("DependentSkill")
+
+  userSkills    UserSkill[]
+  lessons       LessonSkill[]
+  courses       CourseSkill[]
+  questions     PracticeQuestion[]
+
+  @@index([category, order])
+}
+
+/// A directed edge in the skill graph: `skill` requires `prerequisite`.
+model SkillPrerequisite {
+  id             String @id @default(cuid())
+  skillId        String
+  prerequisiteId String
+
+  skill          Skill  @relation("DependentSkill", fields: [skillId], references: [id], onDelete: Cascade)
+  prerequisite   Skill  @relation("PrerequisiteSkill", fields: [prerequisiteId], references: [id], onDelete: Cascade)
+
+  @@unique([skillId, prerequisiteId])
+}
+
+/// A learner's standing on one skill, which is what the adaptive engine reads
+/// to decide what to recommend next.
+model UserSkill {
+  id             String     @id @default(cuid())
+  userId         String
+  skillId        String
+  state          SkillState @default(AVAILABLE)
+  masteryPct     Int        @default(0) // 0–100
+  attempts       Int        @default(0)
+  correct        Int        @default(0)
+  lastPracticedAt DateTime?
+  updatedAt      DateTime   @updatedAt
+
+  user           User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skill          Skill      @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, skillId])
+  @@index([userId, state])
+}
+
+model LessonSkill {
+  id       String @id @default(cuid())
+  lessonId String
+  skillId  String
+
+  lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  skill    Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@unique([lessonId, skillId])
+}
+
+model CourseSkill {
+  id       String @id @default(cuid())
+  courseId String
+  skillId  String
+
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  skill    Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@unique([courseId, skillId])
+}
+
+// ====================================================================
+// AI Practice engine
+// ====================================================================
+
+model PracticeQuestion {
+  id          String       @id @default(cuid())
+  kind        PracticeKind @default(CONCEPT)
+  difficulty  Difficulty   @default(BEGINNER)
+  prompt      String
+  /// Multiple-choice options. Empty for open-ended / coding / design questions,
+  /// which the AI evaluates instead of being auto-graded.
+  options     Json         @default("[]")
+  answer      String
+  explanation String
+  hint        String?
+  starterCode String?
+  estimatedMinutes Int     @default(2)
+  status      ContentStatus @default(PUBLISHED)
+
+  skillId     String?
+  skill       Skill?       @relation(fields: [skillId], references: [id], onDelete: SetNull)
+  lessonId    String?
+  lesson      Lesson?      @relation(fields: [lessonId], references: [id], onDelete: SetNull)
+  courseId    String?
+  course      Course?      @relation(fields: [courseId], references: [id], onDelete: SetNull)
+
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  attempts    PracticeAttempt[]
+
+  @@index([kind, difficulty])
+  @@index([skillId])
+}
+
+/// One answer. The adaptive engine aggregates these into Learning Strength.
+model PracticeAttempt {
+  id            String   @id @default(cuid())
+  userId        String
+  questionId    String
+  answer        String
+  isCorrect     Boolean
+  /// 1–5, self-reported before the answer is revealed.
+  confidence    Int?
+  timeSpentSec  Int      @default(0)
+  aiFeedback    String?
+  createdAt     DateTime @default(now())
+
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question      PracticeQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([questionId])
+}
+
+// ====================================================================
+// AI Labs
+// ====================================================================
+
+/// A hands-on environment. `steps` holds the guided walkthrough; `parameters`
+/// describes the knobs the lab exposes so the UI can render controls without a
+/// bespoke component per lab.
+model Lab {
+  id               String        @id @default(cuid())
+  slug             String        @unique
+  title            String
+  kind             LabKind
+  summary          String
+  description      String
+  difficulty       Difficulty    @default(BEGINNER)
+  estimatedMinutes Int           @default(20)
+  objectives       Json          @default("[]")
+  steps            Json          @default("[]")
+  parameters       Json          @default("[]")
+  status           ContentStatus @default(PUBLISHED)
+  order            Int           @default(0)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  runs             LabRun[]
+
+  @@index([kind, order])
+}
+
+model LabRun {
+  id          String    @id @default(cuid())
+  userId      String
+  labId       String
+  /// Whatever the lab needs to resume: parameter values, step index, outputs.
+  /// No default: SQLite cannot express `{}` as a column default, and every run
+  /// is created with its starting state anyway.
+  state       Json
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lab         Lab       @relation(fields: [labId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, labId])
+}
+
+// ====================================================================
+// Projects
+// ====================================================================
+
+model Project {
+  id               String        @id @default(cuid())
+  slug             String        @unique
+  title            String
+  summary          String
+  difficulty       Difficulty    @default(BEGINNER)
+  problemStatement String
+  businessContext  String
+  architecture     String
+  requirements     Json          @default("[]")
+  techStack        Json          @default("[]")
+  /// Ordered task list: [{ title, detail, stage }]
+  tasks            Json          @default("[]")
+  starterRepoUrl   String?
+  datasetUrl       String?
+  estimatedHours   Int           @default(8)
+  isCapstone       Boolean       @default(false)
+  status           ContentStatus @default(PUBLISHED)
+  order            Int           @default(0)
+
+  pathId           String?
+  path             LearningPath? @relation(fields: [pathId], references: [id], onDelete: SetNull)
+
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  submissions      ProjectSubmission[]
+  bootcampWeeks    BootcampWeek[]
+
+  @@index([difficulty, order])
+  @@index([pathId])
+}
+
+model ProjectSubmission {
+  id          String       @id @default(cuid())
+  userId      String
+  projectId   String
+  /// How far through the five stages the learner has got.
+  stage       ProjectStage @default(REQUIREMENTS)
+  repoUrl     String?
+  demoUrl     String?
+  notes       String?
+  aiFeedback  String?
+  submittedAt DateTime?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project     Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, projectId])
+  @@index([projectId])
+}
+
+// ====================================================================
+// Bootcamps
+// ====================================================================
+
+/// A time-boxed, cohort-style run through a path.
+model Bootcamp {
+  id             String        @id @default(cuid())
+  slug           String        @unique
+  title          String
+  summary        String
+  description    String
+  durationWeeks  Int           @default(12)
+  difficulty     Difficulty    @default(INTERMEDIATE)
+  status         ContentStatus @default(PUBLISHED)
+  startsAt       DateTime?
+  price          Decimal       @default(0.0)
+
+  pathId         String?
+  path           LearningPath? @relation(fields: [pathId], references: [id], onDelete: SetNull)
+
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  weeks          BootcampWeek[]
+}
+
+model BootcampWeek {
+  id          String   @id @default(cuid())
+  bootcampId  String
+  bootcamp    Bootcamp @relation(fields: [bootcampId], references: [id], onDelete: Cascade)
+  weekNumber  Int
+  title       String
+  summary     String
+  goals       Json     @default("[]")
+  milestone   String
+
+  courseId    String?
+  course      Course?  @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  projectId   String?
+  project     Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  @@unique([bootcampId, weekNumber])
+}
+
+// ====================================================================
+// AI Tutor
+// ====================================================================
+
+/// A tutor conversation, anchored to whatever the learner was looking at so the
+/// tutor stays contextual rather than being a generic chatbot.
+model TutorThread {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title      String   @default("New conversation")
+  /// What the learner was on when the thread began: "lesson" | "course" | "project" | "lab" | "practice" | null
+  contextKind String?
+  contextId  String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  messages   TutorMessage[]
+
+  @@index([userId, updatedAt])
+}
+
+model TutorMessage {
+  id        String      @id @default(cuid())
+  threadId  String
+  thread    TutorThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  role      String // "user" | "assistant"
+  content   String
+  createdAt DateTime    @default(now())
+
+  @@index([threadId, createdAt])
+}
+
+// ====================================================================
+// My Library
+// ====================================================================
+
+model Bookmark {
+  id        String       @id @default(cuid())
+  userId    String
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kind      BookmarkKind
+  /// Id of the bookmarked record, in the table named by `kind`.
+  refId     String
+  label     String
+  href      String
+  createdAt DateTime     @default(now())
+
+  @@unique([userId, kind, refId])
+  @@index([userId, createdAt])
+}
+
+// ====================================================================
+// Mentorship: 1-on-1 sessions with a mentor
+// ====================================================================
+
+/// A bookable mentorship offering (code review, architecture review, mock
+/// interview, career coaching). This is the old consultation `Service`,
+/// repurposed.
+model Service {
+  id              String   @id @default(cuid())
+  slug            String   @unique
+  title           String
+  shortDesc       String
+  fullDescription String
+  durationMinutes Int      @default(60)
+  price           Decimal  @default(0.0)
+  category        String   @default("Mentorship") // Mentorship | CodeReview | Interview | Architecture | Career
+  isActive        Boolean  @default(true)
+  whatIncluded    Json     @default("[]")
+  whoIsThisFor    Json     @default("[]")
+  preparationTips String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  bookings        Booking[]
+}
+
+model AvailabilitySlot {
+  id           String  @id @default(cuid())
+  dayOfWeek    Int // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+  startTime    String // "10:00"
+  endTime      String // "18:00"
+  slotDuration Int     @default(60) // minutes
+  isActive     Boolean @default(true)
+}
+
+model BlockedDate {
+  id     String   @id @default(cuid())
+  date   DateTime
+  reason String?
+}
+
+/// A booked 1-on-1 session with an instructor or mentor.
+model Booking {
+  id              String        @id @default(cuid())
+  referenceCode   String        @unique // e.g. "AIB-7821"
+  serviceId       String
+  service         Service       @relation(fields: [serviceId], references: [id])
+
+  scheduledAt     DateTime
+  durationMinutes Int
+  endTime         DateTime
+
+  // Learner details (no account required)
+  clientName      String
+  clientEmail     String
+  clientPhone     String
+
+  /// What the learner wants out of the session — the repo link to review, the
+  /// role they are interviewing for, the architecture they are stuck on.
+  goal            String?
+  clientNotes     String?
+
+  // Status & meeting
+  status          BookingStatus @default(PENDING)
+  meetingLink     String?
+  adminNotes      String?
+  cancellationReason String?
+  confirmedAt     DateTime?
+  reminderSentAt  DateTime?
+  whatsappOptIn   Boolean       @default(true)
+
+  // Optional account link (created post-booking or existing user)
+  userId          String?
+  user            User?         @relation("ClientBookings", fields: [userId], references: [id])
+
+  // Assigned instructor / mentor
+  instructorId    String?
+  instructor      User?         @relation("AssignedMentor", fields: [instructorId], references: [id])
+  rejectionReason String?
+
+  notifications   NotificationLog[]
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([scheduledAt, status])
+  @@index([clientEmail])
+  @@index([instructorId])
+}
+
+// ====================================================================
+// Platform plumbing
+// ====================================================================
+
+model RateLimitRecord {
+  id        String   @id @default(cuid())
+  key       String   @unique // e.g. "login:ip" or "unlock:ip:courseId"
+  count     Int      @default(1)
+  expiresAt DateTime
+
+  @@index([key, expiresAt])
+}
+
+model PlatformSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+/// Every email / WhatsApp message the platform sends (or skips), for the admin audit trail
+model NotificationLog {
+  id        String   @id @default(cuid())
+  channel   String // EMAIL | WHATSAPP
+  kind      String // received | confirmed | declined | rescheduled | cancelled | reminder | custom | admin_alert
+  recipient String
+  subject   String?
+  body      String
+  status    String // SENT | FAILED | SKIPPED
+  error     String?
+  bookingId String?
+  booking   Booking? @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  userId    String?
+  sentById  String?
+  createdAt DateTime @default(now())
+
+  @@index([bookingId, createdAt])
+  @@index([userId, createdAt])
+}
+
+// ====================================================================
+// Cohort events
+// ====================================================================
+
+/// A live gathering: cohort kickoff, workshop, office hours, or demo day.
+/// Follows the same admin-approval gate as Course.
+model Event {
+  id              String    @id @default(cuid())
+  slug            String    @unique
+  title           String
+  summary         String
+  description     String
+  category        String    @default("Workshop") // Workshop | Webinar | OfficeHours | DemoDay | Kickoff
+  location        String?
+  isOnline        Boolean   @default(false)
+  meetingUrl      String?
+  coverImage      String?
+  startsAt        DateTime
+  endsAt          DateTime
+  timezone        String    @default("America/New_York")
+  capacity        Int?
+  price           Decimal   @default(0.0)
+
+  hostId          String
+  host            User      @relation("EventHost", fields: [hostId], references: [id])
+
+  originRequestId String?   @unique
+  originRequest   EventRequest? @relation("EventOriginRequest", fields: [originRequestId], references: [id])
+
+  approvalStatus  String    @default("PENDING") // "PENDING" | "APPROVED" | "REJECTED"
+  isPublished     Boolean   @default(false)
+  rejectionReason String?
+
+  reviewedById    String?
+  reviewedBy      User?     @relation("EventReviewer", fields: [reviewedById], references: [id])
+  reviewedAt      DateTime?
+  approvedAt      DateTime?
+
+  interests       EventInterest[]
+  requests        EventRequest[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([startsAt])
+  @@index([approvalStatus, isPublished])
+}
+
+model EventRequest {
+  id           String    @id @default(cuid())
+  title        String
+  details      String
+  category     String    @default("Workshop")
+  proposedDate DateTime?
+  requesterId  String
+  requester    User      @relation("EventRequester", fields: [requesterId], references: [id])
+  taggedUserId String?
+  taggedUser   User?     @relation("EventRequestAssignee", fields: [taggedUserId], references: [id])
+  status       String    @default("OPEN") // "OPEN" | "PLANNED" | "DECLINED"
+  adminNotes   String?
+  eventId      String?
+  event        Event?    @relation(fields: [eventId], references: [id], onDelete: SetNull)
+  originEvent  Event?    @relation("EventOriginRequest")
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([status, createdAt])
+  @@index([taggedUserId])
+}
+
+model EventInterest {
+  id        String   @id @default(cuid())
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([eventId, userId])
+  @@index([eventId])
+}
+
+// ====================================================================
+// Editorial
+// ====================================================================
+
+model BlogPost {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  excerpt     String
+  content     String
+  coverImage  String?
+  category    String   @default("Engineering") // Engineering | Agents | RAG | Career | Research
+  tags        String? // comma-separated tags
+  readTimeMin Int      @default(5)
+  authorId    String
+  author      User     @relation(fields: [authorId], references: [id])
+  isPublished Boolean  @default(true)
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([category, isPublished])
+  @@index([slug])
+}

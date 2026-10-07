@@ -1,0 +1,30 @@
+/* footer.css — Site footer: brand column, link columns, bottom bar. */
+
+/* =============================================================
+   FOOTER
+   ============================================================= */
+footer { position: relative; background: #08080A; border-top: 1px solid var(--line); padding: clamp(4rem, 8vw, 6rem) 0 calc(2.5rem + var(--safe-b)); overflow: hidden; }
+footer::before {
+  content: ""; position: absolute; left: 50%; top: 0; width: min(900px, 100%); height: 1px; transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, rgba(200,164,92,0.5), transparent);
+}
+.footer-grid { display: grid; grid-template-columns: 1fr; gap: 2.75rem; margin-bottom: 3.5rem; }
+@media (min-width: 640px) { .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .footer-grid { grid-template-columns: 1.5fr 1fr 1fr 1.2fr; gap: 3rem; } }
+.footer-brand .brand { margin-bottom: 1.4rem; }
+.footer-brand p { color: var(--muted); font-size: 0.9rem; line-height: 1.75; max-width: 19rem; }
+.footer-col h4 { font-family: var(--sans); font-size: 0.68rem; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.1rem; }
+.footer-col ul { list-style: none; display: flex; flex-direction: column; }
+.footer-col a {
+  display: inline-flex; align-items: center; min-height: 44px;
+  color: var(--muted); text-decoration: none; font-size: 0.9rem;
+  transition: color .4s var(--ease-soft);
+  overflow-wrap: anywhere;
+}
+.footer-col a:hover, .footer-col a:focus-visible { color: var(--gold-hi); }
+.footer-hours { color: var(--muted); opacity: 0.75; font-size: 0.82rem; padding-top: 0.6rem; }
+.footer-bottom {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem;
+  padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.06);
+  font-size: 0.76rem; color: var(--muted); opacity: 0.8; line-height: 1.6;
+}

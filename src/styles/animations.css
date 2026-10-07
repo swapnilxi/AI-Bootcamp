@@ -1,0 +1,199 @@
+/* Entrance animations: scroll reveal, page entrance, hero intro, word masks, SVG draw-on, slow spin, accordion. */
+
+/* ================================================================== */
+/* Scroll reveal                                                        */
+/* `.reveal-done` is added after the entrance so hover transitions on   */
+/* cards aren't slowed down by the reveal timing/delay.                 */
+/* ================================================================== */
+.reveal {
+  opacity: 0;
+  translate: 0 24px;
+  filter: blur(4px);
+}
+.reveal.is-visible {
+  opacity: 1;
+  translate: 0 0;
+  filter: blur(0);
+  transition:
+    opacity var(--dur-reveal) var(--ease-out),
+    translate var(--dur-reveal) var(--ease-out),
+    filter var(--dur-slow) var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+.reveal.card-premium.is-visible {
+  transition:
+    opacity var(--dur-reveal) var(--ease-out) var(--d, 0ms),
+    translate var(--dur-reveal) var(--ease-out) var(--d, 0ms),
+    filter var(--dur-slow) var(--ease-out) var(--d, 0ms),
+    transform var(--dur-slow) var(--ease-out),
+    border-color var(--dur-base) var(--ease-soft),
+    box-shadow var(--dur-slow) var(--ease-out);
+}
+.reveal.reveal-done {
+  /* `none` (not 0) so finished reveals don't trap fixed-position children */
+  filter: none;
+  translate: none;
+}
+
+/* Eyebrow hairlines draw outward when the heading reveals */
+.reveal .eyebrow-line {
+  transform: scaleX(0);
+  transition: transform var(--dur-reveal) var(--ease-out) calc(var(--d, 0ms) + 250ms);
+}
+.reveal .eyebrow-line.from-right {
+  transform-origin: right;
+}
+.reveal .eyebrow-line.from-left {
+  transform-origin: left;
+}
+.reveal.is-visible .eyebrow-line {
+  transform: scaleX(1);
+}
+
+/* First-load page entrance (client navigations use Framer Motion in template.tsx) */
+.page-enter {
+  animation: pageEnter 0.9s var(--ease-out) both;
+}
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Hero intro choreography */
+.intro {
+  opacity: 0;
+  animation: introUp var(--dur-reveal) var(--ease-out) forwards;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes introUp {
+  from { opacity: 0; transform: translateY(18px); filter: blur(6px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+
+.word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+.word-mask > span {
+  display: inline-block;
+  transform: translateY(105%) rotate(2deg);
+  transform-origin: left bottom;
+  animation: wordRise var(--dur-reveal) var(--ease-out) forwards;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes wordRise {
+  to { transform: translateY(0) rotate(0); }
+}
+
+/* SVG line drawing when revealed */
+.draw-on path,
+.draw-on circle,
+.draw-on line,
+.draw-on polygon {
+  stroke-dasharray: 600;
+  stroke-dashoffset: 600;
+  transition: stroke-dashoffset 2.2s var(--ease-in-out);
+}
+.draw-on.is-visible path,
+.draw-on.is-visible circle,
+.draw-on.is-visible line,
+.draw-on.is-visible polygon {
+  stroke-dashoffset: 0;
+}
+.draw-on .pulse-dot {
+  animation: pulseDot 3.2s var(--ease-in-out) infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+@keyframes pulseDot {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.35); }
+}
+
+.spin-slow {
+  animation: spinSlow 80s linear infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+@keyframes spinSlow {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes drawerIn {
+  from { transform: translateX(40px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+/* Accordion: smooth height via grid rows */
+.accordion-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows var(--dur-base) var(--ease-out),
+    opacity var(--dur-base) var(--ease-soft);
+}
+.accordion-panel[data-open="true"] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+.accordion-panel > div {
+  overflow: hidden;
+}
+
+/* Astrologer character idle floating / breathing */
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+/* Astrologer arm waving gesture */
+@keyframes tara-arm-wave {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(-10deg) translate(-2px, -3px);
+  }
+  40% {
+    transform: rotate(14deg) translate(2px, -1px);
+  }
+  60% {
+    transform: rotate(-8deg) translate(-1px, -2px);
+  }
+  80% {
+    transform: rotate(10deg) translate(1px, -1px);
+  }
+}
+
+/* Astrologer happy celebratory bounce */
+@keyframes tara-happy-bounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  25% {
+    transform: translateY(-8px) scale(1.05);
+  }
+  50% {
+    transform: translateY(1px) scale(0.98);
+  }
+  75% {
+    transform: translateY(-4px) scale(1.02);
+  }
+}
+
+/* Stardust sparkle twinkle */
+@keyframes tara-sparkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.8) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.25) rotate(180deg);
+  }
+}
+

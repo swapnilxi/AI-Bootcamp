@@ -1,0 +1,101 @@
+/* Design tokens: motion easing/durations, curated light & dark orange palette, cream elements, and pill radius scale. */
+
+:root {
+  /* Motion tokens: one easing family and duration scale for the whole site */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 250ms;
+  --dur-base: 500ms;
+  --dur-slow: 900ms;
+  --dur-reveal: 1100ms;
+
+  /* =========================================================================
+     DEFAULT / DARK MODE TOKENS (Warm Obsidian Ground + Luminous Orange + Cream)
+     ========================================================================= */
+  --black: #0C0B0A;
+  --black-raised: #151311;
+  --black-card: #161412;
+  --black-line: rgba(245, 237, 224, 0.12);
+
+  /* Luminous electric mandarin orange for Dark Mode (vibrant, warm, high-tech) */
+  --orange: #FF7315;
+  --orange-bright: #FF8F42;
+  --orange-pale: #FFB380;
+  --orange-deep: #E65A00;
+  --orange-soft: rgba(255, 115, 21, 0.14);
+  --orange-glow: rgba(255, 115, 21, 0.34);
+  --orange-rgb: 255, 115, 21;
+
+  /* Cream: Carrying headings, copy, hairlines and glass highlights */
+  --cream: #FAF6F0;
+  --cream-soft: rgba(250, 246, 240, 0.08);
+  --cream-border: rgba(250, 246, 240, 0.18);
+  --cream-rgb: 250, 246, 240;
+  --cream-dim: #C4BAAB;
+
+  /* Typography */
+  --text: #FAF6F0;
+  --text-muted: #A8A095;
+
+  /* Flat AI Icon Tokens with Subtle Neon Orange Glow */
+  --ai-icon-bg: rgba(255, 115, 21, 0.1);
+  --ai-icon-border: rgba(255, 115, 21, 0.3);
+  --ai-icon-glow: rgba(255, 115, 21, 0.25);
+  --ai-icon-color: #FF852E;
+
+  /* Radii: controls are pills, surfaces are generously rounded to match */
+  --radius-pill: 9999px;
+  --radius-card: 1.15rem;
+  --radius-panel: 1.5rem;
+
+  /* Legacy aliases mapped directly */
+  --gold: var(--orange);
+  --gold-soft: var(--orange-soft);
+  --ink: var(--text);
+  --indigo: var(--orange);
+  --ivory: var(--black);
+  --mist: var(--black-line);
+  --clay: var(--orange);
+}
+
+/* =========================================================================
+   LIGHT MODE TOKENS (Warm Alabaster/Cream Ground + Spiced Orange)
+   ========================================================================= */
+html.light,
+[data-theme="light"] {
+  --black: #FDFAF6;
+  --black-raised: #FFFFFF;
+  --black-card: #FFFFFF;
+  --black-line: #E8E0D5;
+
+  /* Spiced Seville Orange for Light Mode (high-contrast, deep, rich) */
+  --orange: #DC4C00;
+  --orange-bright: #FF661A;
+  --orange-pale: #FFB073;
+  --orange-deep: #B83E00;
+  --orange-soft: rgba(220, 76, 0, 0.08);
+  --orange-glow: rgba(220, 76, 0, 0.22);
+  --orange-rgb: 220, 76, 0;
+
+  /* Cream Accents in Light Mode */
+  --cream: #FDFAF6;
+  --cream-soft: #F4ECE2;
+  --cream-border: #E2D6C5;
+  --cream-rgb: 250, 247, 242;
+  --cream-dim: #6B635B;
+
+  /* Typography in Light Mode */
+  --text: #1C1917;
+  --text-muted: #6B635B;
+
+  /* Flat AI Icon Tokens in Light Mode */
+  --ai-icon-bg: rgba(220, 76, 0, 0.07);
+  --ai-icon-border: rgba(220, 76, 0, 0.22);
+  --ai-icon-glow: rgba(220, 76, 0, 0.16);
+  --ai-icon-color: #DC4C00;
+
+  --ink: var(--text);
+  --ivory: var(--black);
+  --mist: var(--black-line);
+}

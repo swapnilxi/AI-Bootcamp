@@ -1,0 +1,1 @@
+export { GET, PUT } from "@/features/events/server/routes/event-approval";

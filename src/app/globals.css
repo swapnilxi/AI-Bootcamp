@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Custom styles live in src/styles/ and are imported after this file in
+ * src/app/layout.tsx (so they layer above Tailwind's utilities):
+ *   tokens → base → effects → cards → scenes → animations → pills → reduced-motion
+ */
