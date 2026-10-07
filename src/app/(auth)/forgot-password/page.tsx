@@ -77,12 +77,12 @@ export default function ForgotPasswordPage() {
               {demoToken && (
                 <div className="pt-2 border-t border-emerald-500/20">
                   <p className="text-[11px] text-emerald-400">Demo Reset Token (Development):</p>
-                  <code className="block p-2 mt-1 rounded bg-cosmic-950 text-[10px] break-all text-amber-300">
+                  <code className="block p-2 mt-1 rounded bg-cosmic-950 text-[10px] break-all text-cream">
                     {demoToken}
                   </code>
                   <Link
                     href={`/reset-password?token=${demoToken}`}
-                    className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-amber-300 hover:underline"
+                    className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-cream hover:underline"
                   >
                     Click to proceed with reset <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
@@ -120,7 +120,7 @@ export default function ForgotPasswordPage() {
 
           <div className="text-center text-xs text-text-muted">
             Remembered your credentials?{" "}
-            <Link href="/login" className="text-gold hover:text-amber-300 font-medium">
+            <Link href="/login" className="text-text-muted hover:text-text font-medium">
               Back to Login
             </Link>
           </div>

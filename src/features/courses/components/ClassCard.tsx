@@ -135,7 +135,7 @@ export function ClassCard({ classItem, userRole }: ClassCardProps) {
     "transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 " +
     "focus-visible:ring-gold/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black-raised " +
     "disabled:opacity-60 disabled:cursor-not-allowed";
-  const ctaPrimary = `${ctaBase} bg-gold text-black hover:bg-[#FFB073]`;
+  const ctaPrimary = `${ctaBase} bg-cream text-black hover:bg-cream/90`;
   const ctaGhost =
     `${ctaBase} border border-white/10 bg-white/[0.02] text-ink font-medium hover:border-gold/60 hover:bg-white/[0.04]`;
 
@@ -152,14 +152,14 @@ export function ClassCard({ classItem, userRole }: ClassCardProps) {
         {/* Badges */}
         <div className="mb-5 flex flex-wrap items-center gap-2">
           {classItem.isSubscriberOnly && (
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-indigo/25 bg-indigo/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-indigo">
-              <Sparkles className="h-3 w-3 text-gold" />
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-cream/15 bg-cream/8 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-text">
+              <Sparkles className="h-3 w-3 text-text-muted" />
               Course
             </span>
           )}
 
           {classItem.isPasswordProtected && (
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-gold">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-cream/20 bg-cream/8 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-text">
               <Lock className="h-3 w-3" />
               Secret Key
             </span>
@@ -170,9 +170,9 @@ export function ClassCard({ classItem, userRole }: ClassCardProps) {
               Free
             </span>
           ) : (
-            <span className="inline-flex items-baseline gap-1 rounded-full border border-gold/30 bg-gold/[0.07] px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-gold">
+            <span className="inline-flex items-baseline gap-1 rounded-full border border-cream/15 bg-cream/6 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-text">
               {priceLabel}
-              <span className="text-[9px] text-gold/70">USD</span>
+              <span className="text-[9px] text-text-muted">USD</span>
             </span>
           )}
 
@@ -198,7 +198,7 @@ export function ClassCard({ classItem, userRole }: ClassCardProps) {
         {errorMsg && (
           <p
             role="alert"
-            className="mb-5 rounded-lg border border-clay/20 bg-clay/10 px-3 py-2 text-xs text-clay"
+            className="mb-5 rounded-lg border border-cream/15 bg-cream/8 px-3 py-2 text-xs text-text"
           >
             {errorMsg}
           </p>
@@ -208,22 +208,22 @@ export function ClassCard({ classItem, userRole }: ClassCardProps) {
         <div className="mt-auto space-y-3 border-t border-white/[0.07] pt-5 text-xs text-ink/65">
           <div className="grid grid-cols-2 gap-x-4 gap-y-3">
             <div className="flex items-center gap-2">
-              <Calendar className="h-4 w-4 shrink-0 text-gold/80" />
+              <Calendar className="h-4 w-4 shrink-0 text-text-muted" />
               <span className="truncate">{formattedDate}</span>
             </div>
             <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4 shrink-0 text-gold/80" />
+              <Clock className="h-4 w-4 shrink-0 text-text-muted" />
               <span>{classItem.durationMinutes} mins</span>
             </div>
             <div className="flex items-center gap-2">
-              <BookOpen className="h-4 w-4 shrink-0 text-gold/80" />
+              <BookOpen className="h-4 w-4 shrink-0 text-text-muted" />
               <span>
                 {lessonCount} {lessonCount === 1 ? "lesson" : "lessons"}
               </span>
             </div>
             {classItem.instructor && (
               <div className="flex items-center gap-2">
-                <User className="h-4 w-4 shrink-0 text-indigo" />
+                <User className="h-4 w-4 shrink-0 text-text-muted" />
                 <span className="truncate text-ink/80">
                   {classItem.instructor.name || "Master Instructor"}
                 </span>
@@ -235,7 +235,7 @@ export function ClassCard({ classItem, userRole }: ClassCardProps) {
             <div className="pt-1">
               <div className="mb-2 flex items-center justify-between text-[11px]">
                 <span className="text-text-muted">Your progress</span>
-                <span className="font-semibold text-gold">{progressPct}%</span>
+                <span className="font-semibold text-text">{progressPct}%</span>
               </div>
               <div className="h-1.5 overflow-hidden rounded-full bg-white/[0.06]">
                 <div
@@ -257,7 +257,7 @@ export function ClassCard({ classItem, userRole }: ClassCardProps) {
           {classItem.canManage ? (
             <Link
               href={`/courses/${classItem.id}/edit`}
-              className={`${ctaBase} border border-gold/40 bg-gold/10 text-gold hover:bg-gold/20`}
+              className={`${ctaBase} border border-cream/20 bg-cream/8 text-text hover:bg-cream/15`}
             >
               <Settings2 className="h-4 w-4" />
               <span>Manage</span>

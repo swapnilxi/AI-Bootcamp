@@ -137,7 +137,7 @@ export function AdminMentors() {
             <button
               onClick={() => setStatusFilter("ALL")}
               className={`px-3 py-1.5 rounded-full transition-all ${
-                statusFilter === "ALL" ? "bg-gold text-black font-semibold" : "text-text-muted hover:text-white"
+                statusFilter === "ALL" ? "bg-cream text-black font-semibold" : "text-text-muted hover:text-white"
               }`}
             >
               All
@@ -146,13 +146,13 @@ export function AdminMentors() {
               onClick={() => setStatusFilter("PENDING")}
               className={`px-3 py-1.5 rounded-full transition-all flex items-center gap-1.5 ${
                 statusFilter === "PENDING"
-                  ? "bg-amber-400 text-black font-semibold"
+                  ? "bg-cream text-black font-semibold"
                   : "text-text-muted hover:text-white"
               }`}
             >
               <span>Pending Review</span>
               {pendingCount > 0 && (
-                <span className="w-4 h-4 rounded-full bg-black text-amber-300 text-[10px] flex items-center justify-center font-bold">
+                <span className="w-4 h-4 rounded-full bg-black text-cream text-[10px] flex items-center justify-center font-bold">
                   {pendingCount}
                 </span>
               )}
@@ -197,7 +197,7 @@ export function AdminMentors() {
         </div>
       ) : filtered.length === 0 ? (
         <div className="p-12 text-center rounded-2xl border border-dashed border-white/10 space-y-2">
-          <Shield className="w-8 h-8 text-gold/40 mx-auto" />
+          <Shield className="w-8 h-8 text-cream/30 mx-auto" />
           <p className="text-sm text-text-muted">No instructors or mentors match the selected criteria.</p>
         </div>
       ) : (
@@ -217,10 +217,10 @@ export function AdminMentors() {
                     <img
                       src={p.avatarUrl}
                       alt={p.name || "Mentor"}
-                      className="w-16 h-16 rounded-2xl object-cover border border-gold/30 shrink-0 shadow-md"
+                      className="w-16 h-16 rounded-2xl object-cover border border-cream/25 shrink-0 shadow-md"
                     />
                   ) : (
-                    <div className="w-16 h-16 rounded-2xl bg-gold/10 border border-gold/30 text-gold flex items-center justify-center font-serif text-2xl font-bold shrink-0">
+                    <div className="w-16 h-16 rounded-2xl bg-cream/10 border border-cream/25 text-cream flex items-center justify-center font-serif text-2xl font-bold shrink-0">
                       {p.name?.charAt(0) || "P"}
                     </div>
                   )}
@@ -233,7 +233,7 @@ export function AdminMentors() {
 
                       {/* Status badge */}
                       {isPending && (
-                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/15 text-amber-300 border border-amber-500/30 flex items-center gap-1">
+                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-cream/15 text-cream border border-cream/30 flex items-center gap-1">
                           <Clock className="w-3 h-3" /> Pending Review
                         </span>
                       )}
@@ -259,20 +259,20 @@ export function AdminMentors() {
 
                       {/* Expedited Review Nudges Indicator */}
                       {p.approvalNudgesCount > 0 && isPending && (
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-400/20 text-amber-300 border border-amber-400/40 flex items-center gap-1 animate-pulse">
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-cream/15 text-cream border border-cream/35 flex items-center gap-1 animate-pulse">
                           <Bell className="w-3 h-3" /> {p.approvalNudgesCount}x Nudge Requested
                         </span>
                       )}
                     </div>
 
                     <p className="text-xs text-text-muted">
-                      {p.email} • Session Rate: <strong className="text-gold">${p.sessionPrice} USD</strong> (
+                      {p.email} • Session Rate: <strong className="text-text">${p.sessionPrice} USD</strong> (
                       {p.sessionDuration || 60}m)
                     </p>
 
                     {p.specialties && (
                       <p className="text-xs text-ink/80 flex items-center gap-1.5 flex-wrap">
-                        <Tag className="w-3 h-3 text-gold/70 shrink-0" />
+                        <Tag className="w-3 h-3 text-text-muted shrink-0" />
                         <span>{p.specialties}</span>
                       </p>
                     )}
@@ -332,7 +332,7 @@ export function AdminMentors() {
                     <button
                       onClick={() => handleApproval(p.id, "APPROVED")}
                       disabled={busyId === p.id}
-                      className="px-4 py-2 rounded-xl bg-gold hover:bg-[#FFB073] text-black text-xs font-semibold transition-colors flex items-center gap-1.5"
+                      className="px-4 py-2 rounded-xl bg-cream hover:bg-cream/90 text-black text-xs font-semibold transition-colors flex items-center gap-1.5"
                     >
                       <UserCheck className="w-4 h-4" />
                       <span>Reinstate & Approve</span>

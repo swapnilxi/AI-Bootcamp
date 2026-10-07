@@ -75,7 +75,7 @@ export function PasswordUnlockModal({
         </button>
 
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-11 h-11 rounded-xl bg-gold/10 border border-gold/30 flex items-center justify-center text-gold">
+          <div className="w-11 h-11 rounded-xl bg-cream/8 border border-cream/20 flex items-center justify-center text-text-muted">
             <Lock className="w-5 h-5" />
           </div>
           <div>
@@ -89,7 +89,7 @@ export function PasswordUnlockModal({
         </p>
 
         {error && (
-          <div className="flex items-start gap-2 p-3 mb-4 rounded-xl bg-clay/10 border border-clay/30 text-clay text-xs">
+          <div className="flex items-start gap-2 p-3 mb-4 rounded-xl bg-cream/8 border border-cream/20 text-text text-xs">
             <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
             <span>{error}</span>
           </div>
@@ -132,7 +132,7 @@ export function PasswordUnlockModal({
             <button
               type="submit"
               disabled={loading || success}
-              className="px-5 py-2.5 rounded-xl bg-gold hover:bg-[#FFB073] text-black font-semibold text-xs shadow-sm transition-all disabled:opacity-50"
+              className="px-5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-xs shadow-sm transition-all disabled:opacity-50"
             >
               {loading ? "Verifying..." : "Unlock Class"}
             </button>

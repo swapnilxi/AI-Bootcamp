@@ -82,7 +82,7 @@ export function LabBench({
               >
                 <span>{p.label}</span>
                 {p.type === "slider" && (
-                  <span className="tabular-nums text-sm font-normal text-gold">{values[p.name]}</span>
+                  <span className="tabular-nums text-sm font-normal text-text">{values[p.name]}</span>
                 )}
               </label>
 
@@ -131,7 +131,7 @@ export function LabBench({
           <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-text-muted">
             Current settings
           </p>
-          <pre className="overflow-x-auto text-xs leading-relaxed text-gold">
+          <pre className="overflow-x-auto text-xs leading-relaxed text-text">
 {JSON.stringify(values, null, 2)}
           </pre>
         </div>
@@ -159,14 +159,14 @@ export function LabBench({
                   onClick={() => toggleStep(i)}
                   aria-pressed={complete}
                   className={`editorial-card glow-l flex w-full items-start gap-4 rounded-2xl p-5 text-left transition-colors ${
-                    complete ? "border-gold/30" : ""
+                    complete ? "border-cream/25" : ""
                   }`}
                 >
                   <span
                     className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-[11px] font-semibold transition-colors ${
                       complete
-                        ? "border-gold bg-gold text-black"
-                        : "border-gold/35 text-gold"
+                        ? "border-cream bg-cream text-black"
+                        : "border-cream/30 text-text-muted"
                     }`}
                   >
                     {complete ? <Check className="h-3.5 w-3.5" /> : i + 1}
@@ -188,7 +188,7 @@ export function LabBench({
         </ol>
 
         {done.size === steps.length && steps.length > 0 && (
-          <p className="rounded-2xl border border-gold/25 bg-gold/[0.06] p-5 text-sm text-text">
+          <p className="rounded-2xl border border-cream/20 bg-cream/[0.08] p-5 text-sm text-text">
             That is the whole of {labTitle}. The thing worth keeping is the intuition about which knob moved
             which number — take that into the next lab.
           </p>

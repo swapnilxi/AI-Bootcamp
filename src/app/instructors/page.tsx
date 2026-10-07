@@ -90,14 +90,14 @@ export default function InstructorsPage() {
     if (type === "BOTH") {
       return "bg-purple-500/10 text-purple-300 border-purple-500/30";
     }
-    return "bg-gold/10 text-gold border-gold/30";
+    return "bg-cream/10 text-cream border-cream/20";
   };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 space-y-16">
       {/* Hero Header */}
       <div className="text-center max-w-3xl mx-auto space-y-4">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs uppercase tracking-[0.2em] font-semibold">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cream/10 border border-cream/20 text-cream text-xs uppercase tracking-[0.2em] font-semibold">
           <GraduationCap className="w-4 h-4" />
           <span>Instructors & Mentors</span>
         </div>
@@ -111,11 +111,11 @@ export default function InstructorsPage() {
       </div>
 
       {/* Become an Instructor or Mentor Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-[linear-gradient(135deg,#21140f_0%,#141417_50%,#0f0f12_100%)] border border-gold/30 p-8 sm:p-10 shadow-2xl">
+      <div className="relative overflow-hidden rounded-3xl bg-[linear-gradient(135deg,#21140f_0%,#141417_50%,#0f0f12_100%)] border border-cream/20 p-8 sm:p-10 shadow-2xl">
         <div className="absolute top-0 right-0 w-96 h-96 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2 max-w-2xl">
-            <span className="text-xs uppercase tracking-[0.2em] text-gold font-semibold flex items-center gap-2">
+            <span className="text-xs uppercase tracking-[0.2em] text-cream font-semibold flex items-center gap-2">
               <Sparkles className="w-4 h-4" /> Join The Faculty & Healing Circle
             </span>
             <h2 className="font-serif text-2xl sm:text-3xl text-ink">
@@ -130,7 +130,7 @@ export default function InstructorsPage() {
               session.user?.role === "INSTRUCTOR" || session.user?.role === "ADMIN" || session.user?.role === "SUPER_ADMIN" ? (
                 <Link
                   href="/dashboard/instructor"
-                  className="px-6 py-3.5 rounded-xl bg-gold hover:bg-[#FFB073] text-black font-semibold text-sm transition-all shadow-md flex items-center gap-2"
+                  className="px-6 py-3.5 rounded-xl bg-cream hover:bg-[#FFB073] text-black font-semibold text-sm transition-all shadow-md flex items-center gap-2"
                 >
                   <GraduationCap className="w-4 h-4" />
                   <span>Open Teaching Studio</span>
@@ -138,7 +138,7 @@ export default function InstructorsPage() {
               ) : (
                 <Link
                   href="/profile#instructor-activation"
-                  className="px-6 py-3.5 rounded-xl bg-gold hover:bg-[#FFB073] text-black font-semibold text-sm transition-all shadow-md flex items-center gap-2"
+                  className="px-6 py-3.5 rounded-xl bg-cream hover:bg-[#FFB073] text-black font-semibold text-sm transition-all shadow-md flex items-center gap-2"
                 >
                   <Sparkles className="w-4 h-4" />
                   <span>Activate Mentor Profile</span>
@@ -148,7 +148,7 @@ export default function InstructorsPage() {
               <div className="flex flex-wrap items-center gap-3">
                 <Link
                   href="/register?role=instructor"
-                  className="px-6 py-3.5 rounded-xl bg-gold hover:bg-[#FFB073] text-black font-semibold text-sm transition-all shadow-md flex items-center gap-2"
+                  className="px-6 py-3.5 rounded-xl bg-cream hover:bg-[#FFB073] text-black font-semibold text-sm transition-all shadow-md flex items-center gap-2"
                 >
                   <span>Register as Instructor / Mentor</span>
                   <ArrowRight className="w-4 h-4" />
@@ -183,7 +183,7 @@ export default function InstructorsPage() {
               onClick={() => setActiveFilter("ALL")}
               className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
                 activeFilter === "ALL"
-                  ? "bg-gold text-black shadow-md font-semibold"
+                  ? "bg-cream text-black shadow-md font-semibold"
                   : "text-text-muted hover:text-white"
               }`}
             >
@@ -193,7 +193,7 @@ export default function InstructorsPage() {
               onClick={() => setActiveFilter("INSTRUCTOR")}
               className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
                 activeFilter === "INSTRUCTOR"
-                  ? "bg-gold text-black shadow-md font-semibold"
+                  ? "bg-cream text-black shadow-md font-semibold"
                   : "text-text-muted hover:text-white"
               }`}
             >
@@ -219,7 +219,7 @@ export default function InstructorsPage() {
           </div>
         ) : instructors.length === 0 ? (
           <div className="py-16 text-center rounded-2xl border border-dashed border-white/10 p-8 space-y-3">
-            <Compass className="w-10 h-10 text-gold/60 mx-auto" />
+            <Compass className="w-10 h-10 text-cream/60 mx-auto" />
             <h3 className="font-serif text-xl text-ink">No mentors in this category</h3>
             <p className="text-sm text-text-muted">
               Try switching your filter tab above to view all verified faculty.
@@ -273,7 +273,7 @@ export default function InstructorsPage() {
                           <img
                             src={inst.avatarUrl}
                             alt={inst.name || "Mentor"}
-                            className="w-20 h-20 rounded-2xl object-cover border border-gold/40 shadow-lg group-hover:scale-105 transition-transform duration-300"
+                            className="w-20 h-20 rounded-2xl object-cover border border-cream/30 shadow-lg group-hover:scale-105 transition-transform duration-300"
                           />
                           <button
                             onClick={(e) => {
@@ -287,7 +287,7 @@ export default function InstructorsPage() {
                           </button>
                         </div>
                       ) : (
-                        <div className="w-20 h-20 rounded-2xl bg-black-raised border border-gold/30 text-gold flex items-center justify-center font-serif text-2xl font-bold shrink-0 shadow-inner group-hover:border-gold transition-colors">
+                        <div className="w-20 h-20 rounded-2xl bg-black-raised border border-cream/20 text-cream flex items-center justify-center font-serif text-2xl font-bold shrink-0 shadow-inner group-hover:border-gold transition-colors">
                           {inst.name ? inst.name.charAt(0).toUpperCase() : "M"}
                         </div>
                       )}
@@ -310,7 +310,7 @@ export default function InstructorsPage() {
                         </div>
 
                         {/* Price & Duration */}
-                        <p className="text-xs text-gold/90 font-medium pt-1">
+                        <p className="text-xs text-cream/90 font-medium pt-1">
                           Private 1:1 Session:{" "}
                           <strong className="text-ink font-semibold">
                             ${inst.sessionPrice || 150} USD
@@ -334,7 +334,7 @@ export default function InstructorsPage() {
                             key={i}
                             className="inline-flex items-center gap-1 text-[10px] text-text-muted bg-white/[0.04] hover:bg-gold/10 px-2 py-1 rounded-full border border-white/5 transition-colors"
                           >
-                            <Tag className="w-2.5 h-2.5 text-gold/60" />
+                            <Tag className="w-2.5 h-2.5 text-cream/60" />
                             <span>{spec}</span>
                           </span>
                         ))}
@@ -346,7 +346,7 @@ export default function InstructorsPage() {
                       <div className="pt-2 border-t border-white/[0.06] space-y-1.5">
                         <div className="flex items-center justify-between text-xs text-text-muted">
                           <span className="flex items-center gap-1.5">
-                            <BookOpen className="w-3.5 h-3.5 text-gold" />
+                            <BookOpen className="w-3.5 h-3.5 text-cream" />
                             <span>Curriculum & Workshops</span>
                           </span>
                           <span className="font-semibold text-ink">
@@ -380,7 +380,7 @@ export default function InstructorsPage() {
                           e.stopPropagation();
                           setSelectedMentor(inst);
                         }}
-                        className="px-3.5 py-2.5 rounded-xl bg-gold hover:bg-[#FFB073] text-black text-xs font-semibold shadow-md transition-colors flex items-center gap-1.5 shrink-0"
+                        className="px-3.5 py-2.5 rounded-xl bg-cream hover:bg-[#FFB073] text-black text-xs font-semibold shadow-md transition-colors flex items-center gap-1.5 shrink-0"
                       >
                         <Calendar className="w-3.5 h-3.5" />
                         <span>Book 1:1</span>

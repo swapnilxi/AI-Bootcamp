@@ -53,7 +53,7 @@ export function AccountMenu({ session, onOpenChange }: AccountMenuProps) {
         }`}
       >
         {session ? (
-          <span className="font-serif text-base leading-none text-gold">{initial}</span>
+          <span className="font-serif text-base leading-none text-text">{initial}</span>
         ) : (
           <Icon name="user" variant="line" size={17} />
         )}
@@ -73,7 +73,7 @@ export function AccountMenu({ session, onOpenChange }: AccountMenuProps) {
             {session ? (
               <>
                 <div className="px-3 pt-2 pb-3 mb-1 border-b border-white/[0.06]">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-gold">Signed in</p>
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-text-muted">Signed in</p>
                   <p className="text-sm text-text truncate mt-1">{session.user?.name || session.user?.email}</p>
                 </div>
                 {isInstructor && <MenuLink href="/dashboard/instructor" icon="role-instructor" label="Instructor Studio" />}
@@ -97,7 +97,7 @@ export function AccountMenu({ session, onOpenChange }: AccountMenuProps) {
                   <Link
                     href="/register"
                     role="menuitem"
-                    className="group flex items-center justify-between px-3 py-2.5 !min-h-0 rounded-lg text-sm text-gold hover:bg-gold-soft transition-colors"
+                    className="group flex items-center justify-between px-3 py-2.5 !min-h-0 rounded-lg text-sm text-text hover:bg-gold-soft transition-colors"
                   >
                     Create an account
                     <Icon name="arrow" variant="line" size={14} className="nudge" />
@@ -126,7 +126,7 @@ function MenuLink({ href, icon, label, hint }: MenuLinkProps) {
       role="menuitem"
       className="group flex items-center gap-3 px-3 py-2.5 !min-h-0 rounded-lg hover:bg-white/[0.04] transition-colors"
     >
-      <span className="flex items-center justify-center w-8 h-8 rounded-full border border-gold/20 bg-gold/[0.04] text-gold transition-colors group-hover:border-gold/50">
+      <span className="flex items-center justify-center w-8 h-8 rounded-full border border-cream/20 bg-cream/[0.04] text-text transition-colors group-hover:border-gold/50">
         <Icon name={icon} variant="line" size={15} />
       </span>
       <span className="flex flex-col">

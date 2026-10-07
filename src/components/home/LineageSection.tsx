@@ -14,7 +14,7 @@ export function LineageSection() {
         </div>
 
         <div className="lg:col-span-8 space-y-4 text-left">
-          <span className="text-xs uppercase tracking-[0.14em] font-semibold text-gold block">{LINEAGE.eyebrow}</span>
+          <span className="text-xs uppercase tracking-[0.14em] font-semibold text-text-muted block">{LINEAGE.eyebrow}</span>
           <h2 className="font-serif text-3xl sm:text-4xl text-text font-normal text-balance">
             {LINEAGE.titleStart}{" "}
             <span className="text-shimmer italic" style={cssVars({ "--shimmer-delay": "3s" })}>

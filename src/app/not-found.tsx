@@ -6,11 +6,11 @@ export default function NotFound() {
   return (
     <div className="flex-grow flex items-center justify-center py-24 px-6">
       <div className="max-w-md w-full text-center space-y-6">
-        <div className="w-16 h-16 mx-auto rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center text-gold">
+        <div className="w-16 h-16 mx-auto rounded-full bg-cream/8 border border-cream/20 flex items-center justify-center text-text-muted">
           <Icon name="star" size={32} />
         </div>
         <div className="space-y-2">
-          <p className="font-mono text-xs uppercase tracking-[0.25em] text-gold">
+          <p className="font-mono text-xs uppercase tracking-[0.25em] text-text-muted">
             404 &bull; AI Coordinates Not Found
           </p>
           <h1 className="font-serif text-3xl sm:text-4xl text-text font-light">

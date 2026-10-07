@@ -188,7 +188,7 @@ export function LessonManager({ courseId }: { courseId: string }) {
   }
 
   const form = (
-    <form onSubmit={save} className="p-5 sm:p-6 rounded-2xl border border-gold/25 bg-gold/[0.03] space-y-4">
+    <form onSubmit={save} className="p-5 sm:p-6 rounded-2xl border border-cream/15 bg-cream/5 space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="font-serif text-lg text-ink">{editingId === "new" ? "New lesson" : "Edit lesson"}</h3>
         <button
@@ -251,7 +251,7 @@ export function LessonManager({ courseId }: { courseId: string }) {
               type="button"
               onClick={draftWithAi}
               disabled={drafting}
-              className="min-h-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-gold/30 bg-gold/[0.06] text-gold text-xs font-semibold hover:bg-gold/15 transition-colors disabled:opacity-50"
+              className="min-h-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-cream/20 bg-cream/6 text-text text-xs font-semibold hover:bg-cream/12 transition-colors disabled:opacity-50"
               title="Uses the title (and summary, as a brief) to draft notes you can edit"
             >
               <Sparkles className={`w-3.5 h-3.5 ${drafting ? "animate-spin" : ""}`} />
@@ -289,7 +289,7 @@ export function LessonManager({ courseId }: { courseId: string }) {
         <button
           type="submit"
           disabled={busy}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gold hover:bg-[#FFB073] text-black text-sm font-semibold transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-black text-sm font-semibold transition-colors disabled:opacity-50"
         >
           <Save className="w-4 h-4" />
           {busy ? "Saving…" : "Save lesson"}
@@ -313,7 +313,7 @@ export function LessonManager({ courseId }: { courseId: string }) {
         {editingId !== "new" && (
           <button
             onClick={startNew}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gold hover:bg-[#FFB073] text-black text-sm font-semibold transition-colors"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-black text-sm font-semibold transition-colors"
           >
             <Plus className="w-4 h-4" /> Add lesson
           </button>
@@ -321,7 +321,7 @@ export function LessonManager({ courseId }: { courseId: string }) {
       </div>
 
       {error && (
-        <p className="p-3 rounded-xl bg-clay/10 border border-clay/30 text-clay text-sm">{error}</p>
+        <p className="p-3 rounded-xl bg-cream/8 border border-cream/15 text-text text-sm">{error}</p>
       )}
 
       {editingId === "new" && form}
@@ -342,7 +342,7 @@ export function LessonManager({ courseId }: { courseId: string }) {
                 key={lesson.id}
                 className="flex items-center gap-4 p-4 rounded-2xl border border-white/[0.07] bg-black/30 hover:border-gold/25 transition-colors"
               >
-                <span className="w-8 h-8 shrink-0 rounded-full border border-gold/30 text-gold text-xs font-semibold flex items-center justify-center">
+                <span className="w-8 h-8 shrink-0 rounded-full border border-black-line text-text text-xs font-semibold flex items-center justify-center">
                   {idx + 1}
                 </span>
                 <div className="min-w-0 flex-1">
@@ -355,15 +355,15 @@ export function LessonManager({ courseId }: { courseId: string }) {
                       </span>
                     )}
                     {lesson.approvalStatus === "PENDING" && (
-                      <span className="text-amber-300">Under review: hidden from learners</span>
+                      <span className="text-text-muted">Under review: hidden from learners</span>
                     )}
                     {lesson.approvalStatus === "REJECTED" && (
-                      <span className="text-clay">
+                      <span className="text-text-muted">
                         Declined{lesson.rejectionReason ? `: ${lesson.rejectionReason}` : ""}. Edit and save to resubmit.
                       </span>
                     )}
                     {lesson.isPreview && (
-                      <span className="inline-flex items-center gap-1 text-gold">
+                      <span className="inline-flex items-center gap-1 text-text-muted">
                         <Eye className="w-3 h-3" /> Free preview
                       </span>
                     )}

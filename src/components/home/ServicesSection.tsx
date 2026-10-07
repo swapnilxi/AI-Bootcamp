@@ -61,7 +61,7 @@ function ServiceCard({ service, featured, className = "", delayMs }: ServiceCard
           <Icon name={service.iconName} variant="line" size={26} className="filter drop-shadow-[0_0_4px_rgba(255,115,21,0.4)]" />
         </div>
 
-        <span className="text-[11px] uppercase tracking-wider font-semibold text-gold block mb-2">
+        <span className="text-[11px] uppercase tracking-wider font-semibold text-text-muted block mb-2">
           {LEVEL_LABEL[service.category] ?? "Learning Path"}
         </span>
 

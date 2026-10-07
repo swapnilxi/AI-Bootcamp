@@ -61,7 +61,7 @@ export function Drawer({
     <div className="fixed inset-0 z-[80]" role="dialog" aria-modal="true" aria-label={title}>
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
       <aside
-        className="absolute right-0 top-0 h-full w-full max-w-2xl bg-[#0f0f12] border-l border-gold/20 shadow-2xl flex flex-col animate-[drawerIn_0.45s_cubic-bezier(0.16,1,0.3,1)]"
+        className="absolute right-0 top-0 h-full w-full max-w-2xl bg-[#0f0f12] border-l border-cream/15 shadow-2xl flex flex-col animate-[drawerIn_0.45s_cubic-bezier(0.16,1,0.3,1)]"
         data-lenis-prevent
       >
         <header className="flex items-start justify-between gap-4 px-6 py-5 border-b border-white/[0.07]">
@@ -107,14 +107,14 @@ export function ChannelPicker({
             disabled={disabled}
             onClick={() => toggle(c)}
             className={`min-h-0 inline-flex items-center gap-2 px-3 py-2 rounded-xl border text-xs transition-colors disabled:opacity-40 ${
-              on ? "border-gold/60 bg-gold/10 text-gold" : "border-white/10 text-text-muted hover:text-text"
+              on ? "border-cream/40 bg-cream/10 text-cream" : "border-white/10 text-text-muted hover:text-text"
             }`}
             aria-pressed={on}
             title={configured === false ? `${label} provider not configured: the message will be logged but not sent` : undefined}
           >
             <ChannelIcon className="w-3.5 h-3.5" />
             {label}
-            {configured === false && <span className="text-[10px] text-amber-300">(not set up)</span>}
+            {configured === false && <span className="text-[10px] text-text-muted">(not set up)</span>}
           </button>
         );
       })}
@@ -133,9 +133,9 @@ export function DeliveryReport({ result }: { result: NotifyResult | null }) {
           {d.status === "SENT" ? (
             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-300" />
           ) : d.status === "SKIPPED" ? (
-            <MinusCircle className="w-3.5 h-3.5 text-amber-300" />
+            <MinusCircle className="w-3.5 h-3.5 text-cream" />
           ) : (
-            <XCircle className="w-3.5 h-3.5 text-clay" />
+            <XCircle className="w-3.5 h-3.5 text-cream" />
           )}
           <span className="text-text">{d.channel === "EMAIL" ? "Email" : "WhatsApp"}</span>
           <span className="text-text-muted">
@@ -158,11 +158,11 @@ export function DeliveryReport({ result }: { result: NotifyResult | null }) {
 }
 
 export const STATUS_STYLES: Record<string, string> = {
-  PENDING: "bg-amber-500/10 text-amber-300 border-amber-500/25",
+  PENDING: "bg-cream/10 text-cream border-cream/25",
   CONFIRMED: "bg-emerald-500/10 text-emerald-300 border-emerald-500/25",
   RESCHEDULED: "bg-emerald-500/10 text-emerald-300 border-emerald-500/25",
   COMPLETED: "bg-white/5 text-text-muted border-white/10",
-  CANCELLED: "bg-clay/10 text-clay border-clay/30",
+  CANCELLED: "bg-cream/10 text-cream border-cream/30",
 };
 
 export function StatusBadge({ status }: { status: string }) {

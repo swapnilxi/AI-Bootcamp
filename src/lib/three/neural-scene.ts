@@ -1,4 +1,7 @@
 import * as THREE from "three";
+import { Line2 } from "three/examples/jsm/lines/Line2.js";
+import { LineGeometry } from "three/examples/jsm/lines/LineGeometry.js";
+import { LineMaterial } from "three/examples/jsm/lines/LineMaterial.js";
 import { DisposableBag } from "./disposables";
 import { CREAM, ORANGE, ORANGE_BRIGHT, ORANGE_HOT, ORANGE_PALE } from "./palette";
 
@@ -105,40 +108,84 @@ export function createNeuralScene(glowTex: THREE.Texture, bag: DisposableBag): N
   /*  other, which is what turns a sphere of dots into something that   */
   /*  reads as a nebula: a wide disc with a ring standing through it.   */
   /*  They live outside `shell` so they can drift at their own rate.    */
+  /*  Each ring is a crisp cream core over a wider orange glow — the    */
+  /*  same core/halo pairing used everywhere else in this scene — drawn */
+  /*  with true screen-space line widths (Line2) so they read as a      */
+  /*  deliberate, thick ring rather than a thin wireframe hairline.      */
   /* ---------------------------------------------------------------- */
   const orbits = new THREE.Group();
   const orbitMat = bag.add(
-    new THREE.LineBasicMaterial({
+    new LineMaterial({
       color: CREAM,
       transparent: true,
-      opacity: 0.5,
+      opacity: 0.55,
+      linewidth: 2.6,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    })
+  );
+  const orbitGlowMat = bag.add(
+    new LineMaterial({
+      color: ORANGE,
+      transparent: true,
+      opacity: 0.22,
+      linewidth: 7.5,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     })
   );
   const orbitFaintMat = bag.add(
-    new THREE.LineBasicMaterial({
+    new LineMaterial({
       color: CREAM,
       transparent: true,
-      opacity: 0.16,
+      opacity: 0.2,
+      linewidth: 1.8,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    })
+  );
+  const orbitFaintGlowMat = bag.add(
+    new LineMaterial({
+      color: ORANGE,
+      transparent: true,
+      opacity: 0.1,
+      linewidth: 5,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     })
   );
 
-  const ringAt = (radius: number, mat: THREE.LineBasicMaterial) =>
-    new THREE.Line(bag.add(new THREE.BufferGeometry().setFromPoints(circlePoints(radius, 220))), mat);
+  const circlePositions = (radius: number, segments = 220) => {
+    const pts: number[] = [];
+    for (let i = 0; i <= segments; i++) {
+      const a = (i / segments) * Math.PI * 2;
+      pts.push(Math.cos(a) * radius, Math.sin(a) * radius, 0);
+    }
+    return pts;
+  };
+
+  // One ring = one shared geometry drawn twice: the wide orange glow behind,
+  // the crisp cream core in front. Grouped so the pair moves as one.
+  const ringAt = (radius: number, coreMat: LineMaterial, glowMat: LineMaterial) => {
+    const geo = bag.add(new LineGeometry());
+    geo.setPositions(circlePositions(radius));
+    const ring = new THREE.Group();
+    ring.add(new Line2(geo, glowMat), new Line2(geo, coreMat));
+    return ring;
+  };
 
   // The disc: a bright ring with a wider, fainter companion outside it.
-  const discRing = ringAt(DISC_RADIUS, orbitMat);
+  const discRing = ringAt(DISC_RADIUS, orbitMat, orbitGlowMat);
   discRing.rotation.x = Math.PI / 2;
-  const discOuter = ringAt(DISC_RADIUS * 1.16, orbitFaintMat);
+  const discOuter = ringAt(DISC_RADIUS * 1.16, orbitFaintMat, orbitFaintGlowMat);
   discOuter.rotation.x = Math.PI / 2;
 
-  // The ring standing through the disc, leaned slightly so it never collapses
-  // to a dead-straight line as the scene turns.
-  const uprightRing = ringAt(DISC_RADIUS * 0.94, orbitMat);
-  uprightRing.rotation.z = 0.22;
+  // The ring standing through the disc. It is tilted off the view plane as well
+  // as leaned, so as it precesses it narrows to a slim ellipse instead of
+  // collapsing to a flat line once per half turn.
+  const uprightRing = ringAt(DISC_RADIUS * 0.88, orbitMat, orbitGlowMat);
+  uprightRing.rotation.z = 0.24;
+  uprightRing.rotation.x = 0.38;
 
   orbits.add(discRing, discOuter, uprightRing);
   group.add(orbits);
@@ -337,6 +384,27 @@ export function createNeuralScene(glowTex: THREE.Texture, bag: DisposableBag): N
   const dust = new THREE.Points(dustGeo, dustMat);
   group.add(dust);
 
+  // The haze that makes the rings read as sitting in a nebula rather than in
+  // empty space. A plane lying in the disc plane, not a sprite: a sprite would
+  // always face the camera and so would refuse to tilt with the disc.
+  const hazeMat = bag.add(
+    new THREE.MeshBasicMaterial({
+      map: glowTex,
+      color: ORANGE,
+      transparent: true,
+      opacity: 0.17,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+    })
+  );
+  const haze = new THREE.Mesh(
+    bag.add(new THREE.PlaneGeometry(DISC_RADIUS * 2.7, DISC_RADIUS * 2.7)),
+    hazeMat
+  );
+  haze.rotation.x = Math.PI / 2;
+  group.add(haze);
+
   /* ---------------------------------------------------------------- */
   const update = (delta: number, elapsed: number, input: NeuralInput) => {
     group.rotation.y += delta * (0.09 + input.spinBoost);
@@ -351,7 +419,7 @@ export function createNeuralScene(glowTex: THREE.Texture, bag: DisposableBag): N
     // point travels instead of sitting still.
     discRing.rotation.z += delta * 0.07;
     discOuter.rotation.z -= delta * 0.04;
-    uprightRing.rotation.y += delta * 0.16;
+    uprightRing.rotation.y += delta * 0.07;
     orbits.rotation.x = Math.sin(elapsed * 0.14) * 0.07;
 
     for (let i = 0; i < PULSES; i++) {
@@ -379,9 +447,13 @@ export function createNeuralScene(glowTex: THREE.Texture, bag: DisposableBag): N
     edgeMat.opacity = 0.11 + Math.sin(elapsed * 0.9) * 0.04;
     ringMat.opacity = 0.14 + Math.sin(elapsed * 0.7) * 0.04;
     orbitMat.opacity = 0.44 + Math.sin(elapsed * 1.1) * 0.12;
+    orbitGlowMat.opacity = 0.2 + Math.sin(elapsed * 1.1) * 0.08;
     orbitFaintMat.opacity = 0.13 + Math.sin(elapsed * 0.8 + 1) * 0.05;
+    orbitFaintGlowMat.opacity = 0.09 + Math.sin(elapsed * 0.8 + 1) * 0.04;
     dustMat.opacity = 0.3 + Math.sin(elapsed * 2.1) * 0.14;
     dust.rotation.y -= delta * 0.03;
+    hazeMat.opacity = 0.14 + Math.sin(elapsed * 0.6) * 0.05;
+    haze.rotation.z += delta * 0.02;
   };
 
   return { group, update };

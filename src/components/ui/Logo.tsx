@@ -7,7 +7,7 @@ interface LogoMarkProps {
   size?: number;
 }
 
-export function LogoMark({ className = "w-10 h-10 text-gold", size }: LogoMarkProps) {
+export function LogoMark({ className = "w-10 h-10 text-cream", size }: LogoMarkProps) {
   const style = size ? { width: size, height: size } : undefined;
 
   return (
@@ -72,14 +72,14 @@ export function Logo({ className = "", showText = true }: LogoProps) {
       aria-label="AI Bootcamp"
     >
       {/* Astrolabe Mark */}
-      <LogoMark className="w-9 h-9 sm:w-11 sm:h-11 text-gold transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-[45deg]" />
+      <LogoMark className="w-9 h-9 sm:w-11 sm:h-11 text-cream transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-[45deg]" />
 
       {/* Horizontal Wordmark: Switches to mark-only below 360px */}
       {showText && (
         <div className="hidden min-[360px]:flex flex-col text-left justify-center select-none whitespace-nowrap">
           <div className="flex items-center gap-2 mb-0.5">
-            <span className="w-4 sm:w-5 h-[1px] bg-gold opacity-80" />
-            <span className="font-serif text-[10px] sm:text-[11px] font-semibold tracking-[0.24em] text-gold uppercase leading-none">
+            <span className="w-4 sm:w-5 h-[1px] bg-cream opacity-80" />
+            <span className="font-serif text-[10px] sm:text-[11px] font-semibold tracking-[0.24em] text-cream uppercase leading-none">
               AI
             </span>
           </div>

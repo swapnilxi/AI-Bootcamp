@@ -147,7 +147,7 @@ export function AdminAvailability() {
                     ))}
                     <button
                       onClick={() => setHours([...hours, { dayOfWeek: dow, startTime: "10:00", endTime: "18:00", slotDuration: 60 }])}
-                      className="min-h-0 inline-flex items-center gap-1.5 text-xs text-gold/80 hover:text-gold"
+                      className="min-h-0 inline-flex items-center gap-1.5 text-xs text-text-muted hover:text-text"
                     >
                       <Plus className="w-3.5 h-3.5" /> Add hours
                     </button>
@@ -160,7 +160,7 @@ export function AdminAvailability() {
             <button
               disabled={saving}
               onClick={() => put({ weeklyHours: hours }, "Weekly hours saved")}
-              className="px-5 py-2 rounded-xl bg-gold hover:bg-[#FFB073] text-black text-sm font-semibold disabled:opacity-40"
+              className="px-5 py-2 rounded-xl bg-cream hover:bg-cream/90 text-black text-sm font-semibold disabled:opacity-40"
             >
               Save weekly hours
             </button>
@@ -182,7 +182,7 @@ export function AdminAvailability() {
             <button
               disabled={!block.date || saving}
               onClick={() => put({ blockDate: block }, "Date blocked").then(() => setBlock({ date: "", reason: "" }))}
-              className="px-4 py-2.5 rounded-xl border border-gold/40 text-gold text-sm hover:bg-gold/10 disabled:opacity-40"
+              className="px-4 py-2.5 rounded-xl border border-cream/30 text-cream text-sm hover:bg-cream/10 disabled:opacity-40"
             >
               Block date
             </button>
@@ -270,7 +270,7 @@ export function AdminAvailability() {
             <button
               disabled={saving}
               onClick={() => put({ settings }, "Booking rules saved")}
-              className="px-5 py-2 rounded-xl bg-gold hover:bg-[#FFB073] text-black text-sm font-semibold disabled:opacity-40"
+              className="px-5 py-2 rounded-xl bg-cream hover:bg-cream/90 text-black text-sm font-semibold disabled:opacity-40"
             >
               Save rules
             </button>
@@ -287,10 +287,10 @@ export function AdminAvailability() {
             ] as const
           ).map(([name, ok, vars]) => (
             <div key={name} className="flex items-start gap-3">
-              {ok ? <CheckCircle2 className="w-4 h-4 text-emerald-300 mt-0.5" /> : <MinusCircle className="w-4 h-4 text-amber-300 mt-0.5" />}
+              {ok ? <CheckCircle2 className="w-4 h-4 text-emerald-300 mt-0.5" /> : <MinusCircle className="w-4 h-4 text-cream mt-0.5" />}
               <div>
                 <p className="text-sm text-ink">
-                  {name}: <span className={ok ? "text-emerald-300" : "text-amber-300"}>{ok ? "connected" : "not configured"}</span>
+                  {name}: <span className={ok ? "text-emerald-300" : "text-cream"}>{ok ? "connected" : "not configured"}</span>
                 </p>
                 {!ok && <p className="text-[11px] text-text-muted mt-0.5">Set {vars} in your environment.</p>}
               </div>
@@ -303,7 +303,7 @@ export function AdminAvailability() {
         </section>
 
         {msg && (
-          <p className={`text-sm p-3 rounded-xl border ${msg.ok ? "text-emerald-300 border-emerald-500/25 bg-emerald-500/10" : "text-clay border-clay/30 bg-clay/10"}`}>
+          <p className={`text-sm p-3 rounded-xl border ${msg.ok ? "text-emerald-300 border-emerald-500/25 bg-emerald-500/10" : "text-cream border-cream/25 bg-cream/10"}`}>
             {msg.text}
           </p>
         )}

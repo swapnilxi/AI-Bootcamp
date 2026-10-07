@@ -93,7 +93,7 @@ export default function MyBookingsPage() {
             <div key={b.id} className="editorial-card p-6 sm:p-8 space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-mist pb-3">
                 <div className="flex items-center gap-3">
-                  <span className="font-mono text-sm font-bold text-indigo bg-mist/60 px-2.5 py-1 rounded-full">
+                  <span className="font-mono text-sm font-bold text-text bg-mist/60 px-2.5 py-1 rounded-full">
                     {b.referenceCode}
                   </span>
                   <span
@@ -101,10 +101,10 @@ export default function MyBookingsPage() {
                       b.status === "CONFIRMED" || b.status === "RESCHEDULED"
                         ? "bg-emerald-500/10 text-emerald-300 border border-emerald-500/25"
                         : b.status === "PENDING"
-                        ? "bg-amber-500/10 text-amber-300 border border-amber-500/25"
+                        ? "bg-cream/10 text-text-muted border border-cream/20"
                         : b.status === "COMPLETED"
                         ? "bg-white/5 text-text-muted border border-white/10"
-                        : "bg-clay/15 text-clay border border-clay/30"
+                        : "bg-cream/10 text-text-muted border border-cream/20"
                     }`}
                   >
                     {b.status === "PENDING" ? "AWAITING CONFIRMATION" : b.status === "RESCHEDULED" ? "CONFIRMED" : b.status}
@@ -123,7 +123,7 @@ export default function MyBookingsPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-ink/80 pt-1">
                 <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-gold shrink-0" />
+                  <Calendar className="w-4 h-4 text-text-muted shrink-0" />
                   <span>
                     {new Date(b.scheduledAt).toLocaleDateString("en-US", {
                       weekday: "short",
@@ -137,7 +137,7 @@ export default function MyBookingsPage() {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-gold shrink-0" />
+                  <Clock className="w-4 h-4 text-text-muted shrink-0" />
                   <span>{b.durationMinutes} Minutes (1-on-1 Session)</span>
                 </div>
               </div>
@@ -145,7 +145,7 @@ export default function MyBookingsPage() {
               <div className="flex justify-end">
                 <Link
                   href={`/book/confirmation?ref=${b.referenceCode}&t=${b.accessToken}`}
-                  className="text-xs font-semibold text-gold hover:underline"
+                  className="text-xs font-semibold text-text-muted hover:underline"
                 >
                   View &amp; manage →
                 </Link>
@@ -173,7 +173,7 @@ export default function MyBookingsPage() {
         </div>
       ) : (
         <div className="editorial-card p-12 text-center space-y-4 max-w-md mx-auto">
-          <Calendar className="w-10 h-10 text-gold mx-auto" />
+          <Calendar className="w-10 h-10 text-text-muted mx-auto" />
           <h3 className="font-serif text-2xl text-ink font-medium">No Scheduled Sessions</h3>
           <p className="text-sm text-ink/70">
             You do not currently have any scheduled sessions.

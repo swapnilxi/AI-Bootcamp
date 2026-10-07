@@ -292,7 +292,7 @@ export function InstructorAiChatModal({
 
   return createPortal(
     <div data-lenis-prevent className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-2xl h-[min(760px,calc(100vh-2rem))] max-h-[90vh] bg-[#121217] border border-gold/40 rounded-3xl shadow-[0_20px_60px_-15px_rgba(255,143,66,0.25)] flex flex-col overflow-hidden text-ink">
+      <div className="relative w-full max-w-2xl h-[min(760px,calc(100vh-2rem))] max-h-[90vh] bg-[#121217] border border-cream/15 rounded-3xl shadow-[0_20px_60px_-15px_rgba(255,143,66,0.25)] flex flex-col overflow-hidden text-ink">
         {/* Glow ambient background */}
         <div className="absolute top-0 right-0 w-80 h-80 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -305,10 +305,10 @@ export function InstructorAiChatModal({
                 <img
                   src={instructor.avatarUrl}
                   alt={instructor.name || "Instructor"}
-                  className="w-12 h-12 rounded-2xl object-cover border border-gold/50 shadow-md"
+                  className="w-12 h-12 rounded-2xl object-cover border border-cream/30 shadow-md"
                 />
               ) : (
-                <div className="w-12 h-12 rounded-2xl bg-gold/10 border border-gold/30 text-gold flex items-center justify-center font-serif text-lg font-bold">
+                <div className="w-12 h-12 rounded-2xl bg-cream/10 border border-cream/20 text-text flex items-center justify-center font-serif text-lg font-bold">
                   {instructor.name?.charAt(0) || "M"}
                 </div>
               )}
@@ -322,7 +322,7 @@ export function InstructorAiChatModal({
                 <h3 className="font-serif text-lg text-ink font-medium truncate">
                   {instructor.name}
                 </h3>
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold tracking-wider bg-gold/15 text-gold border border-gold/30">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold tracking-wider bg-cream/10 text-text border border-cream/20">
                   <Bot className="w-3 h-3" />
                   <span>AI Twin</span>
                 </span>
@@ -339,7 +339,7 @@ export function InstructorAiChatModal({
                 onClick={() => setShowSettings(!showSettings)}
                 className={`p-2 rounded-xl transition-all ${
                   showSettings
-                    ? "bg-gold text-black"
+                    ? "bg-cream text-black"
                     : "text-text-muted hover:text-gold hover:bg-white/5"
                 }`}
                 title="Manage AI Persona Context & Chatting Style"
@@ -354,7 +354,7 @@ export function InstructorAiChatModal({
                   onClose();
                   onOpenBooking(instructor);
                 }}
-                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gold/15 hover:bg-gold/25 border border-gold/40 text-gold text-xs font-semibold transition-colors"
+                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cream/10 hover:bg-cream/15 border border-cream/25 text-text text-xs font-semibold transition-colors"
               >
                 <Calendar className="w-3.5 h-3.5" />
                 <span>Book Live 1:1</span>
@@ -374,7 +374,7 @@ export function InstructorAiChatModal({
         {showSettings && (
           <div className="relative z-20 px-5 py-4 bg-[#16161d] border-b border-white/10 space-y-4 max-h-[380px] overflow-y-auto animate-fade-in text-xs">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1.5 text-gold font-semibold">
+              <div className="flex items-center gap-1.5 text-text font-semibold">
                 <Wand2 className="w-4 h-4" />
                 <span>AI Persona Context & Chatting Style Editor</span>
               </div>
@@ -384,7 +384,7 @@ export function InstructorAiChatModal({
             </div>
 
             {settingsNotice && (
-              <div className="p-2.5 rounded-xl bg-gold/10 border border-gold/30 text-gold text-xs flex items-center gap-2">
+              <div className="p-2.5 rounded-xl bg-cream/8 border border-cream/20 text-text text-xs flex items-center gap-2">
                 <Check className="w-4 h-4 shrink-0" />
                 <span>{settingsNotice}</span>
               </div>
@@ -394,7 +394,7 @@ export function InstructorAiChatModal({
             <div className="space-y-1.5 bg-black/40 p-3 rounded-xl border border-white/10">
               <div className="flex items-center justify-between">
                 <label className="text-text-muted font-medium flex items-center gap-1">
-                  <MessageSquare className="w-3.5 h-3.5 text-gold" />
+                  <MessageSquare className="w-3.5 h-3.5 text-text-muted" />
                   <span>Sample Chat / Teaching Excerpt</span>
                 </label>
                 <button
@@ -471,14 +471,14 @@ export function InstructorAiChatModal({
         )}
 
         {/* Disclaimer Bar */}
-        <div className="px-5 py-2 bg-gold/5 border-b border-white/5 flex items-center justify-between text-[11px] text-text-muted">
+        <div className="px-5 py-2 bg-cream/5 border-b border-white/5 flex items-center justify-between text-[11px] text-text-muted">
           <div className="flex items-center gap-1.5">
-            <Shield className="w-3.5 h-3.5 text-gold/70 shrink-0" />
+            <Shield className="w-3.5 h-3.5 text-text-muted shrink-0" />
             <span>
-              Speaking with <strong className="text-gold">{instructor.name}&apos;s</strong> AI Twin for demo & 24/7 inquiries.
+              Speaking with <strong className="text-text">{instructor.name}&apos;s</strong> AI Twin for demo & 24/7 inquiries.
             </span>
           </div>
-          <span className="text-[10px] hidden sm:inline text-gold/80">
+          <span className="text-[10px] hidden sm:inline text-text-muted">
             Grounded in this instructor&apos;s courses
           </span>
         </div>
@@ -496,7 +496,7 @@ export function InstructorAiChatModal({
                 className={`flex gap-3 ${isBot ? "justify-start" : "justify-end"} animate-fade-in`}
               >
                 {isBot && (
-                  <div className="shrink-0 w-8 h-8 rounded-xl bg-gold/15 border border-gold/30 text-gold flex items-center justify-center shadow-sm">
+                  <div className="shrink-0 w-8 h-8 rounded-xl bg-cream/10 border border-cream/20 text-text flex items-center justify-center shadow-sm">
                     {instructor.avatarUrl ? (
                       <img
                         src={instructor.avatarUrl}
@@ -504,7 +504,7 @@ export function InstructorAiChatModal({
                         className="w-full h-full rounded-xl object-cover"
                       />
                     ) : (
-                      <Sparkles className="w-4 h-4 text-gold" />
+                      <Sparkles className="w-4 h-4 text-text" />
                     )}
                   </div>
                 )}
@@ -517,7 +517,7 @@ export function InstructorAiChatModal({
                   }`}
                 >
                   {isBot ? (
-                    <div className="prose prose-invert prose-xs sm:prose-sm max-w-none text-ink/90 leading-relaxed font-sans space-y-2 [&_p]:leading-relaxed [&_p]:mb-2.5 last:[&_p]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1.5 [&_ul]:my-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1.5 [&_ol]:my-2 [&_strong]:text-gold [&_strong]:font-semibold [&_em]:italic [&_em]:text-gold/90 [&_li]:text-ink/90 [&_li]:leading-relaxed [&_h1]:text-base [&_h2]:text-sm [&_h3]:text-xs [&_h1]:font-serif [&_h2]:font-serif [&_h3]:font-serif [&_blockquote]:border-l-2 [&_blockquote]:border-gold/50 [&_blockquote]:pl-3 [&_blockquote]:italic">
+                    <div className="prose prose-invert prose-xs sm:prose-sm max-w-none text-ink/90 leading-relaxed font-sans space-y-2 [&_p]:leading-relaxed [&_p]:mb-2.5 last:[&_p]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1.5 [&_ul]:my-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1.5 [&_ol]:my-2 [&_strong]:text-text [&_strong]:font-semibold [&_em]:italic [&_em]:text-text-muted [&_li]:text-ink/90 [&_li]:leading-relaxed [&_h1]:text-base [&_h2]:text-sm [&_h3]:text-xs [&_h1]:font-serif [&_h2]:font-serif [&_h3]:font-serif [&_blockquote]:border-l-2 [&_blockquote]:border-cream/30 [&_blockquote]:pl-3 [&_blockquote]:italic">
                       <ReactMarkdown>{msg.content}</ReactMarkdown>
                     </div>
                   ) : (
@@ -543,8 +543,8 @@ export function InstructorAiChatModal({
 
           {loading && (
             <div className="flex gap-3 justify-start animate-fade-in">
-              <div className="shrink-0 w-8 h-8 rounded-xl bg-gold/15 border border-gold/30 text-gold flex items-center justify-center">
-                <Sparkles className="w-4 h-4 animate-spin text-gold" />
+              <div className="shrink-0 w-8 h-8 rounded-xl bg-cream/10 border border-cream/20 text-text flex items-center justify-center">
+                <Sparkles className="w-4 h-4 animate-spin text-text" />
               </div>
               <div className="rounded-2xl p-3.5 bg-white/[0.04] border border-white/10 flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-gold animate-bounce" />

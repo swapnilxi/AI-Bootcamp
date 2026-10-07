@@ -49,15 +49,15 @@ export default function NewClassPage() {
   const isAdmin = isAdminRole(role);
   if (!canCreateClasses(role)) {
     return (
-      <div className="max-w-xl mx-auto my-20 p-8 rounded-2xl bg-black-raised/80 backdrop-blur-sm border border-clay/30 text-center space-y-4 shadow-sm">
-        <AlertCircle className="w-12 h-12 text-clay mx-auto" />
+      <div className="max-w-xl mx-auto my-20 p-8 rounded-2xl bg-black-raised/80 backdrop-blur-sm border border-cream/20 text-center space-y-4 shadow-sm">
+        <AlertCircle className="w-12 h-12 text-cream mx-auto" />
         <h2 className="font-serif text-2xl font-bold text-ink">Instructor Access Required</h2>
         <p className="text-sm text-ink/70">
           Only instructors and administrators can author new academy classes.
         </p>
         <Link
           href="/courses"
-          className="inline-block px-5 py-2.5 rounded-xl bg-gold text-black text-sm font-medium hover:bg-[#FFB073] transition-colors"
+          className="inline-block px-5 py-2.5 rounded-xl bg-cream text-black text-sm font-medium hover:bg-[#FFB073] transition-colors"
         >
           Return to Classes
         </Link>
@@ -118,7 +118,7 @@ export default function NewClassPage() {
           <span>Back to Classes</span>
         </Link>
         <h1 className="font-serif text-3xl sm:text-4xl font-bold text-ink flex items-center gap-3">
-          <BookPlus className="w-7 h-7 text-gold" />
+          <BookPlus className="w-7 h-7 text-cream" />
           <span>Create New AI Engineering Class</span>
         </h1>
         <p className="text-sm text-ink/60 mt-1">
@@ -127,7 +127,7 @@ export default function NewClassPage() {
       </div>
 
       {errorMsg && (
-        <div className="p-4 rounded-xl bg-clay/10 border border-clay/30 text-clay text-sm flex items-center gap-2">
+        <div className="p-4 rounded-xl bg-cream/8 border border-cream/20 text-text text-sm flex items-center gap-2">
           <AlertCircle className="w-4 h-4 shrink-0" />
           <span>{errorMsg}</span>
         </div>
@@ -247,7 +247,7 @@ export default function NewClassPage() {
           {/* Subscriber Only Toggle */}
           <div className="flex items-center justify-between p-4 rounded-2xl bg-ivory border border-mist">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-indigo/10 flex items-center justify-center text-indigo">
+              <div className="w-9 h-9 rounded-lg bg-cream/10 flex items-center justify-center text-cream">
                 <Star className="w-5 h-5" />
               </div>
               <div>
@@ -272,7 +272,7 @@ export default function NewClassPage() {
           <div className="p-4 rounded-2xl bg-ivory border border-mist space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg bg-gold/10 flex items-center justify-center text-gold">
+                <div className="w-9 h-9 rounded-lg bg-cream/10 flex items-center justify-center text-cream">
                   <Lock className="w-5 h-5" />
                 </div>
                 <div>
@@ -304,7 +304,7 @@ export default function NewClassPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Set secret class password..."
-                  className="w-full px-4 py-2.5 rounded-xl border border-gold/50 focus:border-gold focus:ring-1 focus:ring-gold text-ink text-sm bg-black/60"
+                  className="w-full px-4 py-2.5 rounded-xl border border-cream/40 focus:border-gold focus:ring-1 focus:ring-gold text-ink text-sm bg-black/60"
                 />
               </div>
             )}
@@ -321,7 +321,7 @@ export default function NewClassPage() {
           <button
             type="submit"
             disabled={loading}
-            className="flex-1 py-3 rounded-xl bg-gold hover:bg-[#FFB073] text-black font-semibold text-sm shadow-md transition-all disabled:opacity-50"
+            className="flex-1 py-3 rounded-xl bg-cream hover:bg-[#FFB073] text-black font-semibold text-sm shadow-md transition-all disabled:opacity-50"
           >
             {loading ? "Publishing Class..." : "Publish AI Engineering Class"}
           </button>

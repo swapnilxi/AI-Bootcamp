@@ -20,7 +20,7 @@ export default function ContactPage() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 space-y-16">
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto space-y-3">
-        <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gold px-3.5 py-1.5 rounded-full bg-black-raised border border-black-line inline-block">
+        <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-text-muted px-3.5 py-1.5 rounded-full bg-black-raised border border-black-line inline-block">
           Direct Inquiries
         </span>
         <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl text-text font-normal leading-tight">
@@ -43,7 +43,7 @@ export default function ContactPage() {
             <div className="space-y-5 text-base">
               {/* WhatsApp (Single color gold, no off-brand green) */}
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded bg-black border border-black-line flex items-center justify-center shrink-0 mt-0.5 text-gold">
+                <div className="w-10 h-10 rounded bg-black border border-black-line flex items-center justify-center shrink-0 mt-0.5 text-text-muted">
                   <Icon name="whatsapp" variant="filled" size={18} />
                 </div>
                 <div>
@@ -64,7 +64,7 @@ export default function ContactPage() {
 
               {/* Email */}
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded bg-black border border-black-line flex items-center justify-center shrink-0 mt-0.5 text-gold">
+                <div className="w-10 h-10 rounded bg-black border border-black-line flex items-center justify-center shrink-0 mt-0.5 text-text-muted">
                   <Icon name="mail" variant="line" size={18} />
                 </div>
                 <div>
@@ -83,7 +83,7 @@ export default function ContactPage() {
 
               {/* Practice Hours */}
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded bg-black border border-black-line flex items-center justify-center shrink-0 mt-0.5 text-gold">
+                <div className="w-10 h-10 rounded bg-black border border-black-line flex items-center justify-center shrink-0 mt-0.5 text-text-muted">
                   <Icon name="clock" variant="line" size={18} />
                 </div>
                 <div>
@@ -99,7 +99,7 @@ export default function ContactPage() {
 
               {/* Location */}
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded bg-black border border-black-line flex items-center justify-center shrink-0 mt-0.5 text-gold">
+                <div className="w-10 h-10 rounded bg-black border border-black-line flex items-center justify-center shrink-0 mt-0.5 text-text-muted">
                   <Icon name="role-admin" variant="line" size={18} />
                 </div>
                 <div>
@@ -147,7 +147,7 @@ export default function ContactPage() {
                   setSubject("");
                   setMessage("");
                 }}
-                className="text-xs font-semibold uppercase tracking-wider text-gold hover:underline pt-2 block mx-auto"
+                className="text-xs font-semibold uppercase tracking-wider text-text-muted hover:underline pt-2 block mx-auto"
               >
                 Send another message
               </button>

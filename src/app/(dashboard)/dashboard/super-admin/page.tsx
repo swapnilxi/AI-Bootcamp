@@ -125,12 +125,12 @@ export default function SuperAdminDashboardPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
       {/* Header Banner */}
-      <div className="p-8 sm:p-12 rounded-3xl shadow-lg relative overflow-hidden bg-[linear-gradient(135deg,#21140f_0%,#141417_55%,#0f0f12_100%)] text-text border border-gold/25">
+      <div className="p-8 sm:p-12 rounded-3xl shadow-lg relative overflow-hidden bg-[linear-gradient(135deg,#21140f_0%,#141417_55%,#0f0f12_100%)] text-text border border-cream/25">
         <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <span className="px-3.5 py-1 rounded-full text-xs font-semibold bg-white/10 text-gold border border-gold/40 flex items-center gap-1.5">
-                <Crown className="w-4 h-4 text-gold" />
+              <span className="px-3.5 py-1 rounded-full text-xs font-semibold bg-white/10 text-cream border border-cream/40 flex items-center gap-1.5">
+                <Crown className="w-4 h-4 text-cream" />
                 <span>Super Administrator Console</span>
               </span>
             </div>
@@ -154,7 +154,7 @@ export default function SuperAdminDashboardPage() {
       </div>
 
       {errorMsg && (
-        <div className="p-4 rounded-xl bg-clay/10 border border-clay/30 text-clay text-sm flex items-center gap-2">
+        <div className="p-4 rounded-xl bg-cream/10 border border-cream/30 text-cream text-sm flex items-center gap-2">
           <AlertCircle className="w-4 h-4 shrink-0" />
           <span>{errorMsg}</span>
         </div>
@@ -172,7 +172,7 @@ export default function SuperAdminDashboardPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h2 className="font-serif text-2xl font-bold text-ink flex items-center gap-2.5">
-              <Users className="w-5 h-5 text-indigo" />
+              <Users className="w-5 h-5 text-cream" />
               <span>Role Assignment & Permissions Matrix</span>
             </h2>
             <p className="text-xs text-ink/60 mt-1">
@@ -205,7 +205,7 @@ export default function SuperAdminDashboardPage() {
                         <p className="font-semibold text-ink flex items-center gap-1.5">
                           <span>{u.name || "Client"}</span>
                           {isCurrentUser && (
-                            <span className="text-[10px] text-gold bg-gold/10 px-1.5 py-0.5 rounded-full border border-gold/30 font-bold">
+                            <span className="text-[10px] text-cream bg-cream/10 px-1.5 py-0.5 rounded-full border border-cream/30 font-bold">
                               You
                             </span>
                           )}
@@ -217,13 +217,13 @@ export default function SuperAdminDashboardPage() {
                       <span
                         className={`px-3 py-1 rounded-full text-[10px] font-semibold border ${
                           u.role === "SUPER_ADMIN"
-                            ? "bg-clay/10 text-clay border-clay/30"
+                            ? "bg-cream/10 text-cream border-cream/30"
                             : u.role === "ADMIN"
-                            ? "bg-gold/10 text-gold border-gold/40"
+                            ? "bg-cream/10 text-cream border-cream/40"
                             : u.role === "INSTRUCTOR"
-                            ? "bg-gold/5 text-[#FFD2A8] border-gold/25"
+                            ? "bg-cream/5 text-cream border-cream/25"
                             : u.role === "SUBSCRIBER"
-                            ? "bg-indigo/10 text-indigo border-indigo/30"
+                            ? "bg-cream/10 text-cream border-cream/30"
                             : "bg-mist text-ink border-mist"
                         }`}
                       >
@@ -259,7 +259,7 @@ export default function SuperAdminDashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="p-8 sm:p-10 rounded-3xl bg-black-raised/80 backdrop-blur-sm border border-white/[0.07] space-y-4 shadow-sm">
           <h2 className="font-serif text-2xl font-bold text-ink flex items-center gap-2.5">
-            <Sliders className="w-5 h-5 text-gold" />
+            <Sliders className="w-5 h-5 text-cream" />
             <span>Platform Configurations</span>
           </h2>
           <p className="text-xs text-ink/60 leading-relaxed">
@@ -318,7 +318,7 @@ export default function SuperAdminDashboardPage() {
                     key={s.id}
                     className="p-3 rounded-xl bg-ivory border border-mist flex items-center justify-between text-xs"
                   >
-                    <code className="text-indigo font-mono text-[11px] font-semibold">{s.key}</code>
+                    <code className="text-cream font-mono text-[11px] font-semibold">{s.key}</code>
                     <span className="text-ink font-medium">{s.value}</span>
                   </div>
                 ))}
@@ -334,7 +334,7 @@ export default function SuperAdminDashboardPage() {
         {/* Security & Access Overview */}
         <div className="p-8 sm:p-10 rounded-3xl bg-black-raised/80 backdrop-blur-sm border border-white/[0.07] space-y-4 shadow-sm">
           <h2 className="font-serif text-2xl font-bold text-ink flex items-center gap-2.5">
-            <ShieldAlert className="w-5 h-5 text-clay" />
+            <ShieldAlert className="w-5 h-5 text-cream" />
             <span>Security Posture & Compliance</span>
           </h2>
 

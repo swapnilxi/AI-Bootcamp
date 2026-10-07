@@ -32,7 +32,7 @@ function BulletsDisplay({ items }: { items: SectionItem[] }) {
       {bullets.map((b) =>
         b.kind === "bullet" ? (
           <li key={b.id} className="flex items-start gap-3 text-ink/85 text-sm leading-relaxed">
-            <span className="mt-1 w-1.5 h-1.5 rounded-full bg-gold shrink-0" />
+            <span className="mt-1 w-1.5 h-1.5 rounded-full bg-text-muted shrink-0" />
             {b.text}
           </li>
         ) : null
@@ -49,10 +49,10 @@ function TestimonialsDisplay({ items }: { items: SectionItem[] }) {
       {tests.map((t) =>
         t.kind === "testimonial" ? (
           <div key={t.id} className="p-5 rounded-2xl bg-white/[0.04] border border-white/10 flex flex-col gap-3">
-            <Quote className="w-5 h-5 text-gold/40 shrink-0" />
+            <Quote className="w-5 h-5 text-cream/30 shrink-0" />
             <p className="text-ink/85 text-sm leading-relaxed italic">&ldquo;{t.quote}&rdquo;</p>
             <div className="flex items-center gap-2.5 mt-auto pt-2 border-t border-white/5">
-              <div className="w-8 h-8 rounded-full bg-gold/20 border border-gold/30 text-gold flex items-center justify-center text-xs font-bold shrink-0">
+              <div className="w-8 h-8 rounded-full bg-cream/10 border border-cream/20 text-text flex items-center justify-center text-xs font-bold shrink-0">
                 {t.avatarInitial || t.author.charAt(0)}
               </div>
               <div>
@@ -107,7 +107,7 @@ function CredentialsDisplay({ items }: { items: SectionItem[] }) {
       {creds.map((c) =>
         c.kind === "credential" ? (
           <div key={c.id} className="flex items-start gap-3 p-3.5 rounded-xl bg-white/[0.03] border border-white/8">
-            <Award className="w-4 h-4 text-gold shrink-0 mt-0.5" />
+            <Award className="w-4 h-4 text-text-muted shrink-0 mt-0.5" />
             <div>
               <div className="text-ink text-sm font-medium">{c.title}</div>
               {(c.institution || c.year) && (
@@ -128,7 +128,7 @@ function VideoDisplay({ items }: { items: SectionItem[] }) {
   if (!vid || vid.kind !== "video" || !vid.url) return null;
   const embedUrl = getYouTubeEmbedUrl(vid.url);
   if (!embedUrl) return (
-    <a href={vid.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm text-gold underline mt-2">
+    <a href={vid.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm text-text underline mt-2">
       <Play className="w-4 h-4" /> Watch Video
     </a>
   );
@@ -175,7 +175,7 @@ function SectionContent({ section }: { section: ProfileSection }) {
       return (
         <>
           {section.content && (
-            <div className="prose prose-invert prose-sm max-w-none text-ink/85 [&_strong]:text-gold [&_em]:text-gold/80">
+            <div className="prose prose-invert prose-sm max-w-none text-ink/85 [&_strong]:text-cream [&_em]:text-cream/80">
               <ReactMarkdown>{section.content}</ReactMarkdown>
             </div>
           )}
@@ -186,7 +186,7 @@ function SectionContent({ section }: { section: ProfileSection }) {
       return (
         <>
           {section.content && (
-            <div className="prose prose-invert prose-sm max-w-none text-ink/85 [&_strong]:text-gold [&_em]:text-gold/80 [&_p]:leading-relaxed">
+            <div className="prose prose-invert prose-sm max-w-none text-ink/85 [&_strong]:text-cream [&_em]:text-cream/80 [&_p]:leading-relaxed">
               <ReactMarkdown>{section.content}</ReactMarkdown>
             </div>
           )}

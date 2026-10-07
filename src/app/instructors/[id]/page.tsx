@@ -296,7 +296,7 @@ export default function InstructorProfilePage({
     if (type === "BOTH") {
       return "bg-purple-500/15 text-purple-300 border-purple-500/30";
     }
-    return "bg-gold/15 text-gold border-gold/30";
+    return "bg-cream/15 text-cream border-cream/20";
   };
 
   const handleCopyLink = () => {
@@ -330,7 +330,7 @@ export default function InstructorProfilePage({
   if (error || !instructor) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-20 text-center space-y-6">
-        <div className="w-16 h-16 rounded-full bg-clay/10 border border-clay/30 text-clay flex items-center justify-center mx-auto text-2xl">
+        <div className="w-16 h-16 rounded-full bg-cream/10 border border-cream/20 text-cream flex items-center justify-center mx-auto text-2xl">
           ✦
         </div>
         <h1 className="font-serif text-3xl text-ink">Mentor Not Found</h1>
@@ -339,7 +339,7 @@ export default function InstructorProfilePage({
         </p>
         <Link
           href="/instructors"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gold text-black font-semibold text-sm hover:bg-[#FFB073] transition-colors"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-cream text-black font-semibold text-sm hover:bg-[#FFB073] transition-colors"
         >
           <ArrowLeft className="w-4 h-4" /> Back to instructors
         </Link>
@@ -414,7 +414,7 @@ export default function InstructorProfilePage({
         {/* ========================================================= */}
         {/* SECTION 1: MENTOR HERO                                   */}
         {/* ========================================================= */}
-        <div className="relative overflow-hidden rounded-3xl bg-[linear-gradient(135deg,#23160f_0%,#131317_45%,#0d0d10_100%)] border border-gold/35 p-6 sm:p-10 md:p-12 shadow-[0_24px_70px_-20px_rgba(0,0,0,0.85)]">
+        <div className="relative overflow-hidden rounded-3xl bg-[linear-gradient(135deg,#23160f_0%,#131317_45%,#0d0d10_100%)] border border-cream/25 p-6 sm:p-10 md:p-12 shadow-[0_24px_70px_-20px_rgba(0,0,0,0.85)]">
           {/* Ambient Cosmic Auras */}
           <div className="absolute top-0 right-0 w-96 h-96 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -428,10 +428,10 @@ export default function InstructorProfilePage({
                   <img
                     src={instructor.avatarUrl}
                     alt={instructor.name || "Mentor"}
-                    className="w-28 h-28 sm:w-36 sm:h-36 rounded-3xl object-cover border-2 border-gold/50 shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]"
+                    className="w-28 h-28 sm:w-36 sm:h-36 rounded-3xl object-cover border-2 border-cream/40 shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]"
                   />
                 ) : (
-                  <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-3xl bg-black-raised border-2 border-gold/50 text-gold flex items-center justify-center font-serif text-5xl font-bold shrink-0 shadow-inner">
+                  <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-3xl bg-black-raised border-2 border-cream/40 text-cream flex items-center justify-center font-serif text-5xl font-bold shrink-0 shadow-inner">
                     {instructor.name ? instructor.name.charAt(0).toUpperCase() : "M"}
                   </div>
                 )}
@@ -460,7 +460,7 @@ export default function InstructorProfilePage({
 
                   {instructor.birthPlace && (
                     <span className="inline-flex items-center gap-1 text-xs text-text-muted bg-white/[0.04] px-2.5 py-1 rounded-full border border-white/5">
-                      <MapPin className="w-3 h-3 text-gold/80" />
+                      <MapPin className="w-3 h-3 text-cream/70" />
                       {instructor.birthPlace}
                     </span>
                   )}
@@ -482,7 +482,7 @@ export default function InstructorProfilePage({
 
                 {/* Session fee */}
                 <div className="flex flex-wrap items-center gap-4 pt-1 text-xs">
-                  <div className="text-gold/90 font-medium bg-gold/10 px-3 py-1.5 rounded-xl border border-gold/25">
+                  <div className="text-cream/90 font-medium bg-cream/10 px-3 py-1.5 rounded-xl border border-cream/20">
                     1-on-1 mentor session:{" "}
                     <strong className="text-ink font-semibold">${instructor.sessionPrice || 150} USD</strong>{" "}
                     ({instructor.sessionDuration || 60} mins)
@@ -497,7 +497,7 @@ export default function InstructorProfilePage({
                 <div className="flex flex-col gap-2.5 w-full">
                   <Link
                     href="/dashboard/instructor"
-                    className="px-6 py-3.5 rounded-xl bg-gold hover:bg-[#FFB073] text-black font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all text-center"
+                    className="px-6 py-3.5 rounded-xl bg-cream hover:bg-[#FFB073] text-black font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all text-center"
                   >
                     <GraduationCap className="w-4 h-4" />
                     <span>Enter Teaching Studio</span>
@@ -514,7 +514,7 @@ export default function InstructorProfilePage({
                 <>
                   <button
                     onClick={() => setIsBookingOpen(true)}
-                    className="px-7 py-4 rounded-xl bg-gold hover:bg-[#FFB073] text-black font-semibold text-xs uppercase tracking-widest transition-all shadow-[0_10px_30px_rgba(255,143,66,0.25)] hover:shadow-[0_15px_40px_rgba(255,143,66,0.4)] flex items-center justify-center gap-2.5 group"
+                    className="px-7 py-4 rounded-xl bg-cream hover:bg-[#FFB073] text-black font-semibold text-xs uppercase tracking-widest transition-all shadow-[0_10px_30px_rgba(255,143,66,0.25)] hover:shadow-[0_15px_40px_rgba(255,143,66,0.4)] flex items-center justify-center gap-2.5 group"
                   >
                     <Calendar className="w-4 h-4 text-black group-hover:scale-110 transition-transform" />
                     <span>Book 1:1 Session</span>
@@ -538,19 +538,19 @@ export default function InstructorProfilePage({
           {/* Credential stats ribbon */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-8 pt-6 border-t border-white/[0.08]">
             <div className="p-3 sm:p-4 rounded-2xl bg-black/40 border border-white/5 backdrop-blur-sm">
-              <div className="text-gold font-serif text-lg sm:text-xl font-medium">17+ Years</div>
+              <div className="text-cream font-serif text-lg sm:text-xl font-medium">17+ Years</div>
               <div className="text-[11px] text-text-muted uppercase tracking-wider mt-0.5">Years teaching</div>
             </div>
             <div className="p-3 sm:p-4 rounded-2xl bg-black/40 border border-white/5 backdrop-blur-sm">
-              <div className="text-gold font-serif text-lg sm:text-xl font-medium">1,200+</div>
+              <div className="text-cream font-serif text-lg sm:text-xl font-medium">1,200+</div>
               <div className="text-[11px] text-text-muted uppercase tracking-wider mt-0.5">Charts & Biofield Scans</div>
             </div>
             <div className="p-3 sm:p-4 rounded-2xl bg-black/40 border border-white/5 backdrop-blur-sm">
-              <div className="text-gold font-serif text-lg sm:text-xl font-medium">100%</div>
+              <div className="text-cream font-serif text-lg sm:text-xl font-medium">100%</div>
               <div className="text-[11px] text-text-muted uppercase tracking-wider mt-0.5">Sacred Confidentiality</div>
             </div>
             <div className="p-3 sm:p-4 rounded-2xl bg-black/40 border border-white/5 backdrop-blur-sm">
-              <div className="text-gold font-serif text-lg sm:text-xl font-medium">4.99 / 5</div>
+              <div className="text-cream font-serif text-lg sm:text-xl font-medium">4.99 / 5</div>
               <div className="text-[11px] text-text-muted uppercase tracking-wider mt-0.5">Learner rating</div>
             </div>
           </div>
@@ -600,7 +600,7 @@ export default function InstructorProfilePage({
         {specialtiesList.length > 0 && (
           <section className="space-y-6">
             <div className="border-b border-white/[0.08] pb-4">
-              <div className="flex items-center gap-2 text-gold text-xs font-semibold uppercase tracking-widest">
+              <div className="flex items-center gap-2 text-cream text-xs font-semibold uppercase tracking-widest">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Diagnostic Architecture</span>
               </div>
@@ -622,11 +622,11 @@ export default function InstructorProfilePage({
                     onClick={() => setSelectedModality(spec)}
                     className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs transition-all ${
                       isSelected
-                        ? "bg-gold text-black shadow-[0_4px_20px_rgba(255,143,66,0.35)] scale-105 font-bold border border-gold"
+                        ? "bg-cream text-black shadow-[0_4px_20px_rgba(255,143,66,0.35)] scale-105 font-bold border border-cream"
                         : "bg-white/[0.04] hover:bg-white/[0.09] text-ink/90 border border-white/10 hover:border-gold/30 font-medium"
                     }`}
                   >
-                    <Tag className={`w-3.5 h-3.5 ${isSelected ? "text-black" : "text-gold"}`} />
+                    <Tag className={`w-3.5 h-3.5 ${isSelected ? "text-black" : "text-cream"}`} />
                     <span>{spec}</span>
                     {isSelected && <Check className="w-3.5 h-3.5 text-black stroke-[3]" />}
                   </button>
@@ -636,10 +636,10 @@ export default function InstructorProfilePage({
 
             {/* Detailed Modality Dossier Card */}
             {activeDossier && (
-              <div className="editorial-card rounded-3xl p-6 sm:p-9 border border-gold/30 bg-gradient-to-br from-black-raised via-[#15151a] to-black space-y-6 shadow-2xl animate-fade-in">
+              <div className="editorial-card rounded-3xl p-6 sm:p-9 border border-cream/20 bg-gradient-to-br from-black-raised via-[#15151a] to-black space-y-6 shadow-2xl animate-fade-in">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.08] pb-5">
                   <div className="space-y-1">
-                    <span className="text-[11px] uppercase tracking-wider font-semibold text-gold bg-gold/10 px-3 py-1 rounded-full border border-gold/25 inline-block">
+                    <span className="text-[11px] uppercase tracking-wider font-semibold text-cream bg-cream/10 px-3 py-1 rounded-full border border-cream/20 inline-block">
                       {activeDossier.category}
                     </span>
                     <h3 className="font-serif text-2xl sm:text-3xl text-ink font-normal">
@@ -660,7 +660,7 @@ export default function InstructorProfilePage({
                     </button>
                     <button
                       onClick={() => setIsBookingOpen(true)}
-                      className="px-4 py-2.5 rounded-xl bg-gold hover:bg-[#FFB073] text-black text-xs font-semibold shadow-md transition-colors flex items-center gap-1.5"
+                      className="px-4 py-2.5 rounded-xl bg-cream hover:bg-[#FFB073] text-black text-xs font-semibold shadow-md transition-colors flex items-center gap-1.5"
                     >
                       <Calendar className="w-3.5 h-3.5" />
                       <span>Include in 1:1</span>
@@ -672,7 +672,7 @@ export default function InstructorProfilePage({
                   {/* Left Column: Mechanism & Instruments */}
                   <div className="space-y-5">
                     <div>
-                      <h4 className="text-xs font-semibold uppercase tracking-wider text-gold flex items-center gap-1.5 mb-2">
+                      <h4 className="text-xs font-semibold uppercase tracking-wider text-cream flex items-center gap-1.5 mb-2">
                         <Activity className="w-3.5 h-3.5" />
                         <span>How it works</span>
                       </h4>
@@ -683,7 +683,7 @@ export default function InstructorProfilePage({
 
                     <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 space-y-1.5">
                       <div className="text-[11px] font-semibold uppercase tracking-wider text-ink/70 flex items-center gap-1.5">
-                        <Gem className="w-3.5 h-3.5 text-gold" />
+                        <Gem className="w-3.5 h-3.5 text-cream" />
                         <span>Tools & techniques</span>
                       </div>
                       <p className="text-xs text-text-muted font-mono">
@@ -694,14 +694,14 @@ export default function InstructorProfilePage({
 
                   {/* Right Column: Clinical Transformations */}
                   <div className="space-y-4">
-                    <h4 className="text-xs font-semibold uppercase tracking-wider text-gold flex items-center gap-1.5">
+                    <h4 className="text-xs font-semibold uppercase tracking-wider text-cream flex items-center gap-1.5">
                       <CheckCircle2 className="w-3.5 h-3.5" />
                       <span>Expected Breakthroughs & Resolutions</span>
                     </h4>
                     <ul className="space-y-3">
                       {activeDossier.benefits.map((b, i) => (
                         <li key={i} className="flex items-start gap-3 text-xs sm:text-sm text-ink/80">
-                          <span className="w-5 h-5 rounded-full bg-gold/15 text-gold border border-gold/30 flex items-center justify-center shrink-0 text-xs font-bold mt-0.5">
+                          <span className="w-5 h-5 rounded-full bg-cream/15 text-cream border border-cream/20 flex items-center justify-center shrink-0 text-xs font-bold mt-0.5">
                             ✦
                           </span>
                           <span className="leading-relaxed">{b}</span>
@@ -721,7 +721,7 @@ export default function InstructorProfilePage({
         <section className="space-y-6">
           <div className="border-b border-white/[0.08] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
-              <div className="flex items-center gap-2 text-gold text-xs font-semibold uppercase tracking-widest">
+              <div className="flex items-center gap-2 text-cream text-xs font-semibold uppercase tracking-widest">
                 <Shield className="w-3.5 h-3.5" />
                 <span>Pedagogical Doctrine</span>
               </div>
@@ -743,7 +743,7 @@ export default function InstructorProfilePage({
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${
                     activeTab === tab.id
-                      ? "bg-gold text-black shadow-md"
+                      ? "bg-cream text-black shadow-md"
                       : "text-text-muted hover:text-ink hover:bg-white/5"
                   }`}
                 >
@@ -776,12 +776,12 @@ export default function InstructorProfilePage({
                 </div>
 
                 {/* Teaching philosophy */}
-                <div className="lg:col-span-4 p-6 sm:p-7 rounded-2xl bg-gradient-to-br from-gold/10 via-black-raised to-black border border-gold/30 space-y-3 shadow-lg">
-                  <div className="text-gold font-serif text-4xl leading-none">&ldquo;</div>
+                <div className="lg:col-span-4 p-6 sm:p-7 rounded-2xl bg-gradient-to-br from-cream/8 via-black-raised to-black border border-cream/20 space-y-3 shadow-lg">
+                  <div className="text-cream font-serif text-4xl leading-none">&ldquo;</div>
                   <p className="font-serif text-sm sm:text-base text-ink italic leading-relaxed">
                     If you cannot measure it, you are not engineering it — you are hoping. Most of what separates a demo from a system is the evaluation nobody wanted to write.
                   </p>
-                  <div className="pt-2 border-t border-white/10 flex items-center gap-2 text-xs text-gold font-semibold">
+                  <div className="pt-2 border-t border-white/10 flex items-center gap-2 text-xs text-cream font-semibold">
                     <span>— {instructor.name}</span>
                   </div>
                 </div>
@@ -790,21 +790,21 @@ export default function InstructorProfilePage({
               {/* Three Core Axioms */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-white/[0.08]">
                 <div className="space-y-1.5 p-4 rounded-2xl bg-white/[0.02] border border-white/5">
-                  <span className="text-gold font-bold text-xs uppercase tracking-wider">Axiom I</span>
+                  <span className="text-cream font-bold text-xs uppercase tracking-wider">Axiom I</span>
                   <h5 className="font-serif text-base text-ink">Mechanism Before Recipe</h5>
                   <p className="text-xs text-text-muted leading-relaxed">
                     A rule you can apply is worth less than a mechanism you can reason from when the rule stops holding.
                   </p>
                 </div>
                 <div className="space-y-1.5 p-4 rounded-2xl bg-white/[0.02] border border-white/5">
-                  <span className="text-gold font-bold text-xs uppercase tracking-wider">Axiom II</span>
+                  <span className="text-cream font-bold text-xs uppercase tracking-wider">Axiom II</span>
                   <h5 className="font-serif text-base text-ink">Subtle Biofield Priority</h5>
                   <p className="text-xs text-text-muted leading-relaxed">
                     Financial stagnation manifests in the etheric body long before appearing in worldly bank accounts.
                   </p>
                 </div>
                 <div className="space-y-1.5 p-4 rounded-2xl bg-white/[0.02] border border-white/5">
-                  <span className="text-gold font-bold text-xs uppercase tracking-wider">Axiom III</span>
+                  <span className="text-cream font-bold text-xs uppercase tracking-wider">Axiom III</span>
                   <h5 className="font-serif text-base text-ink">Measure, Then Claim</h5>
                   <p className="text-xs text-text-muted leading-relaxed">
                     If a change cannot be shown to have helped on a fixed test set, it is a preference, not an improvement.
@@ -858,7 +858,7 @@ export default function InstructorProfilePage({
                     className="p-6 rounded-2xl bg-white/[0.02] border border-white/5 space-y-2.5 hover:border-gold/30 transition-colors"
                   >
                     <div className="flex items-center justify-between text-xs">
-                      <span className="text-gold font-bold uppercase tracking-wider flex items-center gap-1.5">
+                      <span className="text-cream font-bold uppercase tracking-wider flex items-center gap-1.5">
                         <step.icon className="w-3.5 h-3.5" />
                         {step.phase}
                       </span>
@@ -879,7 +879,7 @@ export default function InstructorProfilePage({
                 </span>
                 <button
                   onClick={() => setIsBookingOpen(true)}
-                  className="px-5 py-2.5 rounded-xl bg-gold text-black font-semibold text-xs uppercase tracking-wider hover:bg-[#FFB073] transition-colors"
+                  className="px-5 py-2.5 rounded-xl bg-cream text-black font-semibold text-xs uppercase tracking-wider hover:bg-[#FFB073] transition-colors"
                 >
                   Schedule Private Session →
                 </button>
@@ -905,7 +905,7 @@ export default function InstructorProfilePage({
                     title: "Evaluation",
                     subtitle: "Can you prove it works?",
                     icon: Gem,
-                    color: "text-amber-300",
+                    color: "text-cream",
                     desc: "Whether there is a fixed test set behind your quality claims, what it measures, and whether it would catch the regression you are most afraid of.",
                   },
                   {
@@ -938,7 +938,7 @@ export default function InstructorProfilePage({
                       <rem.icon className={`w-5 h-5 ${rem.color}`} />
                       <div>
                         <h4 className="font-serif text-lg text-ink">{rem.title}</h4>
-                        <div className="text-[11px] uppercase tracking-wider text-gold/80 font-semibold">
+                        <div className="text-[11px] uppercase tracking-wider text-cream/80 font-semibold">
                           {rem.subtitle}
                         </div>
                       </div>
@@ -993,7 +993,7 @@ export default function InstructorProfilePage({
                     className="p-6 rounded-2xl bg-white/[0.02] border border-white/5 space-y-3 flex flex-col justify-between hover:border-gold/30 transition-colors"
                   >
                     <div className="space-y-2">
-                      <span className="text-[10px] uppercase tracking-wider font-semibold text-gold bg-gold/10 px-2.5 py-0.5 rounded-full border border-gold/20 inline-block">
+                      <span className="text-[10px] uppercase tracking-wider font-semibold text-cream bg-cream/10 px-2.5 py-0.5 rounded-full border border-cream/20 inline-block">
                         {cs.focus}
                       </span>
                       <h4 className="font-serif text-base text-ink font-medium">
@@ -1038,7 +1038,7 @@ export default function InstructorProfilePage({
         <section className="space-y-6">
           <div className="flex items-center justify-between border-b border-white/[0.07] pb-4">
             <div>
-              <div className="flex items-center gap-2 text-gold text-xs font-semibold uppercase tracking-widest">
+              <div className="flex items-center gap-2 text-cream text-xs font-semibold uppercase tracking-widest">
                 <BookOpen className="w-3.5 h-3.5" />
                 <span>Academy Curriculum</span>
               </div>
@@ -1049,7 +1049,7 @@ export default function InstructorProfilePage({
             {isSelf && (
               <Link
                 href="/courses/new"
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gold text-black font-semibold text-xs hover:bg-[#FFB073] transition-colors"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-cream text-black font-semibold text-xs hover:bg-[#FFB073] transition-colors"
               >
                 <span>+ Create Class</span>
               </Link>
@@ -1058,14 +1058,14 @@ export default function InstructorProfilePage({
 
           {instructor.createdCourses.length === 0 ? (
             <div className="p-12 text-center rounded-2xl border border-dashed border-white/10 space-y-3">
-              <BookOpen className="w-10 h-10 text-gold/50 mx-auto" />
+              <BookOpen className="w-10 h-10 text-cream/50 mx-auto" />
               <h3 className="font-serif text-xl text-ink">No upcoming classes scheduled</h3>
               <p className="text-sm text-text-muted max-w-sm mx-auto">
                 This mentor is currently dedicating time to private 1:1 sessions and authoring their next curriculum.
               </p>
               <Link
                 href="/courses"
-                className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-gold hover:underline pt-2"
+                className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cream hover:underline pt-2"
               >
                 <span>Browse All Academy Classes</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -1084,7 +1084,7 @@ export default function InstructorProfilePage({
                   >
                     <div className="space-y-4">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-[11px] font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-gold/10 text-gold border border-gold/20">
+                        <span className="text-[11px] font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-cream/10 text-cream border border-cream/20">
                           {isFree ? "Free Class" : `$${priceNum.toFixed(2)}`}
                         </span>
                         {cls.isSubscriberOnly && (
@@ -1093,7 +1093,7 @@ export default function InstructorProfilePage({
                           </span>
                         )}
                         {cls.isPasswordProtected && (
-                          <span className="text-[10px] uppercase tracking-wider font-semibold text-amber-300 bg-amber-950/40 px-2 py-0.5 rounded-full border border-amber-800/40">
+                          <span className="text-[10px] uppercase tracking-wider font-semibold text-cream bg-cream/10 px-2 py-0.5 rounded-full border border-cream/20">
                             Secret Key
                           </span>
                         )}
@@ -1109,15 +1109,15 @@ export default function InstructorProfilePage({
 
                       <div className="grid grid-cols-3 gap-2 pt-3 border-t border-white/[0.06] text-xs text-text-muted">
                         <div className="flex items-center gap-1.5">
-                          <Clock className="w-3.5 h-3.5 text-gold" />
+                          <Clock className="w-3.5 h-3.5 text-cream" />
                           <span>{cls.durationMinutes}m</span>
                         </div>
                         <div className="flex items-center gap-1.5">
-                          <BookOpen className="w-3.5 h-3.5 text-gold" />
+                          <BookOpen className="w-3.5 h-3.5 text-cream" />
                           <span>{cls._count.lessons} lessons</span>
                         </div>
                         <div className="flex items-center gap-1.5">
-                          <Users className="w-3.5 h-3.5 text-gold" />
+                          <Users className="w-3.5 h-3.5 text-cream" />
                           <span>{cls._count.enrollments} enrolled</span>
                         </div>
                       </div>
@@ -1125,13 +1125,13 @@ export default function InstructorProfilePage({
 
                     <div className="pt-5 mt-4 border-t border-white/[0.06] flex items-center justify-between">
                       <span className="text-xs text-text-muted flex items-center gap-1.5">
-                        <Calendar className="w-3.5 h-3.5 text-gold/70" />
+                        <Calendar className="w-3.5 h-3.5 text-cream/70" />
                         <span>{new Date(cls.schedule).toLocaleDateString()}</span>
                       </span>
 
                       <Link
                         href={`/courses/${cls.id}`}
-                        className="px-4 py-2 rounded-xl bg-gold/15 hover:bg-gold text-gold hover:text-black font-semibold text-xs tracking-wider uppercase transition-all flex items-center gap-1.5"
+                        className="px-4 py-2 rounded-xl bg-cream/15 hover:bg-cream text-cream hover:text-black font-semibold text-xs tracking-wider uppercase transition-all flex items-center gap-1.5"
                       >
                         <span>View Curriculum</span>
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -1149,7 +1149,7 @@ export default function InstructorProfilePage({
         {/* ========================================================= */}
         <section className="editorial-card rounded-3xl p-8 sm:p-10 border border-white/[0.08] bg-black-raised/50 space-y-6">
           <div className="text-center max-w-xl mx-auto space-y-1">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-cream">
               How We Work
             </span>
             <h3 className="font-serif text-2xl text-ink">
@@ -1159,21 +1159,21 @@ export default function InstructorProfilePage({
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
             <div className="space-y-2 text-center sm:text-left p-4">
-              <Shield className="w-6 h-6 text-gold mx-auto sm:mx-0" />
+              <Shield className="w-6 h-6 text-cream mx-auto sm:mx-0" />
               <h4 className="font-serif text-lg text-ink">Absolute Confidentiality</h4>
               <p className="text-xs text-text-muted leading-relaxed">
                 Your code, architecture and roadmap stay between you and your mentor. NDAs are signed as a matter of routine.
               </p>
             </div>
             <div className="space-y-2 text-center sm:text-left p-4">
-              <Award className="w-6 h-6 text-gold mx-auto sm:mx-0" />
+              <Award className="w-6 h-6 text-cream mx-auto sm:mx-0" />
               <h4 className="font-serif text-lg text-ink">Empowerment, Not Fatalism</h4>
               <p className="text-xs text-text-muted leading-relaxed">
                 We reject superstition and fearful forecasting. AI intelligence is deployed solely to expand sovereign agency and awaken clarity.
               </p>
             </div>
             <div className="space-y-2 text-center sm:text-left p-4">
-              <CheckCircle2 className="w-6 h-6 text-gold mx-auto sm:mx-0" />
+              <CheckCircle2 className="w-6 h-6 text-cream mx-auto sm:mx-0" />
               <h4 className="font-serif text-lg text-ink">Verified Shastric Roots</h4>
               <p className="text-xs text-text-muted leading-relaxed">
                 Every recommendation comes from systems this mentor has actually built and run, not from a reading of the documentation.
@@ -1187,17 +1187,17 @@ export default function InstructorProfilePage({
       {/* FLOATING STICKY BOOKING BAR (ON SCROLL)                   */}
       {/* ========================================================= */}
       {showStickyBar && (
-        <div className="fixed bottom-0 inset-x-0 z-40 bg-[#121217]/95 border-t border-gold/30 backdrop-blur-md py-3 px-4 sm:px-8 shadow-2xl animate-fade-in">
+        <div className="fixed bottom-0 inset-x-0 z-40 bg-[#121217]/95 border-t border-cream/20 backdrop-blur-md py-3 px-4 sm:px-8 shadow-2xl animate-fade-in">
           <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
             <div className="flex items-center gap-3 min-w-0">
               {instructor.avatarUrl ? (
                 <img
                   src={instructor.avatarUrl}
                   alt={instructor.name || "Mentor"}
-                  className="w-10 h-10 rounded-xl object-cover border border-gold/40 shrink-0"
+                  className="w-10 h-10 rounded-xl object-cover border border-cream/30 shrink-0"
                 />
               ) : (
-                <div className="w-10 h-10 rounded-xl bg-gold/10 border border-gold/30 text-gold flex items-center justify-center font-serif text-sm font-bold shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-cream/10 border border-cream/20 text-cream flex items-center justify-center font-serif text-sm font-bold shrink-0">
                   {instructor.name?.charAt(0) || "M"}
                 </div>
               )}
@@ -1205,7 +1205,7 @@ export default function InstructorProfilePage({
                 <div className="font-serif text-sm text-ink truncate font-medium">
                   {instructor.name}
                 </div>
-                <div className="text-[11px] text-gold/90 truncate">
+                <div className="text-[11px] text-cream/90 truncate">
                   1:1 Session: ${instructor.sessionPrice || 150} USD ({instructor.sessionDuration || 60}m)
                 </div>
               </div>
@@ -1225,7 +1225,7 @@ export default function InstructorProfilePage({
 
               <button
                 onClick={() => setIsBookingOpen(true)}
-                className="px-5 py-2.5 rounded-xl bg-gold hover:bg-[#FFB073] text-black text-xs font-semibold uppercase tracking-wider shadow-md transition-colors flex items-center gap-1.5"
+                className="px-5 py-2.5 rounded-xl bg-cream hover:bg-[#FFB073] text-black text-xs font-semibold uppercase tracking-wider shadow-md transition-colors flex items-center gap-1.5"
               >
                 <Calendar className="w-3.5 h-3.5 text-black" />
                 <span>Book 1:1</span>

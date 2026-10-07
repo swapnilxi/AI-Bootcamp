@@ -79,7 +79,7 @@ function RegisterForm() {
           onClick={() => setRole("USER")}
           className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all ${
             role === "USER"
-              ? "bg-gold text-black shadow-sm"
+              ? "bg-cream text-black shadow-sm"
               : "text-text-muted hover:text-ink"
           }`}
         >
@@ -90,8 +90,8 @@ function RegisterForm() {
           onClick={() => setRole("INSTRUCTOR")}
           className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
             role === "INSTRUCTOR"
-              ? "bg-gold text-black shadow-sm"
-              : "text-text-muted hover:text-gold"
+              ? "bg-cream text-black shadow-sm"
+              : "text-text-muted hover:text-ink"
           }`}
         >
           <Icon name="role-instructor" variant="filled" size={14} />
@@ -100,7 +100,7 @@ function RegisterForm() {
       </div>
 
       <div className="text-center space-y-2">
-        <div className="inline-flex w-12 h-12 rounded-full bg-black-raised border border-gold/30 text-gold font-serif text-2xl font-bold items-center justify-center mb-1 shadow-sm">
+        <div className="inline-flex w-12 h-12 rounded-full bg-black-raised border border-cream/30 text-cream font-serif text-2xl font-bold items-center justify-center mb-1 shadow-sm">
           M
         </div>
         <h1 className="font-serif text-3xl font-normal text-ink">
@@ -115,7 +115,7 @@ function RegisterForm() {
 
       <div className="editorial-card p-8 sm:p-10 space-y-6">
         {error && (
-          <div className="flex items-start gap-2.5 p-3.5 rounded-lg bg-clay/15 border border-clay/30 text-clay text-xs">
+          <div className="flex items-start gap-2.5 p-3.5 rounded-lg bg-cream/10 border border-cream/30 text-cream text-xs">
             <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
             <span>{error}</span>
           </div>
@@ -175,7 +175,7 @@ function RegisterForm() {
 
           {role === "INSTRUCTOR" && (
             <div>
-              <label className="block text-xs font-semibold text-gold uppercase tracking-wider mb-2">
+              <label className="block text-xs font-semibold text-ink uppercase tracking-wider mb-2">
                 Background & Specialisation (Bio)
               </label>
               <textarea
@@ -183,7 +183,7 @@ function RegisterForm() {
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
                 placeholder="e.g. Staff ML engineer, 6 years building retrieval and agent systems in production..."
-                className="w-full px-3.5 py-2.5 rounded-lg border border-gold/30 bg-black/60 text-ink text-xs focus:outline-none focus:border-gold resize-none"
+                className="w-full px-3.5 py-2.5 rounded-lg border border-cream/30 bg-black/60 text-ink text-xs focus:outline-none focus:border-gold resize-none"
               />
             </div>
           )}
@@ -205,7 +205,7 @@ function RegisterForm() {
 
         <div className="text-center text-xs text-ink/70 pt-2">
           Already have an account?{" "}
-          <Link href="/login" className="text-indigo hover:underline font-semibold">
+          <Link href="/login" className="text-cream hover:underline font-semibold">
             Sign In Here
           </Link>
         </div>

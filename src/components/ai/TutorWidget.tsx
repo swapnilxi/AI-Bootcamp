@@ -90,10 +90,10 @@ export function TutorWidget() {
       )}
 
       {open && (
-        <div className="fixed bottom-5 right-5 z-[60] w-[min(26rem,calc(100vw-2.5rem))] h-[min(34rem,calc(100vh-6rem))] flex flex-col rounded-3xl border border-gold/20 bg-[#111114]/95 backdrop-blur-xl shadow-[0_30px_70px_-20px_rgba(0,0,0,0.9)] overflow-hidden">
+        <div className="fixed bottom-5 right-5 z-[60] w-[min(26rem,calc(100vw-2.5rem))] h-[min(34rem,calc(100vh-6rem))] flex flex-col rounded-3xl border border-cream/12 bg-[#111114]/95 backdrop-blur-xl shadow-[0_30px_70px_-20px_rgba(0,0,0,0.9)] overflow-hidden">
           <header className="flex items-center justify-between gap-3 px-4 py-3 border-b border-white/[0.07]">
             <div className="flex items-center gap-2.5 min-w-0">
-              <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gold/10 border border-gold/30 text-gold shrink-0">
+              <span className="flex items-center justify-center w-8 h-8 rounded-full bg-cream/10 border border-cream/20 text-text shrink-0">
                 <GraduationCap className="w-4 h-4" />
               </span>
               <div className="min-w-0">

@@ -14,8 +14,8 @@ import Link from "next/link";
 /* ------------------------------------------------------------------ */
 const DIFFICULTY_STYLE: Record<string, string> = {
   BEGINNER: "border-emerald-500/30 bg-emerald-500/10 text-emerald-300",
-  INTERMEDIATE: "border-gold/35 bg-gold/10 text-gold",
-  ADVANCED: "border-orange-600/40 bg-orange-600/10 text-orange-300",
+  INTERMEDIATE: "border-cream/30 bg-cream/10 text-text",
+  ADVANCED: "border-cream/45 bg-cream/15 text-text",
   PRODUCTION: "border-purple-500/35 bg-purple-500/10 text-purple-300",
 };
 
@@ -78,7 +78,7 @@ export function ProgressBar({
       {label && (
         <div className="flex items-baseline justify-between mb-2">
           <span className="text-xs uppercase tracking-wider text-text-muted">{label}</span>
-          <span className="text-sm font-semibold text-gold tabular-nums">{pct}%</span>
+          <span className="text-sm font-semibold text-text tabular-nums">{pct}%</span>
         </div>
       )}
       <div
@@ -136,7 +136,7 @@ export function PageHeader({
   return (
     <header className="flex flex-col gap-6 border-b border-black-line pb-8 md:flex-row md:items-end md:justify-between">
       <div className="max-w-2xl">
-        <span className="inline-flex items-center px-3 py-1 rounded-full border border-gold/30 bg-gold/[0.08] text-[11px] font-semibold uppercase tracking-widest text-gold">
+        <span className="inline-flex items-center px-3 py-1 rounded-full border border-cream/25 bg-cream/[0.08] text-[11px] font-semibold uppercase tracking-widest text-text">
           {eyebrow}
         </span>
         <h1 className="mt-4 font-serif text-4xl font-normal leading-tight text-text sm:text-5xl">{title}</h1>

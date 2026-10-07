@@ -1,26 +1,25 @@
 import type { Config } from "tailwindcss";
 
 /**
- * Curated Orange Ramp.
- * Dark Mode: #FF7315 sits at 500 — a luminous, warm radiant electric mandarin.
- * Light Mode: #DC4C00 / #E65A00 sits at 600 — a deep, rich spiced Seville amber with sharp contrast.
- * Neither too salmon nor muddy; electric yet sophisticated.
+ * Premium Orange Ramp — the pure, standard Tailwind orange scale.
+ * Used strictly as an accent/glow color: #F97316 at 500 (primary),
+ * #FB923C at 400 (bright accent), #EA580C at 600 (deep accent).
  */
 const orange = {
-  50: "#FFF6ED",
-  100: "#FFEBD4",
-  200: "#FFD2A8",
-  300: "#FFB073",
-  400: "#FF8F42",
-  500: "#FF7315",
-  600: "#DC4C00",
-  700: "#B83E00",
-  800: "#913000",
-  900: "#632100",
-  950: "#381200",
-  DEFAULT: "#FF7315",
-  spiced: "#DC4C00",
-  soft: "rgba(255, 115, 21, 0.14)",
+  50: "#FFF7ED",
+  100: "#FFEDD5",
+  200: "#FED7AA",
+  300: "#FDBA74",
+  400: "#FB923C",
+  500: "#F97316",
+  600: "#EA580C",
+  700: "#C2410C",
+  800: "#9A3412",
+  900: "#7C2D12",
+  950: "#431407",
+  DEFAULT: "#F97316",
+  spiced: "#EA580C",
+  soft: "rgba(249, 115, 22, 0.14)",
 };
 
 /**
@@ -74,20 +73,20 @@ const config: Config = {
         amber: orange,
         text: {
           DEFAULT: "#FAF6F0",
-          muted: "#A8A095",
+          muted: "#D8CBB4",
         },
         ink: {
           DEFAULT: "#FAF6F0",
           50: "#151311",
           100: "rgba(245, 237, 224, 0.12)",
-          200: "#A8A095",
+          200: "#D8CBB4",
           800: "#FAF6F0",
           900: "#FAF6F0",
           950: "#FAF6F0",
         },
         indigo: {
-          DEFAULT: "#FF7315",
-          light: "#FF8F42",
+          DEFAULT: "#F97316",
+          light: "#FB923C",
           dark: "#151311",
         },
         ivory: {
@@ -101,9 +100,9 @@ const config: Config = {
           dark: "rgba(245, 237, 224, 0.12)",
         },
         clay: {
-          DEFAULT: "#FF7315",
-          light: "#FF8F42",
-          dark: "#DC4C00",
+          DEFAULT: "#F97316",
+          light: "#FB923C",
+          dark: "#EA580C",
         },
       },
       fontFamily: {
@@ -113,9 +112,9 @@ const config: Config = {
       boxShadow: {
         card: "0 1px 3px 0 rgba(0, 0, 0, 0.4)",
         "card-hover": "0 8px 24px -4px rgba(0, 0, 0, 0.6)",
-        gold: "0 0 20px 0 rgba(255, 115, 21, 0.25)",
-        orange: "0 0 20px 0 rgba(255, 115, 21, 0.25)",
-        "neon-subtle": "0 0 16px -2px rgba(255, 115, 21, 0.28)",
+        gold: "0 0 20px 0 rgba(249, 115, 22, 0.25)",
+        orange: "0 0 20px 0 rgba(249, 115, 22, 0.25)",
+        "neon-subtle": "0 0 16px -2px rgba(249, 115, 22, 0.28)",
       },
       keyframes: {
         "float-gentle": {

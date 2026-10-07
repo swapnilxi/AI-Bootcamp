@@ -179,7 +179,7 @@ export function MentorBookingModal({
 
   return createPortal(
     <div data-lenis-prevent className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-lg max-h-[calc(100vh-2rem)] overflow-y-auto bg-[#141418] border border-gold/40 rounded-2xl shadow-2xl p-6 sm:p-8 text-ink">
+      <div className="relative w-full max-w-lg max-h-[calc(100vh-2rem)] overflow-y-auto bg-[#141418] border border-cream/20 rounded-2xl shadow-2xl p-6 sm:p-8 text-ink">
         {/* Glow ambient background */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -197,7 +197,7 @@ export function MentorBookingModal({
             </div>
 
             <div className="space-y-2">
-              <span className="text-xs uppercase tracking-[0.2em] text-gold font-semibold">
+              <span className="text-xs uppercase tracking-[0.2em] text-text font-semibold">
                 Direct Session Reserved
               </span>
               <h3 className="font-serif text-2xl text-ink">
@@ -205,7 +205,7 @@ export function MentorBookingModal({
               </h3>
               <p className="text-xs sm:text-sm text-text-muted max-w-md mx-auto">
                 Your private 1:1 session with{" "}
-                <strong className="text-gold">{mentor.name}</strong> has been scheduled.
+                <strong className="text-ink">{mentor.name}</strong> has been scheduled.
                 Both <strong className="text-ink">{mentor.name}</strong> and academy administration have been notified.
               </p>
             </div>
@@ -229,7 +229,7 @@ export function MentorBookingModal({
               </div>
               <div className="flex justify-between">
                 <span className="text-text-muted">Direct Video Room:</span>
-                <span className="text-gold truncate max-w-[200px]">
+                <span className="text-text truncate max-w-[200px]">
                   {confirmedBooking.meetingLink || "Ready at session time"}
                 </span>
               </div>
@@ -237,7 +237,7 @@ export function MentorBookingModal({
 
             <button
               onClick={onClose}
-              className="w-full py-3.5 rounded-xl bg-gold hover:bg-[#FFB073] text-black font-semibold text-sm transition-colors shadow-md"
+              className="w-full py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-sm transition-colors shadow-md"
             >
               Done & Return to Directory
             </button>
@@ -250,15 +250,15 @@ export function MentorBookingModal({
                 <img
                   src={mentor.avatarUrl}
                   alt={mentor.name || "Mentor"}
-                  className="w-14 h-14 rounded-2xl object-cover border border-gold/40 shadow-md shrink-0"
+                  className="w-14 h-14 rounded-2xl object-cover border border-cream/20 shadow-md shrink-0"
                 />
               ) : (
-                <div className="w-14 h-14 rounded-2xl bg-gold/10 border border-gold/30 text-gold flex items-center justify-center font-serif text-xl font-bold shrink-0">
+                <div className="w-14 h-14 rounded-2xl bg-cream/8 border border-cream/20 text-text flex items-center justify-center font-serif text-xl font-bold shrink-0">
                   {mentor.name?.charAt(0) || "P"}
                 </div>
               )}
               <div className="min-w-0">
-                <span className="text-[10px] uppercase tracking-wider text-gold font-semibold block">
+                <span className="text-[10px] uppercase tracking-wider text-text font-semibold block">
                   {getRoleBadge(mentor.mentorType)}
                 </span>
                 <h3 className="font-serif text-xl text-ink font-medium truncate">
@@ -281,7 +281,7 @@ export function MentorBookingModal({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
                 <label className="text-xs text-text-muted flex items-center gap-1.5 font-medium">
-                  <Calendar className="w-3.5 h-3.5 text-gold" />
+                  <Calendar className="w-3.5 h-3.5 text-text-muted" />
                   <span>Session Date</span>
                 </label>
                 <input
@@ -297,11 +297,11 @@ export function MentorBookingModal({
               <div className="space-y-1.5">
                 <label className="text-xs text-text-muted flex items-center justify-between font-medium">
                   <span className="flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5 text-gold" />
+                    <Clock className="w-3.5 h-3.5 text-text-muted" />
                     <span>Preferred Time</span>
                   </span>
                   {loadingSlots && (
-                    <span className="text-[10px] text-gold flex items-center gap-1 animate-pulse">
+                    <span className="text-[10px] text-text-muted flex items-center gap-1 animate-pulse">
                       Checking slots…
                     </span>
                   )}
@@ -328,7 +328,7 @@ export function MentorBookingModal({
                     })}
                   </select>
                 ) : (
-                  <div className="px-3 py-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs">
+                  <div className="px-3 py-2 rounded-xl bg-cream/5 border border-cream/15 text-text-muted text-xs">
                     {loadingSlots ? "Checking mentor availability…" : slotNotice || "No slots available on this date. Please pick another date."}
                   </div>
                 )}
@@ -339,7 +339,7 @@ export function MentorBookingModal({
             <div className="space-y-3">
               <div className="space-y-1.5">
                 <label className="text-xs text-text-muted flex items-center gap-1.5 font-medium">
-                  <User className="w-3.5 h-3.5 text-gold" />
+                  <User className="w-3.5 h-3.5 text-text-muted" />
                   <span>Your Full Name</span>
                 </label>
                 <input
@@ -355,7 +355,7 @@ export function MentorBookingModal({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1.5">
                   <label className="text-xs text-text-muted flex items-center gap-1.5 font-medium">
-                    <Mail className="w-3.5 h-3.5 text-gold" />
+                    <Mail className="w-3.5 h-3.5 text-text-muted" />
                     <span>Email Address</span>
                   </label>
                   <input
@@ -370,7 +370,7 @@ export function MentorBookingModal({
 
                 <div className="space-y-1.5">
                   <label className="text-xs text-text-muted flex items-center gap-1.5 font-medium">
-                    <Phone className="w-3.5 h-3.5 text-gold" />
+                    <Phone className="w-3.5 h-3.5 text-text-muted" />
                     <span>WhatsApp / Phone</span>
                   </label>
                   <input
@@ -402,7 +402,7 @@ export function MentorBookingModal({
               <button
                 type="submit"
                 disabled={loading || loadingSlots || availableSlots.length === 0 || !time}
-                className="w-full py-3.5 rounded-xl bg-gold hover:bg-[#FFB073] text-black font-semibold text-sm transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-sm transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {loading ? (
                   <>

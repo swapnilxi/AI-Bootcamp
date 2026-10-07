@@ -48,7 +48,7 @@ function Quiz({ endpoint }: { endpoint: string }) {
           <Sparkles className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
           {loading ? "Writing your quiz…" : "Generate quiz"}
         </button>
-        {error && <p className="text-xs text-clay">{error}</p>}
+        {error && <p className="text-xs text-text-muted">{error}</p>}
       </div>
     );
   }
@@ -74,7 +74,7 @@ function Quiz({ endpoint }: { endpoint: string }) {
                   : isCorrect
                   ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-200"
                   : oi === picked
-                  ? "border-clay/40 bg-clay/10 text-clay"
+                  ? "border-red-500/40 bg-red-500/10 text-red-200"
                   : "border-white/[0.06] text-text-muted";
                 return (
                   <button
@@ -98,7 +98,7 @@ function Quiz({ endpoint }: { endpoint: string }) {
         <p className="text-sm text-text-muted">
           {answered === questions.length ? (
             <>
-              Score: <span className="text-gold font-semibold">{score}/{questions.length}</span>
+              Score: <span className="text-text font-semibold">{score}/{questions.length}</span>
             </>
           ) : (
             `${answered}/${questions.length} answered`
@@ -141,7 +141,7 @@ export function LessonAiPanel({ courseId, lessonId, lessonTitle }: { courseId: s
               aria-selected={tab === key}
               onClick={() => setTab(key)}
               className={`min-h-0 inline-flex items-center gap-2 px-3 pb-3 text-sm border-b-2 -mb-px transition-colors ${
-                tab === key ? "border-gold text-gold" : "border-transparent text-text-muted hover:text-text"
+                tab === key ? "border-text text-text" : "border-transparent text-text-muted hover:text-text"
               }`}
             >
               <TabIcon className="w-4 h-4" /> {label}

@@ -135,7 +135,7 @@ function BookingWizard() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
       {/* Title & Trust Header */}
       <div className="text-center max-w-xl mx-auto mb-10">
-        <span className="text-xs font-semibold uppercase tracking-widest text-indigo px-3 py-1 rounded-full bg-mist/50 border border-mist inline-block mb-3">
+        <span className="text-xs font-semibold uppercase tracking-widest text-text-muted px-3 py-1 rounded-full bg-mist/50 border border-mist inline-block mb-3">
           Confidential Session
         </span>
         <h1 className="font-serif text-3xl sm:text-4xl text-ink font-normal">
@@ -205,7 +205,7 @@ function BookingWizard() {
         {/* Step Panels */}
         <div className="lg:col-span-2 editorial-card p-6 sm:p-10">
           {submitError && (
-            <div className="p-4 mb-6 rounded-lg bg-clay/15 border border-clay/30 text-clay text-sm flex items-start gap-2.5">
+            <div className="p-4 mb-6 rounded-lg bg-cream/8 border border-cream/20 text-text text-sm flex items-start gap-2.5">
               <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
               <span>{submitError}</span>
             </div>
@@ -244,7 +244,7 @@ function BookingWizard() {
                       >
                         <div className="flex items-start justify-between gap-4">
                           <div>
-                            <span className="text-[11px] font-semibold uppercase tracking-wider text-indigo">
+                            <span className="text-[11px] font-semibold uppercase tracking-wider text-text-muted">
                               {svc.category}
                             </span>
                             <h3 className="font-serif text-xl text-ink font-medium mt-0.5">
@@ -348,7 +348,7 @@ function BookingWizard() {
 
               {/* Contact Information */}
               <div className="space-y-4">
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-indigo">
+                <h3 className="text-xs font-semibold uppercase tracking-wider text-text-muted">
                   Client Contact
                 </h3>
 
@@ -411,7 +411,7 @@ function BookingWizard() {
               {/* AI Coordinates (Optional) */}
               <div className="space-y-4 pt-4 border-t border-mist">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-xs font-semibold uppercase tracking-wider text-indigo">
+                  <h3 className="text-xs font-semibold uppercase tracking-wider text-text-muted">
                     Birth Coordinates (Optional at booking)
                   </h3>
                   <span className="text-xs text-ink/60">Can be emailed later</span>
@@ -505,7 +505,7 @@ function BookingWizard() {
                 <p className="font-serif text-lg font-medium text-ink mt-0.5">
                   {selectedService.title}
                 </p>
-                <span className="inline-block mt-1 text-xs text-indigo font-medium px-2 py-0.5 rounded-full bg-mist/50">
+                <span className="inline-block mt-1 text-xs text-text-muted font-medium px-2 py-0.5 rounded-full bg-mist/50">
                   {selectedService.durationMinutes} Minutes • Recorded Session
                 </span>
               </div>
@@ -523,7 +523,7 @@ function BookingWizard() {
                     })}
                   </p>
                   <p className="text-ink/80 text-xs flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5 text-gold" />
+                    <Clock className="w-3.5 h-3.5 text-text-muted" />
                     <span>
                       {new Date(slot.start).toLocaleTimeString("en-US", {
                         hour: "numeric",
@@ -545,15 +545,15 @@ function BookingWizard() {
 
               <div className="pt-4 border-t border-mist/60 space-y-2 text-xs text-ink/75">
                 <div className="flex items-center gap-2">
-                  <Shield className="w-4 h-4 text-gold shrink-0" />
+                  <Shield className="w-4 h-4 text-text-muted shrink-0" />
                   <span>Confidential 1-on-1 private video call</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-gold shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-text-muted shrink-0" />
                   <span>Free rescheduling up to 24h prior</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <HelpCircle className="w-4 h-4 text-gold shrink-0" />
+                  <HelpCircle className="w-4 h-4 text-text-muted shrink-0" />
                   <span>Full audio & chart recording provided</span>
                 </div>
               </div>

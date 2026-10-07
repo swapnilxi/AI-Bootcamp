@@ -130,10 +130,10 @@ export default function EventDetailPage() {
 
             {/* Approval banners — only visible to the host and admins */}
             {isPending && (
-                <div className="mb-8 flex items-start gap-3 rounded-xl border border-amber-500/25 bg-amber-500/[0.07] p-5">
-                    <Hourglass className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" />
+                <div className="mb-8 flex items-start gap-3 rounded-xl border border-cream/20 bg-cream/[0.07] p-5">
+                    <Hourglass className="mt-0.5 h-5 w-5 shrink-0 text-cream" />
                     <div>
-                        <p className="font-semibold text-amber-200">Awaiting approval</p>
+                        <p className="font-semibold text-cream">Awaiting approval</p>
                         <p className="mt-1 text-sm text-ink/70">
                             This event is not visible to members yet. An administrator reviews every event before it is
                             announced — you will be notified as soon as it is approved.
@@ -155,13 +155,13 @@ export default function EventDetailPage() {
             {/* Hero */}
             <header className="mb-10 border-b border-mist pb-8">
                 <div className="mb-5 flex flex-wrap items-center gap-2">
-                    <span className="rounded-full border border-indigo/25 bg-indigo/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-indigo">
+                    <span className="rounded-full border border-cream/20 bg-cream/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-cream">
                         {event.category}
                     </span>
                     <span
                         className={`rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-wide ${event.price === 0
                             ? "border-emerald-500/25 bg-emerald-500/10 text-emerald-300"
-                            : "border-gold/30 bg-gold/[0.07] text-gold"
+                            : "border-cream/20 bg-cream/[0.07] text-cream"
                             }`}
                     >
                         {event.price === 0 ? "Free" : `$${event.price.toFixed(event.price % 1 === 0 ? 0 : 2)} USD`}
@@ -182,14 +182,14 @@ export default function EventDetailPage() {
             {/* Facts */}
             <dl className="mb-10 grid gap-4 rounded-2xl border border-mist bg-black-raised/40 p-6 sm:grid-cols-2">
                 <div className="flex items-start gap-3">
-                    <CalendarDays className="mt-0.5 h-5 w-5 shrink-0 text-gold" />
+                    <CalendarDays className="mt-0.5 h-5 w-5 shrink-0 text-cream" />
                     <div>
                         <dt className="text-xs uppercase tracking-wide text-ink/50">Date</dt>
                         <dd className="mt-1 text-sm text-ink">{formatEventDate(event.startsAt)}</dd>
                     </div>
                 </div>
                 <div className="flex items-start gap-3">
-                    <Clock className="mt-0.5 h-5 w-5 shrink-0 text-gold" />
+                    <Clock className="mt-0.5 h-5 w-5 shrink-0 text-cream" />
                     <div>
                         <dt className="text-xs uppercase tracking-wide text-ink/50">Time</dt>
                         <dd className="mt-1 text-sm text-ink">{formatEventTime(event.startsAt, event.endsAt)}</dd>
@@ -197,9 +197,9 @@ export default function EventDetailPage() {
                 </div>
                 <div className="flex items-start gap-3">
                     {event.isOnline ? (
-                        <Video className="mt-0.5 h-5 w-5 shrink-0 text-gold" />
+                        <Video className="mt-0.5 h-5 w-5 shrink-0 text-cream" />
                     ) : (
-                        <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-gold" />
+                        <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-cream" />
                     )}
                     <div>
                         <dt className="text-xs uppercase tracking-wide text-ink/50">
@@ -211,7 +211,7 @@ export default function EventDetailPage() {
                     </div>
                 </div>
                 <div className="flex items-start gap-3">
-                    <Users className="mt-0.5 h-5 w-5 shrink-0 text-gold" />
+                    <Users className="mt-0.5 h-5 w-5 shrink-0 text-cream" />
                     <div>
                         <dt className="text-xs uppercase tracking-wide text-ink/50">Attending</dt>
                         <dd className="mt-1 text-sm text-ink">
@@ -239,7 +239,7 @@ export default function EventDetailPage() {
                             className="h-14 w-14 rounded-full object-cover"
                         />
                     ) : (
-                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gold/10 font-serif text-xl text-gold">
+                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-cream/10 font-serif text-xl text-cream">
                             {(event.host.name || "M").charAt(0)}
                         </div>
                     )}
@@ -262,7 +262,7 @@ export default function EventDetailPage() {
                         aria-pressed={event.isInterested}
                         className={`inline-flex items-center justify-center gap-2 rounded-xl px-8 py-3.5 text-sm font-semibold transition-colors disabled:opacity-60 ${event.isInterested
                             ? "border border-emerald-500/40 bg-emerald-500/10 text-emerald-300"
-                            : "bg-gold text-black hover:bg-[#FFB073]"
+                            : "bg-cream text-black hover:bg-[#FFB073]"
                             }`}
                     >
                         <Heart className={`h-4 w-4 ${event.isInterested ? "fill-current" : ""}`} />

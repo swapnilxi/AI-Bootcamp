@@ -62,9 +62,9 @@ export function EventApprovalPanel({ event, onUpdated }: EventApprovalPanelProps
     }
 
     return (
-        <section className="rounded-2xl border border-gold/25 bg-gold/[0.04] p-6">
+        <section className="rounded-2xl border border-cream/15 bg-cream/5 p-6">
             <div className="mb-4 flex items-center gap-2.5">
-                <ShieldCheck className="h-5 w-5 text-gold" />
+                <ShieldCheck className="h-5 w-5 text-text-muted" />
                 <h2 className="font-serif text-lg text-ink">Review queue</h2>
             </div>
 
@@ -96,7 +96,7 @@ export function EventApprovalPanel({ event, onUpdated }: EventApprovalPanelProps
                         type="button"
                         onClick={() => decide("APPROVED")}
                         disabled={busy !== null}
-                        className="inline-flex items-center gap-2 rounded-xl bg-gold px-6 py-2.5 text-sm font-semibold text-black transition-colors hover:bg-[#FFB073] disabled:opacity-60"
+                        className="inline-flex items-center gap-2 rounded-xl bg-cream px-6 py-2.5 text-sm font-semibold text-black transition-colors hover:bg-cream/90 disabled:opacity-60"
                     >
                         {busy === "approve" ? (
                             <Loader2 className="h-4 w-4 animate-spin" />

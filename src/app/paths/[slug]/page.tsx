@@ -75,7 +75,7 @@ export default async function PathDetailPage({ params }: { params: Promise<{ slu
       </section>
 
       <section className="card-premium glow-l rounded-3xl p-7 sm:p-9">
-        <p className="text-[11px] font-semibold uppercase tracking-widest text-gold">The outcome</p>
+        <p className="text-[11px] font-semibold uppercase tracking-widest text-text-muted">The outcome</p>
         <p className="mt-3 font-serif text-xl leading-relaxed text-text sm:text-2xl">{path.outcome}</p>
       </section>
 
@@ -84,7 +84,7 @@ export default async function PathDetailPage({ params }: { params: Promise<{ slu
         <ol className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
           {path.milestones.map((m, i) => (
             <li key={m.id} className="editorial-card glow-tl rounded-2xl p-5">
-              <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-gold/40 bg-gold/10 text-xs font-semibold text-gold">
+              <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-cream/25 bg-cream/8 text-xs font-semibold text-cream">
                 {i + 1}
               </span>
               <h3 className="mt-3 text-sm font-semibold text-text">{m.title}</h3>
@@ -97,7 +97,7 @@ export default async function PathDetailPage({ params }: { params: Promise<{ slu
       <section className="space-y-6">
         <div className="flex items-end justify-between gap-4">
           <h2 className="font-serif text-2xl text-text">Courses, in order</h2>
-          <Link href="/courses" className="text-xs uppercase tracking-wider text-gold hover:underline">
+          <Link href="/courses" className="text-xs uppercase tracking-wider text-text-muted hover:underline">
             All courses
           </Link>
         </div>
@@ -108,7 +108,7 @@ export default async function PathDetailPage({ params }: { params: Promise<{ slu
               href={`/courses/${course.id}`}
               className="editorial-card glow-l group flex flex-col gap-4 rounded-2xl p-6 sm:flex-row sm:items-center"
             >
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-gold/30 bg-gold/[0.07] font-serif text-lg text-gold">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-cream/20 bg-cream/[0.06] font-serif text-lg text-cream">
                 {i + 1}
               </span>
               <div className="flex-1 space-y-2">
@@ -154,7 +154,7 @@ export default async function PathDetailPage({ params }: { params: Promise<{ slu
 
       {capstone && (
         <section className="card-premium card-featured glow-br rounded-3xl p-7 sm:p-10">
-          <p className="text-[11px] font-semibold uppercase tracking-widest text-gold">Capstone</p>
+          <p className="text-[11px] font-semibold uppercase tracking-widest text-text-muted">Capstone</p>
           <h2 className="mt-3 font-serif text-2xl text-text sm:text-3xl">{capstone.title}</h2>
           <p className="mt-3 max-w-3xl text-sm leading-relaxed text-text-muted">{capstone.problemStatement}</p>
           <div className="mt-6">

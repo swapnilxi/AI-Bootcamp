@@ -48,7 +48,7 @@ export default async function ProgressPage() {
       <section className="card-premium card-featured glow-tl rounded-3xl p-7 sm:p-9">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div className="max-w-2xl space-y-3">
-            <p className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-widest text-gold">
+            <p className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-widest text-text-muted">
               <Target className="h-3.5 w-3.5" />
               Recommended next
             </p>
@@ -106,7 +106,7 @@ export default async function ProgressPage() {
                 Started but not stuck. These are worth clearing before adding anything new.
               </p>
             </div>
-            <Link href="/practice" className="text-xs uppercase tracking-wider text-gold hover:underline">
+            <Link href="/practice" className="text-xs uppercase tracking-wider text-text-muted hover:underline">
               Drill all
             </Link>
           </div>
@@ -120,7 +120,7 @@ export default async function ProgressPage() {
                 <ProgressBar value={s.masteryPct} label="Mastery" />
                 <Link
                   href={`/practice?skill=${s.slug}`}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gold transition-colors hover:bg-gold/10"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-cream/30 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-cream transition-colors hover:bg-cream/10"
                 >
                   Practise this
                 </Link>
@@ -143,7 +143,7 @@ export default async function ProgressPage() {
       </section>
 
       {!snap.signedIn && (
-        <section className="rounded-3xl border border-gold/25 bg-gold/[0.05] p-8 text-center">
+        <section className="rounded-3xl border border-cream/20 bg-cream/5 p-8 text-center">
           <h2 className="font-serif text-xl text-text">This gets personal once you sign in</h2>
           <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-text-muted">
             Mastery, streak, weak areas and the recommended next action are all computed from your own practice

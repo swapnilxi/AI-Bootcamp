@@ -136,7 +136,7 @@ export default function BlogDetailPage() {
       {/* Article Header */}
       <header className="space-y-6">
         <div className="flex flex-wrap items-center gap-3">
-          <span className="px-3.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-gold/15 text-gold border border-gold/30">
+          <span className="px-3.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-cream/10 text-text border border-cream/20">
             {post.category}
           </span>
           <span className="text-xs text-text-muted flex items-center gap-1">
@@ -153,13 +153,13 @@ export default function BlogDetailPage() {
           {post.title}
         </h1>
 
-        <p className="text-ink/80 text-lg sm:text-xl leading-relaxed italic border-l-2 border-gold/50 pl-4 py-1">
+        <p className="text-ink/80 text-lg sm:text-xl leading-relaxed italic border-l-2 border-cream/30 pl-4 py-1">
           {post.excerpt}
         </p>
 
         {/* Author Byline */}
         <div className="flex items-center gap-4 pt-4 border-t border-white/[0.07]">
-          <div className="w-12 h-12 rounded-full bg-gold/20 flex items-center justify-center text-gold font-serif font-bold text-lg">
+          <div className="w-12 h-12 rounded-full bg-cream/10 flex items-center justify-center text-text font-serif font-bold text-lg">
             {post.author.name ? post.author.name[0] : "A"}
           </div>
           <div>
@@ -179,8 +179,8 @@ export default function BlogDetailPage() {
       </div>
 
       {/* Recommended Course Banner */}
-      <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-r from-black-raised to-indigo/20 border border-gold/30 space-y-4">
-        <div className="flex items-center gap-2 text-gold text-xs font-semibold uppercase tracking-wider">
+      <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-r from-black-raised to-cream/5 border border-cream/15 space-y-4">
+        <div className="flex items-center gap-2 text-text-muted text-xs font-semibold uppercase tracking-wider">
           <Sparkles className="w-4 h-4" />
           <span>Curriculum Connection</span>
         </div>
@@ -204,12 +204,12 @@ export default function BlogDetailPage() {
       {/* Author Profile Card */}
       {post.author.bio && (
         <div className="p-8 rounded-3xl bg-black-raised/60 border border-white/[0.07] flex flex-col sm:flex-row items-center sm:items-start gap-6">
-          <div className="w-16 h-16 rounded-full bg-gold/20 shrink-0 flex items-center justify-center text-gold font-serif font-bold text-2xl">
+          <div className="w-16 h-16 rounded-full bg-cream/10 shrink-0 flex items-center justify-center text-text font-serif font-bold text-2xl">
             {post.author.name ? post.author.name[0] : "A"}
           </div>
           <div className="space-y-2 text-center sm:text-left">
             <h4 className="font-serif text-xl font-bold text-ink">About {post.author.name}</h4>
-            <p className="text-xs text-gold">{post.author.specialties}</p>
+            <p className="text-xs text-text-muted">{post.author.specialties}</p>
             <p className="text-sm text-ink/70 leading-relaxed">{post.author.bio}</p>
           </div>
         </div>
@@ -227,7 +227,7 @@ export default function BlogDetailPage() {
                 className="p-6 rounded-2xl bg-black-raised/60 border border-white/[0.06] hover:border-gold/30 transition-all space-y-3 group block"
               >
                 <div className="flex items-center justify-between text-xs text-text-muted">
-                  <span className="text-gold font-semibold">{r.category}</span>
+                  <span className="text-text-muted font-semibold">{r.category}</span>
                   <span>{r.readTimeMin} min</span>
                 </div>
                 <h4 className="font-serif text-lg font-bold text-ink group-hover:text-gold transition-colors leading-snug line-clamp-2">

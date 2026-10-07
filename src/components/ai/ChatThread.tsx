@@ -22,7 +22,7 @@ function renderText(text: string, linkify: boolean) {
   const parts = text.split(/(\/(?:book|classes|services|about|contact)[^\s,.)]*)/g);
   return parts.map((part, i) =>
     /^\/(book|classes|services|about|contact)/.test(part) ? (
-      <a key={i} href={part} className="text-gold underline underline-offset-2 hover:text-[#FFD2A8]">
+      <a key={i} href={part} className="text-cream underline underline-offset-2 hover:text-cream/80">
         {part}
       </a>
     ) : (
@@ -68,7 +68,7 @@ export function ChatThread({
                   <button
                     key={s}
                     onClick={() => submit(s)}
-                    className="min-h-0 px-3 py-1.5 rounded-full border border-gold/25 text-xs text-text-muted hover:text-gold hover:border-gold/50 transition-colors text-left"
+                    className="min-h-0 px-3 py-1.5 rounded-full border border-cream/20 text-xs text-text-muted hover:text-text hover:border-cream/40 transition-colors text-left"
                   >
                     {s}
                   </button>
@@ -82,7 +82,7 @@ export function ChatThread({
             <div
               className={`max-w-[88%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap ${
                 m.role === "user"
-                  ? "bg-gold/15 border border-gold/25 text-text rounded-br-md"
+                  ? "bg-cream/15 border border-cream/20 text-text rounded-br-md"
                   : "bg-white/[0.04] border border-white/[0.07] text-text rounded-bl-md"
               }`}
             >
@@ -96,7 +96,7 @@ export function ChatThread({
             </div>
           </div>
         ))}
-        {error && <p className="text-xs text-clay px-1">{error}</p>}
+        {error && <p className="text-xs text-cream px-1">{error}</p>}
       </div>
       <form
         onSubmit={(e) => {
@@ -123,7 +123,7 @@ export function ChatThread({
         <button
           type="submit"
           disabled={streaming || !input.trim()}
-          className="shrink-0 w-11 h-11 rounded-xl bg-gold hover:bg-[#FFB073] text-black flex items-center justify-center transition-colors disabled:opacity-40"
+          className="shrink-0 w-11 h-11 rounded-xl bg-cream hover:bg-cream/90 text-black flex items-center justify-center transition-colors disabled:opacity-40"
           aria-label="Send"
         >
           <ArrowUp className="w-4 h-4" />

@@ -20,8 +20,8 @@ const STATE_STYLE: Record<string, { card: string; chip: string; icon: React.Reac
     label: "Mastered",
   },
   IN_PROGRESS: {
-    card: "border-gold/40 bg-gold/[0.07]",
-    chip: "text-gold",
+    card: "border-cream/30 bg-cream/[0.08]",
+    chip: "text-text",
     icon: <CircleDot className="h-3.5 w-3.5" />,
     label: "In progress",
   },

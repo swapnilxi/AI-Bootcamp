@@ -39,7 +39,7 @@ export default function DashboardHub() {
 
   return (
     <div className="min-h-[60vh] flex flex-col items-center justify-center space-y-4">
-      <Sparkles className="w-10 h-10 text-gold animate-spin" />
+      <Sparkles className="w-10 h-10 text-cream animate-spin" />
       <p className="text-sm text-text-muted">Directing to your AI dashboard...</p>
     </div>
   );

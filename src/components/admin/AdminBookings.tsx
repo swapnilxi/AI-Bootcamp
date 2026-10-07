@@ -126,12 +126,12 @@ export function AdminBookings({ onPendingCount }: { onPendingCount?: (n: number)
               key={key}
               onClick={() => setView(key)}
               className={`min-h-0 px-4 py-2 rounded-full text-xs font-semibold border transition-colors ${
-                view === key ? "bg-gold text-black border-gold" : "border-white/10 text-text-muted hover:text-text"
+                view === key ? "bg-cream text-black border-cream" : "border-white/10 text-text-muted hover:text-text"
               }`}
             >
               {label}
               {key === "pending" && pendingCount > 0 && (
-                <span className={`ml-2 px-1.5 py-0.5 rounded-full text-[10px] ${view === key ? "bg-black/20" : "bg-amber-500/20 text-amber-300"}`}>
+                <span className={`ml-2 px-1.5 py-0.5 rounded-full text-[10px] ${view === key ? "bg-black/20" : "bg-cream/15 text-cream"}`}>
                   {pendingCount}
                 </span>
               )}
@@ -172,10 +172,10 @@ export function AdminBookings({ onPendingCount }: { onPendingCount?: (n: number)
                   </div>
                   <div className="md:col-span-3 min-w-0">
                     <p className="text-sm text-text truncate">{b.serviceTitle}</p>
-                    <p className="text-[11px] font-mono text-gold/80">{b.referenceCode}</p>
+                    <p className="text-[11px] font-mono text-text-muted">{b.referenceCode}</p>
                   </div>
                   <div className="md:col-span-3 text-sm text-text flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5 text-gold/70" /> {fmtDate(b.scheduledAt)}
+                    <Clock className="w-3.5 h-3.5 text-text-muted" /> {fmtDate(b.scheduledAt)}
                   </div>
                   <div className="md:col-span-2 md:text-right">
                     <StatusBadge status={b.status} />
@@ -295,7 +295,7 @@ function BookingDrawer({ id, onClose, onChanged }: { id: string; onClose: () => 
       subtitle={
         b && (
           <span className="flex items-center gap-2">
-            <span className="font-mono text-gold/80">{b.referenceCode}</span> · <StatusBadge status={b.status} />
+            <span className="font-mono text-text-muted">{b.referenceCode}</span> · <StatusBadge status={b.status} />
           </span>
         )
       }
@@ -309,16 +309,16 @@ function BookingDrawer({ id, onClose, onChanged }: { id: string; onClose: () => 
             <p className="font-serif text-xl text-ink">{b.serviceTitle}</p>
             <div className="flex items-center gap-2 text-xs">
               <span className="text-text-muted">Assigned Mentor:</span>
-              <span className="text-gold font-medium">
+              <span className="text-text font-medium">
                 {b.instructor?.name
                   ? `${b.instructor.name} (${b.instructor.mentorType === "MENTOR" ? "Mentor" : b.instructor.mentorType === "BOTH" ? "Instructor & Mentor" : "Instructor"})`
                   : "General Practice (Unassigned)"}
               </span>
             </div>
             <p className="text-sm text-text flex items-center gap-2">
-              <CalendarClock className="w-4 h-4 text-gold" /> {tzFmt(b.scheduledAt)} · {b.durationMinutes} min · ${b.price}
+              <CalendarClock className="w-4 h-4 text-text-muted" /> {tzFmt(b.scheduledAt)} · {b.durationMinutes} min · ${b.price}
             </p>
-            {b.cancellationReason && <p className="text-xs text-clay">{b.cancellationReason}</p>}
+            {b.cancellationReason && <p className="text-xs text-cream">{b.cancellationReason}</p>}
             <div className="flex flex-wrap gap-2 pt-2">
               <a href={`mailto:${b.clientEmail}`} className="min-h-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/10 text-xs text-text-muted hover:text-gold">
                 <Mail className="w-3.5 h-3.5" /> {b.clientEmail}
@@ -342,7 +342,7 @@ function BookingDrawer({ id, onClose, onChanged }: { id: string; onClose: () => 
             </div>
           </section>
 
-          {error && <p className="p-3 rounded-xl bg-clay/10 border border-clay/30 text-clay text-sm">{error}</p>}
+          {error && <p className="p-3 rounded-xl bg-cream/10 border border-cream/25 text-cream text-sm">{error}</p>}
           <DeliveryReport result={result} />
 
           {/* Actions */}
@@ -365,7 +365,7 @@ function BookingDrawer({ id, onClose, onChanged }: { id: string; onClose: () => 
             </div>
 
             {panel !== "none" && (
-              <div className="rounded-2xl border border-gold/25 bg-gold/[0.03] p-5 space-y-4">
+              <div className="rounded-2xl border border-cream/20 bg-cream/5 p-5 space-y-4">
                 {panel === "reassign" && (
                   <div className="space-y-3">
                     <div>
@@ -450,7 +450,7 @@ function BookingDrawer({ id, onClose, onChanged }: { id: string; onClose: () => 
                       if (panel === "reschedule" && slot) act({ action: "reschedule", date: slot.date, time: slot.time, message: note, channels });
                       if (panel === "message") act({ kind: "custom", message: note, channels }, `/api/bookings/${id}/notify`, "POST");
                     }}
-                    className="px-5 py-2 rounded-xl bg-gold hover:bg-[#FFB073] text-black text-sm font-semibold disabled:opacity-40"
+                    className="px-5 py-2 rounded-xl bg-cream hover:bg-cream/90 text-black text-sm font-semibold disabled:opacity-40"
                   >
                     {busy
                       ? "Working…"
@@ -537,7 +537,7 @@ function BookingDrawer({ id, onClose, onChanged }: { id: string; onClose: () => 
                       ),
                     })
                   }
-                  className="px-5 py-2 rounded-xl bg-gold hover:bg-[#FFB073] text-black text-sm font-semibold disabled:opacity-40"
+                  className="px-5 py-2 rounded-xl bg-cream hover:bg-cream/90 text-black text-sm font-semibold disabled:opacity-40"
                 >
                   Save details
                 </button>
@@ -554,7 +554,7 @@ function BookingDrawer({ id, onClose, onChanged }: { id: string; onClose: () => 
               <ul className="space-y-2">
                 {b.notifications.map((n) => (
                   <li key={n.id} className="flex items-start gap-3 text-xs rounded-xl border border-white/[0.06] p-3">
-                    {n.channel === "EMAIL" ? <Mail className="w-4 h-4 text-gold/70 shrink-0" /> : <MessageCircle className="w-4 h-4 text-emerald-300/70 shrink-0" />}
+                    {n.channel === "EMAIL" ? <Mail className="w-4 h-4 text-text-muted shrink-0" /> : <MessageCircle className="w-4 h-4 text-emerald-300/70 shrink-0" />}
                     <div className="min-w-0 flex-1">
                       <p className="text-text">
                         <span className="capitalize">{n.kind.replace("_", " ")}</span> → {n.recipient}
@@ -563,7 +563,7 @@ function BookingDrawer({ id, onClose, onChanged }: { id: string; onClose: () => 
                       {n.error && n.status !== "SENT" && <p className="text-text-muted">{n.error}</p>}
                     </div>
                     <div className="text-right shrink-0">
-                      <p className={n.status === "SENT" ? "text-emerald-300" : n.status === "SKIPPED" ? "text-amber-300" : "text-clay"}>{n.status}</p>
+                      <p className={n.status === "SENT" ? "text-emerald-300" : n.status === "SKIPPED" ? "text-cream" : "text-cream"}>{n.status}</p>
                       <p className="text-text-muted">{new Date(n.createdAt).toLocaleString()}</p>
                     </div>
                   </li>
@@ -595,7 +595,7 @@ function ActionButton({
       onClick={onClick}
       disabled={disabled}
       className={`min-h-0 inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold border transition-colors disabled:opacity-40 ${
-        primary ? "bg-gold text-black border-gold hover:bg-[#FFB073]" : "border-white/10 text-text hover:border-gold/40 hover:text-gold"
+        primary ? "bg-cream text-black border-cream hover:bg-cream/90" : "border-white/10 text-text hover:border-gold/40 hover:text-gold"
       }`}
     >
       <ActionIcon className="w-4 h-4" /> {label}

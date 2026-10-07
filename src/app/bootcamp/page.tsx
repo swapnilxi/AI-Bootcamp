@@ -59,7 +59,7 @@ export default async function BootcampPage() {
 
       {bootcamp.path && (
         <section className="card-premium glow-l rounded-3xl p-7 sm:p-9">
-          <p className="text-[11px] font-semibold uppercase tracking-widest text-gold">You finish able to</p>
+          <p className="text-[11px] font-semibold uppercase tracking-widest text-text-muted">You finish able to</p>
           <p className="mt-3 font-serif text-xl leading-relaxed text-text sm:text-2xl">{bootcamp.path.outcome}</p>
         </section>
       )}
@@ -71,7 +71,7 @@ export default async function BootcampPage() {
             <li key={week.id} className="editorial-card glow-l rounded-2xl p-6">
               <div className="flex flex-col gap-5 sm:flex-row">
                 <div className="flex shrink-0 sm:w-24 sm:flex-col">
-                  <span className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-gold/30 bg-gold/[0.07] font-serif text-xl text-gold">
+                  <span className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-cream/20 bg-cream/5 font-serif text-xl text-text">
                     {week.weekNumber}
                   </span>
                 </div>
@@ -87,7 +87,7 @@ export default async function BootcampPage() {
                     <ul className="mt-2 space-y-1.5">
                       {(week.goals as string[]).map((g) => (
                         <li key={g} className="flex gap-2.5 text-sm text-text-muted">
-                          <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-gold/70" />
+                          <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-cream/60" />
                           {g}
                         </li>
                       ))}
@@ -95,7 +95,7 @@ export default async function BootcampPage() {
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2 pt-1">
-                    <MetaPill className="!border-gold/35 !bg-gold/10 !text-gold">
+                    <MetaPill className="!border-cream/20 !bg-cream/8 !text-text">
                       Milestone: {week.milestone}
                     </MetaPill>
                     {week.course && (

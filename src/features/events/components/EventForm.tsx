@@ -119,9 +119,9 @@ export function EventForm() {
         <form onSubmit={handleSubmit} className="space-y-8">
             {/* Plan from a request */}
             {openRequests.length > 0 && (
-                <section className="rounded-2xl border border-indigo/25 bg-indigo/[0.06] p-6">
+                <section className="rounded-2xl border border-cream/15 bg-cream/6 p-6">
                     <div className="mb-4 flex items-center gap-2.5">
-                        <CalendarPlus className="h-5 w-5 text-indigo" />
+                        <CalendarPlus className="h-5 w-5 text-text-muted" />
                         <h2 className="font-serif text-lg text-ink">Plan from a member request</h2>
                     </div>
                     <p className="mb-4 text-sm text-ink/65">
@@ -342,8 +342,8 @@ export function EventForm() {
             )}
 
             {!isAdmin && (
-                <p className="flex items-start gap-2 rounded-xl border border-amber-500/25 bg-amber-500/[0.06] p-4 text-sm text-ink/70">
-                    <Info className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
+                <p className="flex items-start gap-2 rounded-xl border border-cream/15 bg-cream/6 p-4 text-sm text-ink/70">
+                    <Info className="mt-0.5 h-4 w-4 shrink-0 text-text-muted" />
                     Your event will be submitted for review. It stays out of sight until an administrator approves
                     it, and you will be notified once that happens.
                 </p>

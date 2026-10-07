@@ -80,7 +80,7 @@ export default function BlogListingPage() {
       {/* Editorial Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-mist pb-8">
         <div>
-          <span className="text-xs font-semibold uppercase tracking-widest text-indigo px-3 py-1 rounded-full bg-mist/60 border border-mist inline-block mb-3">
+          <span className="text-xs font-semibold uppercase tracking-widest text-text-muted px-3 py-1 rounded-full bg-mist/60 border border-mist inline-block mb-3">
             Engineering Blog & Field Notes
           </span>
           <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl text-ink font-normal leading-tight">
@@ -142,12 +142,12 @@ export default function BlogListingPage() {
         <div className="space-y-12">
           {/* Featured Article Card */}
           {featuredPost && (
-            <div className="p-8 sm:p-12 rounded-3xl bg-black-raised/80 backdrop-blur-sm border border-gold/30 hover:border-gold/50 shadow-lg transition-all relative overflow-hidden group">
+            <div className="p-8 sm:p-12 rounded-3xl bg-black-raised/80 backdrop-blur-sm border border-cream/20 hover:border-gold/50 shadow-lg transition-all relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-96 h-96 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
 
               <div className="relative z-10 space-y-6">
                 <div className="flex flex-wrap items-center gap-3">
-                  <span className="px-3.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-gold/15 text-gold border border-gold/30 flex items-center gap-1.5">
+                  <span className="px-3.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-cream/10 text-text border border-cream/20 flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5" />
                     Featured Essay
                   </span>
@@ -172,7 +172,7 @@ export default function BlogListingPage() {
 
                 <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-white/[0.08]">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center text-gold font-serif font-bold text-sm">
+                    <div className="w-10 h-10 rounded-full bg-cream/10 flex items-center justify-center text-text font-serif font-bold text-sm">
                       {featuredPost.author.name ? featuredPost.author.name[0] : "M"}
                     </div>
                     <div>
@@ -225,7 +225,7 @@ export default function BlogListingPage() {
 
                   <div className="pt-4 border-t border-white/[0.06] flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-full bg-gold/15 flex items-center justify-center text-gold font-serif text-xs font-bold">
+                      <div className="w-8 h-8 rounded-full bg-cream/10 flex items-center justify-center text-text font-serif text-xs font-bold">
                         {post.author.name ? post.author.name[0] : "A"}
                       </div>
                       <span className="text-xs font-medium text-ink/80">
@@ -235,7 +235,7 @@ export default function BlogListingPage() {
 
                     <Link
                       href={`/blog/${post.slug}`}
-                      className="text-xs font-semibold text-gold hover:text-[#FFB073] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform"
+                      className="text-xs font-semibold text-text-muted hover:text-text flex items-center gap-1 group-hover:translate-x-0.5 transition-transform"
                     >
                       <span>Read</span>
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -249,7 +249,7 @@ export default function BlogListingPage() {
       )}
 
       {/* Academy Bridge Banner */}
-      <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-black-raised to-indigo/20 border border-gold/20 text-center space-y-4">
+      <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-black-raised to-cream/8 border border-cream/15 text-center space-y-4">
         <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">
           Study Directly Under Our Master Instructors & Mentors
         </h2>

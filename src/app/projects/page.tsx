@@ -57,7 +57,7 @@ export default async function ProjectsPage() {
                         <DifficultyPill level={project.difficulty} />
                         <MetaPill>{project.estimatedHours}h</MetaPill>
                         {project.isCapstone && (
-                          <MetaPill className="!border-gold/40 !bg-gold/10 !text-gold">Capstone</MetaPill>
+                          <MetaPill className="!border-cream/30 !bg-cream/10 !text-cream">Capstone</MetaPill>
                         )}
                       </>
                     }

@@ -123,8 +123,8 @@ export function EventRequestForm() {
 
     return (
         <form onSubmit={handleSubmit} className="space-y-8">
-            <div className="flex items-start gap-3 rounded-2xl border border-indigo/25 bg-indigo/[0.06] p-6">
-                <Lightbulb className="mt-0.5 h-5 w-5 shrink-0 text-indigo" />
+            <div className="flex items-start gap-3 rounded-2xl border border-cream/15 bg-cream/6 p-6">
+                <Lightbulb className="mt-0.5 h-5 w-5 shrink-0 text-text-muted" />
                 <p className="text-sm text-ink/70">
                     Tell us what you would like to see. If you already know who should run it, tag them below and
                     they will be notified straight away. Once a member of faculty plans it and an administrator

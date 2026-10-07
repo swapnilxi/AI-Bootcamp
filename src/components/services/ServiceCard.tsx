@@ -23,11 +23,11 @@ export function ServiceCard({ service, featured = false }: ServiceCardProps) {
   return (
     <div
       className={`editorial-card p-8 flex flex-col justify-between h-full relative ${
-        featured ? "border-gold shadow-sm" : "border-black-line"
+        featured ? "border-cream shadow-sm" : "border-black-line"
       }`}
     >
       {featured && (
-        <span className="absolute -top-3 left-8 px-3 py-0.5 rounded-full text-[11px] font-semibold uppercase tracking-wider bg-gold text-black">
+        <span className="absolute -top-3 left-8 px-3 py-0.5 rounded-full text-[11px] font-semibold uppercase tracking-wider bg-cream text-black">
           Most Requested
         </span>
       )}
@@ -35,11 +35,11 @@ export function ServiceCard({ service, featured = false }: ServiceCardProps) {
       <div>
         {/* Category & Duration */}
         <div className="flex items-center justify-between gap-2 mb-3">
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-gold">
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-text-muted">
             {service.category}
           </span>
           <span className="inline-flex items-center gap-1.5 text-xs text-text-muted px-2.5 py-1 rounded-full bg-black border border-black-line">
-            <Icon name="clock" variant="line" size={14} className="text-gold" />
+            <Icon name="clock" variant="line" size={14} className="text-text-muted" />
             <span>{service.durationMinutes} Minutes</span>
           </span>
         </div>
@@ -53,7 +53,7 @@ export function ServiceCard({ service, featured = false }: ServiceCardProps) {
 
         {/* Price */}
         <div className="mb-4">
-          <span className="font-serif text-3xl font-medium text-gold">
+          <span className="font-serif text-3xl font-medium text-text">
             ${service.price}
           </span>
           <span className="text-xs text-text-muted ml-2">USD • 1-on-1 Recorded Session</span>
@@ -69,7 +69,7 @@ export function ServiceCard({ service, featured = false }: ServiceCardProps) {
           <ul className="space-y-2 mb-6 pt-4 border-t border-black-line text-sm text-text-muted">
             {service.whatIncluded.slice(0, 3).map((item, idx) => (
               <li key={idx} className="flex items-start gap-2">
-                <Icon name="check" variant="line" size={16} className="text-gold shrink-0 mt-0.5" />
+                <Icon name="check" variant="line" size={16} className="text-text-muted shrink-0 mt-0.5" />
                 <span>{item}</span>
               </li>
             ))}

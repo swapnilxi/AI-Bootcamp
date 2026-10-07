@@ -75,10 +75,10 @@ export function ScrollManifesto() {
       />
 
       <div className="relative max-w-4xl mx-auto px-5 sm:px-8 text-center">
-        <span className="reveal inline-flex items-center gap-3 text-xs font-medium tracking-[0.22em] uppercase text-gold mb-8">
-          <span className="eyebrow-line from-right w-8 h-px bg-gradient-to-r from-transparent to-gold/70" aria-hidden="true" />
+        <span className="reveal inline-flex items-center gap-3 text-xs font-medium tracking-[0.22em] uppercase text-text-muted mb-8">
+          <span className="eyebrow-line from-right w-8 h-px bg-gradient-to-r from-transparent to-cream/40" aria-hidden="true" />
           The Ethos
-          <span className="eyebrow-line from-left w-8 h-px bg-gradient-to-l from-transparent to-gold/70" aria-hidden="true" />
+          <span className="eyebrow-line from-left w-8 h-px bg-gradient-to-l from-transparent to-cream/40" aria-hidden="true" />
         </span>
 
         <p className="mf-text font-serif text-[1.85rem] leading-[1.3] sm:text-5xl sm:leading-[1.22] text-text text-balance">
@@ -96,9 +96,9 @@ export function ScrollManifesto() {
         </p>
 
         <div className="reveal mt-12 flex items-center justify-center gap-4 text-[10px] sm:text-[11px] uppercase tracking-[0.18em] sm:tracking-[0.24em] text-text-muted whitespace-nowrap">
-          <span className="hidden sm:block w-10 h-px bg-gold/40" aria-hidden="true" />
+          <span className="hidden sm:block w-10 h-px bg-cream/20" aria-hidden="true" />
           {MANIFESTO_TAGLINE}
-          <span className="hidden sm:block w-10 h-px bg-gold/40" aria-hidden="true" />
+          <span className="hidden sm:block w-10 h-px bg-cream/20" aria-hidden="true" />
         </div>
       </div>
     </section>

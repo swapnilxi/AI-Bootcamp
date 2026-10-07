@@ -69,7 +69,7 @@ export function MobileMenu({ open, pathname, session, onClose }: MobileMenuProps
                       aria-current={active ? "page" : undefined}
                       className="group flex items-baseline gap-4 py-[clamp(0.45rem,1.8vh,0.9rem)] border-b border-white/[0.06]"
                     >
-                      <span className="font-sans text-[11px] tabular-nums tracking-[0.2em] text-gold/60">0{i + 1}</span>
+                      <span className="font-sans text-[11px] tabular-nums tracking-[0.2em] text-text-muted/60">0{i + 1}</span>
                       <span
                         className={`font-serif text-[clamp(1.35rem,4.6vh,1.9rem)] leading-tight transition-colors duration-300 ${
                           active ? "text-gold" : "text-text group-hover:text-gold"

@@ -141,7 +141,7 @@ export function PracticeRunner({
               onClick={() => setMode(m)}
               className={`min-h-0 rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-colors ${
                 mode === m
-                  ? "border-gold bg-gold/15 text-gold"
+                  ? "border-cream bg-cream/15 text-text"
                   : "border-white/10 text-text-muted hover:border-gold/40 hover:text-gold"
               }`}
             >
@@ -173,11 +173,11 @@ export function PracticeRunner({
 
       {loading && (
         <p className="flex items-center gap-2 text-sm text-text-muted">
-          <Loader2 className="h-4 w-4 animate-spin text-gold" /> Loading questions…
+          <Loader2 className="h-4 w-4 animate-spin text-text-muted" /> Loading questions…
         </p>
       )}
 
-      {error && <p className="text-sm text-clay">{error}</p>}
+      {error && <p className="text-sm text-red-300">{error}</p>}
 
       {!loading && !error && questions.length === 0 && (
         <div className="editorial-card glow-tl space-y-3 rounded-2xl p-8 text-center">
@@ -193,7 +193,7 @@ export function PracticeRunner({
       {!loading && current && (
         <article className="card-premium glow-tl space-y-6 rounded-3xl p-6 sm:p-8">
           <div className="flex flex-wrap items-center gap-2">
-            <MetaPill className="!border-gold/35 !bg-gold/10 !text-gold">
+            <MetaPill className="!border-cream/25 !bg-cream/10 !text-cream">
               {KIND_LABEL[current.kind] ?? current.kind}
             </MetaPill>
             <DifficultyPill level={current.difficulty} />
@@ -222,7 +222,7 @@ export function PracticeRunner({
                       : showWrong
                         ? "border-red-500/50 bg-red-500/10 text-text"
                         : isChosen
-                          ? "border-gold bg-gold/10 text-text"
+                          ? "border-cream bg-cream/10 text-text"
                           : "border-white/10 text-text-muted hover:border-gold/40 hover:text-text"
                   } ${verdict ? "cursor-default" : "cursor-pointer"}`}
                 >
@@ -234,7 +234,7 @@ export function PracticeRunner({
                     ) : (
                       <span
                         className={`block h-4 w-4 rounded-full border ${
-                          isChosen ? "border-gold bg-gold" : "border-white/25"
+                          isChosen ? "border-cream bg-cream" : "border-white/25"
                         }`}
                       />
                     )}
@@ -256,7 +256,7 @@ export function PracticeRunner({
                     aria-label={`Confidence ${n} of 5`}
                     className={`min-h-0 h-8 w-8 rounded-full border text-xs font-semibold transition-colors ${
                       confidence === n
-                        ? "border-gold bg-gold text-black"
+                        ? "border-cream bg-cream text-black"
                         : "border-white/15 text-text-muted hover:border-gold/50 hover:text-gold"
                     }`}
                   >
@@ -287,7 +287,7 @@ export function PracticeRunner({
               </div>
 
               {showHint && current.hint && (
-                <p className="rounded-2xl border border-gold/25 bg-gold/[0.06] p-4 text-sm text-text-muted">
+                <p className="rounded-2xl border border-cream/20 bg-cream/[0.08] p-4 text-sm text-text-muted">
                   {current.hint}
                 </p>
               )}
@@ -322,7 +322,7 @@ export function PracticeRunner({
               {index + 1 < questions.length ? (
                 <button
                   onClick={next}
-                  className="inline-flex min-h-0 items-center gap-2 rounded-full border border-gold/40 px-6 py-2.5 text-sm font-semibold text-gold transition-colors hover:bg-gold/10"
+                  className="inline-flex min-h-0 items-center gap-2 rounded-full border border-cream/40 px-6 py-2.5 text-sm font-semibold text-text transition-colors hover:bg-gold/10"
                 >
                   Next question
                   <ArrowRight className="h-4 w-4" />
@@ -334,7 +334,7 @@ export function PracticeRunner({
                   </p>
                   <button
                     onClick={load}
-                    className="inline-flex min-h-0 items-center gap-2 rounded-full border border-gold/40 px-6 py-2.5 text-sm font-semibold text-gold transition-colors hover:bg-gold/10"
+                    className="inline-flex min-h-0 items-center gap-2 rounded-full border border-cream/40 px-6 py-2.5 text-sm font-semibold text-text transition-colors hover:bg-gold/10"
                   >
                     Another set
                   </button>

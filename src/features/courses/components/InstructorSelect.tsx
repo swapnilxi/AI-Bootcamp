@@ -30,7 +30,7 @@ export function InstructorSelect({ value, onChange, className = "" }: Instructor
       .catch(() => setError("Could not load instructors"));
   }, []);
 
-  if (error) return <p className="text-xs text-clay">{error}</p>;
+  if (error) return <p className="text-xs text-text">{error}</p>;
 
   return (
     <select

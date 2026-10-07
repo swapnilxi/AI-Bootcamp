@@ -41,7 +41,7 @@ export default function ServicesPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-12">
       {/* Page Header */}
       <div className="text-center max-w-3xl mx-auto space-y-4">
-        <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gold px-3.5 py-1.5 rounded-full bg-black-raised border border-black-line inline-block">
+        <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-text-muted px-3.5 py-1.5 rounded-full bg-black-raised border border-black-line inline-block">
           1-on-1 Sessions
         </span>
         <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl text-text font-normal leading-tight">
@@ -53,9 +53,9 @@ export default function ServicesPage() {
 
         {/* Trust signals strip */}
         <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
-          <TrustBadge icon={<Icon name="video" variant="line" size={14} className="text-gold" />} label="Private Zoom Video Call" />
-          <TrustBadge icon={<Icon name="clock" variant="line" size={14} className="text-gold" />} label="Lifetime Recording Provided" />
-          <TrustBadge icon={<Icon name="role-admin" variant="line" size={14} className="text-gold" />} label="100% Confidential" />
+          <TrustBadge icon={<Icon name="video" variant="line" size={14} className="text-text-muted" />} label="Private Zoom Video Call" />
+          <TrustBadge icon={<Icon name="clock" variant="line" size={14} className="text-text-muted" />} label="Lifetime Recording Provided" />
+          <TrustBadge icon={<Icon name="role-admin" variant="line" size={14} className="text-text-muted" />} label="100% Confidential" />
         </div>
       </div>
 
@@ -89,12 +89,12 @@ export default function ServicesPage() {
         </div>
       ) : (
         <div className="editorial-card p-12 text-center text-text-muted max-w-md mx-auto space-y-3">
-          <Icon name="search" variant="line" size={32} className="text-gold mx-auto" />
+          <Icon name="search" variant="line" size={32} className="text-text-muted mx-auto" />
           <h3 className="font-serif text-xl text-text font-normal">No sessions in this category</h3>
           <p className="text-sm">Please select &ldquo;All&rdquo; to browse all available sessions.</p>
           <button
             onClick={() => setActiveCategory("All")}
-            className="text-xs font-semibold uppercase tracking-wider text-gold hover:underline"
+            className="text-xs font-semibold uppercase tracking-wider text-text-muted hover:underline"
           >
             Reset filter
           </button>
@@ -113,7 +113,7 @@ export default function ServicesPage() {
         <div className="pt-2">
           <Link
             href="/contact"
-            className="text-xs font-semibold uppercase tracking-wider text-gold hover:underline inline-flex items-center gap-1.5"
+            className="text-xs font-semibold uppercase tracking-wider text-text-muted hover:underline inline-flex items-center gap-1.5"
           >
             <span>Send an inquiry or WhatsApp question</span>
             <Icon name="arrow" variant="line" size={14} />

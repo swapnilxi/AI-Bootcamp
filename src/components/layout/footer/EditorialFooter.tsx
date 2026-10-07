@@ -20,8 +20,8 @@ export function EditorialFooter() {
           <div className="sm:col-span-2 lg:col-span-1 space-y-4">
             <Logo />
             <p className="text-text-muted text-sm leading-relaxed max-w-sm">{FOOTER_TAGLINE}</p>
-            <div className="flex items-start gap-2 pt-2 text-xs text-gold">
-              <Icon name="role-admin" variant="line" size={16} className="text-gold shrink-0" />
+            <div className="flex items-start gap-2 pt-2 text-xs text-text-muted">
+              <Icon name="role-admin" variant="line" size={16} className="text-text-muted shrink-0" />
               <span>Project-based · Evaluated · Portfolio-ready</span>
             </div>
           </div>
@@ -41,7 +41,7 @@ export function EditorialFooter() {
                   <li>
                     <Link
                       href={column.cta.href}
-                      className="group text-gold font-medium hover:underline inline-flex items-center gap-1 pt-1"
+                      className="group text-text font-medium hover:underline inline-flex items-center gap-1 pt-1"
                     >
                       <span>{column.cta.label}</span>
                       <Icon name="arrow" variant="line" size={14} className="nudge" />
@@ -63,18 +63,18 @@ export function EditorialFooter() {
                   rel="noopener noreferrer"
                   className={`${linkClass} flex items-center gap-2`}
                 >
-                  <Icon name="whatsapp" variant="filled" size={15} className="text-gold shrink-0" />
+                  <Icon name="whatsapp" variant="filled" size={15} className="text-text-muted shrink-0" />
                   <span>{FOOTER_CONTACT.whatsappLabel}</span>
                 </a>
               </li>
               <li>
                 <a href={`mailto:${FOOTER_CONTACT.email}`} className={`${linkClass} flex items-center gap-2`}>
-                  <Icon name="mail" variant="filled" size={15} className="text-gold shrink-0" />
+                  <Icon name="mail" variant="filled" size={15} className="text-text-muted shrink-0" />
                   <span className="min-w-0 break-all">{FOOTER_CONTACT.email}</span>
                 </a>
               </li>
               <li className="flex items-start gap-2 pt-1 text-xs text-text-muted">
-                <Icon name="clock" variant="filled" size={14} className="text-gold shrink-0 mt-0.5" />
+                <Icon name="clock" variant="filled" size={14} className="text-text-muted shrink-0 mt-0.5" />
                 <span>{FOOTER_CONTACT.hours}</span>
               </li>
             </ul>

@@ -165,7 +165,7 @@ export default function RequestEventPage() {
             {/* Header */}
             <div className="mb-8 border-b border-mist pb-6 flex flex-col justify-between gap-4 md:flex-row md:items-end">
                 <div>
-                    <span className="mb-2 inline-block rounded-full border border-mist bg-mist/60 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-indigo">
+                    <span className="mb-2 inline-block rounded-full border border-mist bg-mist/60 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-cream">
                         Community Voice
                     </span>
                     <h1 className="font-serif text-3xl font-normal text-ink sm:text-4xl">Request an Event</h1>
@@ -179,7 +179,7 @@ export default function RequestEventPage() {
                         onClick={() => setActiveTab("request")}
                         className={`rounded-xl px-4 py-2 text-sm font-medium transition-all ${
                             activeTab === "request"
-                                ? "bg-gold text-black shadow-sm"
+                                ? "bg-cream text-black shadow-sm"
                                 : "border border-white/10 bg-black-raised text-ink hover:border-gold"
                         }`}
                     >
@@ -191,7 +191,7 @@ export default function RequestEventPage() {
                             onClick={() => setActiveTab("queue")}
                             className={`rounded-xl px-4 py-2 text-sm font-medium transition-all ${
                                 activeTab === "queue"
-                                    ? "bg-gold text-black shadow-sm"
+                                    ? "bg-cream text-black shadow-sm"
                                     : "border border-white/10 bg-black-raised text-ink hover:border-gold"
                             }`}
                         >
@@ -304,7 +304,7 @@ export default function RequestEventPage() {
                         <button
                             type="submit"
                             disabled={submitting}
-                            className="inline-flex items-center gap-2 rounded-xl bg-gold px-8 py-3.5 text-sm font-semibold text-black transition-colors hover:bg-[#FFB073] disabled:opacity-60"
+                            className="inline-flex items-center gap-2 rounded-xl bg-cream px-8 py-3.5 text-sm font-semibold text-black transition-colors hover:bg-[#FFB073] disabled:opacity-60"
                         >
                             {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
                             {submitting ? "Submitting..." : "Submit Request"}
@@ -326,7 +326,7 @@ export default function RequestEventPage() {
                             <div key={req.id} className="rounded-2xl border border-mist bg-black-raised/40 p-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                                 <div className="space-y-2">
                                     <div className="flex flex-wrap items-center gap-2">
-                                        <span className="rounded-full border border-indigo/25 bg-indigo/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase text-indigo">
+                                        <span className="rounded-full border border-cream/20 bg-cream/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase text-cream">
                                             {req.category}
                                         </span>
                                         <span className={`rounded-full border px-2.5 py-0.5 text-[10px] font-semibold uppercase ${
@@ -334,7 +334,7 @@ export default function RequestEventPage() {
                                                 ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
                                                 : req.status === "DECLINED"
                                                 ? "border-red-500/30 bg-red-500/10 text-red-300"
-                                                : "border-amber-500/30 bg-amber-500/10 text-amber-300"
+                                                : "border-cream/20 bg-cream/10 text-cream"
                                         }`}>
                                             {req.status}
                                         </span>
@@ -351,7 +351,7 @@ export default function RequestEventPage() {
                                     <div className="flex shrink-0 gap-2">
                                         <Link
                                             href={`/events/new?requestId=${req.id}`}
-                                            className="inline-flex items-center gap-1.5 rounded-xl bg-gold px-4 py-2 text-xs font-semibold text-black hover:bg-[#FFB073]"
+                                            className="inline-flex items-center gap-1.5 rounded-xl bg-cream px-4 py-2 text-xs font-semibold text-black hover:bg-[#FFB073]"
                                         >
                                             <PlusCircle className="h-3.5 w-3.5" />
                                             Plan Event

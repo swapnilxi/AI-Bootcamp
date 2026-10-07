@@ -31,7 +31,7 @@ export default function ClassesCatalogPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-mist pb-8">
         <div>
-          <span className="text-xs font-semibold uppercase tracking-widest text-indigo px-3 py-1 rounded-full bg-mist/60 border border-mist inline-block mb-3">
+          <span className="text-xs font-semibold uppercase tracking-widest text-cream px-3 py-1 rounded-full bg-mist/60 border border-mist inline-block mb-3">
             Classical Academy
           </span>
           <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl text-ink font-normal leading-tight">
@@ -58,7 +58,7 @@ export default function ClassesCatalogPage() {
             onClick={() => setActiveFilter("all")}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
               activeFilter === "all"
-                ? "bg-gold text-black shadow-sm"
+                ? "bg-cream text-black shadow-sm"
                 : "bg-black-raised/80 backdrop-blur-sm text-ink border border-white/[0.07] hover:border-gold"
             }`}
           >
@@ -68,7 +68,7 @@ export default function ClassesCatalogPage() {
             onClick={() => setActiveFilter("free")}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
               activeFilter === "free"
-                ? "bg-gold text-black shadow-sm"
+                ? "bg-cream text-black shadow-sm"
                 : "bg-black-raised/80 backdrop-blur-sm text-ink border border-white/[0.07] hover:border-gold"
             }`}
           >
@@ -78,7 +78,7 @@ export default function ClassesCatalogPage() {
             onClick={() => setActiveFilter("subscriber")}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
               activeFilter === "subscriber"
-                ? "bg-gold text-black shadow-sm"
+                ? "bg-cream text-black shadow-sm"
                 : "bg-black-raised/80 backdrop-blur-sm text-ink border border-white/[0.07] hover:border-gold"
             }`}
           >
@@ -88,7 +88,7 @@ export default function ClassesCatalogPage() {
             onClick={() => setActiveFilter("protected")}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
               activeFilter === "protected"
-                ? "bg-gold text-black shadow-sm"
+                ? "bg-cream text-black shadow-sm"
                 : "bg-black-raised/80 backdrop-blur-sm text-ink border border-white/[0.07] hover:border-gold"
             }`}
           >
@@ -99,7 +99,7 @@ export default function ClassesCatalogPage() {
               onClick={() => setActiveFilter("mine")}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                 activeFilter === "mine"
-                  ? "bg-gold text-black shadow-sm"
+                  ? "bg-cream text-black shadow-sm"
                   : "bg-black-raised/80 backdrop-blur-sm text-ink border border-white/[0.07] hover:border-gold"
               }`}
             >
@@ -111,7 +111,7 @@ export default function ClassesCatalogPage() {
               onClick={() => setActiveFilter("teaching")}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                 activeFilter === "teaching"
-                  ? "bg-gold text-black shadow-sm"
+                  ? "bg-cream text-black shadow-sm"
                   : "bg-black-raised/80 backdrop-blur-sm text-ink border border-white/[0.07] hover:border-gold"
               }`}
             >
@@ -143,10 +143,10 @@ export default function ClassesCatalogPage() {
           role="alert"
           className="editorial-card p-12 text-center text-ink/70 max-w-md mx-auto space-y-3"
         >
-          <AlertCircle className="w-10 h-10 text-gold mx-auto" />
+          <AlertCircle className="w-10 h-10 text-cream mx-auto" />
           <h3 className="font-serif text-xl text-ink font-medium">Could not load classes</h3>
           <p className="text-sm">{error}</p>
-          <button onClick={refetch} className="text-xs font-semibold text-indigo hover:underline">
+          <button onClick={refetch} className="text-xs font-semibold text-cream hover:underline">
             Try again
           </button>
         </div>
@@ -158,7 +158,7 @@ export default function ClassesCatalogPage() {
         </div>
       ) : (
         <div className="editorial-card p-12 text-center text-ink/70 max-w-md mx-auto space-y-3">
-          <BookOpen className="w-10 h-10 text-gold mx-auto" />
+          <BookOpen className="w-10 h-10 text-cream mx-auto" />
           <h3 className="font-serif text-xl text-ink font-medium">No classes match this search</h3>
           <p className="text-sm">Try adjusting your filters or resetting the search query.</p>
           <button
@@ -166,7 +166,7 @@ export default function ClassesCatalogPage() {
               setActiveFilter("all");
               setSearchQuery("");
             }}
-            className="text-xs font-semibold text-indigo hover:underline"
+            className="text-xs font-semibold text-cream hover:underline"
           >
             Reset filters
           </button>

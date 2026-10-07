@@ -56,7 +56,7 @@ export default async function LabDetailPage({ params }: { params: Promise<{ slug
             </ul>
           </section>
 
-          <section className="rounded-2xl border border-gold/25 bg-gold/[0.05] p-6">
+          <section className="rounded-2xl border border-cream/20 bg-cream/[0.05] p-6">
             <h2 className="font-serif text-lg text-text">Ask as you go</h2>
             <p className="mt-2 text-sm leading-relaxed text-text-muted">
               The AI Tutor knows which lab you are in. Ask it why an output changed and it will answer against

@@ -14,7 +14,7 @@ export default function AboutPage() {
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 space-y-16">
       {/* 1. Header & Lead */}
       <div className="text-center max-w-3xl mx-auto space-y-4">
-        <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gold px-3.5 py-1.5 rounded-full bg-black-raised border border-black-line inline-block">
+        <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-text-muted px-3.5 py-1.5 rounded-full bg-black-raised border border-black-line inline-block">
           How We Teach
         </span>
         <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl text-text font-normal leading-tight">
@@ -29,7 +29,7 @@ export default function AboutPage() {
       {/* 2. The approach */}
       <div className="editorial-card glow-tl p-8 sm:p-14 space-y-8">
         <div className="flex flex-col md:flex-row items-center md:items-start gap-8 sm:gap-12">
-          <div className="w-36 h-36 sm:w-44 sm:h-44 rounded-full bg-black text-gold font-serif text-4xl font-normal flex items-center justify-center shrink-0 border border-gold/40">
+          <div className="w-36 h-36 sm:w-44 sm:h-44 rounded-full bg-black text-cream font-serif text-4xl font-normal flex items-center justify-center shrink-0 border border-cream/30">
             AI
           </div>
           <div className="space-y-4 text-center md:text-left">
@@ -52,7 +52,7 @@ export default function AboutPage() {
         {/* Pillars */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8 border-t border-black-line">
           <div className="p-5 rounded-2xl bg-black border border-black-line space-y-2">
-            <Icon name="role-admin" variant="line" size={24} className="text-gold" />
+            <Icon name="role-admin" variant="line" size={24} className="text-text-muted" />
             <h3 className="font-serif text-lg text-text font-normal">Mechanism first</h3>
             <p className="text-xs text-text-muted leading-relaxed">
               Why attention scales, why dense retrieval misses a product code, why an agent picks the wrong
@@ -61,7 +61,7 @@ export default function AboutPage() {
           </div>
 
           <div className="p-5 rounded-2xl bg-black border border-black-line space-y-2">
-            <Icon name="check" variant="line" size={24} className="text-gold" />
+            <Icon name="check" variant="line" size={24} className="text-text-muted" />
             <h3 className="font-serif text-lg text-text font-normal">Measured, not asserted</h3>
             <p className="text-xs text-text-muted leading-relaxed">
               Every project carries an evaluation. If a change cannot be shown to have helped on a fixed test
@@ -70,7 +70,7 @@ export default function AboutPage() {
           </div>
 
           <div className="p-5 rounded-2xl bg-black border border-black-line space-y-2">
-            <Icon name="clock" variant="line" size={24} className="text-gold" />
+            <Icon name="clock" variant="line" size={24} className="text-text-muted" />
             <h3 className="font-serif text-lg text-text font-normal">Something that runs</h3>
             <p className="text-xs text-text-muted leading-relaxed">
               Each stage ends in working code — a pipeline, an agent, a deployed service — rather than a
@@ -125,7 +125,7 @@ export default function AboutPage() {
       </div>
 
       {/* 4. CTA */}
-      <div className="editorial-card glow-br px-6 py-10 sm:p-12 text-center space-y-6 bg-black-raised border border-gold">
+      <div className="editorial-card glow-br px-6 py-10 sm:p-12 text-center space-y-6 bg-black-raised border border-cream/40">
         <h2 className="font-serif text-3xl sm:text-4xl text-text font-normal">Start with the path, not a course</h2>
         <p className="text-text-muted text-base max-w-xl mx-auto leading-relaxed">
           Pick a career track and the platform sequences the courses, labs, practice and projects against it.

@@ -93,7 +93,7 @@ export function EventDashboardPanel() {
                 />
             ) : active?.loading ? (
                 <div className="flex items-center justify-center py-12">
-                    <Loader2 className="h-5 w-5 animate-spin text-gold" />
+                    <Loader2 className="h-5 w-5 animate-spin text-text-muted" />
                 </div>
             ) : active?.error ? (
                 <p className="py-8 text-center text-sm text-red-300">{active.error}</p>
@@ -187,7 +187,7 @@ function EventRow({
                                 onClick={() => decide("APPROVED")}
                                 disabled={busy !== null}
                                 aria-label={`Approve ${event.title}`}
-                                className="inline-flex items-center gap-1.5 rounded-lg bg-gold px-3 py-2 text-xs font-semibold text-black transition-colors hover:bg-[#FFB073] disabled:opacity-60"
+                                className="inline-flex items-center gap-1.5 rounded-lg bg-cream px-3 py-2 text-xs font-semibold text-black transition-colors hover:bg-cream/90 disabled:opacity-60"
                             >
                                 {busy === "approve" ? (
                                     <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -212,7 +212,7 @@ function EventRow({
                         </>
                     )}
                     {isPending && !isAdmin && (
-                        <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-amber-300">
+                        <span className="inline-flex items-center gap-1.5 rounded-full border border-cream/20 bg-cream/8 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-text">
                             <Hourglass className="h-3 w-3" /> Awaiting approval
                         </span>
                     )}
@@ -246,7 +246,7 @@ function RequestList({
     if (loading) {
         return (
             <div className="flex items-center justify-center py-12">
-                <Loader2 className="h-5 w-5 animate-spin text-gold" />
+                <Loader2 className="h-5 w-5 animate-spin text-text-muted" />
             </div>
         );
     }
@@ -275,7 +275,7 @@ function RequestList({
                             {request.eventId && (
                                 <Link
                                     href={`/events/${request.eventId}`}
-                                    className="mt-2 inline-flex items-center gap-1 text-xs text-gold hover:underline"
+                                    className="mt-2 inline-flex items-center gap-1 text-xs text-text hover:underline"
                                 >
                                     Event planned <ExternalLink className="h-3 w-3" />
                                 </Link>
@@ -285,7 +285,7 @@ function RequestList({
                         <div className="flex shrink-0 items-center gap-2">
                             <span
                                 className={`rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-wide ${request.status === "OPEN"
-                                        ? "border-amber-500/30 bg-amber-500/10 text-amber-300"
+                                        ? "border-cream/20 bg-cream/8 text-text"
                                         : request.status === "PLANNED"
                                             ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
                                             : "border-white/10 bg-white/[0.04] text-ink/50"
@@ -297,7 +297,7 @@ function RequestList({
                             {canPlan && request.status === "OPEN" && !request.eventId && (
                                 <Link
                                     href={`/events/new?requestId=${request.id}`}
-                                    className="inline-flex items-center gap-1.5 rounded-lg bg-gold px-3 py-2 text-xs font-semibold text-black transition-colors hover:bg-[#FFB073]"
+                                    className="inline-flex items-center gap-1.5 rounded-lg bg-cream px-3 py-2 text-xs font-semibold text-black transition-colors hover:bg-cream/90"
                                 >
                                     <CalendarPlus className="h-3.5 w-3.5" />
                                     Plan it

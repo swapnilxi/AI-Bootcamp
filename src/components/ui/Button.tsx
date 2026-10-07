@@ -30,15 +30,15 @@ export function Button({
   };
 
   const variantClasses = {
-    // Primary: Solid orange pill with black text
+    // Primary: solid cream/ivory pill with black text; orange appears only as the glow
     primary:
-      "btn-sheen text-black border border-[#FFB073]/60 bg-[linear-gradient(180deg,#FFB073_0%,#FF7315_55%,#DC4C00_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_6px_20px_-10px_rgba(255,115,21,0.45)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_10px_28px_-10px_rgba(255,115,21,0.55)] hover:-translate-y-0.5 active:translate-y-0 font-semibold",
-    // Secondary: 1px orange outline with orange text
+      "btn-sheen text-black border border-cream-200/60 bg-[linear-gradient(180deg,#FFFFFF_0%,#FAF6F0_55%,#F0E6D4_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_6px_20px_-10px_rgba(255,115,21,0.4)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.7),0_10px_30px_-8px_rgba(255,115,21,0.55)] hover:-translate-y-0.5 active:translate-y-0 font-semibold",
+    // Secondary: cream outline with cream text; orange only lights up on hover as a glow
     secondary:
-      "btn-sheen bg-white/[0.02] backdrop-blur-sm text-gold border border-gold/50 hover:border-gold hover:bg-gold-soft hover:-translate-y-0.5 active:translate-y-0",
-    // Outline: subtle black-line border
+      "btn-sheen bg-white/[0.02] backdrop-blur-sm text-cream border border-cream/40 hover:border-cream/70 hover:bg-cream/[0.06] hover:shadow-[0_0_18px_-4px_rgba(255,115,21,0.45)] hover:-translate-y-0.5 active:translate-y-0",
+    // Outline: subtle black-line border, cream on hover, with a faint orange glow accent
     outline:
-      "bg-transparent text-text border border-black-line hover:border-gold hover:text-gold active:translate-y-0.5",
+      "bg-transparent text-text border border-black-line hover:border-cream/60 hover:text-cream hover:shadow-[0_0_16px_-6px_rgba(255,115,21,0.4)] active:translate-y-0.5",
   };
 
   const combinedClasses = `${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`;

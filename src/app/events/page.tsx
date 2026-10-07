@@ -40,7 +40,7 @@ export default function EventsPage() {
             {/* Header */}
             <div className="flex flex-col justify-between gap-6 border-b border-mist pb-8 md:flex-row md:items-end">
                 <div>
-                    <span className="mb-3 inline-block rounded-full border border-mist bg-mist/60 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-indigo">
+                    <span className="mb-3 inline-block rounded-full border border-mist bg-mist/60 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-cream">
                         Gatherings & Circles
                     </span>
                     <h1 className="font-serif text-4xl font-normal leading-tight text-ink sm:text-5xl lg:text-6xl">
@@ -74,7 +74,7 @@ export default function EventsPage() {
                             key={f.value}
                             onClick={() => setActiveFilter(f.value)}
                             className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${activeFilter === f.value
-                                    ? "bg-gold text-black shadow-sm"
+                                    ? "bg-cream text-black shadow-sm"
                                     : "border border-white/[0.07] bg-black-raised/80 text-ink backdrop-blur-sm hover:border-gold"
                                 }`}
                         >
@@ -108,7 +108,7 @@ export default function EventsPage() {
                 </div>
             ) : filtered.length === 0 ? (
                 <div className="flex flex-col items-center gap-4 py-20 text-center">
-                    <CalendarHeart className="h-8 w-8 text-gold/60" />
+                    <CalendarHeart className="h-8 w-8 text-cream/60" />
                     <div>
                         <p className="font-serif text-xl text-ink">
                             {activeFilter === "mine" ? "You have not shown interest in anything yet" : "Nothing here yet"}
@@ -134,7 +134,7 @@ export default function EventsPage() {
 
             <p className="text-center text-xs text-ink/40">
                 Have an idea for a gathering?{" "}
-                <Link href="/events/request" className="text-gold hover:underline">
+                <Link href="/events/request" className="text-cream hover:underline">
                     Tell us about it
                 </Link>{" "}
                 and our faculty will plan it.

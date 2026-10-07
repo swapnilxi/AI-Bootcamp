@@ -35,11 +35,11 @@ interface BookingView {
 }
 
 const STATUS_COPY: Record<BookingView["status"], { badge: string; title: string; tone: string }> = {
-  PENDING: { badge: "Awaiting Confirmation", title: "Your Request Is Received", tone: "text-amber-300" },
+  PENDING: { badge: "Awaiting Confirmation", title: "Your Request Is Received", tone: "text-text-muted" },
   CONFIRMED: { badge: "Session Confirmed", title: "Your Session Is Reserved", tone: "text-gold" },
   RESCHEDULED: { badge: "Confirmed · New Time", title: "Your Session Is Reserved", tone: "text-gold" },
   COMPLETED: { badge: "Completed", title: "Thank You for Your Session", tone: "text-emerald-300" },
-  CANCELLED: { badge: "Cancelled", title: "This Booking Was Cancelled", tone: "text-clay" },
+  CANCELLED: { badge: "Cancelled", title: "This Booking Was Cancelled", tone: "text-text-muted" },
 };
 
 function ConfirmationContent() {
@@ -189,7 +189,7 @@ function ConfirmationContent() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
       <div className="card-premium p-8 sm:p-12 text-center space-y-8">
-        <div className="w-16 h-16 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center mx-auto">
+        <div className="w-16 h-16 rounded-full bg-cream/8 border border-cream/20 flex items-center justify-center mx-auto">
           <StatusIcon className={`w-8 h-8 ${copy.tone}`} />
         </div>
 
@@ -220,11 +220,11 @@ function ConfirmationContent() {
         {notice && (
           <p className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/25 text-emerald-300 text-sm">{notice}</p>
         )}
-        {error && <p className="p-3 rounded-xl bg-clay/10 border border-clay/30 text-clay text-sm">{error}</p>}
+        {error && <p className="p-3 rounded-xl bg-cream/8 border border-cream/20 text-text text-sm">{error}</p>}
 
         <div className="inline-block p-4 rounded-xl bg-black/40 border border-white/[0.07] text-left">
           <span className="text-xs text-text-muted uppercase block">Booking Reference</span>
-          <span className="font-mono text-2xl font-bold text-gold tracking-wider">{booking.referenceCode}</span>
+          <span className="font-mono text-2xl font-bold text-text tracking-wider">{booking.referenceCode}</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left p-6 rounded-xl bg-black/30 border border-white/[0.06] text-sm">
@@ -235,7 +235,7 @@ function ConfirmationContent() {
           <div>
             <span className="text-xs text-text-muted uppercase block">Date & Time</span>
             <p className="font-medium text-ink mt-0.5 flex items-center gap-1.5">
-              <Clock className="w-4 h-4 text-gold" />
+              <Clock className="w-4 h-4 text-text-muted" />
               {fmt(booking.scheduledAt, {
                 weekday: "long",
                 month: "long",
@@ -249,7 +249,7 @@ function ConfirmationContent() {
           <div>
             <span className="text-xs text-text-muted uppercase block">Format</span>
             <p className="font-medium text-ink mt-0.5 flex items-center gap-1.5">
-              <Video className="w-4 h-4 text-gold" />
+              <Video className="w-4 h-4 text-text-muted" />
               Private 1-on-1 video call · {booking.durationMinutes} min
             </p>
           </div>
@@ -260,7 +260,7 @@ function ConfirmationContent() {
                 href={booking.meetingLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-medium text-gold mt-0.5 inline-flex items-center gap-1 hover:underline"
+                className="font-medium text-text mt-0.5 inline-flex items-center gap-1 hover:underline"
               >
                 Open meeting <ExternalLink className="w-3.5 h-3.5" />
               </a>
@@ -285,7 +285,7 @@ function ConfirmationContent() {
               onClick={downloadIcs}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg border border-white/10 text-ink hover:border-gold/50 text-sm font-medium transition-colors"
             >
-              <Download className="w-4 h-4 text-gold" />
+              <Download className="w-4 h-4 text-text-muted" />
               Apple / Outlook (.ics)
             </button>
           </div>
@@ -302,7 +302,7 @@ function ConfirmationContent() {
               <div className="flex flex-col sm:flex-row justify-center gap-3">
                 <button
                   onClick={() => setMode("reschedule")}
-                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl border border-gold/30 text-gold text-sm hover:bg-gold/10 transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl border border-cream/20 text-text text-sm hover:bg-cream/10 transition-colors"
                 >
                   <CalendarClock className="w-4 h-4" /> Choose another time
                 </button>
@@ -354,7 +354,7 @@ function ConfirmationContent() {
                   <button
                     disabled={busy}
                     onClick={() => submit({ action: "cancel", reason: reason || undefined }, "Your booking has been cancelled.")}
-                    className="px-5 py-2.5 rounded-xl bg-clay/20 border border-clay/40 text-clay text-sm font-semibold disabled:opacity-40"
+                    className="px-5 py-2.5 rounded-xl bg-cream/10 border border-cream/25 text-text text-sm font-semibold disabled:opacity-40"
                   >
                     {busy ? "Cancelling…" : "Cancel booking"}
                   </button>
@@ -372,7 +372,7 @@ function ConfirmationContent() {
 
         <div className="text-xs text-text-muted max-w-md mx-auto p-4 rounded-lg bg-black/30 border border-white/[0.06] space-y-1 text-left">
           <p className="font-semibold text-ink flex items-center gap-1.5">
-            <Shield className="w-4 h-4 text-gold" />
+            <Shield className="w-4 h-4 text-text-muted" />
             Preparation note
           </p>
           <p>

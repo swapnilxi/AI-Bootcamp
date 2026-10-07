@@ -65,7 +65,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         <h2 className="font-serif text-2xl text-text">The problem</h2>
         <p className="text-base leading-relaxed text-text-muted">{project.problemStatement}</p>
         <div className="rounded-2xl border border-white/[0.07] bg-white/[0.02] p-5">
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-gold">Why it matters</p>
+          <p className="text-[11px] font-semibold uppercase tracking-wider text-text-muted">Why it matters</p>
           <p className="mt-2 text-sm leading-relaxed text-text-muted">{project.businessContext}</p>
         </div>
       </section>
@@ -92,7 +92,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
           {project.starterRepoUrl && (
             <a
               href={project.starterRepoUrl}
-              className="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-gold hover:underline"
+              className="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-text-muted hover:underline"
             >
               Starter repository
             </a>
@@ -113,8 +113,8 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             if (stageTasks.length === 0) return null;
             return (
               <div key={stage} className="space-y-3">
-                <h3 className="inline-flex items-center gap-2.5 text-xs font-semibold uppercase tracking-widest text-gold">
-                  <span className="h-px w-6 bg-gold/50" aria-hidden="true" />
+                <h3 className="inline-flex items-center gap-2.5 text-xs font-semibold uppercase tracking-widest text-text-muted">
+                  <span className="h-px w-6 bg-cream/40" aria-hidden="true" />
                   {STAGE_LABEL[stage]}
                 </h3>
                 <ul className="space-y-3">
@@ -131,7 +131,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         </div>
       </section>
 
-      <section className="rounded-3xl border border-gold/25 bg-gold/[0.05] p-7 text-center sm:p-9">
+      <section className="rounded-3xl border border-cream/20 bg-cream/5 p-7 text-center sm:p-9">
         <h2 className="font-serif text-xl text-text">Stuck on this project?</h2>
         <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-text-muted">
           The AI Tutor knows this brief. It will review your architecture, explain an error or give you a

@@ -24,10 +24,10 @@ export function SectionHeading({
       } mb-12 sm:mb-16 relative z-10 ${className}`}
     >
       {eyebrow && (
-        <span className="reveal inline-flex items-center gap-3 text-xs font-medium tracking-[0.2em] uppercase text-gold mb-4">
-          <span className="eyebrow-line from-right w-8 h-px bg-gradient-to-r from-transparent to-gold/70" aria-hidden="true" />
+        <span className="reveal inline-flex items-center gap-3 text-xs font-medium tracking-[0.2em] uppercase text-text mb-4">
+          <span className="eyebrow-line from-right w-8 h-px bg-gradient-to-r from-transparent to-cream/70" aria-hidden="true" />
           <span>{eyebrow}</span>
-          <span className="eyebrow-line from-left w-8 h-px bg-gradient-to-l from-transparent to-gold/70" aria-hidden="true" />
+          <span className="eyebrow-line from-left w-8 h-px bg-gradient-to-l from-transparent to-cream/70" aria-hidden="true" />
         </span>
       )}
 

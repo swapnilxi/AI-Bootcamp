@@ -15,7 +15,7 @@ export function MenuToggle({ open, onToggle, controls }: MenuToggleProps) {
   return (
     <button
       onClick={onToggle}
-      className="lg:hidden relative flex items-center justify-center w-11 h-11 rounded-full border border-white/10 bg-white/[0.02] text-gold hover:border-gold/50 transition-colors"
+      className="lg:hidden relative flex items-center justify-center w-11 h-11 rounded-full border border-white/10 bg-white/[0.02] text-text-muted hover:border-gold/50 transition-colors"
       aria-label={open ? "Close menu" : "Open menu"}
       aria-expanded={open}
       aria-controls={controls}

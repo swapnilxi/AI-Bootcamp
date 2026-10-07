@@ -28,10 +28,10 @@ export function HeroSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           <div className="lg:col-span-7 space-y-6 text-left" data-speed="-0.35" data-speed-min="1024" data-scroll-fade>
             <span
-              className="intro inline-flex items-center gap-3 text-[11px] sm:text-xs font-medium tracking-[0.18em] sm:tracking-[0.22em] uppercase text-gold"
+              className="intro inline-flex items-center gap-3 text-[11px] sm:text-xs font-medium tracking-[0.18em] sm:tracking-[0.22em] uppercase text-text-muted"
               style={revealDelay(100)}
             >
-              <span className="w-8 h-px shrink-0 bg-gradient-to-r from-transparent to-gold/70" aria-hidden="true" />
+              <span className="w-8 h-px shrink-0 bg-gradient-to-r from-transparent to-cream/40" aria-hidden="true" />
               {/* Seat for the travelling star (see StarJourney); it reserves the
                   space, the star itself lives at the page root so it can leave. */}
               <span className="w-7 h-7 sm:w-8 sm:h-8 shrink-0" data-star-anchor aria-hidden="true" />
@@ -96,7 +96,7 @@ function HeroActions() {
         href="/bootcamp"
         className="btn-sheen inline-flex items-center justify-center gap-2 px-6 py-3 whitespace-nowrap rounded-full border border-white/10 bg-white/[0.02] text-xs uppercase tracking-wider font-semibold text-text-muted hover:text-gold hover:border-gold/60 transition-[color,border-color] duration-500 min-h-[48px]"
       >
-        <Icon name="calendar" variant="line" size={15} className="text-gold" />
+        <Icon name="calendar" variant="line" size={15} className="text-text-muted" />
         <span>12-week bootcamp</span>
       </Link>
     </div>

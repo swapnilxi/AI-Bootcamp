@@ -81,7 +81,7 @@ export default async function UserDashboardPage() {
       )}
 
       <header className="space-y-2">
-        <p className="text-[11px] font-semibold uppercase tracking-widest text-gold">
+        <p className="text-[11px] font-semibold uppercase tracking-widest text-text-muted">
           {snap.path ? `${snap.path.title} path` : "Your journey"}
         </p>
         <h1 className="font-serif text-3xl font-normal text-text sm:text-4xl">
@@ -93,7 +93,7 @@ export default async function UserDashboardPage() {
       <section className="card-premium card-featured glow-tl rounded-3xl p-6 sm:p-8">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
           <div className="max-w-2xl space-y-2.5">
-            <p className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-widest text-gold">
+            <p className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-widest text-text-muted">
               <Target className="h-3.5 w-3.5" />
               Do this next
             </p>
@@ -138,14 +138,14 @@ export default async function UserDashboardPage() {
       <section className="space-y-5">
         <div className="flex items-end justify-between gap-4 border-b border-black-line pb-4">
           <h2 className="font-serif text-2xl text-text">Your courses</h2>
-          <Link href="/courses" className="text-xs uppercase tracking-wider text-gold hover:underline">
+          <Link href="/courses" className="text-xs uppercase tracking-wider text-cream hover:underline">
             Browse all
           </Link>
         </div>
 
         {enrollments.length === 0 ? (
           <div className="editorial-card glow-tl space-y-4 rounded-2xl p-8 text-center">
-            <BookOpen className="mx-auto h-6 w-6 text-gold" />
+            <BookOpen className="mx-auto h-6 w-6 text-cream" />
             <h3 className="font-serif text-xl text-text">You are not enrolled in anything yet</h3>
             <p className="mx-auto max-w-md text-sm text-text-muted">
               Pick a path and the first course will be chosen for you, or browse the catalogue and start
@@ -169,7 +169,7 @@ export default async function UserDashboardPage() {
                 className="editorial-card glow-tl group flex h-full flex-col gap-4 rounded-2xl p-6"
               >
                 <div className="flex-1 space-y-2.5">
-                  <h3 className="font-serif text-lg leading-snug text-text transition-colors group-hover:text-gold">
+                  <h3 className="font-serif text-lg leading-snug text-text transition-colors group-hover:text-cream-300">
                     {course.title}
                   </h3>
                   <p className="line-clamp-2 text-sm leading-relaxed text-text-muted">{course.description}</p>
@@ -190,7 +190,7 @@ export default async function UserDashboardPage() {
         <section className="space-y-5">
           <div className="flex items-end justify-between gap-4 border-b border-black-line pb-4">
             <h2 className="font-serif text-2xl text-text">Worth shoring up</h2>
-            <Link href="/progress" className="text-xs uppercase tracking-wider text-gold hover:underline">
+            <Link href="/progress" className="text-xs uppercase tracking-wider text-cream hover:underline">
               Full skill graph
             </Link>
           </div>

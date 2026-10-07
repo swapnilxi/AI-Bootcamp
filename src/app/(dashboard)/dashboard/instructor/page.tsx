@@ -145,10 +145,10 @@ export default function InstructorDashboardPage() {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
       {/* Top Welcome Banner */}
-      <div className="p-8 sm:p-10 rounded-3xl bg-[linear-gradient(135deg,#21140f_0%,#141417_55%,#0f0f12_100%)] border border-gold/25 flex flex-col md:flex-row md:items-end justify-between gap-6 shadow-2xl">
+      <div className="p-8 sm:p-10 rounded-3xl bg-[linear-gradient(135deg,#21140f_0%,#141417_55%,#0f0f12_100%)] border border-cream/25 flex flex-col md:flex-row md:items-end justify-between gap-6 shadow-2xl">
         <div className="space-y-2">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-gold font-semibold">
+            <span className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-text-muted font-semibold">
               <GraduationCap className="w-4 h-4" /> Teaching & Healing Studio
             </span>
 
@@ -158,7 +158,7 @@ export default function InstructorDashboardPage() {
               </span>
             )}
             {isPending && (
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/15 text-amber-300 border border-amber-500/30 flex items-center gap-1">
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-cream/15 text-cream border border-cream/30 flex items-center gap-1">
                 <Clock className="w-3 h-3" /> Under Review
               </span>
             )}
@@ -186,7 +186,7 @@ export default function InstructorDashboardPage() {
           </Link>
           <a
             href="#profile-sections"
-            className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-black-raised hover:border-gold/40 border border-gold/30 text-gold text-xs font-semibold uppercase tracking-wider transition-colors"
+            className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-black-raised hover:border-cream/40 border border-cream/30 text-cream text-xs font-semibold uppercase tracking-wider transition-colors"
           >
             <Plus className="w-4 h-4" /> Add Profile Sections
           </a>
@@ -201,9 +201,9 @@ export default function InstructorDashboardPage() {
 
       {/* Expedited Review Alert Banner for Pending Instructors */}
       {isPending && (
-        <div className="p-6 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-fade-in">
+        <div className="p-6 rounded-2xl bg-cream/10 border border-cream/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-fade-in">
           <div className="space-y-1">
-            <div className="flex items-center gap-2 text-amber-300 text-sm font-semibold">
+            <div className="flex items-center gap-2 text-cream text-sm font-semibold">
               <Clock className="w-4 h-4 shrink-0" />
               <span>Mentor Profile Under Administration Review</span>
             </div>
@@ -248,7 +248,7 @@ export default function InstructorDashboardPage() {
           </p>
           <Link
             href="/profile"
-            className="inline-block text-gold hover:underline font-semibold pt-1"
+            className="inline-block text-cream hover:underline font-semibold pt-1"
           >
             Update Profile & Resubmit →
           </Link>
@@ -263,7 +263,7 @@ export default function InstructorDashboardPage() {
           { label: "Private 1:1 Sessions", value: bookings.length, icon: Users },
         ].map(({ label, value, icon: StatIcon }) => (
           <div key={label} className="p-6 rounded-2xl bg-black-raised/80 backdrop-blur-sm border border-white/[0.07]">
-            <StatIcon className="w-5 h-5 text-gold mb-3" />
+            <StatIcon className="w-5 h-5 text-cream mb-3" />
             <div className="font-serif text-3xl text-ink">{loading ? "–" : value}</div>
             <div className="text-xs uppercase tracking-wider text-text-muted mt-1">{label}</div>
           </div>
@@ -285,7 +285,7 @@ export default function InstructorDashboardPage() {
           <p className="text-xs text-text-muted">Loading your schedule…</p>
         ) : bookings.length === 0 ? (
           <div className="p-8 rounded-2xl border border-dashed border-white/10 text-center space-y-2">
-            <Calendar className="w-8 h-8 text-gold/40 mx-auto" />
+            <Calendar className="w-8 h-8 text-cream/40 mx-auto" />
             <p className="text-sm text-text-muted">No private sessions booked yet.</p>
           </div>
         ) : (
@@ -313,7 +313,7 @@ export default function InstructorDashboardPage() {
                     </td>
                     <td className="py-4 px-5">
                       <p className="text-ink">{b.serviceTitle}</p>
-                      <p className="font-mono text-gold/80 text-[10px]">{b.referenceCode}</p>
+                      <p className="font-mono text-cream/80 text-[10px]">{b.referenceCode}</p>
                     </td>
                     <td className="py-4 px-5 text-text-muted">
                       {new Date(b.scheduledAt).toLocaleString(undefined, {
@@ -329,7 +329,7 @@ export default function InstructorDashboardPage() {
                         className={`px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider ${b.status === "CONFIRMED"
                             ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30"
                             : b.status === "PENDING"
-                              ? "bg-amber-500/15 text-amber-300 border border-amber-500/30"
+                              ? "bg-cream/15 text-cream border border-cream/30"
                               : "bg-white/5 text-text-muted"
                           }`}
                       >
@@ -361,7 +361,7 @@ export default function InstructorDashboardPage() {
                             <button
                               onClick={() => actOnBooking(b, "complete")}
                               disabled={bookingBusy === b.id}
-                              className="px-3 py-1.5 min-h-0 rounded-full bg-gold/10 text-gold border border-gold/30 text-[11px] font-semibold hover:bg-gold/20 disabled:opacity-50"
+                              className="px-3 py-1.5 min-h-0 rounded-full bg-cream/10 text-cream border border-cream/30 text-[11px] font-semibold hover:bg-cream/20 disabled:opacity-50"
                             >
                               Mark Complete
                             </button>
@@ -373,7 +373,7 @@ export default function InstructorDashboardPage() {
                           href={b.meetingLink}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gold/10 hover:bg-gold/20 text-gold text-xs font-medium border border-gold/30 transition-colors"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cream/10 hover:bg-cream/20 text-cream text-xs font-medium border border-cream/30 transition-colors"
                         >
                           <Video className="w-3.5 h-3.5" />
                           <span>Join Room</span>
@@ -423,7 +423,7 @@ export default function InstructorDashboardPage() {
                   <tr key={c.id} className="hover:bg-white/[0.02] transition-colors">
                     <td className="py-4 px-5 font-medium text-ink">{c.title}</td>
                     <td className="py-4 px-5 text-text-muted">
-                      {c.lessonCount ? c.lessonCount : <span className="text-amber-300 text-xs">No lessons</span>}
+                      {c.lessonCount ? c.lessonCount : <span className="text-text-muted text-xs">No lessons</span>}
                     </td>
                     <td className="py-4 px-5">
                       <div className="flex items-center gap-1.5 flex-wrap">
@@ -436,13 +436,13 @@ export default function InstructorDashboardPage() {
                             Declined
                           </span>
                         ) : (
-                          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/15 text-amber-300 border border-amber-500/30">
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-cream/15 text-cream border border-cream/30">
                             Under Review
                           </span>
                         )}
 
                         {c.isPublished && (
-                          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-gold/15 text-gold border border-gold/30">
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-cream/15 text-cream border border-cream/30">
                             Published
                           </span>
                         )}
@@ -456,14 +456,14 @@ export default function InstructorDashboardPage() {
                       <div className="flex items-center justify-end gap-2">
                         <Link
                           href={`/courses/${c.id}`}
-                          className="p-2 min-h-0 rounded-lg text-text-muted hover:text-gold transition-colors"
+                          className="p-2 min-h-0 rounded-lg text-text-muted hover:text-cream transition-colors"
                           title="View class"
                         >
                           <ExternalLink className="w-4 h-4" />
                         </Link>
                         <Link
                           href={`/courses/${c.id}/edit#lessons`}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-0 rounded-full border border-gold/30 text-gold text-xs font-semibold hover:bg-gold/10 transition-colors"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-0 rounded-full border border-cream/30 text-cream text-xs font-semibold hover:bg-cream/10 transition-colors"
                         >
                           <Settings2 className="w-3.5 h-3.5" /> Manage
                         </Link>
@@ -483,7 +483,7 @@ export default function InstructorDashboardPage() {
       {/* SECTION 4: Profile Sections Editor */}
       {profile && (
         <section id="profile-sections" className="space-y-4 pt-2 scroll-mt-24">
-          <div className="p-6 sm:p-8 rounded-3xl bg-[linear-gradient(135deg,#0e0e12_0%,#141417_100%)] border border-gold/15">
+          <div className="p-6 sm:p-8 rounded-3xl bg-[linear-gradient(135deg,#0e0e12_0%,#141417_100%)] border border-cream/15">
             <ProfileSectionsEditor
               instructorId={profile.id}
               initialSections={(() => {

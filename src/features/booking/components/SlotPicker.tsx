@@ -177,7 +177,7 @@ export function SlotPicker({ serviceId, value, onChange, onTimezone }: SlotPicke
         </div>
 
         {error ? (
-          <p className="text-sm text-clay">{error}</p>
+          <p className="text-sm text-text">{error}</p>
         ) : (
           <div className="grid grid-cols-4 sm:grid-cols-7 gap-2">
             {(loadingDays ? Array.from({ length: WINDOW }, () => null) : days).map((d, i) => {
@@ -216,13 +216,13 @@ export function SlotPicker({ serviceId, value, onChange, onTimezone }: SlotPicke
       {/* Timezone Selector & Customizer */}
       <div className="p-4 rounded-2xl bg-black-raised/80 backdrop-blur-sm border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-gold/15 flex items-center justify-center text-gold shrink-0">
+          <div className="w-8 h-8 rounded-lg bg-cream/10 flex items-center justify-center text-text-muted shrink-0">
             <Globe className="w-4 h-4" />
           </div>
           <div>
             <p className="text-xs font-semibold text-ink flex items-center gap-1.5 flex-wrap">
               <span>Appointment Time Zone:</span>
-              <span className="text-gold font-normal">
+              <span className="text-text font-normal">
                 {activeTz === "America/New_York"
                   ? "Eastern Time (Virginia & Regional Default)"
                   : activeTz.replace(/_/g, " ")}
@@ -242,7 +242,7 @@ export function SlotPicker({ serviceId, value, onChange, onTimezone }: SlotPicke
             id="slot-tz-select"
             value={activeTz}
             onChange={(e) => handleTimezoneSelect(e.target.value)}
-            className="px-3 py-1.5 bg-black/60 border border-gold/40 text-gold rounded-xl text-xs font-medium focus:outline-none focus:ring-1 focus:ring-gold cursor-pointer"
+            className="px-3 py-1.5 bg-black/60 border border-cream/20 text-text rounded-xl text-xs font-medium focus:outline-none focus:ring-1 focus:ring-gold cursor-pointer"
           >
             <optgroup label="United States (Regional Focus)">
               <option value="America/New_York">Eastern Time — Virginia, DC, NY, NC (Default)</option>
@@ -282,7 +282,7 @@ export function SlotPicker({ serviceId, value, onChange, onTimezone }: SlotPicke
         <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
           <p className="text-sm font-semibold text-ink">Choose an available slot</p>
           <span className="text-xs text-text-muted inline-flex items-center gap-1.5">
-            <Clock className="w-3.5 h-3.5 text-gold" />
+            <Clock className="w-3.5 h-3.5 text-text-muted" />
             Showing in {activeTz === "America/New_York" ? "Eastern Time (Virginia)" : activeTz.replace(/_/g, " ")}
           </span>
         </div>
@@ -316,7 +316,7 @@ export function SlotPicker({ serviceId, value, onChange, onTimezone }: SlotPicke
                   aria-pressed={active}
                 >
                   <span className="inline-flex items-center gap-1.5 font-medium">
-                    <Clock className={`w-3.5 h-3.5 ${active ? "" : "text-gold/70"}`} />
+                    <Clock className={`w-3.5 h-3.5 ${active ? "" : "text-text-muted"}`} />
                     {fmtTime(s.start, activeTz)}
                   </span>
                   {activeTz !== (tz || "America/New_York") ? (

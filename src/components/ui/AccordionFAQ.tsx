@@ -32,7 +32,7 @@ export function AccordionFAQ({ items, className = "" }: AccordionFAQProps) {
                 {item.question}
               </span>
               <span
-                className={`flex items-center justify-center w-9 h-9 rounded-full border text-gold text-xl font-light shrink-0 select-none transition-[transform,border-color,background-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                className={`flex items-center justify-center w-9 h-9 rounded-full border text-text-muted text-xl font-light shrink-0 select-none transition-[transform,border-color,background-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                   isOpen
                     ? "rotate-45 border-gold/50 bg-gold/10"
                     : "border-white/10 group-hover:border-gold/40"

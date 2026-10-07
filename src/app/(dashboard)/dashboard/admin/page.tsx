@@ -110,7 +110,7 @@ export default function AdminDashboardPage() {
       {/* Top Console Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-mist pb-6">
         <div>
-          <span className="text-xs font-semibold uppercase tracking-widest text-indigo px-3 py-1 rounded-full bg-mist/60 border border-mist inline-block mb-2">
+          <span className="text-xs font-semibold uppercase tracking-widest text-text-muted px-3 py-1 rounded-full bg-mist/60 border border-mist inline-block mb-2">
             Mentor Management Console
           </span>
           <h1 className="font-serif text-3xl sm:text-4xl text-ink font-normal">
@@ -132,7 +132,7 @@ export default function AdminDashboardPage() {
       </div>
 
       {errorMsg && (
-        <div className="p-4 rounded-lg bg-clay/15 text-clay text-sm flex items-center gap-2">
+        <div className="p-4 rounded-lg bg-cream/10 text-cream text-sm flex items-center gap-2">
           <AlertCircle className="w-5 h-5 shrink-0" />
           <span>{errorMsg}</span>
         </div>
@@ -141,18 +141,18 @@ export default function AdminDashboardPage() {
       {/* KPI Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
         <div className="editorial-card p-6 space-y-2">
-          <span className="text-xs font-semibold uppercase text-indigo tracking-wider">
+          <span className="text-xs font-semibold uppercase text-text-muted tracking-wider">
             Sessions
           </span>
           <div className="font-serif text-3xl font-medium text-ink">
             {upcomingCount}
-            {pendingCount > 0 && <span className="text-base text-amber-300 ml-2">+{pendingCount} pending</span>}
+            {pendingCount > 0 && <span className="text-base text-text-muted ml-2">+{pendingCount} pending</span>}
           </div>
           <span className="text-xs text-ink/60">Upcoming confirmed sessions</span>
         </div>
 
         <div className="editorial-card p-6 space-y-2">
-          <span className="text-xs font-semibold uppercase text-indigo tracking-wider">
+          <span className="text-xs font-semibold uppercase text-text-muted tracking-wider">
             Active Services
           </span>
           <div className="font-serif text-3xl font-medium text-ink">{services.length}</div>
@@ -160,7 +160,7 @@ export default function AdminDashboardPage() {
         </div>
 
         <div className="editorial-card p-6 space-y-2">
-          <span className="text-xs font-semibold uppercase text-indigo tracking-wider">
+          <span className="text-xs font-semibold uppercase text-text-muted tracking-wider">
             Academy Classes
           </span>
           <div className="font-serif text-3xl font-medium text-ink">{classes.length}</div>
@@ -173,27 +173,27 @@ export default function AdminDashboardPage() {
         <button
           onClick={() => setActiveTab("bookings")}
           className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${activeTab === "bookings"
-            ? "bg-gold text-black shadow-sm"
+            ? "bg-cream text-black shadow-sm"
             : "text-ink/70 hover:text-ink hover:bg-mist/40"
             }`}
         >
           Bookings
           {pendingCount > 0 && (
-            <span className={`ml-2 px-1.5 py-0.5 rounded-full text-[10px] ${activeTab === "bookings" ? "bg-black/20" : "bg-amber-500/20 text-amber-300"}`}>
+            <span className={`ml-2 px-1.5 py-0.5 rounded-full text-[10px] ${activeTab === "bookings" ? "bg-black/20" : "bg-cream/20 text-cream"}`}>
               {pendingCount}
             </span>
           )}
         </button>
         <button
           onClick={() => setActiveTab("clients")}
-          className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${activeTab === "clients" ? "bg-gold text-black shadow-sm" : "text-ink/70 hover:text-ink hover:bg-mist/40"
+          className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${activeTab === "clients" ? "bg-cream text-black shadow-sm" : "text-ink/70 hover:text-ink hover:bg-mist/40"
             }`}
         >
           Clients
         </button>
         <button
           onClick={() => setActiveTab("availability")}
-          className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${activeTab === "availability" ? "bg-gold text-black shadow-sm" : "text-ink/70 hover:text-ink hover:bg-mist/40"
+          className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${activeTab === "availability" ? "bg-cream text-black shadow-sm" : "text-ink/70 hover:text-ink hover:bg-mist/40"
             }`}
         >
           Availability
@@ -201,14 +201,14 @@ export default function AdminDashboardPage() {
         <button
           onClick={() => setActiveTab("faculty")}
           className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5 ${activeTab === "faculty"
-            ? "bg-gold text-black shadow-sm"
+            ? "bg-cream text-black shadow-sm"
             : "text-ink/70 hover:text-ink hover:bg-mist/40"
             }`}
         >
           <span>Instructors</span>
           {pendingFacultyCount > 0 && (
             <span
-              className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold ${activeTab === "faculty" ? "bg-black text-amber-300" : "bg-amber-500/20 text-amber-300 border border-amber-500/30"
+              className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold ${activeTab === "faculty" ? "bg-black text-cream" : "bg-cream/20 text-cream border border-cream/30"
                 }`}
             >
               {pendingFacultyCount}
@@ -218,14 +218,14 @@ export default function AdminDashboardPage() {
         <button
           onClick={() => setActiveTab("curriculum")}
           className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5 ${activeTab === "curriculum"
-            ? "bg-gold text-black shadow-sm"
+            ? "bg-cream text-black shadow-sm"
             : "text-ink/70 hover:text-ink hover:bg-mist/40"
             }`}
         >
           <span>Curriculum Approvals</span>
           {pendingClassesCount > 0 && (
             <span
-              className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold ${activeTab === "curriculum" ? "bg-black text-amber-300" : "bg-amber-500/20 text-amber-300 border border-amber-500/30"
+              className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold ${activeTab === "curriculum" ? "bg-black text-cream" : "bg-cream/20 text-cream border border-cream/30"
                 }`}
             >
               {pendingClassesCount}
@@ -235,14 +235,14 @@ export default function AdminDashboardPage() {
         <button
           onClick={() => setActiveTab("events")}
           className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5 ${activeTab === "events"
-            ? "bg-gold text-black shadow-sm"
+            ? "bg-cream text-black shadow-sm"
             : "text-ink/70 hover:text-ink hover:bg-mist/40"
             }`}
         >
           <span>Events</span>
           {pendingEventsCount > 0 && (
             <span
-              className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold ${activeTab === "events" ? "bg-black text-amber-300" : "bg-amber-500/20 text-amber-300 border border-amber-500/30"
+              className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold ${activeTab === "events" ? "bg-black text-cream" : "bg-cream/20 text-cream border border-cream/30"
                 }`}
             >
               {pendingEventsCount}
@@ -252,7 +252,7 @@ export default function AdminDashboardPage() {
         <button
           onClick={() => setActiveTab("services")}
           className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${activeTab === "services"
-            ? "bg-gold text-black shadow-sm"
+            ? "bg-cream text-black shadow-sm"
             : "text-ink/70 hover:text-ink hover:bg-mist/40"
             }`}
         >
@@ -261,7 +261,7 @@ export default function AdminDashboardPage() {
         <button
           onClick={() => setActiveTab("classes")}
           className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${activeTab === "classes"
-            ? "bg-gold text-black shadow-sm"
+            ? "bg-cream text-black shadow-sm"
             : "text-ink/70 hover:text-ink hover:bg-mist/40"
             }`}
         >
@@ -296,7 +296,7 @@ export default function AdminDashboardPage() {
             <h2 className="font-serif text-2xl text-ink font-medium">Session Offerings</h2>
             <Link
               href="/mentorship"
-              className="text-xs font-semibold text-indigo hover:underline flex items-center gap-1"
+              className="text-xs font-semibold text-cream hover:underline flex items-center gap-1"
             >
               <span>View Public Menu</span>
               <ExternalLink className="w-3 h-3" />
@@ -307,7 +307,7 @@ export default function AdminDashboardPage() {
             {services.map((svc) => (
               <div key={svc.id} className="editorial-card p-6 space-y-3 flex flex-col justify-between">
                 <div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-indigo">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-text-muted">
                     {svc.category}
                   </span>
                   <h3 className="font-serif text-xl text-ink font-medium mt-1">{svc.title}</h3>
@@ -336,7 +336,7 @@ export default function AdminDashboardPage() {
 
           <div className="editorial-card overflow-hidden">
             <table className="w-full text-left text-sm text-ink/80">
-              <thead className="bg-mist/40 text-xs font-semibold uppercase text-indigo tracking-wider border-b border-mist">
+              <thead className="bg-mist/40 text-xs font-semibold uppercase text-text-muted tracking-wider border-b border-mist">
                 <tr>
                   <th className="py-3 px-4">Title</th>
                   <th className="py-3 px-4">Instructor</th>
@@ -355,7 +355,7 @@ export default function AdminDashboardPage() {
                     <td className="py-3 px-4 text-xs text-ink/70">{c.lessonCount ?? 0}</td>
                     <td className="py-3 px-4 text-xs">
                       {c.isPasswordProtected ? (
-                        <span className="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/25 font-semibold">
+                        <span className="px-2 py-0.5 rounded-full bg-cream/10 text-cream border border-cream/25 font-semibold">
                           Key Protected
                         </span>
                       ) : c.isSubscriberOnly ? (
@@ -385,14 +385,14 @@ export default function AdminDashboardPage() {
                         </Link>
                         <Link
                           href={`/courses/${c.id}/edit`}
-                          className="p-1.5 rounded hover:bg-mist text-indigo"
+                          className="p-1.5 rounded hover:bg-mist text-cream"
                           title="Edit"
                         >
                           <Edit className="w-4 h-4" />
                         </Link>
                         <button
                           onClick={() => handleDeleteClass(c.id, c.title)}
-                          className="p-1.5 rounded hover:bg-clay/20 text-clay"
+                          className="p-1.5 rounded hover:bg-cream/10 text-cream"
                           title="Delete"
                         >
                           <Trash2 className="w-4 h-4" />

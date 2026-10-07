@@ -18,31 +18,32 @@
   --black-card: #161412;
   --black-line: rgba(245, 237, 224, 0.12);
 
-  /* Luminous electric mandarin orange for Dark Mode (vibrant, warm, high-tech) */
-  --orange: #FF7315;
-  --orange-bright: #FF8F42;
-  --orange-pale: #FFB380;
-  --orange-deep: #E65A00;
-  --orange-soft: rgba(255, 115, 21, 0.14);
-  --orange-glow: rgba(255, 115, 21, 0.34);
-  --orange-rgb: 255, 115, 21;
+  /* Premium orange for Dark Mode — the standard, pure Tailwind orange ramp */
+  --orange: #F97316;
+  --orange-bright: #FB923C;
+  --orange-pale: #FDBA74;
+  --orange-deep: #EA580C;
+  --orange-soft: rgba(249, 115, 22, 0.14);
+  --orange-glow: rgba(249, 115, 22, 0.25);
+  --orange-rgb: 249, 115, 22;
 
   /* Cream: Carrying headings, copy, hairlines and glass highlights */
   --cream: #FAF6F0;
   --cream-soft: rgba(250, 246, 240, 0.08);
   --cream-border: rgba(250, 246, 240, 0.18);
   --cream-rgb: 250, 246, 240;
-  --cream-dim: #C4BAAB;
+  --cream-dim: #E0D4BE;
 
-  /* Typography */
+  /* Typography: secondary/muted copy is a dimmed ivory, never a cool gray,
+     so it reads as the same cream material at lower emphasis. */
   --text: #FAF6F0;
-  --text-muted: #A8A095;
+  --text-muted: #D8CBB4;
 
   /* Flat AI Icon Tokens with Subtle Neon Orange Glow */
-  --ai-icon-bg: rgba(255, 115, 21, 0.1);
-  --ai-icon-border: rgba(255, 115, 21, 0.3);
-  --ai-icon-glow: rgba(255, 115, 21, 0.25);
-  --ai-icon-color: #FF852E;
+  --ai-icon-bg: rgba(249, 115, 22, 0.1);
+  --ai-icon-border: rgba(249, 115, 22, 0.3);
+  --ai-icon-glow: rgba(249, 115, 22, 0.25);
+  --ai-icon-color: #FB923C;
 
   /* Radii: controls are pills, surfaces are generously rounded to match */
   --radius-pill: 9999px;
@@ -69,14 +70,14 @@ html.light,
   --black-card: #FFFFFF;
   --black-line: #E8E0D5;
 
-  /* Spiced Seville Orange for Light Mode (high-contrast, deep, rich) */
-  --orange: #DC4C00;
-  --orange-bright: #FF661A;
-  --orange-pale: #FFB073;
-  --orange-deep: #B83E00;
-  --orange-soft: rgba(220, 76, 0, 0.08);
-  --orange-glow: rgba(220, 76, 0, 0.22);
-  --orange-rgb: 220, 76, 0;
+  /* Premium orange for Light Mode — a shade deeper for contrast on cream */
+  --orange: #EA580C;
+  --orange-bright: #F97316;
+  --orange-pale: #FDBA74;
+  --orange-deep: #C2410C;
+  --orange-soft: rgba(234, 88, 12, 0.08);
+  --orange-glow: rgba(234, 88, 12, 0.22);
+  --orange-rgb: 234, 88, 12;
 
   /* Cream Accents in Light Mode */
   --cream: #FDFAF6;
@@ -90,10 +91,10 @@ html.light,
   --text-muted: #6B635B;
 
   /* Flat AI Icon Tokens in Light Mode */
-  --ai-icon-bg: rgba(220, 76, 0, 0.07);
-  --ai-icon-border: rgba(220, 76, 0, 0.22);
-  --ai-icon-glow: rgba(220, 76, 0, 0.16);
-  --ai-icon-color: #DC4C00;
+  --ai-icon-bg: rgba(234, 88, 12, 0.07);
+  --ai-icon-border: rgba(234, 88, 12, 0.22);
+  --ai-icon-glow: rgba(234, 88, 12, 0.16);
+  --ai-icon-color: #EA580C;
 
   --ink: var(--text);
   --ivory: var(--black);

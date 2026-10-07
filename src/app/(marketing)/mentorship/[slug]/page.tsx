@@ -59,7 +59,7 @@ export default function ServiceDetailPage() {
   if (!service) {
     return (
       <div className="max-w-md mx-auto my-24 p-8 editorial-card text-center space-y-4">
-        <Icon name="search" variant="line" size={36} className="text-gold mx-auto" />
+        <Icon name="search" variant="line" size={36} className="text-text-muted mx-auto" />
         <h2 className="font-serif text-2xl text-text font-normal">Session Not Found</h2>
         <p className="text-sm text-text-muted">The requested session offering could not be located.</p>
         <Button href="/mentorship" variant="secondary" size="md">
@@ -105,7 +105,7 @@ export default function ServiceDetailPage() {
         {/* Left 2 Cols: Details */}
         <div className="lg:col-span-2 space-y-10">
           <div className="space-y-4">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gold px-3.5 py-1.5 rounded-full bg-black-raised border border-black-line inline-block">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-text-muted px-3.5 py-1.5 rounded-full bg-black-raised border border-black-line inline-block">
               {service.category} Session
             </span>
             <h1 className="font-serif text-3xl sm:text-5xl text-text font-normal leading-tight">
@@ -131,7 +131,7 @@ export default function ServiceDetailPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 {service.whatIncluded.map((item, idx) => (
                   <div key={idx} className="flex items-start gap-3 p-3.5 rounded bg-black-raised border border-black-line text-sm">
-                    <Icon name="check" variant="line" size={16} className="text-gold shrink-0 mt-0.5" />
+                    <Icon name="check" variant="line" size={16} className="text-text-muted shrink-0 mt-0.5" />
                     <span className="text-text">{item}</span>
                   </div>
                 ))}
@@ -146,7 +146,7 @@ export default function ServiceDetailPage() {
               <ul className="space-y-3">
                 {service.whoIsThisFor.map((item, idx) => (
                   <li key={idx} className="flex items-start gap-3 text-base text-text-muted">
-                    <span className="w-1.5 h-1.5 rounded-full bg-gold shrink-0 mt-2.5" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-cream/60 shrink-0 mt-2.5" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -158,7 +158,7 @@ export default function ServiceDetailPage() {
           {service.preparationTips && (
             <div className="p-6 rounded bg-black-raised border border-black-line space-y-2">
               <h3 className="font-serif text-lg text-text font-normal flex items-center gap-2">
-                <Icon name="role-admin" variant="line" size={16} className="text-gold" />
+                <Icon name="role-admin" variant="line" size={16} className="text-text-muted" />
                 <span>What to Prepare Beforehand</span>
               </h3>
               <p className="text-sm text-text-muted leading-relaxed">
@@ -178,7 +178,7 @@ export default function ServiceDetailPage() {
         <div className="editorial-card p-6 sm:p-8 space-y-6 lg:sticky lg:top-28">
           <div>
             <span className="text-xs text-text-muted uppercase tracking-wider block">Session Fee</span>
-            <div className="font-serif text-4xl font-normal text-gold mt-1">
+            <div className="font-serif text-4xl font-normal text-text mt-1">
               ${service.price}
             </div>
             <span className="text-xs text-text-muted block mt-0.5">USD • One-Time Confidential Session</span>
@@ -188,14 +188,14 @@ export default function ServiceDetailPage() {
             <div className="flex items-center justify-between">
               <span>Duration:</span>
               <span className="font-medium text-text flex items-center gap-1.5">
-                <Icon name="clock" variant="line" size={14} className="text-gold" />
+                <Icon name="clock" variant="line" size={14} className="text-text-muted" />
                 <span>{service.durationMinutes} Minutes</span>
               </span>
             </div>
             <div className="flex items-center justify-between">
               <span>Format:</span>
               <span className="font-medium text-text flex items-center gap-1.5">
-                <Icon name="video" variant="line" size={14} className="text-gold" />
+                <Icon name="video" variant="line" size={14} className="text-text-muted" />
                 <span>Zoom or Phone Call</span>
               </span>
             </div>
@@ -218,9 +218,9 @@ export default function ServiceDetailPage() {
           </div>
 
           <div className="pt-2 text-xs text-center text-text-muted space-y-1.5">
-            <p className="flex items-center justify-center gap-1.5"><Icon name="check" variant="filled" size={13} className="text-gold" /> Takes under 2 minutes to schedule</p>
-            <p className="flex items-center justify-center gap-1.5"><Icon name="check" variant="filled" size={13} className="text-gold" /> No account creation required</p>
-            <p className="flex items-center justify-center gap-1.5"><Icon name="check" variant="filled" size={13} className="text-gold" /> Instant calendar invite (.ics / Google)</p>
+            <p className="flex items-center justify-center gap-1.5"><Icon name="check" variant="filled" size={13} className="text-text-muted" /> Takes under 2 minutes to schedule</p>
+            <p className="flex items-center justify-center gap-1.5"><Icon name="check" variant="filled" size={13} className="text-text-muted" /> No account creation required</p>
+            <p className="flex items-center justify-center gap-1.5"><Icon name="check" variant="filled" size={13} className="text-text-muted" /> Instant calendar invite (.ics / Google)</p>
           </div>
         </div>
       </div>

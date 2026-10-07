@@ -201,7 +201,7 @@ function CreateEventForm() {
             </Link>
 
             <div className="mb-8 border-b border-mist pb-6">
-                <span className="mb-2 inline-block rounded-full border border-mist bg-mist/60 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-indigo">
+                <span className="mb-2 inline-block rounded-full border border-mist bg-mist/60 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-cream">
                     Faculty Portal
                 </span>
                 <h1 className="font-serif text-3xl font-normal text-ink sm:text-4xl">Host a Gathering</h1>
@@ -211,11 +211,11 @@ function CreateEventForm() {
             </div>
 
             {requestTitle && (
-                <div className="mb-8 flex items-start gap-3 rounded-xl border border-gold/30 bg-gold/[0.05] p-4 text-sm text-gold">
+                <div className="mb-8 flex items-start gap-3 rounded-xl border border-cream/20 bg-cream/[0.05] p-4 text-sm text-cream">
                     <Sparkles className="mt-0.5 h-5 w-5 shrink-0" />
                     <div>
                         <p className="font-medium">Planning Community Request</p>
-                        <p className="text-xs text-gold/80">
+                        <p className="text-xs text-cream/80">
                             Fulfilling request: &ldquo;{requestTitle}&rdquo;. The requester will be notified upon approval.
                         </p>
                     </div>
@@ -223,12 +223,12 @@ function CreateEventForm() {
             )}
 
             {!isAdmin && (
-                <div className="mb-8 flex items-start gap-3 rounded-xl border border-amber-500/25 bg-amber-500/[0.07] p-4 text-sm text-amber-200">
-                    <Hourglass className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" />
+                <div className="mb-8 flex items-start gap-3 rounded-xl border border-cream/20 bg-cream/[0.07] p-4 text-sm text-cream">
+                    <Hourglass className="mt-0.5 h-5 w-5 shrink-0 text-cream" />
                     <div>
                         <p className="font-medium">Admin Approval Required</p>
                         <p className="text-xs text-ink/70">
-                            Your event will start with state <span className="font-semibold text-amber-300">Awaiting Approval</span>. An administrator will review and publish it so it becomes visible to members.
+                            Your event will start with state <span className="font-semibold text-cream">Awaiting Approval</span>. An administrator will review and publish it so it becomes visible to members.
                         </p>
                     </div>
                 </div>
@@ -393,7 +393,7 @@ function CreateEventForm() {
                                         onChange={() => setIsOnline(true)}
                                         className="text-gold focus:ring-gold"
                                     />
-                                    <Video className="h-4 w-4 text-gold" />
+                                    <Video className="h-4 w-4 text-cream" />
                                     Online Event
                                 </label>
                                 <label className="inline-flex items-center gap-2 text-sm text-ink cursor-pointer">
@@ -404,7 +404,7 @@ function CreateEventForm() {
                                         onChange={() => setIsOnline(false)}
                                         className="text-gold focus:ring-gold"
                                     />
-                                    <MapPin className="h-4 w-4 text-gold" />
+                                    <MapPin className="h-4 w-4 text-cream" />
                                     In Person
                                 </label>
                             </div>
@@ -493,7 +493,7 @@ function CreateEventForm() {
                     <button
                         type="submit"
                         disabled={submitting}
-                        className="inline-flex items-center gap-2 rounded-xl bg-gold px-8 py-3.5 text-sm font-semibold text-black transition-colors hover:bg-[#FFB073] disabled:opacity-60"
+                        className="inline-flex items-center gap-2 rounded-xl bg-cream px-8 py-3.5 text-sm font-semibold text-black transition-colors hover:bg-[#FFB073] disabled:opacity-60"
                     >
                         {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
                         {submitting ? "Submitting..." : isAdmin ? "Publish Event" : "Submit for Approval"}

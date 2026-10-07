@@ -45,11 +45,11 @@ export default function SubscriberDashboardPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
       {/* Header */}
-      <div className="p-8 sm:p-12 rounded-3xl shadow-lg relative overflow-hidden bg-[linear-gradient(135deg,#21140f_0%,#141417_55%,#0f0f12_100%)] text-text border border-gold/25">
+      <div className="p-8 sm:p-12 rounded-3xl shadow-lg relative overflow-hidden bg-[linear-gradient(135deg,#21140f_0%,#141417_55%,#0f0f12_100%)] text-text border border-cream/25">
         <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <span className="px-3.5 py-1 rounded-full text-xs font-semibold bg-white/10 text-gold border border-gold/40 flex items-center gap-1.5">
+              <span className="px-3.5 py-1 rounded-full text-xs font-semibold bg-white/10 text-cream border border-cream/40 flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Member Member Area</span>
               </span>
@@ -74,9 +74,9 @@ export default function SubscriberDashboardPage() {
       </div>
 
       {!isSubscriber && (
-        <div className="p-6 rounded-2xl bg-gold/10 border border-gold/30 text-ink text-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="p-6 rounded-2xl bg-cream/10 border border-cream/30 text-ink text-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <Lock className="w-5 h-5 text-gold shrink-0" />
+            <Lock className="w-5 h-5 text-cream shrink-0" />
             <span>
               You are currently viewing this preview with a free account. Upgrade or contact administration to activate your Member membership.
             </span>
@@ -93,7 +93,7 @@ export default function SubscriberDashboardPage() {
       {/* Subscriber Exclusive Features Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="p-8 rounded-2xl bg-black-raised/80 backdrop-blur-sm border border-white/[0.07] shadow-sm space-y-3">
-          <div className="w-11 h-11 rounded-xl bg-indigo/10 flex items-center justify-center text-indigo">
+          <div className="w-11 h-11 rounded-xl bg-cream/10 flex items-center justify-center text-cream">
             <Star className="w-5 h-5" />
           </div>
           <h3 className="font-serif text-xl font-bold text-ink">Full Course Access</h3>
@@ -103,7 +103,7 @@ export default function SubscriberDashboardPage() {
         </div>
 
         <div className="p-8 rounded-2xl bg-black-raised/80 backdrop-blur-sm border border-white/[0.07] shadow-sm space-y-3">
-          <div className="w-11 h-11 rounded-xl bg-gold/10 flex items-center justify-center text-gold">
+          <div className="w-11 h-11 rounded-xl bg-cream/10 flex items-center justify-center text-cream">
             <Calendar className="w-5 h-5" />
           </div>
           <h3 className="font-serif text-xl font-bold text-ink">Monthly Field Report</h3>
@@ -113,7 +113,7 @@ export default function SubscriberDashboardPage() {
         </div>
 
         <div className="p-8 rounded-2xl bg-black-raised/80 backdrop-blur-sm border border-white/[0.07] shadow-sm space-y-3">
-          <div className="w-11 h-11 rounded-xl bg-indigo/10 flex items-center justify-center text-indigo">
+          <div className="w-11 h-11 rounded-xl bg-cream/10 flex items-center justify-center text-cream">
             <ShieldCheck className="w-5 h-5" />
           </div>
           <h3 className="font-serif text-xl font-bold text-ink">Direct Mentor Exchanges</h3>
@@ -127,7 +127,7 @@ export default function SubscriberDashboardPage() {
       <div className="space-y-6 pt-4">
         <div className="flex items-center justify-between pb-3 border-b border-mist">
           <h2 className="font-serif text-2xl font-bold text-ink flex items-center gap-2.5">
-            <Sparkles className="w-5 h-5 text-gold" />
+            <Sparkles className="w-5 h-5 text-cream" />
             <span>Exclusive Subscriber Courses</span>
           </h2>
           <span className="text-xs text-ink/60 font-medium">
@@ -137,7 +137,7 @@ export default function SubscriberDashboardPage() {
 
         {loading ? (
           <div className="text-center py-20">
-            <Sparkles className="w-8 h-8 text-gold animate-spin mx-auto mb-4" />
+            <Sparkles className="w-8 h-8 text-cream animate-spin mx-auto mb-4" />
             <p className="text-base text-ink/60">Loading courses...</p>
           </div>
         ) : subscriberClasses.length > 0 ? (

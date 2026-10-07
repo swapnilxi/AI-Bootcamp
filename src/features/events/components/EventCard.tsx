@@ -117,12 +117,12 @@ export function EventCard({ event }: EventCardProps) {
         >
             {/* Badges */}
             <div className="mb-5 flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center rounded-full border border-indigo/25 bg-indigo/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-indigo">
+                <span className="inline-flex items-center rounded-full border border-cream/15 bg-cream/8 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-text">
                     {event.category}
                 </span>
 
                 {isPending && (
-                    <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-amber-300">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-cream/20 bg-cream/8 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-text">
                         <Hourglass className="h-3 w-3" /> Awaiting Approval
                     </span>
                 )}
@@ -138,9 +138,9 @@ export function EventCard({ event }: EventCardProps) {
                         Free
                     </span>
                 ) : (
-                    <span className="inline-flex items-baseline gap-1 rounded-full border border-gold/30 bg-gold/[0.07] px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-gold">
+                    <span className="inline-flex items-baseline gap-1 rounded-full border border-cream/15 bg-cream/6 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-text">
                         {priceLabel}
-                        <span className="text-[9px] text-gold/70">USD</span>
+                        <span className="text-[9px] text-text-muted">USD</span>
                     </span>
                 )}
 
@@ -164,29 +164,29 @@ export function EventCard({ event }: EventCardProps) {
             {/* Details */}
             <div className="mb-6 space-y-2.5 text-sm text-ink/70">
                 <div className="flex items-center gap-2.5">
-                    <CalendarDays className="h-4 w-4 shrink-0 text-gold/70" />
+                    <CalendarDays className="h-4 w-4 shrink-0 text-text-muted" />
                     <span>{formatEventDate(event.startsAt)}</span>
                 </div>
                 <div className="flex items-center gap-2.5">
-                    <Clock className="h-4 w-4 shrink-0 text-gold/70" />
+                    <Clock className="h-4 w-4 shrink-0 text-text-muted" />
                     <span>{formatEventTime(event.startsAt, event.endsAt)}</span>
                 </div>
                 <div className="flex items-center gap-2.5">
                     {event.isOnline ? (
                         <>
-                            <Video className="h-4 w-4 shrink-0 text-gold/70" />
+                            <Video className="h-4 w-4 shrink-0 text-text-muted" />
                             <span>Online</span>
                         </>
                     ) : (
                         <>
-                            <MapPin className="h-4 w-4 shrink-0 text-gold/70" />
+                            <MapPin className="h-4 w-4 shrink-0 text-text-muted" />
                             <span className="truncate">{event.location || "Location to be announced"}</span>
                         </>
                     )}
                 </div>
                 {event.capacity && (
                     <div className="flex items-center gap-2.5">
-                        <Users className="h-4 w-4 shrink-0 text-gold/70" />
+                        <Users className="h-4 w-4 shrink-0 text-text-muted" />
                         <span>
                             {interestCount} interested
                             {isFull && !interested ? " · Full" : ""}

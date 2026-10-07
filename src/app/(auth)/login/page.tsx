@@ -57,7 +57,7 @@ function LoginForm() {
           onClick={() => setActiveTab("learner")}
           className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all ${
             activeTab === "learner"
-              ? "bg-gold text-black shadow-sm"
+              ? "bg-cream text-black shadow-sm"
               : "text-text-muted hover:text-ink"
           }`}
         >
@@ -73,8 +73,8 @@ function LoginForm() {
           }}
           className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
             activeTab === "instructor"
-              ? "bg-gold text-black shadow-sm"
-              : "text-text-muted hover:text-gold"
+              ? "bg-cream text-black shadow-sm"
+              : "text-text-muted hover:text-ink"
           }`}
         >
           <Icon name="role-instructor" variant="filled" size={14} />
@@ -84,7 +84,7 @@ function LoginForm() {
 
       {/* Header */}
       <div className="text-center space-y-2">
-        <div className="inline-flex w-12 h-12 rounded-full bg-black-raised border border-gold/30 text-gold font-serif text-2xl font-bold items-center justify-center mb-1 shadow-sm">
+        <div className="inline-flex w-12 h-12 rounded-full bg-black-raised border border-cream/30 text-cream font-serif text-2xl font-bold items-center justify-center mb-1 shadow-sm">
           M
         </div>
         <h1 className="font-serif text-3xl font-normal text-ink">
@@ -100,7 +100,7 @@ function LoginForm() {
       {/* Card */}
       <div className="editorial-card p-8 sm:p-10 space-y-6">
         {error && (
-          <div className="flex items-start gap-2.5 p-3.5 rounded-lg bg-clay/15 border border-clay/30 text-clay text-xs">
+          <div className="flex items-start gap-2.5 p-3.5 rounded-lg bg-cream/10 border border-cream/30 text-cream text-xs">
             <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
             <span>{error}</span>
           </div>
@@ -132,7 +132,7 @@ function LoginForm() {
               </label>
               <Link
                 href="/forgot-password"
-                className="text-xs text-indigo hover:underline transition-colors"
+                className="text-xs text-cream hover:underline transition-colors"
               >
                 Forgot Password?
               </Link>
@@ -177,16 +177,16 @@ function LoginForm() {
               <button
                 type="button"
                 onClick={() => setDemoCredentials("instructor@aibootcamp.com", "InstructorStars2026!")}
-                className="w-full p-3 rounded-lg bg-black-raised hover:border-gold border border-gold/40 text-text text-left transition-colors font-medium flex items-center justify-between"
+                className="w-full p-3 rounded-lg bg-black-raised hover:border-cream border border-cream/40 text-text text-left transition-colors font-medium flex items-center justify-between"
               >
                 <div className="flex items-center gap-2">
-                  <Icon name="role-instructor" variant="filled" size={16} className="text-gold" />
+                  <Icon name="role-instructor" variant="filled" size={16} className="text-cream" />
                   <div>
-                    <p className="font-semibold text-gold">Aria Vale (Instructor)</p>
+                    <p className="font-semibold text-cream">Aria Vale (Instructor)</p>
                     <p className="text-[11px] text-text-muted">instructor@aibootcamp.com</p>
                   </div>
                 </div>
-                <span className="text-[11px] text-gold font-semibold uppercase tracking-wider">Use Credentials →</span>
+                <span className="text-[11px] text-cream font-semibold uppercase tracking-wider">Use Credentials →</span>
               </button>
             </div>
           ) : (
@@ -194,17 +194,17 @@ function LoginForm() {
               <button
                 type="button"
                 onClick={() => setDemoCredentials("instructor@aibootcamp.com", "InstructorStars2026!")}
-                className="p-2.5 rounded-lg bg-black-raised hover:border-gold/50 border border-gold/30 text-text text-left transition-colors font-medium flex items-center gap-2"
+                className="p-2.5 rounded-lg bg-black-raised hover:border-cream/50 border border-cream/30 text-text text-left transition-colors font-medium flex items-center gap-2"
               >
-                <Icon name="role-instructor" variant="filled" size={16} className="text-gold" />
-                <span className="text-gold">Instructor</span>
+                <Icon name="role-instructor" variant="filled" size={16} className="text-cream" />
+                <span className="text-cream">Instructor</span>
               </button>
               <button
                 type="button"
                 onClick={() => setDemoCredentials("admin@aibootcamp.com", "AI EngineeringAdmin2026!")}
                 className="p-2.5 rounded-lg bg-black-raised hover:border-gold/50 border border-black-line text-text text-left transition-colors font-medium flex items-center gap-2"
               >
-                <Icon name="role-admin" variant="filled" size={16} className="text-gold" />
+                <Icon name="role-admin" variant="filled" size={16} className="text-cream" />
                 <span>Admin</span>
               </button>
               <button
@@ -212,7 +212,7 @@ function LoginForm() {
                 onClick={() => setDemoCredentials("subscriber@aibootcamp.com", "CosmicSubscriber2026!")}
                 className="p-2.5 rounded-lg bg-black-raised hover:border-gold/50 border border-black-line text-text text-left transition-colors font-medium flex items-center gap-2"
               >
-                <Icon name="role-subscriber" variant="filled" size={16} className="text-gold" />
+                <Icon name="role-subscriber" variant="filled" size={16} className="text-cream" />
                 <span>Subscriber</span>
               </button>
               <button
@@ -220,7 +220,7 @@ function LoginForm() {
                 onClick={() => setDemoCredentials("user@aibootcamp.com", "CosmicUser2026!")}
                 className="p-2.5 rounded-lg bg-black-raised hover:border-gold/50 border border-black-line text-text text-left transition-colors font-medium flex items-center gap-2"
               >
-                <Icon name="role-user" variant="filled" size={16} className="text-gold" />
+                <Icon name="role-user" variant="filled" size={16} className="text-cream" />
                 <span>Client (User)</span>
               </button>
             </div>
@@ -232,7 +232,7 @@ function LoginForm() {
             Don&apos;t have an account?{" "}
             <Link
               href={activeTab === "instructor" ? "/register?role=instructor" : "/register"}
-              className="text-gold hover:underline font-semibold"
+              className="text-cream hover:underline font-semibold"
             >
               {activeTab === "instructor" ? "Register as an Instructor" : "Create an Account"}
             </Link>
@@ -240,7 +240,7 @@ function LoginForm() {
           {activeTab !== "instructor" && (
             <div>
               Are you an instructor?{" "}
-              <Link href="/register?role=instructor" className="text-indigo hover:underline font-medium">
+              <Link href="/register?role=instructor" className="text-cream hover:underline font-medium">
                 Apply to Teach at AI Bootcamp
               </Link>
             </div>

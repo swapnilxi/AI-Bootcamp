@@ -39,10 +39,9 @@ export default function HeroNeuralNetwork() {
     const bag = new DisposableBag();
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(48, 1, 0.1, 1000);
-    // Framed on the nebula disc rather than the globe: the bright ring spans
-    // the canvas edge to edge (~99%) and the faint outer ring bleeds past it,
-    // which is what suggests the disc continues beyond the frame.
-    camera.position.z = 148;
+    // Framed with headroom around the full nebula disc — including its
+    // faintest, widest ring — so nothing is clipped by the canvas edge.
+    camera.position.z = 195;
 
     renderer.setPixelRatio(cappedPixelRatio());
     const canvas = renderer.domElement;

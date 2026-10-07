@@ -42,11 +42,11 @@ function BulletEditor({
 
   return (
     <div className="space-y-2 mt-3">
-      <p className="text-[11px] uppercase tracking-widest text-gold/60 font-semibold">Bullet Points</p>
+      <p className="text-[11px] uppercase tracking-widest text-text-muted font-semibold">Bullet Points</p>
       {bullets.map((b) =>
         b.kind === "bullet" ? (
           <div key={b.id} className="flex items-center gap-2">
-            <span className="text-gold text-sm">•</span>
+            <span className="text-text-muted text-sm">•</span>
             <input
               value={b.text}
               onChange={(e) => update(b.id, e.target.value)}
@@ -61,7 +61,7 @@ function BulletEditor({
       )}
       <button
         onClick={addBullet}
-        className="flex items-center gap-1.5 text-xs text-gold/70 hover:text-gold transition-colors mt-1"
+        className="flex items-center gap-1.5 text-xs text-text-muted hover:text-gold transition-colors mt-1"
       >
         <PlusCircle className="w-3.5 h-3.5" /> Add bullet
       </button>
@@ -84,7 +84,7 @@ function TestimonialEditor({
 
   return (
     <div className="space-y-3 mt-3">
-      <p className="text-[11px] uppercase tracking-widest text-gold/60 font-semibold">Testimonials</p>
+      <p className="text-[11px] uppercase tracking-widest text-text-muted font-semibold">Testimonials</p>
       {tests.map((t) =>
         t.kind === "testimonial" ? (
           <div key={t.id} className="p-3 rounded-xl border border-white/10 bg-black/30 space-y-2">
@@ -123,7 +123,7 @@ function TestimonialEditor({
           </div>
         ) : null
       )}
-      <button onClick={add} className="flex items-center gap-1.5 text-xs text-gold/70 hover:text-gold transition-colors">
+      <button onClick={add} className="flex items-center gap-1.5 text-xs text-text-muted hover:text-gold transition-colors">
         <PlusCircle className="w-3.5 h-3.5" /> Add testimonial
       </button>
     </div>
@@ -145,7 +145,7 @@ function FaqEditor({
 
   return (
     <div className="space-y-3 mt-3">
-      <p className="text-[11px] uppercase tracking-widest text-gold/60 font-semibold">FAQ Items</p>
+      <p className="text-[11px] uppercase tracking-widest text-text-muted font-semibold">FAQ Items</p>
       {faqs.map((f) =>
         f.kind === "faq" ? (
           <div key={f.id} className="p-3 rounded-xl border border-white/10 bg-black/30 space-y-2">
@@ -170,7 +170,7 @@ function FaqEditor({
           </div>
         ) : null
       )}
-      <button onClick={add} className="flex items-center gap-1.5 text-xs text-gold/70 hover:text-gold transition-colors">
+      <button onClick={add} className="flex items-center gap-1.5 text-xs text-text-muted hover:text-gold transition-colors">
         <PlusCircle className="w-3.5 h-3.5" /> Add FAQ
       </button>
     </div>
@@ -192,7 +192,7 @@ function CredentialEditor({
 
   return (
     <div className="space-y-2 mt-3">
-      <p className="text-[11px] uppercase tracking-widest text-gold/60 font-semibold">Credentials</p>
+      <p className="text-[11px] uppercase tracking-widest text-text-muted font-semibold">Credentials</p>
       {creds.map((c) =>
         c.kind === "credential" ? (
           <div key={c.id} className="flex gap-2 items-center">
@@ -220,7 +220,7 @@ function CredentialEditor({
           </div>
         ) : null
       )}
-      <button onClick={add} className="flex items-center gap-1.5 text-xs text-gold/70 hover:text-gold transition-colors">
+      <button onClick={add} className="flex items-center gap-1.5 text-xs text-text-muted hover:text-gold transition-colors">
         <PlusCircle className="w-3.5 h-3.5" /> Add credential
       </button>
     </div>
@@ -237,7 +237,7 @@ function VideoEditor({ items, onChange }: { items: SectionItem[]; onChange: (ite
 
   return (
     <div className="space-y-2 mt-3">
-      <p className="text-[11px] uppercase tracking-widest text-gold/60 font-semibold">Video</p>
+      <p className="text-[11px] uppercase tracking-widest text-text-muted font-semibold">Video</p>
       {vid && vid.kind === "video" ? (
         <>
           <input
@@ -254,7 +254,7 @@ function VideoEditor({ items, onChange }: { items: SectionItem[]; onChange: (ite
           />
         </>
       ) : (
-        <button onClick={addIfMissing} className="flex items-center gap-1.5 text-xs text-gold/70 hover:text-gold transition-colors">
+        <button onClick={addIfMissing} className="flex items-center gap-1.5 text-xs text-text-muted hover:text-gold transition-colors">
           <PlusCircle className="w-3.5 h-3.5" /> Add video
         </button>
       )}
@@ -395,7 +395,7 @@ function SectionCard({
         <div className="p-4 space-y-3">
           {/* Not-visible notice */}
           {!section.visible && (
-            <div className="text-[11px] text-amber-400/80 bg-amber-500/10 border border-amber-500/20 rounded-lg px-3 py-2 flex items-center gap-1.5">
+            <div className="text-[11px] text-yellow-200/90 bg-yellow-500/10 border border-yellow-500/25 rounded-lg px-3 py-2 flex items-center gap-1.5">
               <EyeOff className="w-3 h-3 shrink-0" /> This section is hidden from your public profile.
             </div>
           )}
@@ -403,7 +403,7 @@ function SectionCard({
           {/* Main content textarea (shown for prose-type sections) */}
           {section.type !== "testimonials" && section.type !== "faq" && section.type !== "credentials" && (
             <div>
-              <label className="text-[11px] uppercase tracking-widest text-gold/60 font-semibold mb-1.5 block">
+              <label className="text-[11px] uppercase tracking-widest text-text-muted font-semibold mb-1.5 block">
                 Content
               </label>
               <textarea
@@ -428,7 +428,7 @@ function SectionCard({
 function TemplatePicker({ onAdd, onClose }: { onAdd: (t: SectionTemplate) => void; onClose: () => void }) {
   return (
     <div data-lenis-prevent className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-2xl max-h-[80vh] bg-[#121217] border border-gold/30 rounded-3xl shadow-2xl flex flex-col overflow-hidden">
+      <div className="relative w-full max-w-2xl max-h-[80vh] bg-[#121217] border border-cream/20 rounded-3xl shadow-2xl flex flex-col overflow-hidden">
         <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between">
           <div>
             <h2 className="font-serif text-xl text-ink">Add a Profile Section</h2>
@@ -540,7 +540,7 @@ export function ProfileSectionsEditor({
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div>
           <h2 className="font-serif text-2xl text-ink flex items-center gap-2">
-            <LayoutGrid className="w-5 h-5 text-gold" />
+            <LayoutGrid className="w-5 h-5 text-text" />
             Profile Sections
           </h2>
           <p className="text-xs text-text-muted mt-0.5">
@@ -551,7 +551,7 @@ export function ProfileSectionsEditor({
         <div className="flex items-center gap-2">
           <button
             onClick={() => setShowPicker(true)}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-gold/40 text-gold hover:bg-gold/10 text-xs font-semibold transition-all"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-cream/40 text-text hover:bg-gold/10 text-xs font-semibold transition-all"
           >
             <Plus className="w-4 h-4" /> Add Section
           </button>

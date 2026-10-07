@@ -186,7 +186,7 @@ export default function ProfilePage() {
       <div className="p-8 sm:p-10 rounded-3xl bg-black-raised/80 backdrop-blur-sm border border-white/[0.07] shadow-sm relative overflow-hidden">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
           <div className="flex items-center gap-5">
-            <div className="w-20 h-20 rounded-2xl bg-ivory border border-mist flex items-center justify-center text-3xl font-serif font-bold text-gold shadow-sm overflow-hidden">
+            <div className="w-20 h-20 rounded-2xl bg-ivory border border-mist flex items-center justify-center text-3xl font-serif font-bold text-cream shadow-sm overflow-hidden">
               {profile?.avatarUrl ? (
                 <img
                   src={profile.avatarUrl}
@@ -194,7 +194,7 @@ export default function ProfilePage() {
                   className="w-full h-full object-cover rounded-2xl"
                 />
               ) : (
-                profile?.name?.charAt(0) || <Icon name="star" variant="line" size={28} className="text-gold" />
+                profile?.name?.charAt(0) || <Icon name="star" variant="line" size={28} className="text-cream" />
               )}
             </div>
 
@@ -215,7 +215,7 @@ export default function ProfilePage() {
             {profile?.role === "INSTRUCTOR" && (
               <Link
                 href="/dashboard/instructor"
-                className="px-5 py-2.5 rounded-xl bg-gold hover:bg-[#FFB073] text-xs font-semibold text-black flex items-center gap-2 transition-colors shadow-sm"
+                className="px-5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-xs font-semibold text-black flex items-center gap-2 transition-colors shadow-sm"
               >
                 <GraduationCap className="w-4 h-4" />
                 <span>Instructor Studio</span>
@@ -225,7 +225,7 @@ export default function ProfilePage() {
               href="/dashboard"
               className="px-5 py-2.5 rounded-xl bg-ivory hover:bg-mist/60 text-xs font-semibold text-ink border border-mist flex items-center gap-2 transition-colors"
             >
-              <Shield className="w-4 h-4 text-gold" />
+              <Shield className="w-4 h-4 text-cream" />
               <span>Go to Dashboard</span>
             </Link>
           </div>
@@ -239,10 +239,10 @@ export default function ProfilePage() {
       />
 
       {/* Instructor Studio Activation & Status Banner */}
-      <div id="instructor-activation" className="p-6 sm:p-8 rounded-3xl bg-[linear-gradient(135deg,#21140f_0%,#141417_50%,#0f0f12_100%)] border border-gold/30 shadow-lg">
+      <div id="instructor-activation" className="p-6 sm:p-8 rounded-3xl bg-[linear-gradient(135deg,#21140f_0%,#141417_50%,#0f0f12_100%)] border border-cream/20 shadow-lg">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="space-y-1.5 max-w-xl">
-            <span className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider text-gold font-semibold">
+            <span className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider text-text-muted font-semibold">
               <GraduationCap className="w-4 h-4" />
               <span>Academy Teaching Status</span>
             </span>
@@ -265,14 +265,14 @@ export default function ProfilePage() {
               <div className="flex flex-wrap items-center gap-3">
                 <Link
                   href="/dashboard/instructor"
-                  className="px-5 py-2.5 rounded-xl bg-gold hover:bg-[#FFB073] text-black font-semibold text-xs uppercase tracking-wider flex items-center gap-2 shadow-md transition-all"
+                  className="px-5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-xs uppercase tracking-wider flex items-center gap-2 shadow-md transition-all"
                 >
                   <GraduationCap className="w-4 h-4" />
                   <span>Open Instructor Studio</span>
                 </Link>
                 <Link
                   href="/dashboard/instructor#profile-sections"
-                  className="px-4 py-2.5 rounded-xl bg-black-raised hover:border-gold/40 border border-gold/30 text-gold text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 transition-colors"
+                  className="px-4 py-2.5 rounded-xl bg-black-raised hover:border-cream/40 border border-cream/25 text-cream text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 transition-colors"
                 >
                   <Sparkles className="w-3.5 h-3.5" />
                   <span>Edit Profile Sections</span>
@@ -282,7 +282,7 @@ export default function ProfilePage() {
                     href={`/instructors/${profile.id}`}
                     className="px-4 py-2.5 rounded-xl bg-black-raised hover:border-gold/40 border border-white/10 text-ink text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 transition-colors"
                   >
-                    <ExternalLink className="w-3.5 h-3.5 text-gold" />
+                    <ExternalLink className="w-3.5 h-3.5 text-cream" />
                     <span>Public Profile</span>
                   </Link>
                 )}
@@ -299,7 +299,7 @@ export default function ProfilePage() {
               <div className="flex flex-wrap items-center gap-3">
                 <Link
                   href="/dashboard/instructor"
-                  className="px-5 py-2.5 rounded-xl bg-gold hover:bg-[#FFB073] text-black font-semibold text-xs uppercase tracking-wider flex items-center gap-2 shadow-md transition-all"
+                  className="px-5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-xs uppercase tracking-wider flex items-center gap-2 shadow-md transition-all"
                 >
                   <GraduationCap className="w-4 h-4" />
                   <span>Open Instructor Studio</span>
@@ -309,14 +309,14 @@ export default function ProfilePage() {
                     href={`/instructors/${profile.id}`}
                     className="px-4 py-2.5 rounded-xl bg-black-raised hover:border-gold/40 border border-white/10 text-ink text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 transition-colors"
                   >
-                    <ExternalLink className="w-3.5 h-3.5 text-gold" />
+                    <ExternalLink className="w-3.5 h-3.5 text-cream" />
                     <span>Public Profile</span>
                   </Link>
                 )}
               </div>
             ) : profile?.approvalStatus === "PENDING" ? (
               <>
-                <span className="px-4 py-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-semibold uppercase tracking-wider">
+                <span className="px-4 py-2.5 rounded-xl bg-cream/10 border border-cream/30 text-cream text-xs font-semibold uppercase tracking-wider">
                   Profile under verification
                 </span>
                 <button
@@ -333,7 +333,7 @@ export default function ProfilePage() {
                 type="button"
                 onClick={() => handleRoleChange("INSTRUCTOR")}
                 disabled={roleChanging}
-                className="px-6 py-3 rounded-xl bg-gold hover:bg-[#FFB073] text-black font-semibold text-xs uppercase tracking-wider flex items-center gap-2 shadow-md transition-all disabled:opacity-50"
+                className="px-6 py-3 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-xs uppercase tracking-wider flex items-center gap-2 shadow-md transition-all disabled:opacity-50"
               >
                 <Sparkles className="w-4 h-4" />
                 <span>{roleChanging ? "Submitting..." : profile?.approvalStatus === "REJECTED" ? "Re-apply as Instructor" : "Apply to Become an Instructor"}</span>
@@ -349,7 +349,7 @@ export default function ProfilePage() {
         <div className="lg:col-span-2 p-8 sm:p-10 rounded-3xl bg-black-raised/80 backdrop-blur-sm border border-white/[0.07] shadow-sm space-y-6">
           <div className="border-b border-mist pb-4">
             <h2 className="font-serif text-2xl font-bold text-ink flex items-center gap-2.5">
-              <UserIcon className="w-5 h-5 text-indigo" />
+              <UserIcon className="w-5 h-5 text-cream" />
               <span>Contact & Preferences</span>
             </h2>
             <p className="text-xs text-ink/60 mt-1">
@@ -358,7 +358,7 @@ export default function ProfilePage() {
           </div>
 
           {errorMsg && (
-            <div className="flex items-center gap-2 p-3.5 rounded-xl bg-clay/10 border border-clay/30 text-clay text-sm">
+            <div className="flex items-center gap-2 p-3.5 rounded-xl bg-cream/10 border border-cream/25 text-cream text-sm">
               <AlertCircle className="w-4 h-4 shrink-0" />
               <span>{errorMsg}</span>
             </div>
@@ -418,7 +418,7 @@ export default function ProfilePage() {
             <div>
               <label className="block text-xs font-semibold text-ink/80 uppercase tracking-wider mb-2 flex flex-wrap items-center justify-between gap-1">
                 <span>Preferred Time Zone</span>
-                <span className="text-[11px] text-gold font-normal">Default: Eastern Time (Virginia & Surrounding)</span>
+                <span className="text-[11px] text-text-muted font-normal">Default: Eastern Time (Virginia & Surrounding)</span>
               </label>
               <select
                 value={timezone}
@@ -466,7 +466,7 @@ export default function ProfilePage() {
               <button
                 type="submit"
                 disabled={saving}
-                className="w-full sm:w-auto px-8 py-3 rounded-xl bg-gold hover:bg-[#FFB073] text-black font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full sm:w-auto px-8 py-3 rounded-xl bg-cream hover:bg-cream/90 text-black font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 <Save className="w-4 h-4" />
                 <span>{saving ? "Saving Coordinates..." : "Save AI Profile"}</span>
@@ -480,7 +480,7 @@ export default function ProfilePage() {
           {/* Learning snapshot */}
           <div className="p-6 sm:p-8 rounded-3xl bg-black-raised/80 backdrop-blur-sm border border-white/[0.07] shadow-sm space-y-4">
             <h3 className="font-serif text-xl font-bold text-ink flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-gold" />
+              <Sparkles className="w-4 h-4 text-cream" />
               <span>Learning Snapshot</span>
             </h3>
 
@@ -491,7 +491,7 @@ export default function ProfilePage() {
 
             <Link
               href="/progress"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-gold/40 text-gold text-xs font-semibold uppercase tracking-wider hover:bg-gold/10 transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-cream/30 text-cream text-xs font-semibold uppercase tracking-wider hover:bg-cream/10 transition-colors"
             >
               Open progress
               <ArrowRight className="w-3.5 h-3.5" />
@@ -501,7 +501,7 @@ export default function ProfilePage() {
           {/* Enrolled Classes Summary */}
           <div className="p-6 sm:p-8 rounded-3xl bg-black-raised/80 backdrop-blur-sm border border-white/[0.07] shadow-sm space-y-4">
             <h3 className="font-serif text-xl font-bold text-ink flex items-center gap-2">
-              <BookOpen className="w-4 h-4 text-indigo" />
+              <BookOpen className="w-4 h-4 text-cream" />
               <span>Your Courses ({profile?.enrollments?.length || 0})</span>
             </h3>
 
@@ -516,7 +516,7 @@ export default function ProfilePage() {
                     <p className="font-semibold text-ink truncate">{enrollment.course.title}</p>
                     <p className="text-[11px] text-ink/60 mt-1 flex items-center justify-between">
                       <span>Enrolled: {new Date(enrollment.enrolledAt).toLocaleDateString()}</span>
-                      <ArrowRight className="w-3.5 h-3.5 text-gold" />
+                      <ArrowRight className="w-3.5 h-3.5 text-cream" />
                     </p>
                   </Link>
                 ))}
@@ -526,7 +526,7 @@ export default function ProfilePage() {
                 <p>You have not enrolled in any academy classes yet.</p>
                 <Link
                   href="/courses"
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gold text-black font-medium hover:bg-[#FFB073] transition-colors"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-cream text-black font-medium hover:bg-cream/90 transition-colors"
                 >
                   <BookOpen className="w-3.5 h-3.5" />
                   <span>Browse Catalog</span>

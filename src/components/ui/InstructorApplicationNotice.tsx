@@ -18,10 +18,10 @@ export function InstructorApplicationNotice({
 
   if (approvalStatus === "PENDING") {
     return (
-      <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-start gap-3 text-sm">
-        <Clock className="w-4 h-4 text-amber-300 mt-0.5 shrink-0" />
+      <div className="p-4 rounded-xl bg-cream/5 border border-cream/15 flex items-start gap-3 text-sm">
+        <Clock className="w-4 h-4 text-text-muted mt-0.5 shrink-0" />
         <div>
-          <p className="font-semibold text-amber-300">Profile under verification</p>
+          <p className="font-semibold text-text">Profile under verification</p>
           <p className="text-xs text-text-muted mt-0.5">
             Your instructor application is being reviewed by academy administration. You keep full access as a
             learner meanwhile, and the Instructor Studio unlocks once you are approved.
@@ -39,7 +39,7 @@ export function InstructorApplicationNotice({
           <p className="font-semibold text-red-300">Instructor application not approved</p>
           <p className="text-xs text-text-muted mt-0.5">
             {rejectionReason || "Your application did not meet the requirements."} Update your{" "}
-            <Link href="/profile" className="underline text-gold">profile</Link> and apply again.
+            <Link href="/profile" className="underline text-text">profile</Link> and apply again.
           </p>
         </div>
       </div>

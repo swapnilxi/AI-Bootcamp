@@ -18,13 +18,13 @@ export function TestimonialsSection() {
               style={revealDelay(i * 150)}
             >
               <span
-                className="font-serif text-6xl leading-none text-gold/25 group-hover:text-gold/60 transition-colors duration-700 -mb-4 select-none"
+                className="font-serif text-6xl leading-none text-cream/15 group-hover:text-cream/35 transition-colors duration-700 -mb-4 select-none"
                 aria-hidden="true"
               >
                 &ldquo;
               </span>
               <blockquote className="font-serif text-lg italic text-text leading-relaxed mb-6">{t.quote}</blockquote>
-              <figcaption className="text-xs uppercase tracking-[0.16em] text-gold pt-4 border-t border-white/5 font-medium">
+              <figcaption className="text-xs uppercase tracking-[0.16em] text-text-muted pt-4 border-t border-white/5 font-medium">
                 — {t.attribution}
               </figcaption>
             </figure>

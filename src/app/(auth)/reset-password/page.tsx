@@ -149,7 +149,7 @@ function ResetPasswordForm() {
         </form>
 
         <div className="text-center text-xs text-text-muted">
-          <Link href="/login" className="text-gold hover:text-amber-300 font-medium">
+          <Link href="/login" className="text-text-muted hover:text-text font-medium">
             Return to Login
           </Link>
         </div>
@@ -164,7 +164,7 @@ export default function ResetPasswordPage() {
       <Suspense
         fallback={
           <div className="text-center text-text-muted text-sm">
-            <Sparkles className="w-8 h-8 text-gold animate-spin mx-auto mb-2" />
+            <Sparkles className="w-8 h-8 text-cream animate-spin mx-auto mb-2" />
             Loading token...
           </div>
         }

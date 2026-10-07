@@ -211,11 +211,11 @@ function ClientDrawer({ id, onClose, onChanged }: { id: string; onClose: () => v
             )}
           </div>
 
-          {error && <p className="p-3 rounded-xl bg-clay/10 border border-clay/30 text-clay text-sm">{error}</p>}
+          {error && <p className="p-3 rounded-xl bg-cream/10 border border-cream/25 text-cream text-sm">{error}</p>}
 
           <form onSubmit={save} className="space-y-4">
             <h3 className={labelClass}>Profile</h3>
-            {!canEdit && <p className="text-xs text-amber-300">Only a super administrator can edit administrator accounts.</p>}
+            {!canEdit && <p className="text-xs text-text-muted">Only a super administrator can edit administrator accounts.</p>}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {field("name", "Full name")}
               {field("email", "Email", "email")}
@@ -234,7 +234,7 @@ function ClientDrawer({ id, onClose, onChanged }: { id: string; onClose: () => v
             {canEdit && (
               <div className="flex items-center justify-end gap-3">
                 {saved && <span className="text-xs text-emerald-300">Saved</span>}
-                <button disabled={saving} className="px-5 py-2 rounded-xl bg-gold hover:bg-[#FFB073] text-black text-sm font-semibold disabled:opacity-40">
+                <button disabled={saving} className="px-5 py-2 rounded-xl bg-cream hover:bg-cream/90 text-black text-sm font-semibold disabled:opacity-40">
                   {saving ? "Saving…" : "Save profile"}
                 </button>
               </div>
@@ -250,7 +250,7 @@ function ClientDrawer({ id, onClose, onChanged }: { id: string; onClose: () => v
               <button
                 onClick={send}
                 disabled={sending || !subject.trim() || !message.trim() || channels.length === 0}
-                className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-gold hover:bg-[#FFB073] text-black text-sm font-semibold disabled:opacity-40"
+                className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-cream hover:bg-cream/90 text-black text-sm font-semibold disabled:opacity-40"
               >
                 <Send className="w-4 h-4" /> {sending ? "Sending…" : "Send"}
               </button>
@@ -270,7 +270,7 @@ function ClientDrawer({ id, onClose, onChanged }: { id: string; onClose: () => v
                     <div className="min-w-0">
                       <p className="text-text truncate">{bk.serviceTitle}</p>
                       <p className="text-xs text-text-muted">
-                        <span className="font-mono text-gold/80">{bk.referenceCode}</span> · {new Date(bk.scheduledAt).toLocaleString()}
+                        <span className="font-mono text-text-muted">{bk.referenceCode}</span> · {new Date(bk.scheduledAt).toLocaleString()}
                       </p>
                     </div>
                     <StatusBadge status={bk.status} />

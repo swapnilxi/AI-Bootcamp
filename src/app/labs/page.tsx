@@ -45,7 +45,7 @@ export default async function LabsPage() {
               summary={lab.summary}
               pills={
                 <>
-                  <MetaPill className="!border-gold/35 !bg-gold/10 !text-gold">{KIND_LABEL[lab.kind] ?? lab.kind}</MetaPill>
+                  <MetaPill className="!border-cream/25 !bg-cream/10 !text-cream">{KIND_LABEL[lab.kind] ?? lab.kind}</MetaPill>
                   <DifficultyPill level={lab.difficulty} />
                   <MetaPill>{lab.estimatedMinutes} min</MetaPill>
                 </>

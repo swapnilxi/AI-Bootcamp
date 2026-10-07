@@ -46,19 +46,19 @@ export default async function PathsPage() {
                   <MetaPill>{path.estimatedWeeks} weeks</MetaPill>
                 </div>
                 <h2 className="font-serif text-2xl text-text leading-snug">{path.title}</h2>
-                <p className="text-sm font-medium text-gold">{path.tagline}</p>
+                <p className="text-sm font-medium text-text-muted">{path.tagline}</p>
                 <p className="text-sm leading-relaxed text-text-muted">{path.description}</p>
               </div>
 
-              <div className="rounded-2xl border border-gold/20 bg-gold/[0.05] p-4">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-gold">You finish able to</p>
+              <div className="rounded-2xl border border-cream/15 bg-cream/5 p-4">
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-text-muted">You finish able to</p>
                 <p className="mt-1.5 text-sm leading-relaxed text-text">{path.outcome}</p>
               </div>
 
               <ol className="space-y-2.5">
                 {path.milestones.map((m, i) => (
                   <li key={m.id} className="flex gap-3 text-sm">
-                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-gold/35 text-[10px] font-semibold text-gold">
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-cream/25 text-[10px] font-semibold text-cream">
                       {i + 1}
                     </span>
                     <span className="text-text-muted">
@@ -74,7 +74,7 @@ export default async function PathsPage() {
                 </span>
                 <Link
                   href={`/paths/${path.slug}`}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gold transition-colors hover:bg-gold/10"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-cream/30 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-cream transition-colors hover:bg-cream/10"
                 >
                   Explore
                 </Link>
