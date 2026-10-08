@@ -44,11 +44,12 @@ export async function POST(req: Request, { params }: RouteParams) {
     return NextResponse.json({ error: "Enroll in this class to take the quiz" }, { status: 403 });
   }
 
-  const blocked = await aiPreflight(req, "quiz", session.user.id, 15);
-  if (blocked) return blocked;
+  const preflight = await aiPreflight(req, "quiz", session.user.id, 15);
+  if (!preflight.ok) return preflight.response;
 
   try {
     const quiz = await generateStructured({
+      credential: preflight.credential,
       schema: Quiz,
       effort: "medium",
       system: `${BRAND_VOICE}

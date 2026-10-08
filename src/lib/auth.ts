@@ -37,9 +37,9 @@ export const authOptions: NextAuthOptions = {
 
         const normalizedEmail = parsed.data.email.toLowerCase().trim();
 
-        // Rate limit login attempts per email (max 5 attempts per 2 minutes)
+        // Rate limit login attempts per email (max 10 attempts per 2 minutes)
         const limiter = await rateLimit(`login:${normalizedEmail}`, {
-          limit: 5,
+          limit: 10,
           windowMs: 2 * 60 * 1000,
         });
 
@@ -59,6 +59,15 @@ export const authOptions: NextAuthOptions = {
 
         if (!isValid) {
           throw new Error("Invalid credentials");
+        }
+
+        // Reset rate limiter on successful authentication
+        try {
+          await prisma.rateLimitRecord.deleteMany({
+            where: { key: `login:${normalizedEmail}` },
+          });
+        } catch {
+          // ignore transient cleanup error
         }
 
         return {

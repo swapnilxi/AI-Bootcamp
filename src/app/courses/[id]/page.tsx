@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { PasswordUnlockModal } from "@/features/courses";
 import { isSubscriberRole } from "@/lib/roles";
+import { useToast } from "@/components/ui/Toast";
 
 interface LessonOutline {
   id: string;
@@ -76,6 +77,7 @@ export default function ClassDetailPage() {
   const [unlockModalOpen, setUnlockModalOpen] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  const toast = useToast();
 
   const userRole = session?.user?.role;
   const isSubscriber = isSubscriberRole(userRole);
@@ -152,14 +154,14 @@ export default function ClassDetailPage() {
 
       if (!res.ok) {
         const data = await res.json();
-        alert(data.error || "Failed to delete");
+        toast.error(data.error || "Failed to delete");
         return;
       }
 
       router.push("/courses");
     } catch (err) {
       console.error(err);
-      alert("Error deleting class");
+      toast.error("Error deleting class");
     }
   }
 
@@ -338,7 +340,7 @@ export default function ClassDetailPage() {
           <div className="pt-4 flex flex-wrap items-center gap-5">
             <Link
               href={`/courses/${classData.id}/lessons/${resumeLesson.id}`}
-              className="px-8 py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold text-sm shadow-md flex items-center gap-2 transition-all"
+              className="px-8 py-3.5 rounded-xl bg-orange hover:bg-orange-600 text-white font-semibold text-sm shadow-md shadow-orange/20 flex items-center gap-2 transition-all active:translate-y-0.5"
             >
               <PlayCircle className="w-4 h-4" />
               <span>
@@ -374,7 +376,7 @@ export default function ClassDetailPage() {
             {classData.isPasswordProtected ? (
               <button
                 onClick={() => setUnlockModalOpen(true)}
-                className="px-8 py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold text-sm shadow-md flex items-center gap-2 transition-all"
+                className="px-8 py-3.5 rounded-xl bg-orange hover:bg-orange-600 text-white font-semibold text-sm shadow-md shadow-orange/20 flex items-center gap-2 transition-all active:translate-y-0.5"
               >
                 <KeyRound className="w-4 h-4" />
                 <span>Enter Class Access Key to Enroll</span>
@@ -382,7 +384,7 @@ export default function ClassDetailPage() {
             ) : classData.isSubscriberOnly && !isSubscriber ? (
               <Link
                 href="/dashboard/subscriber"
-                className="px-8 py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold text-sm shadow-md flex items-center gap-2 transition-all"
+                className="px-8 py-3.5 rounded-xl bg-orange hover:bg-orange-600 text-white font-semibold text-sm shadow-md shadow-orange/20 flex items-center gap-2 transition-all active:translate-y-0.5"
               >
                 <Sparkles className="w-4 h-4" />
                 <span>Join Subscriber Tier to Access</span>
@@ -391,7 +393,7 @@ export default function ClassDetailPage() {
               <button
                 onClick={handleEnroll}
                 disabled={enrolling}
-                className="px-8 py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold text-sm shadow-md flex items-center gap-2 transition-all disabled:opacity-50"
+                className="px-8 py-3.5 rounded-xl bg-orange hover:bg-orange-600 text-white font-semibold text-sm shadow-md shadow-orange/20 flex items-center gap-2 transition-all active:translate-y-0.5 disabled:opacity-50"
               >
                 <CheckCircle2 className="w-4 h-4" />
                 <span>{enrolling ? "Enrolling..." : "Enroll in Course"}</span>

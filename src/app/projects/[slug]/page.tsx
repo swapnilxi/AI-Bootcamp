@@ -2,16 +2,11 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { PageHeader, DifficultyPill, MetaPill } from "@/components/learning/primitives";
+import { ModuleStepper, ModulePager } from "./ModuleStepper";
+import { STAGES, PROJECT_MODULES, moduleHref, type Task } from "./modules";
 
 export const revalidate = 3600;
 
-interface Task {
-  title: string;
-  detail: string;
-  stage: string;
-}
-
-const STAGES = ["REQUIREMENTS", "ARCHITECTURE", "IMPLEMENTATION", "TESTING", "DEPLOYMENT"] as const;
 const STAGE_LABEL: Record<string, string> = {
   REQUIREMENTS: "Requirements",
   ARCHITECTURE: "Architecture",
@@ -60,6 +55,30 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
           </Link>
         )}
       </div>
+
+      <ModuleStepper projectSlug={slug} activeSlug="" />
+
+      <section className="space-y-5">
+        <h2 className="font-serif text-2xl text-text">Project modules</h2>
+        <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {PROJECT_MODULES.map((module, idx) => (
+            <li key={module.slug || "overview"}>
+              <Link
+                href={moduleHref(slug, module.slug)}
+                className={`editorial-card glow-tl block h-full space-y-2 rounded-2xl p-5 transition-colors ${
+                  idx === 0 ? "border-gold/30" : ""
+                }`}
+              >
+                <span className="text-[11px] font-semibold uppercase tracking-widest text-gold">
+                  Module {idx + 1}
+                </span>
+                <p className="text-sm font-semibold text-text">{module.title}</p>
+                <p className="text-xs leading-relaxed text-text-muted">{module.description}</p>
+              </Link>
+            </li>
+          ))}
+        </ol>
+      </section>
 
       <section className="card-premium glow-tl space-y-4 rounded-3xl p-7 sm:p-9">
         <h2 className="font-serif text-2xl text-text">The problem</h2>
@@ -111,11 +130,22 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
           {STAGES.map((stage) => {
             const stageTasks = tasks.filter((t) => t.stage === stage);
             if (stageTasks.length === 0) return null;
+            const stageModule = PROJECT_MODULES.find((m) => m.stage === stage);
             return (
               <div key={stage} className="space-y-3">
-                <h3 className="inline-flex items-center gap-2.5 text-xs font-semibold uppercase tracking-widest text-text-muted">
-                  <span className="h-px w-6 bg-cream/40" aria-hidden="true" />
-                  {STAGE_LABEL[stage]}
+                <h3 className="flex items-center justify-between gap-3">
+                  <span className="inline-flex items-center gap-2.5 text-xs font-semibold uppercase tracking-widest text-text-muted">
+                    <span className="h-px w-6 bg-cream/40" aria-hidden="true" />
+                    {STAGE_LABEL[stage]}
+                  </span>
+                  {stageModule && (
+                    <Link
+                      href={moduleHref(slug, stageModule.slug)}
+                      className="text-[11px] font-semibold uppercase tracking-wider text-gold hover:underline"
+                    >
+                      Open module →
+                    </Link>
+                  )}
                 </h3>
                 <ul className="space-y-3">
                   {stageTasks.map((task) => (
@@ -138,6 +168,8 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
           progressive hint — without handing you the implementation.
         </p>
       </section>
+
+      <ModulePager projectSlug={slug} activeSlug="" />
     </div>
   );
 }

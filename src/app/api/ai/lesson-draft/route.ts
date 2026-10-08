@@ -50,13 +50,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Only this class's instructor or an administrator can use the lesson writer" }, { status: 403 });
   }
 
-  const blocked = await aiPreflight(req, "lesson-draft", session.user.id, 30);
-  if (blocked) return blocked;
+  const preflight = await aiPreflight(req, "lesson-draft", session.user.id, 30);
+  if (!preflight.ok) return preflight.response;
 
   const existing = cls.lessons.map((l, i) => `${i + 1}. ${l.title}`).join("\n") || "(none yet)";
 
   try {
     const draft = await generateStructured({
+      credential: preflight.credential,
       schema: LessonDraft,
       effort: "medium",
       system: `${BRAND_VOICE}

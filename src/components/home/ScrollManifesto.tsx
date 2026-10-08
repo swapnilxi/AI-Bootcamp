@@ -19,17 +19,16 @@ const OrbitField = dynamic(() => import("@/components/three/OrbitField"), { ssr:
 export function ScrollManifesto() {
   const root = useRef<HTMLElement>(null);
 
-  useGSAP(
+    useGSAP(
     () => {
       if (prefersReducedMotion()) return;
       const words = gsap.utils.toArray<HTMLElement>(".mf-word");
 
       gsap.fromTo(
         words,
-        { opacity: 0.14, filter: "blur(2px)" },
+        { opacity: 0.32 },
         {
           opacity: 1,
-          filter: "blur(0px)",
           ease: "none",
           stagger: 0.12,
           scrollTrigger: {
@@ -60,25 +59,25 @@ export function ScrollManifesto() {
   return (
     <section ref={root} className="relative py-28 sm:py-40 overflow-hidden" aria-label="Our approach">
       <div
-        className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[560px] sm:h-[760px] opacity-60 pointer-events-none"
+        className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[560px] sm:h-[760px] opacity-35 dark:opacity-60 pointer-events-none"
         data-speed="-0.28"
       >
         <div className="mf-orbit absolute inset-0">
           <OrbitField />
         </div>
       </div>
-      {/* Vignette so the text always sits on calm black */}
+      {/* Soft center feather so the orbit lines don't distract from the headline */}
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse 60% 55% at 50% 50%, rgba(11,11,13,0.82), rgba(11,11,13,0.2) 70%, transparent)" }}
+        style={{ background: "radial-gradient(ellipse 65% 55% at 50% 50%, var(--black), transparent 75%)" }}
         aria-hidden="true"
       />
 
       <div className="relative max-w-4xl mx-auto px-5 sm:px-8 text-center">
         <span className="reveal inline-flex items-center gap-3 text-xs font-medium tracking-[0.22em] uppercase text-text-muted mb-8">
-          <span className="eyebrow-line from-right w-8 h-px bg-gradient-to-r from-transparent to-cream/40" aria-hidden="true" />
+          <span className="eyebrow-line from-right w-8 h-px bg-gradient-to-r from-transparent to-orange/40" aria-hidden="true" />
           The Ethos
-          <span className="eyebrow-line from-left w-8 h-px bg-gradient-to-l from-transparent to-cream/40" aria-hidden="true" />
+          <span className="eyebrow-line from-left w-8 h-px bg-gradient-to-l from-transparent to-orange/40" aria-hidden="true" />
         </span>
 
         <p className="mf-text font-serif text-[1.85rem] leading-[1.3] sm:text-5xl sm:leading-[1.22] text-text text-balance">
@@ -87,7 +86,7 @@ export function ScrollManifesto() {
             const clean = word.replace(/\*/g, "");
             return (
               <React.Fragment key={i}>
-                <span className={`mf-word inline-block ${accent ? "italic text-gold-metal pr-[0.06em]" : ""}`}>
+                <span className={`mf-word inline-block transition-colors duration-300 ${accent ? "italic text-orange font-medium pr-[0.06em]" : ""}`}>
                   {clean}
                 </span>{" "}
               </React.Fragment>
@@ -96,9 +95,9 @@ export function ScrollManifesto() {
         </p>
 
         <div className="reveal mt-12 flex items-center justify-center gap-4 text-[10px] sm:text-[11px] uppercase tracking-[0.18em] sm:tracking-[0.24em] text-text-muted whitespace-nowrap">
-          <span className="hidden sm:block w-10 h-px bg-cream/20" aria-hidden="true" />
+          <span className="hidden sm:block w-10 h-px bg-orange/30" aria-hidden="true" />
           {MANIFESTO_TAGLINE}
-          <span className="hidden sm:block w-10 h-px bg-cream/20" aria-hidden="true" />
+          <span className="hidden sm:block w-10 h-px bg-orange/30" aria-hidden="true" />
         </div>
       </div>
     </section>

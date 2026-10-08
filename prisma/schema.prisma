@@ -110,58 +110,71 @@ enum BookmarkKind {
   CONCEPT
 }
 
+/// The LLM providers a user (or the server, via .env) can supply a credential for.
+enum AiProvider {
+  ANTHROPIC
+  GEMINI
+  DEEPSEEK
+  OLLAMA
+}
+
 // ====================================================================
 // People
 // ====================================================================
 
 model User {
-  id                 String       @id @default(cuid())
-  name               String?
-  email              String       @unique
-  password           String // bcrypt hash
-  role               Role         @default(USER)
-  avatarUrl          String?
-  bio                String?
-  phone              String?
-  timezone           String?      @default("America/New_York")
-  resetToken         String?      @unique
-  resetTokenExpires  DateTime?
-  createdAt          DateTime     @default(now())
-  updatedAt          DateTime     @updatedAt
+  id                String    @id @default(cuid())
+  name              String?
+  email             String    @unique
+  password          String // bcrypt hash
+  role              Role      @default(USER)
+  avatarUrl         String?
+  bio               String?
+  phone             String?
+  timezone          String?   @default("America/New_York")
+  resetToken        String?   @unique
+  resetTokenExpires DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 
   // Mentor profile. A mentor runs 1-on-1 sessions, reviews code and projects,
   // and may author courses.
-  mentorType         String?      @default("INSTRUCTOR") // "INSTRUCTOR" | "MENTOR" | "BOTH"
-  specialties        String? // e.g. "RAG, AI Agents, Evaluation"
-  sessionPrice       Decimal?     @default(120.0)
-  sessionDuration    Int?         @default(60) // minutes
-  approvalStatus     String       @default("APPROVED") // "PENDING" | "APPROVED" | "REJECTED"
-  rejectionReason    String?
-  approvalNudgesCount Int         @default(0)
-  lastNudgedAt       DateTime?
+  mentorType          String?   @default("INSTRUCTOR") // "INSTRUCTOR" | "MENTOR" | "BOTH"
+  specialties         String? // e.g. "RAG, AI Agents, Evaluation"
+  sessionPrice        Decimal?  @default(120.0)
+  sessionDuration     Int?      @default(60) // minutes
+  approvalStatus      String    @default("APPROVED") // "PENDING" | "APPROVED" | "REJECTED"
+  rejectionReason     String?
+  approvalNudgesCount Int       @default(0)
+  lastNudgedAt        DateTime?
 
   // AI Tutor persona exposed on a mentor's public profile
-  aiChatEnabled      Boolean      @default(true)
-  aiSystemPrompt     String?
-  aiChatStyle        String?
-  aiGreeting         String?
-  aiSampleQuestions  String?
+  aiChatEnabled     Boolean @default(true)
+  aiSystemPrompt    String?
+  aiChatStyle       String?
+  aiGreeting        String?
+  aiSampleQuestions String?
 
   // Custom Profile Sections (JSON array stored as string for SQLite compatibility)
-  profileSections    String?      @default("[]")
+  profileSections String? @default("[]")
 
   // ---- Learning state ----------------------------------------------
   /// Where the learner is headed. Drives the "what next" on the dashboard.
-  activePathId       String?
-  activePath         LearningPath? @relation("ActivePath", fields: [activePathId], references: [id], onDelete: SetNull)
+  activePathId String?
+  activePath   LearningPath? @relation("ActivePath", fields: [activePathId], references: [id], onDelete: SetNull)
   /// Consecutive days with at least one completed learning action.
-  streakDays         Int          @default(0)
-  lastActiveOn       DateTime?
-  xp                 Int          @default(0)
+  streakDays   Int           @default(0)
+  lastActiveOn DateTime?
+  xp           Int           @default(0)
+
+  // ---- Bring-your-own AI key -----------------------------------------
+  /// Which of this user's saved credentials (if any) AI features should use.
+  activeAiProvider AiProvider?
+  aiCredentials    AiCredential[]
 
   enrollments        Enrollment[]
   entitlements       Entitlement[]
-  createdCourses     Course[]     @relation("CourseInstructor")
+  createdCourses     Course[]            @relation("CourseInstructor")
   lessonProgress     LessonProgress[]
   pathEnrollments    PathEnrollment[]
   practiceAttempts   PracticeAttempt[]
@@ -171,16 +184,16 @@ model User {
   bookmarks          Bookmark[]
   tutorThreads       TutorThread[]
 
-  bookings           Booking[]    @relation("ClientBookings")
-  assignedBookings   Booking[]    @relation("AssignedMentor")
-  blogPosts          BlogPost[]
+  bookings         Booking[]  @relation("ClientBookings")
+  assignedBookings Booking[]  @relation("AssignedMentor")
+  blogPosts        BlogPost[]
 
   // Cohort events (kickoffs, live workshops, demo days)
-  hostedEvents       Event[]      @relation("EventHost")
-  reviewedEvents     Event[]      @relation("EventReviewer")
-  eventInterests     EventInterest[]
-  eventRequestsMade  EventRequest[] @relation("EventRequester")
-  eventRequestsTagged EventRequest[] @relation("EventRequestAssignee")
+  hostedEvents        Event[]         @relation("EventHost")
+  reviewedEvents      Event[]         @relation("EventReviewer")
+  eventInterests      EventInterest[]
+  eventRequestsMade   EventRequest[]  @relation("EventRequester")
+  eventRequestsTagged EventRequest[]  @relation("EventRequestAssignee")
 }
 
 // ====================================================================
@@ -204,12 +217,12 @@ model LearningPath {
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
 
-  courses        Course[]
-  milestones     PathMilestone[]
-  projects       Project[]
-  bootcamps      Bootcamp[]
-  enrollments    PathEnrollment[]
-  activeFor      User[]        @relation("ActivePath")
+  courses     Course[]
+  milestones  PathMilestone[]
+  projects    Project[]
+  bootcamps   Bootcamp[]
+  enrollments PathEnrollment[]
+  activeFor   User[]           @relation("ActivePath")
 
   @@index([status, order])
 }
@@ -217,25 +230,25 @@ model LearningPath {
 /// A checkpoint inside a path, so progress reads as a journey rather than a
 /// percentage.
 model PathMilestone {
-  id       String       @id @default(cuid())
-  pathId   String
-  path     LearningPath @relation(fields: [pathId], references: [id], onDelete: Cascade)
-  title    String
-  summary  String
-  order    Int          @default(0)
+  id      String       @id @default(cuid())
+  pathId  String
+  path    LearningPath @relation(fields: [pathId], references: [id], onDelete: Cascade)
+  title   String
+  summary String
+  order   Int          @default(0)
 
   @@index([pathId, order])
 }
 
 model PathEnrollment {
-  id         String       @id @default(cuid())
-  userId     String
-  pathId     String
-  startedAt  DateTime     @default(now())
+  id          String    @id @default(cuid())
+  userId      String
+  pathId      String
+  startedAt   DateTime  @default(now())
   completedAt DateTime?
 
-  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  path       LearningPath @relation(fields: [pathId], references: [id], onDelete: Cascade)
+  user User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  path LearningPath @relation(fields: [pathId], references: [id], onDelete: Cascade)
 
   @@unique([userId, pathId])
 }
@@ -243,44 +256,44 @@ model PathEnrollment {
 /// A course inside a path. This is the old `Class` model, carried forward with
 /// the learning metadata the new lesson experience needs.
 model Course {
-  id                   String        @id @default(cuid())
-  title                String
-  slug                 String        @unique
-  description          String
-  content              String // Course overview, materials & notes
-  syllabus             String?
-  kind                 CourseKind    @default(TECHNICAL)
-  difficulty           Difficulty    @default(BEGINNER)
-  estimatedHours       Int           @default(6)
-  objectives           Json          @default("[]")
-  technologies         Json          @default("[]")
-  prerequisites        Json          @default("[]")
-  order                Int           @default(0)
+  id             String     @id @default(cuid())
+  title          String
+  slug           String     @unique
+  description    String
+  content        String // Course overview, materials & notes
+  syllabus       String?
+  kind           CourseKind @default(TECHNICAL)
+  difficulty     Difficulty @default(BEGINNER)
+  estimatedHours Int        @default(6)
+  objectives     Json       @default("[]")
+  technologies   Json       @default("[]")
+  prerequisites  Json       @default("[]")
+  order          Int        @default(0)
 
-  pathId               String?
-  path                 LearningPath? @relation(fields: [pathId], references: [id], onDelete: SetNull)
+  pathId String?
+  path   LearningPath? @relation(fields: [pathId], references: [id], onDelete: SetNull)
 
-  schedule             DateTime
-  durationMinutes      Int           @default(60)
-  price                Decimal       @default(0.0) // 0.00 indicates free
-  isSubscriberOnly     Boolean       @default(false)
-  isPasswordProtected  Boolean       @default(false)
-  passwordHash         String?
-  instructorId         String
-  instructor           User          @relation("CourseInstructor", fields: [instructorId], references: [id])
-  approvalStatus       String        @default("APPROVED") // "PENDING" | "APPROVED" | "REJECTED"
-  isPublished          Boolean       @default(true)
-  rejectionReason      String?
-  createdAt            DateTime      @default(now())
-  updatedAt            DateTime      @updatedAt
+  schedule            DateTime
+  durationMinutes     Int      @default(60)
+  price               Decimal  @default(0.0) // 0.00 indicates free
+  isSubscriberOnly    Boolean  @default(false)
+  isPasswordProtected Boolean  @default(false)
+  passwordHash        String?
+  instructorId        String
+  instructor          User     @relation("CourseInstructor", fields: [instructorId], references: [id])
+  approvalStatus      String   @default("APPROVED") // "PENDING" | "APPROVED" | "REJECTED"
+  isPublished         Boolean  @default(true)
+  rejectionReason     String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 
-  enrollments          Enrollment[]
-  entitlements         Entitlement[]
-  modules              Module[]
-  lessons              Lesson[]
-  practiceQuestions    PracticeQuestion[]
-  skills               CourseSkill[]
-  bootcampWeeks        BootcampWeek[]
+  enrollments       Enrollment[]
+  entitlements      Entitlement[]
+  modules           Module[]
+  lessons           Lesson[]
+  practiceQuestions PracticeQuestion[]
+  skills            CourseSkill[]
+  bootcampWeeks     BootcampWeek[]
 
   @@index([pathId, order])
 }
@@ -296,7 +309,7 @@ model Module {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  lessons   Lesson[]
+  lessons Lesson[]
 
   @@index([courseId, order])
 }
@@ -304,7 +317,7 @@ model Module {
 /// A single lesson. `moduleId` is optional so a course can stay flat while it
 /// is being authored, and gain modules later without a migration.
 model Lesson {
-  id              String        @id @default(cuid())
+  id              String  @id @default(cuid())
   courseId        String
   moduleId        String?
   title           String
@@ -312,29 +325,29 @@ model Lesson {
   content         String // Lesson body (plain text, line breaks preserved)
   videoUrl        String?
   durationMinutes Int?
-  order           Int           @default(0)
-  isPreview       Boolean       @default(false)
+  order           Int     @default(0)
+  isPreview       Boolean @default(false)
 
   // The lesson experience from the spec: every lesson states what it is for,
   // what it costs in time, and what the learner should walk away with.
-  objective       String?
-  difficulty      Difficulty    @default(BEGINNER)
-  estimatedMinutes Int          @default(15)
-  prerequisites   Json          @default("[]")
-  keyTakeaways    Json          @default("[]")
-  commonMistakes  Json          @default("[]")
-  codeExample     String?
+  objective        String?
+  difficulty       Difficulty @default(BEGINNER)
+  estimatedMinutes Int        @default(15)
+  prerequisites    Json       @default("[]")
+  keyTakeaways     Json       @default("[]")
+  commonMistakes   Json       @default("[]")
+  codeExample      String?
 
-  approvalStatus  String        @default("APPROVED") // "PENDING" | "APPROVED" | "REJECTED"
+  approvalStatus  String   @default("APPROVED") // "PENDING" | "APPROVED" | "REJECTED"
   rejectionReason String?
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
-  course          Course        @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  module          Module?       @relation(fields: [moduleId], references: [id], onDelete: SetNull)
-  progress        LessonProgress[]
+  course            Course             @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  module            Module?            @relation(fields: [moduleId], references: [id], onDelete: SetNull)
+  progress          LessonProgress[]
   practiceQuestions PracticeQuestion[]
-  skills          LessonSkill[]
+  skills            LessonSkill[]
 
   @@index([courseId, order])
   @@index([moduleId, order])
@@ -346,8 +359,8 @@ model LessonProgress {
   lessonId    String
   completedAt DateTime @default(now())
 
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
 
   @@unique([userId, lessonId])
 }
@@ -359,27 +372,27 @@ model Enrollment {
   unlockedWithPassword Boolean  @default(false)
   enrolledAt           DateTime @default(now())
 
-  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  course               Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   @@unique([userId, courseId])
 }
 
 /// Proof that a user has paid for (or been granted) access to a paid course.
 model Entitlement {
-  id              String    @id @default(cuid())
-  userId          String
-  courseId        String
-  source          String    @default("stripe") // "stripe" | "admin_grant" | "comp"
-  amountPaid      Int?
-  currency        String?
-  providerRef     String?   @unique
-  grantedAt       DateTime  @default(now())
-  expiresAt       DateTime?
-  grantedById     String?
+  id          String    @id @default(cuid())
+  userId      String
+  courseId    String
+  source      String    @default("stripe") // "stripe" | "admin_grant" | "comp"
+  amountPaid  Int?
+  currency    String?
+  providerRef String?   @unique
+  grantedAt   DateTime  @default(now())
+  expiresAt   DateTime?
+  grantedById String?
 
-  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  course          Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   @@unique([userId, courseId])
   @@index([courseId])
@@ -391,23 +404,23 @@ model Entitlement {
 
 /// One node on the AI skill graph (Python → ML → Transformers → RAG → Agents …).
 model Skill {
-  id            String   @id @default(cuid())
-  slug          String   @unique
-  name          String
-  description   String
-  category      String   @default("Core") // Core | ML | GenAI | Agents | Engineering
-  order         Int      @default(0)
-  createdAt     DateTime @default(now())
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String
+  category    String   @default("Core") // Core | ML | GenAI | Agents | Engineering
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
 
   /// Edges out of this node: skills that require it.
-  unlocks       SkillPrerequisite[] @relation("PrerequisiteSkill")
+  unlocks  SkillPrerequisite[] @relation("PrerequisiteSkill")
   /// Edges into this node: skills it requires.
-  requires      SkillPrerequisite[] @relation("DependentSkill")
+  requires SkillPrerequisite[] @relation("DependentSkill")
 
-  userSkills    UserSkill[]
-  lessons       LessonSkill[]
-  courses       CourseSkill[]
-  questions     PracticeQuestion[]
+  userSkills UserSkill[]
+  lessons    LessonSkill[]
+  courses    CourseSkill[]
+  questions  PracticeQuestion[]
 
   @@index([category, order])
 }
@@ -418,8 +431,8 @@ model SkillPrerequisite {
   skillId        String
   prerequisiteId String
 
-  skill          Skill  @relation("DependentSkill", fields: [skillId], references: [id], onDelete: Cascade)
-  prerequisite   Skill  @relation("PrerequisiteSkill", fields: [prerequisiteId], references: [id], onDelete: Cascade)
+  skill        Skill @relation("DependentSkill", fields: [skillId], references: [id], onDelete: Cascade)
+  prerequisite Skill @relation("PrerequisiteSkill", fields: [prerequisiteId], references: [id], onDelete: Cascade)
 
   @@unique([skillId, prerequisiteId])
 }
@@ -427,18 +440,18 @@ model SkillPrerequisite {
 /// A learner's standing on one skill, which is what the adaptive engine reads
 /// to decide what to recommend next.
 model UserSkill {
-  id             String     @id @default(cuid())
-  userId         String
-  skillId        String
-  state          SkillState @default(AVAILABLE)
-  masteryPct     Int        @default(0) // 0–100
-  attempts       Int        @default(0)
-  correct        Int        @default(0)
+  id              String     @id @default(cuid())
+  userId          String
+  skillId         String
+  state           SkillState @default(AVAILABLE)
+  masteryPct      Int        @default(0) // 0–100
+  attempts        Int        @default(0)
+  correct         Int        @default(0)
   lastPracticedAt DateTime?
-  updatedAt      DateTime   @updatedAt
+  updatedAt       DateTime   @updatedAt
 
-  user           User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  skill          Skill      @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skill Skill @relation(fields: [skillId], references: [id], onDelete: Cascade)
 
   @@unique([userId, skillId])
   @@index([userId, state])
@@ -449,8 +462,8 @@ model LessonSkill {
   lessonId String
   skillId  String
 
-  lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-  skill    Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  skill  Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
 
   @@unique([lessonId, skillId])
 }
@@ -460,8 +473,8 @@ model CourseSkill {
   courseId String
   skillId  String
 
-  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  skill    Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  skill  Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
 
   @@unique([courseId, skillId])
 }
@@ -471,31 +484,31 @@ model CourseSkill {
 // ====================================================================
 
 model PracticeQuestion {
-  id          String       @id @default(cuid())
-  kind        PracticeKind @default(CONCEPT)
-  difficulty  Difficulty   @default(BEGINNER)
-  prompt      String
+  id               String        @id @default(cuid())
+  kind             PracticeKind  @default(CONCEPT)
+  difficulty       Difficulty    @default(BEGINNER)
+  prompt           String
   /// Multiple-choice options. Empty for open-ended / coding / design questions,
   /// which the AI evaluates instead of being auto-graded.
-  options     Json         @default("[]")
-  answer      String
-  explanation String
-  hint        String?
-  starterCode String?
-  estimatedMinutes Int     @default(2)
-  status      ContentStatus @default(PUBLISHED)
+  options          Json          @default("[]")
+  answer           String
+  explanation      String
+  hint             String?
+  starterCode      String?
+  estimatedMinutes Int           @default(2)
+  status           ContentStatus @default(PUBLISHED)
 
-  skillId     String?
-  skill       Skill?       @relation(fields: [skillId], references: [id], onDelete: SetNull)
-  lessonId    String?
-  lesson      Lesson?      @relation(fields: [lessonId], references: [id], onDelete: SetNull)
-  courseId    String?
-  course      Course?      @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  skillId  String?
+  skill    Skill?  @relation(fields: [skillId], references: [id], onDelete: SetNull)
+  lessonId String?
+  lesson   Lesson? @relation(fields: [lessonId], references: [id], onDelete: SetNull)
+  courseId String?
+  course   Course? @relation(fields: [courseId], references: [id], onDelete: SetNull)
 
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  attempts    PracticeAttempt[]
+  attempts PracticeAttempt[]
 
   @@index([kind, difficulty])
   @@index([skillId])
@@ -503,19 +516,19 @@ model PracticeQuestion {
 
 /// One answer. The adaptive engine aggregates these into Learning Strength.
 model PracticeAttempt {
-  id            String   @id @default(cuid())
-  userId        String
-  questionId    String
-  answer        String
-  isCorrect     Boolean
+  id           String   @id @default(cuid())
+  userId       String
+  questionId   String
+  answer       String
+  isCorrect    Boolean
   /// 1–5, self-reported before the answer is revealed.
-  confidence    Int?
-  timeSpentSec  Int      @default(0)
-  aiFeedback    String?
-  createdAt     DateTime @default(now())
+  confidence   Int?
+  timeSpentSec Int      @default(0)
+  aiFeedback   String?
+  createdAt    DateTime @default(now())
 
-  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  question      PracticeQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  user     User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question PracticeQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
 
   @@index([userId, createdAt])
   @@index([questionId])
@@ -545,7 +558,7 @@ model Lab {
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
 
-  runs             LabRun[]
+  runs LabRun[]
 
   @@index([kind, order])
 }
@@ -562,8 +575,8 @@ model LabRun {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  lab         Lab       @relation(fields: [labId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lab  Lab  @relation(fields: [labId], references: [id], onDelete: Cascade)
 
   @@unique([userId, labId])
 }
@@ -592,14 +605,14 @@ model Project {
   status           ContentStatus @default(PUBLISHED)
   order            Int           @default(0)
 
-  pathId           String?
-  path             LearningPath? @relation(fields: [pathId], references: [id], onDelete: SetNull)
+  pathId String?
+  path   LearningPath? @relation(fields: [pathId], references: [id], onDelete: SetNull)
 
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  submissions      ProjectSubmission[]
-  bootcampWeeks    BootcampWeek[]
+  submissions   ProjectSubmission[]
+  bootcampWeeks BootcampWeek[]
 
   @@index([difficulty, order])
   @@index([pathId])
@@ -619,8 +632,8 @@ model ProjectSubmission {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 
-  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  project     Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@unique([userId, projectId])
   @@index([projectId])
@@ -632,40 +645,40 @@ model ProjectSubmission {
 
 /// A time-boxed, cohort-style run through a path.
 model Bootcamp {
-  id             String        @id @default(cuid())
-  slug           String        @unique
-  title          String
-  summary        String
-  description    String
-  durationWeeks  Int           @default(12)
-  difficulty     Difficulty    @default(INTERMEDIATE)
-  status         ContentStatus @default(PUBLISHED)
-  startsAt       DateTime?
-  price          Decimal       @default(0.0)
+  id            String        @id @default(cuid())
+  slug          String        @unique
+  title         String
+  summary       String
+  description   String
+  durationWeeks Int           @default(12)
+  difficulty    Difficulty    @default(INTERMEDIATE)
+  status        ContentStatus @default(PUBLISHED)
+  startsAt      DateTime?
+  price         Decimal       @default(0.0)
 
-  pathId         String?
-  path           LearningPath? @relation(fields: [pathId], references: [id], onDelete: SetNull)
+  pathId String?
+  path   LearningPath? @relation(fields: [pathId], references: [id], onDelete: SetNull)
 
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  weeks          BootcampWeek[]
+  weeks BootcampWeek[]
 }
 
 model BootcampWeek {
-  id          String   @id @default(cuid())
-  bootcampId  String
-  bootcamp    Bootcamp @relation(fields: [bootcampId], references: [id], onDelete: Cascade)
-  weekNumber  Int
-  title       String
-  summary     String
-  goals       Json     @default("[]")
-  milestone   String
+  id         String   @id @default(cuid())
+  bootcampId String
+  bootcamp   Bootcamp @relation(fields: [bootcampId], references: [id], onDelete: Cascade)
+  weekNumber Int
+  title      String
+  summary    String
+  goals      Json     @default("[]")
+  milestone  String
 
-  courseId    String?
-  course      Course?  @relation(fields: [courseId], references: [id], onDelete: SetNull)
-  projectId   String?
-  project     Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  courseId  String?
+  course    Course?  @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
 
   @@unique([bootcampId, weekNumber])
 }
@@ -677,17 +690,17 @@ model BootcampWeek {
 /// A tutor conversation, anchored to whatever the learner was looking at so the
 /// tutor stays contextual rather than being a generic chatbot.
 model TutorThread {
-  id         String   @id @default(cuid())
-  userId     String
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  title      String   @default("New conversation")
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String   @default("New conversation")
   /// What the learner was on when the thread began: "lesson" | "course" | "project" | "lab" | "practice" | null
   contextKind String?
-  contextId  String?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  contextId   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  messages   TutorMessage[]
+  messages TutorMessage[]
 
   @@index([userId, updatedAt])
 }
@@ -701,6 +714,28 @@ model TutorMessage {
   createdAt DateTime    @default(now())
 
   @@index([threadId, createdAt])
+}
+
+/// A user's own LLM credential for one provider — lets students, instructors
+/// and admins bring their own Gemini/DeepSeek/Ollama/Anthropic key instead of
+/// (or in addition to) relying on a server-wide key set in `.env`. `apiKey` is
+/// stored encrypted (see `lib/ai/crypto.ts`); Ollama typically needs only a
+/// `baseUrl` pointing at a running instance, no key.
+model AiCredential {
+  id        String     @id @default(cuid())
+  userId    String
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider  AiProvider
+  apiKey    String?
+  baseUrl   String?
+  /// Model name override, e.g. an Ollama tag like "llama3.1" (Ollama has no single
+  /// universal default — it depends on what the user has pulled locally).
+  model     String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@unique([userId, provider])
+  @@index([userId])
 }
 
 // ====================================================================
@@ -745,7 +780,7 @@ model Service {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  bookings        Booking[]
+  bookings Booking[]
 }
 
 model AvailabilitySlot {
@@ -765,47 +800,47 @@ model BlockedDate {
 
 /// A booked 1-on-1 session with an instructor or mentor.
 model Booking {
-  id              String        @id @default(cuid())
-  referenceCode   String        @unique // e.g. "AIB-7821"
-  serviceId       String
-  service         Service       @relation(fields: [serviceId], references: [id])
+  id            String  @id @default(cuid())
+  referenceCode String  @unique // e.g. "AIB-7821"
+  serviceId     String
+  service       Service @relation(fields: [serviceId], references: [id])
 
   scheduledAt     DateTime
   durationMinutes Int
   endTime         DateTime
 
   // Learner details (no account required)
-  clientName      String
-  clientEmail     String
-  clientPhone     String
+  clientName  String
+  clientEmail String
+  clientPhone String
 
   /// What the learner wants out of the session — the repo link to review, the
   /// role they are interviewing for, the architecture they are stuck on.
-  goal            String?
-  clientNotes     String?
+  goal        String?
+  clientNotes String?
 
   // Status & meeting
-  status          BookingStatus @default(PENDING)
-  meetingLink     String?
-  adminNotes      String?
+  status             BookingStatus @default(PENDING)
+  meetingLink        String?
+  adminNotes         String?
   cancellationReason String?
-  confirmedAt     DateTime?
-  reminderSentAt  DateTime?
-  whatsappOptIn   Boolean       @default(true)
+  confirmedAt        DateTime?
+  reminderSentAt     DateTime?
+  whatsappOptIn      Boolean       @default(true)
 
   // Optional account link (created post-booking or existing user)
-  userId          String?
-  user            User?         @relation("ClientBookings", fields: [userId], references: [id])
+  userId String?
+  user   User?   @relation("ClientBookings", fields: [userId], references: [id])
 
   // Assigned instructor / mentor
   instructorId    String?
-  instructor      User?         @relation("AssignedMentor", fields: [instructorId], references: [id])
+  instructor      User?   @relation("AssignedMentor", fields: [instructorId], references: [id])
   rejectionReason String?
 
-  notifications   NotificationLog[]
+  notifications NotificationLog[]
 
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([scheduledAt, status])
   @@index([clientEmail])
@@ -859,41 +894,41 @@ model NotificationLog {
 /// A live gathering: cohort kickoff, workshop, office hours, or demo day.
 /// Follows the same admin-approval gate as Course.
 model Event {
-  id              String    @id @default(cuid())
-  slug            String    @unique
-  title           String
-  summary         String
-  description     String
-  category        String    @default("Workshop") // Workshop | Webinar | OfficeHours | DemoDay | Kickoff
-  location        String?
-  isOnline        Boolean   @default(false)
-  meetingUrl      String?
-  coverImage      String?
-  startsAt        DateTime
-  endsAt          DateTime
-  timezone        String    @default("America/New_York")
-  capacity        Int?
-  price           Decimal   @default(0.0)
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  summary     String
+  description String
+  category    String   @default("Workshop") // Workshop | Webinar | OfficeHours | DemoDay | Kickoff
+  location    String?
+  isOnline    Boolean  @default(false)
+  meetingUrl  String?
+  coverImage  String?
+  startsAt    DateTime
+  endsAt      DateTime
+  timezone    String   @default("America/New_York")
+  capacity    Int?
+  price       Decimal  @default(0.0)
 
-  hostId          String
-  host            User      @relation("EventHost", fields: [hostId], references: [id])
+  hostId String
+  host   User   @relation("EventHost", fields: [hostId], references: [id])
 
-  originRequestId String?   @unique
+  originRequestId String?       @unique
   originRequest   EventRequest? @relation("EventOriginRequest", fields: [originRequestId], references: [id])
 
-  approvalStatus  String    @default("PENDING") // "PENDING" | "APPROVED" | "REJECTED"
-  isPublished     Boolean   @default(false)
+  approvalStatus  String  @default("PENDING") // "PENDING" | "APPROVED" | "REJECTED"
+  isPublished     Boolean @default(false)
   rejectionReason String?
 
-  reviewedById    String?
-  reviewedBy      User?     @relation("EventReviewer", fields: [reviewedById], references: [id])
-  reviewedAt      DateTime?
-  approvedAt      DateTime?
+  reviewedById String?
+  reviewedBy   User?     @relation("EventReviewer", fields: [reviewedById], references: [id])
+  reviewedAt   DateTime?
+  approvedAt   DateTime?
 
-  interests       EventInterest[]
-  requests        EventRequest[]
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  interests EventInterest[]
+  requests  EventRequest[]
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
 
   @@index([startsAt])
   @@index([approvalStatus, isPublished])

@@ -74,7 +74,7 @@ export default function EventsPage() {
                             key={f.value}
                             onClick={() => setActiveFilter(f.value)}
                             className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${activeFilter === f.value
-                                    ? "bg-cream text-[#0C0B0A] shadow-sm"
+                                    ? "bg-orange text-white shadow-sm font-semibold"
                                     : "border border-white/[0.07] bg-black-raised/80 text-ink backdrop-blur-sm hover:border-gold"
                                 }`}
                         >

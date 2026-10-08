@@ -35,10 +35,11 @@ export async function POST(req: Request, { params }: RouteParams) {
     return NextResponse.json({ error: "Ask a question to get started" }, { status: 400 });
   }
 
-  const blocked = await aiPreflight(req, "assistant", session.user.id, 40);
-  if (blocked) return blocked;
+  const preflight = await aiPreflight(req, "assistant", session.user.id, 40);
+  if (!preflight.ok) return preflight.response;
 
   return streamTextResponse({
+    credential: preflight.credential,
     effort: "low",
     maxTokens: 2048,
     system: `${BRAND_VOICE}

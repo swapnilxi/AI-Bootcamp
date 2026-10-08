@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Avatar } from "@/components/ui/Avatar";
+import { useToast } from "@/components/ui/Toast";
 
 interface Mentor {
   id: string;
@@ -50,7 +51,7 @@ export function AdminMentors() {
   const [busyId, setBusyId] = useState<string | null>(null);
   const [rejectingMentor, setRejectingMentor] = useState<Mentor | null>(null);
   const [rejectionReason, setRejectionReason] = useState("");
-  const [toastMsg, setToastMsg] = useState<string | null>(null);
+  const toast = useToast();
 
   const loadMentors = async () => {
     setLoading(true);
@@ -84,17 +85,16 @@ export function AdminMentors() {
       });
 
       if (res.ok) {
-        setToastMsg(`Mentor profile set to ${status}`);
-        setTimeout(() => setToastMsg(null), 4000);
+        toast.success(`Mentor profile set to ${status}`);
         setRejectingMentor(null);
         setRejectionReason("");
         await loadMentors();
       } else {
         const err = await res.json();
-        alert(err.error || "Failed to update mentor status");
+        toast.error(err.error || "Failed to update mentor status");
       }
     } catch (e: any) {
-      alert(e.message || "Failed to update mentor status");
+      toast.error(e.message || "Failed to update mentor status");
     } finally {
       setBusyId(null);
     }
@@ -114,13 +114,6 @@ export function AdminMentors() {
 
   return (
     <div className="space-y-6">
-      {toastMsg && (
-        <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-sm flex items-center gap-2 animate-fade-in">
-          <CheckCircle2 className="w-5 h-5 shrink-0" />
-          <span>{toastMsg}</span>
-        </div>
-      )}
-
       {/* Header controls */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>

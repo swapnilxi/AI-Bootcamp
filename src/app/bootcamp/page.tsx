@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { PageHeader, DifficultyPill, MetaPill, EmptyState } from "@/components/learning/primitives";
 import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icon";
 
 export const metadata = {
   title: "12-Week AI Engineer Bootcamp | AI Bootcamp",
@@ -30,7 +31,11 @@ export default async function BootcampPage() {
   if (!bootcamp) {
     return (
       <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
-        <EmptyState title="No bootcamp published" body="Seed the database to load the 12-week AI Engineer bootcamp." />
+        <EmptyState
+          icon={<Icon name="career" size={28} />}
+          title="No bootcamp published"
+          body="Seed the database to load the 12-week AI Engineer bootcamp."
+        />
       </div>
     );
   }

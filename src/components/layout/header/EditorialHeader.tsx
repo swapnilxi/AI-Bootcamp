@@ -11,6 +11,7 @@ import { useSmoothScroll } from "@/components/motion/SmoothScrollProvider";
 import { EASE_OUT } from "@/lib/motion";
 import { DesktopNav } from "./DesktopNav";
 import { AccountMenu } from "./AccountMenu";
+import { InstructorMenu } from "./InstructorMenu";
 import { MenuToggle } from "./MenuToggle";
 import { MobileMenu, MOBILE_MENU_ID } from "./MobileMenu";
 import { useHeaderScroll } from "./useHeaderScroll";
@@ -31,7 +32,8 @@ export function EditorialHeader() {
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
-  const { scrolled, hidden, show } = useHeaderScroll(mobileOpen || accountOpen);
+  const [instructorOpen, setInstructorOpen] = useState(false);
+  const { scrolled, hidden, show } = useHeaderScroll(mobileOpen || accountOpen || instructorOpen);
 
   const closeMobile = useCallback(() => setMobileOpen(false), []);
 
@@ -93,8 +95,10 @@ export function EditorialHeader() {
 
             <DesktopNav pathname={pathname} />
 
-            <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+            <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
               <ThemeToggle />
+
+              <InstructorMenu session={session} onOpenChange={setInstructorOpen} />
 
               <span className="magnetic inline-flex">
                 <Button href="/paths" variant="primary" size="sm" className="!min-h-[42px] !px-3.5 sm:!px-4 xl:!px-5">

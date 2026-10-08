@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { PageHeader, DifficultyPill, MetaPill, EmptyState } from "@/components/learning/primitives";
 import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icon";
 
 export const metadata = {
   title: "AI Career Paths | AI Bootcamp",
@@ -33,6 +34,7 @@ export default async function PathsPage() {
 
       {paths.length === 0 ? (
         <EmptyState
+          icon={<Icon name="path" size={28} />}
           title="No paths published yet"
           body="The curriculum has not been seeded. Run the database seed to load the AI Engineer, Generative AI and Agent Engineer paths."
         />

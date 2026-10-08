@@ -79,7 +79,7 @@ function RegisterForm() {
           onClick={() => setRole("USER")}
           className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all ${
             role === "USER"
-              ? "bg-cream text-[#0C0B0A] shadow-sm"
+              ? "bg-orange text-white shadow-sm"
               : "text-text-muted hover:text-ink"
           }`}
         >
@@ -90,7 +90,7 @@ function RegisterForm() {
           onClick={() => setRole("INSTRUCTOR")}
           className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
             role === "INSTRUCTOR"
-              ? "bg-cream text-[#0C0B0A] shadow-sm"
+              ? "bg-orange text-white shadow-sm"
               : "text-text-muted hover:text-ink"
           }`}
         >

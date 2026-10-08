@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useId, useState } from "react";
 import { Lock, KeyRound, AlertCircle, CheckCircle, X } from "lucide-react";
+import { Modal } from "@/components/ui/Modal";
 
 interface PasswordUnlockModalProps {
   isOpen: boolean;
@@ -22,8 +23,7 @@ export function PasswordUnlockModal({
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-
-  if (!isOpen) return null;
+  const titleId = useId();
 
   async function handleUnlock(e: React.FormEvent) {
     e.preventDefault();
@@ -64,8 +64,8 @@ export function PasswordUnlockModal({
   }
 
   return (
-    <div data-lenis-prevent className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/70 backdrop-blur-sm animate-fadeIn">
-      <div className="relative w-full max-w-md p-7 rounded-2xl bg-black-raised/80 backdrop-blur-sm border border-white/[0.07] shadow-2xl">
+    <Modal isOpen={isOpen} onClose={onClose} labelledBy={titleId} className="w-full max-w-md">
+      <div className="editorial-card glow-tl relative w-full p-7 rounded-2xl bg-black-raised/80 backdrop-blur-sm border border-white/[0.07] shadow-2xl">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 rounded-lg text-ink/50 hover:text-ink hover:bg-mist/50 transition-colors"
@@ -79,7 +79,7 @@ export function PasswordUnlockModal({
             <Lock className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="font-serif text-xl font-bold text-ink">Private Course</h3>
+            <h3 id={titleId} className="font-serif text-xl font-bold text-ink">Private Course</h3>
             <p className="text-xs text-ink/60 truncate max-w-[260px]">{classTitle}</p>
           </div>
         </div>
@@ -139,6 +139,6 @@ export function PasswordUnlockModal({
           </div>
         </form>
       </div>
-    </div>
+    </Modal>
   );
 }

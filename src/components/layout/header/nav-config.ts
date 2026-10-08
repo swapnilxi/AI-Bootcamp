@@ -9,10 +9,12 @@ export interface NavLink {
  * work the courses, build, experiment, drill, then check where you stand.
  */
 export const NAV_LINKS: NavLink[] = [
+  { href: "/", label: "Home" },
   { href: "/paths", label: "Paths" },
   { href: "/courses", label: "Learn" },
   { href: "/projects", label: "Projects" },
   { href: "/labs", label: "AI Labs" },
+  { href: "/instructors", label: "Instructors" },
   { href: "/practice", label: "Practice" },
   { href: "/progress", label: "Progress" },
 ];
@@ -30,5 +32,7 @@ export const SECONDARY_LINKS: NavLink[] = [
 export const WHATSAPP_URL = "https://wa.me/15551234567";
 
 /** A link is active on its own page and on any nested route beneath it. */
-export const isActivePath = (pathname: string, href: string) =>
-  pathname === href || pathname.startsWith(`${href}/`);
+export const isActivePath = (pathname: string, href: string) => {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
+};

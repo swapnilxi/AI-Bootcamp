@@ -171,7 +171,7 @@ export function CatalogueCard({
       className={`editorial-card ${glow} group flex flex-col gap-4 p-6 rounded-2xl h-full`}
     >
       <div className="flex-1 space-y-3">
-        <h3 className="text-gold-metal font-sans text-lg font-semibold tracking-tight leading-snug">
+        <h3 className="text-gold-metal font-heading text-lg font-semibold tracking-tight leading-snug">
           {title}
         </h3>
         <p className="text-sm leading-relaxed text-text-muted">{summary}</p>
@@ -185,9 +185,24 @@ export function CatalogueCard({
 /* ------------------------------------------------------------------ */
 /* Empty state                                                         */
 /* ------------------------------------------------------------------ */
-export function EmptyState({ title, body, action }: { title: string; body: string; action?: React.ReactNode }) {
+export function EmptyState({
+  title,
+  body,
+  action,
+  icon,
+}: {
+  title: string;
+  body: string;
+  action?: React.ReactNode;
+  icon?: React.ReactNode;
+}) {
   return (
     <div className="editorial-card glow-tl rounded-2xl p-10 text-center space-y-3">
+      {icon && (
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-cream/20 bg-cream/[0.06] text-cream shadow-[0_0_24px_-10px_rgba(249,115,22,0.45)]">
+          {icon}
+        </div>
+      )}
       <h3 className="font-serif text-xl text-text">{title}</h3>
       <p className="mx-auto max-w-md text-sm text-text-muted">{body}</p>
       {action && <div className="pt-2">{action}</div>}

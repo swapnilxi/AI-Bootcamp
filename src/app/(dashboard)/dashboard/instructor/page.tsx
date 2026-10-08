@@ -25,6 +25,7 @@ import type { ClassItem } from "@/features/courses";
 import { EventDashboardPanel } from "@/features/events";
 import { ProfileSectionsEditor } from "@/components/profile/ProfileSectionsEditor";
 import type { ProfileSection } from "@/types/profileSections";
+import { useToast } from "@/components/ui/Toast";
 
 interface BookingItem {
   id: string;
@@ -87,6 +88,7 @@ export default function InstructorDashboardPage() {
   }, []);
 
   const [bookingBusy, setBookingBusy] = useState<string | null>(null);
+  const toast = useToast();
 
   // Mentors act on the bookings assigned to them: confirm, decline or mark complete
   const actOnBooking = async (b: BookingItem, action: "approve" | "decline" | "complete") => {
@@ -110,7 +112,7 @@ export default function InstructorDashboardPage() {
         body: JSON.stringify(body),
       });
       const data = await res.json().catch(() => ({}));
-      if (!res.ok) alert(data.error || "Could not update the booking");
+      if (!res.ok) toast.error(data.error || "Could not update the booking");
       else await loadData();
     } finally {
       setBookingBusy(null);
@@ -127,10 +129,10 @@ export default function InstructorDashboardPage() {
         setNudgeMessage(data.message || "Notification sent to academy administration.");
         setNudgesRemaining(data.nudgesRemaining);
       } else {
-        alert(data.error || "Failed to notify admin");
+        toast.error(data.error || "Failed to notify admin");
       }
     } catch (err: any) {
-      alert(err.message || "Network error");
+      toast.error(err.message || "Network error");
     } finally {
       setNudging(false);
     }

@@ -10,24 +10,24 @@ export const dynamic = "force-dynamic";
  * Users eligible to teach or offer healing (Instructor, Mentor, Admin, SuperAdmin).
  * Publicly viewable for faculty directory.
  */
+const ALLOWED_INSTRUCTOR_NAMES = [
+  "Arun Chauhan",
+  "Swapnil Gupta",
+  "Shresth Sahai",
+];
+
 export async function GET(req: Request) {
   try {
     const session = await getServerSession(authOptions);
     const isCallerAdmin = session?.user?.role ? isAdminRole(session.user.role) : false;
     const { searchParams } = new URL(req.url);
     const type = searchParams.get("type"); // INSTRUCTOR | MENTOR | ALL
-    const status = searchParams.get("status"); // PENDING | APPROVED | ALL
 
     const where: any = {
-      role: { in: ["INSTRUCTOR", "ADMIN", "SUPER_ADMIN"] },
+      role: "INSTRUCTOR",
+      name: { in: ALLOWED_INSTRUCTOR_NAMES },
+      approvalStatus: "APPROVED",
     };
-
-    // Non-admins can only see approved faculty
-    if (!isCallerAdmin) {
-      where.approvalStatus = "APPROVED";
-    } else if (status && status !== "ALL") {
-      where.approvalStatus = status;
-    }
 
     if (type && type !== "ALL") {
       if (type === "MENTOR") {
@@ -77,18 +77,20 @@ export async function GET(req: Request) {
           },
         },
       },
-      orderBy: [
-        { role: "desc" },
-        { createdCourses: { _count: "desc" } },
-        { name: "asc" },
-      ],
+    });
+
+    // Enforce strict order: 1- Arun Chauhan, 2- Swapnil Gupta, 3- Shresth Sahai
+    const sorted = instructors.sort((a, b) => {
+      const aIdx = ALLOWED_INSTRUCTOR_NAMES.indexOf(a.name || "");
+      const bIdx = ALLOWED_INSTRUCTOR_NAMES.indexOf(b.name || "");
+      return (aIdx === -1 ? 99 : aIdx) - (bIdx === -1 ? 99 : bIdx);
     });
 
     return NextResponse.json({
-      instructors: instructors.map((inst) => ({
+      instructors: sorted.map((inst) => ({
         ...inst,
-        sessionPrice: inst.sessionPrice ? Number(inst.sessionPrice) : 120,
-        mentorType: inst.mentorType || (inst.role === "INSTRUCTOR" ? "INSTRUCTOR" : "BOTH"),
+        sessionPrice: inst.sessionPrice ? Number(inst.sessionPrice) : 150,
+        mentorType: inst.mentorType || "BOTH",
       })),
     });
   } catch (error) {

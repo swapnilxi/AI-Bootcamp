@@ -321,7 +321,7 @@ export default function NewClassPage() {
           <button
             type="submit"
             disabled={loading}
-            className="flex-1 py-3 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold text-sm shadow-md transition-all disabled:opacity-50"
+            className="flex-1 py-3 rounded-xl bg-orange hover:bg-orange-600 text-white font-semibold text-sm shadow-md shadow-orange/20 transition-all disabled:opacity-50"
           >
             {loading ? "Publishing Class..." : "Publish AI Engineering Class"}
           </button>

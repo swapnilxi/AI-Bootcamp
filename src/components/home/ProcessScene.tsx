@@ -195,10 +195,10 @@ export function ProcessScene() {
               )}
 
               <article className="scene-card card-premium glow-walk group h-full p-6 sm:p-8 lg:p-10 relative z-0">
-                <span className="card-icon relative z-20 shrink-0 inline-flex items-center justify-center w-12 h-12 mb-5 rounded-full border border-gold/30 bg-black font-serif text-xl">
-                  <span className="text-gold-metal">{String(i + 1).padStart(2, "0")}</span>
+                <span className="card-icon relative z-20 shrink-0 inline-flex items-center justify-center w-12 h-12 mb-5 rounded-full border border-orange/40 font-mono text-base font-semibold">
+                  <span className="text-orange">{String(i + 1).padStart(2, "0")}</span>
                 </span>
-                <h3 className="step-title relative z-20 font-serif text-xl mb-2 text-balance">
+                <h3 className="step-title relative z-20 font-serif text-xl sm:text-2xl font-medium mb-2 text-balance">
                   {step.title}
                 </h3>
                 <p className="step-body relative z-20 text-sm leading-relaxed">{step.body}</p>

@@ -22,7 +22,7 @@ export function DesktopNav({ pathname }: { pathname: string }) {
             onMouseEnter={() => setHovered(link.href)}
             onFocus={() => setHovered(link.href)}
             aria-current={active ? "page" : undefined}
-            className={`relative inline-flex items-center whitespace-nowrap px-2 xl:px-3.5 py-2 text-[13px] xl:text-sm tracking-wide rounded-full transition-colors duration-300 ${
+            className={`relative inline-flex items-center whitespace-nowrap px-2 xl:px-3 py-1.5 text-xs xl:text-[13.5px] tracking-wide rounded-full transition-colors duration-300 ${
               active ? "text-gold" : "text-text-muted hover:text-text"
             }`}
           >

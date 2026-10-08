@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { PageHeader, DifficultyPill, MetaPill, CatalogueCard, EmptyState } from "@/components/learning/primitives";
+import { Icon } from "@/components/ui/Icon";
 
 export const metadata = {
   title: "AI Projects | AI Bootcamp",
@@ -33,7 +34,11 @@ export default async function ProjectsPage() {
       />
 
       {projects.length === 0 ? (
-        <EmptyState title="No projects yet" body="Seed the database to load the project catalogue." />
+        <EmptyState
+          icon={<Icon name="project" size={28} />}
+          title="No projects yet"
+          body="Seed the database to load the project catalogue."
+        />
       ) : (
         TIERS.map((tier) => {
           const tierProjects = projects.filter((p) => p.difficulty === tier.level);

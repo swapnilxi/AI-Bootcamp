@@ -541,11 +541,11 @@ export default function InstructorProfilePage({
             </div>
             <div className="p-3 sm:p-4 rounded-2xl bg-black/40 border border-white/5 backdrop-blur-sm">
               <div className="text-cream font-serif text-lg sm:text-xl font-medium">1,200+</div>
-              <div className="text-[11px] text-text-muted uppercase tracking-wider mt-0.5">Charts & Biofield Scans</div>
+              <div className="text-[11px] text-text-muted uppercase tracking-wider mt-0.5">Mentoring Sessions</div>
             </div>
             <div className="p-3 sm:p-4 rounded-2xl bg-black/40 border border-white/5 backdrop-blur-sm">
               <div className="text-cream font-serif text-lg sm:text-xl font-medium">100%</div>
-              <div className="text-[11px] text-text-muted uppercase tracking-wider mt-0.5">Sacred Confidentiality</div>
+              <div className="text-[11px] text-text-muted uppercase tracking-wider mt-0.5">Session Confidentiality</div>
             </div>
             <div className="p-3 sm:p-4 rounded-2xl bg-black/40 border border-white/5 backdrop-blur-sm">
               <div className="text-cream font-serif text-lg sm:text-xl font-medium">4.99 / 5</div>
@@ -796,9 +796,9 @@ export default function InstructorProfilePage({
                 </div>
                 <div className="space-y-1.5 p-4 rounded-2xl bg-white/[0.02] border border-white/5">
                   <span className="text-cream font-bold text-xs uppercase tracking-wider">Axiom II</span>
-                  <h5 className="font-serif text-base text-ink">Subtle Biofield Priority</h5>
+                  <h5 className="font-serif text-base text-ink">Failure Modes Before Features</h5>
                   <p className="text-xs text-text-muted leading-relaxed">
-                    Financial stagnation manifests in the etheric body long before appearing in worldly bank accounts.
+                    A system&apos;s edge cases and failure modes teach you more about its design than any feature you add to it.
                   </p>
                 </div>
                 <div className="space-y-1.5 p-4 rounded-2xl bg-white/[0.02] border border-white/5">

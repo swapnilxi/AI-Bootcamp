@@ -1,6 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { AI_NOT_CONFIGURED_CODE, AI_SETTINGS_PATH } from "@/lib/ai/constants";
+
+export { AI_SETTINGS_PATH };
 
 let statusPromise: Promise<boolean> | null = null;
 
@@ -17,6 +20,11 @@ export function useAiEnabled(): boolean | null {
   return enabled;
 }
 
+/** True once the AI route tells us there's no usable key (the caller's own, or the server's). */
+function isNotConfigured(body: unknown): boolean {
+  return !!body && typeof body === "object" && (body as { code?: string }).code === AI_NOT_CONFIGURED_CODE;
+}
+
 export interface ChatMessage {
   role: "user" | "assistant";
   content: string;
@@ -30,6 +38,7 @@ export function useStreamingChat(endpoint: string, extraBody?: Record<string, un
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [streaming, setStreaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [needsSetup, setNeedsSetup] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
 
   const send = useCallback(
@@ -40,6 +49,7 @@ export function useStreamingChat(endpoint: string, extraBody?: Record<string, un
       setMessages([...history, { role: "assistant", content: "" }]);
       setStreaming(true);
       setError(null);
+      setNeedsSetup(false);
 
       const controller = new AbortController();
       abortRef.current = controller;
@@ -52,6 +62,7 @@ export function useStreamingChat(endpoint: string, extraBody?: Record<string, un
         });
         if (!res.ok || !res.body) {
           const body = await res.json().catch(() => ({}));
+          if (isNotConfigured(body)) setNeedsSetup(true);
           throw new Error(body.error || "The assistant is unavailable right now.");
         }
         const reader = res.body.getReader();
@@ -81,11 +92,12 @@ export function useStreamingChat(endpoint: string, extraBody?: Record<string, un
     abortRef.current?.abort();
     setMessages([]);
     setError(null);
+    setNeedsSetup(false);
   }, []);
 
   useEffect(() => () => abortRef.current?.abort(), []);
 
-  return { messages, streaming, error, send, reset };
+  return { messages, streaming, error, needsSetup, send, reset };
 }
 
 /** One-shot streamed text (e.g. the chart insight). */

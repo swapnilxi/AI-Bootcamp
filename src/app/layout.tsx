@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Inter } from "next/font/google";
+import { Cormorant_Garamond, Inter, Montserrat } from "next/font/google";
 import "./globals.css";
 import "@/styles/tokens.css";
 import "@/styles/base.css";
@@ -29,6 +29,13 @@ const inter = Inter({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
   variable: "--font-inter",
+  display: "swap",
+});
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-montserrat",
   display: "swap",
 });
 
@@ -75,7 +82,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${inter.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${cormorant.variable} ${inter.variable} ${montserrat.variable}`} suppressHydrationWarning>
       <body className="bg-black text-text min-h-screen flex flex-col font-sans selection:bg-gold selection:text-[#0C0B0A] overflow-x-hidden" suppressHydrationWarning>
         <Providers>
           <SmoothScrollProvider>

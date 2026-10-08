@@ -1,10 +1,15 @@
 import { NextResponse } from "next/server";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
-import { isAiConfigured } from "./client";
+import { resolveAiCredential, type ResolvedCredential } from "./credentials";
+import { aiNotConfiguredResponse } from "./errors";
+
+export type Preflight = { ok: true; credential: ResolvedCredential } | { ok: false; response: NextResponse };
 
 /**
- * Shared preflight for AI endpoints: feature flag + per-user/IP rate limit.
- * Returns a NextResponse to short-circuit with, or null to continue.
+ * Shared preflight for AI endpoints: resolves which credential to use (the
+ * caller's own, else the server's), feature-gates on it, and rate-limits.
+ * `identity` should be the session user id where available — it's both the
+ * rate-limit key and who we look up a personal credential for.
  */
 export async function aiPreflight(
   req: Request,
@@ -12,22 +17,25 @@ export async function aiPreflight(
   identity: string | undefined,
   limit = 20,
   windowMs = 10 * 60 * 1000
-): Promise<NextResponse | null> {
-  if (!isAiConfigured()) {
-    return NextResponse.json(
-      { error: "AI features are not configured on this server." },
-      { status: 503 }
-    );
+): Promise<Preflight> {
+  const credential = await resolveAiCredential(identity);
+  if (!credential) {
+    return { ok: false, response: aiNotConfiguredResponse() };
   }
+
   const key = `ai:${feature}:${identity || getClientIp(req)}`;
   const limiter = await rateLimit(key, { limit, windowMs });
   if (!limiter.success) {
-    return NextResponse.json(
-      { error: "You've reached the AI usage limit for now. Please try again in a few minutes." },
-      { status: 429 }
-    );
+    return {
+      ok: false,
+      response: NextResponse.json(
+        { error: "You've reached the AI usage limit for now. Please try again in a few minutes." },
+        { status: 429 }
+      ),
+    };
   }
-  return null;
+
+  return { ok: true, credential };
 }
 
 /** Validate a chat transcript from the browser: alternating roles, bounded size. */

@@ -22,6 +22,11 @@
   --black-rgb-ch: 12 11 10;
   --black-raised-rgb-ch: 21 19 17;
   --black-card-rgb-ch: 22 20 18;
+  /* `.card-premium` / `.card-featured`'s glass fill — a two-stop near-black
+     gradient in dark mode, flipped to a near-white/cream gradient in light
+     mode so cards never render dark text on a dark glass panel. */
+  --card-glass-top-rgb-ch: 31 29 27;
+  --card-glass-bottom-rgb-ch: 16 15 14;
 
   /* Premium orange for Dark Mode — the standard, pure Tailwind orange ramp */
   --orange: #F97316;
@@ -53,6 +58,15 @@
   --ai-icon-glow: rgba(249, 115, 22, 0.25);
   --ai-icon-color: #FB923C;
 
+  /* Status semantics — distinct from the single orange brand accent, used for
+     state (success/warning/danger) rather than identity. Same hue in both
+     themes (the way "red means danger" doesn't change with light/dark); only
+     consumed through Tailwind's `/ <alpha-value>` opacity modifier, so the
+     channels are space-separated like the other `-rgb-ch` tokens. */
+  --success-rgb-ch: 16 185 129;
+  --warning-rgb-ch: 245 158 11;
+  --danger-rgb-ch: 244 63 94;
+
   /* Radii: controls are pills, surfaces are generously rounded to match */
   --radius-pill: 9999px;
   --radius-card: 1.15rem;
@@ -80,6 +94,8 @@ html.light,
   --black-rgb-ch: 253 250 246;
   --black-raised-rgb-ch: 255 255 255;
   --black-card-rgb-ch: 255 255 255;
+  --card-glass-top-rgb-ch: 255 255 255;
+  --card-glass-bottom-rgb-ch: 250 246 240;
 
   /* Premium orange for Light Mode — a shade deeper for contrast on cream */
   --orange: #EA580C;

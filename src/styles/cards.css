@@ -135,17 +135,28 @@
 .editorial-card {
   position: relative;
   background-color: var(--black-raised);
-  border: 1px solid transparent;
+  border: 1px solid rgba(249, 115, 22, 0.08);
   border-radius: var(--radius-card);
   box-shadow:
     0 14px 30px -26px rgba(0, 0, 0, 0.9),
     var(--glow-ox) var(--glow-oy) 64px -32px rgba(249, 115, 22, var(--bloom));
   transition:
-    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow var(--dur-fast) cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
     --glow-edge var(--dur-fast) cubic-bezier(0.16, 1, 0.3, 1),
     --glow-rim var(--dur-fast) cubic-bezier(0.16, 1, 0.3, 1),
     --cursor-lit var(--dur-base) var(--ease-soft);
+}
+
+html.light .editorial-card,
+[data-theme="light"] .editorial-card {
+  background-color: #FFFFFF;
+  border: 1px solid rgba(230, 220, 206, 0.85);
+  box-shadow:
+    0 2px 8px -2px rgba(0, 0, 0, 0.03),
+    0 18px 36px -15px rgba(0, 0, 0, 0.05),
+    var(--glow-ox) var(--glow-oy) 54px -28px rgba(234, 88, 12, calc(var(--bloom) * 0.35));
 }
 
 /* Inner wash: a bloom at the corner over a wide, barely-there halo */
@@ -174,10 +185,39 @@
 }
 
 .editorial-card:hover {
-  --glow-edge: 0.62;
-  --glow-rim: 0.4;
+  --glow-edge: 0.75;
+  --glow-rim: 0.55;
   --cursor-lit: 1;
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  border-color: rgba(249, 115, 22, 0.55);
+  box-shadow:
+    0 16px 36px -12px rgba(0, 0, 0, 0.85),
+    0 0 1px 1px rgba(251, 146, 60, 0.45),
+    0 0 22px 2px rgba(249, 115, 22, 0.38),
+    0 0 45px 6px rgba(249, 115, 22, 0.2);
+}
+
+html.light .editorial-card:hover,
+[data-theme="light"] .editorial-card:hover {
+  border-color: rgba(234, 88, 12, 0.5);
+  box-shadow:
+    0 14px 32px -10px rgba(0, 0, 0, 0.05),
+    0 0 1px 1px rgba(234, 88, 12, 0.35),
+    0 0 20px 2px rgba(234, 88, 12, 0.3),
+    0 0 42px 6px rgba(234, 88, 12, 0.16);
+}
+
+/* A soft orange flash on click/tap — fires even where :hover doesn't (touch). */
+.editorial-card:active {
+  --glow-edge: 0.8;
+  --glow-rim: 0.52;
+  --cursor-lit: 1;
+  transform: translateY(-1px) scale(0.99);
+  box-shadow:
+    0 10px 24px -12px rgba(0, 0, 0, 0.8),
+    0 0 0 1px rgba(249, 115, 22, 0.45),
+    0 0 18px 2px rgba(249, 115, 22, 0.32);
+  transition-duration: 0.12s;
 }
 
 /* ================================================================== */
@@ -189,7 +229,7 @@
 /* ================================================================== */
 .card-premium {
   position: relative;
-  border: 1px solid transparent;
+  border: 1px solid rgba(249, 115, 22, 0.1);
   border-radius: var(--radius-panel);
   background-clip: padding-box;
   background-image:
@@ -211,7 +251,11 @@
       rgba(249, 115, 22, 0) 62%
     ),
     /* glass */
-    linear-gradient(180deg, rgba(31, 29, 27, 0.74), rgba(16, 15, 14, 0.74));
+    linear-gradient(
+      180deg,
+      rgb(var(--card-glass-top-rgb-ch) / 0.74),
+      rgb(var(--card-glass-bottom-rgb-ch) / 0.74)
+    );
   box-shadow:
     inset 0 1px 0 rgba(250, 246, 240, 0.03),
     0 1px 2px rgba(0, 0, 0, 0.4),
@@ -221,7 +265,8 @@
     translateY(var(--lift, 0px));
   transition:
     transform var(--dur-slow) var(--ease-out),
-    box-shadow var(--dur-fast) var(--ease-out),
+    border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
     --glow-edge var(--dur-fast) var(--ease-soft),
     --glow-rim var(--dur-fast) var(--ease-soft),
     --cursor-lit var(--dur-base) var(--ease-soft);
@@ -229,10 +274,29 @@
   --my: 0%;
 }
 .card-premium:hover {
-  --lift: -4px;
-  --glow-edge: 0.66;
-  --glow-rim: 0.42;
+  --lift: -5px;
+  --glow-edge: 0.75;
+  --glow-rim: 0.55;
   --cursor-lit: 1;
+  border-color: rgba(249, 115, 22, 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(250, 246, 240, 0.05),
+    0 20px 44px -18px rgba(0, 0, 0, 0.85),
+    0 0 1px 1px rgba(251, 146, 60, 0.45),
+    0 0 24px 2px rgba(249, 115, 22, 0.38),
+    0 0 48px 6px rgba(249, 115, 22, 0.2);
+}
+.card-premium:active {
+  --lift: -2px;
+  --glow-edge: 0.82;
+  --glow-rim: 0.54;
+  --cursor-lit: 1;
+  box-shadow:
+    inset 0 1px 0 rgba(250, 246, 240, 0.05),
+    0 12px 28px -14px rgba(0, 0, 0, 0.85),
+    0 0 0 1px rgba(249, 115, 22, 0.45),
+    0 0 20px -2px rgba(249, 115, 22, 0.32);
+  transition-duration: 0.12s;
 }
 .card-premium > :not(.absolute) {
   position: relative;
@@ -254,11 +318,42 @@
     background-color var(--dur-fast) var(--ease-soft),
     box-shadow var(--dur-fast) var(--ease-out);
 }
+html.light .card-icon,
+[data-theme="light"] .card-icon {
+  background-color: #FFFFFF;
+  border-color: rgba(234, 88, 12, calc(0.35 + 0.35 * var(--glow-lit)));
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05), 0 0 calc(8px + 10px * var(--glow-lit)) -2px rgba(234, 88, 12, calc(0.12 + 0.25 * var(--glow-lit)));
+}
 .group:hover .card-icon {
   transform: translateY(-2px) rotate(-6deg);
   border-color: rgba(249, 115, 22, 0.5);
   background-color: rgba(249, 115, 22, 0.08);
   box-shadow: 0 0 18px -4px rgba(249, 115, 22, 0.35);
+}
+html.light .group:hover .card-icon,
+[data-theme="light"] .group:hover .card-icon {
+  transform: translateY(-2px) rotate(-6deg);
+  border-color: rgba(234, 88, 12, 0.6);
+  background-color: rgba(234, 88, 12, 0.08);
+  box-shadow: 0 0 18px -3px rgba(234, 88, 12, 0.35);
+}
+html.light .card-premium,
+[data-theme="light"] .card-premium {
+  background-color: #FFFFFF;
+  border: 1px solid rgba(230, 220, 206, 0.9);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.03),
+    0 20px 40px -15px rgba(0, 0, 0, 0.06),
+    var(--glow-ox) var(--glow-oy) 64px -28px rgba(234, 88, 12, calc(var(--bloom) * 0.5));
+}
+html.light .card-premium:hover,
+[data-theme="light"] .card-premium:hover {
+  border-color: rgba(234, 88, 12, 0.5);
+  box-shadow:
+    0 16px 36px -10px rgba(0, 0, 0, 0.06),
+    0 0 1px 1px rgba(234, 88, 12, 0.35),
+    0 0 22px 2px rgba(234, 88, 12, 0.3),
+    0 0 44px 6px rgba(234, 88, 12, 0.16);
 }
 
 /* Featured card: slow rotating orange border + breathing ambient glow.    */
@@ -280,7 +375,12 @@
         rgba(249, 115, 22, 0) 72%
       )
       padding-box,
-    linear-gradient(180deg, rgba(31, 29, 27, 0.95), rgba(16, 15, 14, 0.95)) padding-box,
+    linear-gradient(
+        180deg,
+        rgb(var(--card-glass-top-rgb-ch) / 0.95),
+        rgb(var(--card-glass-bottom-rgb-ch) / 0.95)
+      )
+      padding-box,
     conic-gradient(
         from var(--angle),
         rgba(249, 115, 22, 0.18),
@@ -298,6 +398,17 @@
 .card-featured:hover {
   --glow-edge: 0.2;
   border-color: transparent;
+  box-shadow:
+    inset 0 1px 0 rgba(250, 246, 240, 0.06),
+    0 0 32px -4px rgba(249, 115, 22, 0.35),
+    0 0 60px -8px rgba(249, 115, 22, 0.2);
+}
+html.light .card-featured:hover,
+[data-theme="light"] .card-featured:hover {
+  box-shadow:
+    0 16px 36px -10px rgba(0, 0, 0, 0.06),
+    0 0 28px -2px rgba(234, 88, 12, 0.28),
+    0 0 54px -6px rgba(234, 88, 12, 0.16);
 }
 @keyframes rotateBorder {
   to { --angle: 360deg; }

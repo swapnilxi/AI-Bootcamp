@@ -158,11 +158,11 @@ export function DeliveryReport({ result }: { result: NotifyResult | null }) {
 }
 
 export const STATUS_STYLES: Record<string, string> = {
-  PENDING: "bg-cream/10 text-cream border-cream/25",
-  CONFIRMED: "bg-emerald-500/10 text-emerald-300 border-emerald-500/25",
-  RESCHEDULED: "bg-emerald-500/10 text-emerald-300 border-emerald-500/25",
-  COMPLETED: "bg-white/5 text-text-muted border-white/10",
-  CANCELLED: "bg-cream/10 text-cream border-cream/30",
+  PENDING: "bg-warning/10 text-warning border-warning/30",
+  CONFIRMED: "bg-success/10 text-success border-success/25",
+  RESCHEDULED: "bg-success/10 text-success border-success/25",
+  COMPLETED: "bg-cream/5 text-text-muted border-cream/10",
+  CANCELLED: "bg-danger/10 text-danger border-danger/30",
 };
 
 export function StatusBadge({ status }: { status: string }) {

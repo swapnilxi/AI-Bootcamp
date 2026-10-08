@@ -135,7 +135,8 @@ export function ClassCard({ classItem, userRole }: ClassCardProps) {
     "transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 " +
     "focus-visible:ring-gold/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black-raised " +
     "disabled:opacity-60 disabled:cursor-not-allowed";
-  const ctaPrimary = `${ctaBase} bg-cream text-[#0C0B0A] hover:bg-cream/90`;
+  const ctaPrimary =
+    `${ctaBase} bg-orange text-white hover:bg-orange-600 shadow-md shadow-orange/20 active:translate-y-0.5 font-semibold`;
   const ctaGhost =
     `${ctaBase} border border-white/10 bg-white/[0.02] text-ink font-medium hover:border-gold/60 hover:bg-white/[0.04]`;
 

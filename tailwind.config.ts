@@ -108,10 +108,18 @@ const config: Config = {
           light: "#FB923C",
           dark: "#EA580C",
         },
+        // Status semantics for badges/alerts — separate from the orange brand
+        // accent above. `info` reuses the brand accent: this app has one
+        // accent color, and "informational" already reads as "on-brand".
+        success: "rgb(var(--success-rgb-ch) / <alpha-value>)",
+        warning: "rgb(var(--warning-rgb-ch) / <alpha-value>)",
+        danger: "rgb(var(--danger-rgb-ch) / <alpha-value>)",
+        info: orange,
       },
       fontFamily: {
         serif: ["var(--font-cormorant)", "Cormorant Garamond", "Georgia", "serif"],
         sans: ["var(--font-inter)", "Inter", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+        heading: ["var(--font-montserrat)", "Montserrat", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
       },
       boxShadow: {
         card: "0 1px 3px 0 rgba(0, 0, 0, 0.4)",

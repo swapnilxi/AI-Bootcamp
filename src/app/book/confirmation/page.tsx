@@ -52,6 +52,7 @@ function ConfirmationContent() {
   const [canChange, setCanChange] = useState(false);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [loadError, setLoadError] = useState(false);
   const [mode, setMode] = useState<"view" | "reschedule" | "cancel">("view");
   const [newSlot, setNewSlot] = useState<SlotValue | null>(null);
   const [reason, setReason] = useState("");
@@ -62,6 +63,7 @@ function ConfirmationContent() {
   const qs = token ? `?t=${encodeURIComponent(token)}` : "";
 
   const load = useCallback(async () => {
+    setLoadError(false);
     if (!refCode) {
       setLoading(false);
       setNotFound(true);
@@ -70,7 +72,10 @@ function ConfirmationContent() {
     try {
       const res = await fetch(`/api/bookings/${encodeURIComponent(refCode)}${qs}`);
       if (!res.ok) {
-        setNotFound(true);
+        // Only a genuine 404 means the booking doesn't exist; any other
+        // status (500, rate limit, etc.) is transient and retryable.
+        if (res.status === 404) setNotFound(true);
+        else setLoadError(true);
         return;
       }
       const data = await res.json();
@@ -78,7 +83,8 @@ function ConfirmationContent() {
       setTimezone(data.timezone);
       setCanChange(data.canClientChange);
     } catch {
-      setNotFound(true);
+      // A thrown fetch (offline, DNS, etc.) is transient too — not "not found".
+      setLoadError(true);
     } finally {
       setLoading(false);
     }
@@ -159,6 +165,20 @@ function ConfirmationContent() {
 
   if (loading) {
     return <div className="max-w-3xl mx-auto py-24 text-center text-text-muted">Retrieving your booking…</div>;
+  }
+
+  if (loadError) {
+    return (
+      <div role="alert" className="max-w-md mx-auto my-20 p-8 rounded-2xl bg-black-raised/80 border border-white/[0.07] text-center space-y-4">
+        <h1 className="font-serif text-2xl text-ink">Could not load your booking</h1>
+        <p className="text-sm text-text-muted">
+          That was likely a temporary network issue, not a missing booking. Try again.
+        </p>
+        <Button onClick={load} variant="primary" size="md">
+          Try again
+        </Button>
+      </div>
+    );
   }
 
   if (notFound || !booking) {

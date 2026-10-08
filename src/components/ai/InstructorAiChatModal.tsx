@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { createPortal } from "react-dom";
+import React, { useState, useEffect, useId, useRef } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import ReactMarkdown from "react-markdown";
@@ -21,6 +20,7 @@ import {
   MessageSquare,
 } from "lucide-react";
 import { Avatar } from "@/components/ui/Avatar";
+import { Modal } from "@/components/ui/Modal";
 
 interface Instructor {
   id: string;
@@ -61,7 +61,7 @@ export function InstructorAiChatModal({
   initialQuestion,
 }: InstructorAiChatModalProps) {
   const { data: session } = useSession();
-  const [mounted, setMounted] = useState(false);
+  const titleId = useId();
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
@@ -85,21 +85,6 @@ export function InstructorAiChatModal({
   const isSelf = session?.user?.id === instructor?.id;
   const canManageAi = isCallerAdmin || isSelf;
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Lock body scroll while modal is open
-  useEffect(() => {
-    if (isOpen) {
-      const originalStyle = window.getComputedStyle(document.body).overflow;
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = originalStyle;
-      };
-    }
-  }, [isOpen]);
-
   // Initialize or reset chat when modal opens or instructor changes
   useEffect(() => {
     if (!isOpen || !instructor) return;
@@ -110,7 +95,7 @@ export function InstructorAiChatModal({
     // Initial greeting
     const initialGreeting =
       instructor.aiGreeting ||
-      `Namaste and welcome. I am the AI digital twin of ${instructor.name || "your instructor"}. How may I illuminate your journey today?`;
+      `Welcome! I'm the AI twin of ${instructor.name || "your instructor"}. What are you working on today?`;
 
     setMessages([
       {
@@ -125,7 +110,7 @@ export function InstructorAiChatModal({
     setChatStyle(instructor.aiChatStyle || "");
     setGreeting(instructor.aiGreeting || "");
     setSampleChat(
-      `Sample excerpt from ${instructor.name || "Instructor"}: "True abundance is not accumulated; it is tuned. When we clear the energetic cords of scarcity from our subtle biofield and align our timing with the auspicious nakshatras, wealth flows as an inevitable natural law."`
+      `Sample excerpt from ${instructor.name || "Instructor"}: "A model that can't explain why it's wrong isn't ready for production. Before you add another layer, measure where the current one actually fails — the fix is usually smaller than the rewrite you were about to do."`
     );
 
     if (initialQuestion) {
@@ -150,7 +135,7 @@ export function InstructorAiChatModal({
     }
   }, [messages, loading]);
 
-  if (!isOpen || !instructor || !mounted) return null;
+  if (!instructor) return null;
 
   // Parse sample starter questions
   let sampleQuestions: string[] = [];
@@ -211,7 +196,14 @@ export function InstructorAiChatModal({
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to receive message");
+      if (!res.ok) {
+        if (data?.code === "ai_not_configured") {
+          throw new Error(
+            `This AI twin needs a key. [Set up AI access](${data.settingsUrl || "/dashboard/settings/ai"}?missing=1) to keep chatting.`
+          );
+        }
+        throw new Error(data.error || "Failed to receive message");
+      }
 
       const botMessage: Message = {
         id: `bot-${Date.now()}`,
@@ -222,12 +214,15 @@ export function InstructorAiChatModal({
 
       setMessages((prev) => [...prev, botMessage]);
     } catch (err: any) {
+      const needsSetup = typeof err.message === "string" && err.message.includes("/dashboard/settings/ai");
       setMessages((prev) => [
         ...prev,
         {
           id: `err-${Date.now()}`,
           role: "assistant",
-          content: `I apologize, but I momentarily lost alignment with the etheric stream. ${err.message || "Please try asking again."}`,
+          content: needsSetup
+            ? err.message
+            : `I apologize, but I momentarily lost alignment with the etheric stream. ${err.message || "Please try asking again."}`,
           timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
         },
       ]);
@@ -292,9 +287,14 @@ export function InstructorAiChatModal({
     }
   };
 
-  return createPortal(
-    <div data-lenis-prevent className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-2xl h-[min(760px,calc(100vh-2rem))] max-h-[90vh] bg-[#121217] border border-cream/15 rounded-3xl shadow-[0_20px_60px_-15px_rgba(251, 146, 60,0.25)] flex flex-col overflow-hidden text-ink">
+  return (
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      labelledBy={titleId}
+      className="w-full max-w-2xl h-[min(760px,calc(100vh-2rem))] max-h-[90vh]"
+    >
+      <div className="relative w-full h-full bg-[#121217] border border-cream/15 rounded-3xl shadow-[0_20px_60px_-15px_rgba(251, 146, 60,0.25)] flex flex-col overflow-hidden text-ink">
         {/* Glow ambient background */}
         <div className="absolute top-0 right-0 w-80 h-80 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -311,7 +311,7 @@ export function InstructorAiChatModal({
 
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <h3 className="font-serif text-lg text-ink font-medium truncate">
+                <h3 id={titleId} className="font-serif text-lg text-ink font-medium truncate">
                   {instructor.name}
                 </h3>
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold tracking-wider bg-cream/10 text-text border border-cream/20">
@@ -595,7 +595,6 @@ export function InstructorAiChatModal({
           </form>
         </div>
       </div>
-    </div>,
-    document.body
+    </Modal>
   );
 }

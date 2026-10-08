@@ -3,9 +3,19 @@
 html {
   background-color: var(--black);
   color: var(--text);
-  font-size: 17px;
+  /* 106.25% keeps the same visual root size as the old fixed 17px (on a
+     16px browser default) while actually scaling with the visitor's own
+     browser/OS font-size preference, which a fixed px value ignored. */
+  font-size: 106.25%;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  /* Lets native controls (date pickers, scrollbars, selects) render in the
+     matching theme instead of always assuming a light OS theme. */
+  color-scheme: dark;
+}
+html.light,
+[data-theme="light"] {
+  color-scheme: light;
 }
 
 /* Responsive root scale: the rem-based layout grows on very large displays

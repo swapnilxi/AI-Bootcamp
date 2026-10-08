@@ -233,7 +233,7 @@ export function StarfieldBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 w-full h-full pointer-events-none select-none z-0"
+      className="fixed inset-0 w-full h-full pointer-events-none select-none z-0 hidden dark:block"
       aria-hidden="true"
     />
   );

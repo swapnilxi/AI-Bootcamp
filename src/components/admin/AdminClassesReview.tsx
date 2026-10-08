@@ -17,6 +17,7 @@ import {
   ShieldAlert,
 } from "lucide-react";
 import Link from "next/link";
+import { useToast } from "@/components/ui/Toast";
 
 interface LessonReview {
   id: string;
@@ -62,7 +63,7 @@ export function AdminClassesReview() {
   const [loading, setLoading] = useState(true);
   const [expandedClassId, setExpandedClassId] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
-  const [toastMsg, setToastMsg] = useState<string | null>(null);
+  const toast = useToast();
 
   // Rejecting module state
   const [rejectingModule, setRejectingModule] = useState<{
@@ -109,15 +110,14 @@ export function AdminClassesReview() {
       });
 
       if (res.ok) {
-        setToastMsg("Curriculum review status updated successfully");
-        setTimeout(() => setToastMsg(null), 4000);
+        toast.success("Curriculum review status updated successfully");
         await loadClasses();
       } else {
         const err = await res.json();
-        alert(err.error || "Failed to update review status");
+        toast.error(err.error || "Failed to update review status");
       }
     } catch (err: any) {
-      alert(err.message || "Failed to update review status");
+      toast.error(err.message || "Failed to update review status");
     } finally {
       setBusyId(null);
     }
@@ -144,13 +144,6 @@ export function AdminClassesReview() {
 
   return (
     <div className="space-y-6">
-      {toastMsg && (
-        <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-sm flex items-center gap-2 animate-fade-in">
-          <CheckCircle2 className="w-5 h-5 shrink-0" />
-          <span>{toastMsg}</span>
-        </div>
-      )}
-
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>

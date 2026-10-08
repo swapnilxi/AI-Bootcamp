@@ -28,7 +28,12 @@ export default function OrbitField() {
 
     let renderer: THREE.WebGLRenderer;
     try {
-      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "low-power" });
+      renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true,
+        powerPreference: "low-power",
+        premultipliedAlpha: false,
+      });
     } catch {
       return;
     }

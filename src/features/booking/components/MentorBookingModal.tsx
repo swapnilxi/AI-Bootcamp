@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { createPortal } from "react-dom";
+import React, { useState, useEffect, useId } from "react";
 import { useSession } from "next-auth/react";
 import {
   X,
@@ -15,6 +14,8 @@ import {
   AlertCircle,
   ShieldCheck,
 } from "lucide-react";
+import { Modal } from "@/components/ui/Modal";
+import { Avatar } from "@/components/ui/Avatar";
 
 interface Mentor {
   id: string;
@@ -38,7 +39,7 @@ export function MentorBookingModal({
   mentor,
 }: MentorBookingModalProps) {
   const { data: session } = useSession();
-  const [mounted, setMounted] = useState(false);
+  const titleId = useId();
 
   const [date, setDate] = useState("");
   const [minDate, setMinDate] = useState("");
@@ -57,10 +58,6 @@ export function MentorBookingModal({
     scheduledAt: string;
     meetingLink?: string | null;
   } | null>(null);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // Set default minimum date (tomorrow)
   useEffect(() => {
@@ -122,7 +119,7 @@ export function MentorBookingModal({
     };
   }, [date, mentor?.sessionDuration, mentor?.id]);
 
-  if (!isOpen || !mentor || !mounted) return null;
+  if (!mentor) return null;
 
   const handleBooking = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -177,9 +174,9 @@ export function MentorBookingModal({
     return "AI Engineering Instructor";
   };
 
-  return createPortal(
-    <div data-lenis-prevent className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-lg max-h-[calc(100vh-2rem)] overflow-y-auto bg-[#141418] border border-cream/20 rounded-2xl shadow-2xl p-6 sm:p-8 text-ink">
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} labelledBy={titleId} className="w-full max-w-lg">
+      <div className="relative w-full max-h-[calc(100vh-2rem)] overflow-y-auto bg-[#141418] border border-cream/20 rounded-2xl shadow-2xl p-6 sm:p-8 text-ink">
         {/* Glow ambient background */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -246,22 +243,12 @@ export function MentorBookingModal({
           <form onSubmit={handleBooking} className="space-y-5">
             {/* Header info */}
             <div className="flex items-center gap-4 border-b border-white/10 pb-4">
-              {mentor.avatarUrl ? (
-                <img
-                  src={mentor.avatarUrl}
-                  alt={mentor.name || "Mentor"}
-                  className="w-14 h-14 rounded-2xl object-cover border border-cream/20 shadow-md shrink-0"
-                />
-              ) : (
-                <div className="w-14 h-14 rounded-2xl bg-cream/8 border border-cream/20 text-text flex items-center justify-center font-serif text-xl font-bold shrink-0">
-                  {mentor.name?.charAt(0) || "P"}
-                </div>
-              )}
+              <Avatar src={mentor.avatarUrl} name={mentor.name} size="md" className="shadow-md" />
               <div className="min-w-0">
                 <span className="text-[10px] uppercase tracking-wider text-text font-semibold block">
                   {getRoleBadge(mentor.mentorType)}
                 </span>
-                <h3 className="font-serif text-xl text-ink font-medium truncate">
+                <h3 id={titleId} className="font-serif text-xl text-ink font-medium truncate">
                   Book 1:1 with {mentor.name}
                 </h3>
                 <p className="text-xs text-text-muted">
@@ -425,7 +412,6 @@ export function MentorBookingModal({
           </form>
         )}
       </div>
-    </div>,
-    document.body
+    </Modal>
   );
 }

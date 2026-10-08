@@ -49,7 +49,7 @@ export function MobileMenu({ open, pathname, session, onClose }: MobileMenuProps
           animate="open"
           exit="closed"
           data-lenis-prevent
-          className="lg:hidden fixed inset-0 z-40 overflow-y-auto overscroll-contain bg-[#0B0B0D]/[0.97] backdrop-blur-2xl pt-[calc(5.5rem+env(safe-area-inset-top))] pb-[calc(2.5rem+env(safe-area-inset-bottom))] px-6 sm:px-10"
+          className="lg:hidden fixed inset-0 z-40 overflow-y-auto overscroll-contain bg-black/[0.97] backdrop-blur-2xl pt-[calc(5.5rem+env(safe-area-inset-top))] pb-[calc(2.5rem+env(safe-area-inset-bottom))] px-6 sm:px-10"
         >
           <div
             aria-hidden="true"

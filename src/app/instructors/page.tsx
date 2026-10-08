@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import {
   GraduationCap,
@@ -20,6 +19,7 @@ import {
 import { MentorBookingModal } from "@/features/booking";
 import { InstructorAiChatModal } from "@/components/ai/InstructorAiChatModal";
 import { Avatar } from "@/components/ui/Avatar";
+import { SkeletonGrid } from "@/components/ui/Skeleton";
 
 interface InstructorItem {
   id: string;
@@ -50,7 +50,6 @@ interface InstructorItem {
 }
 
 export default function InstructorsPage() {
-  const router = useRouter();
   const { data: session } = useSession();
   const [instructors, setInstructors] = useState<InstructorItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -106,8 +105,7 @@ export default function InstructorsPage() {
           Guided by Authentic Instructors & Mentors
         </h1>
         <p className="text-text-muted text-base sm:text-lg leading-relaxed font-sans">
-          Engineers who build AI systems in production and teach the engineering behind them
-          who design our academy curriculum, hold sacred space, and offer direct 1:1 private sessions.
+          Staff AI engineers and practitioners who build production systems, author our curriculum, and offer dedicated 1:1 mentorship sessions.
         </p>
       </div>
 
@@ -117,7 +115,7 @@ export default function InstructorsPage() {
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2 max-w-2xl">
             <span className="text-xs uppercase tracking-[0.2em] text-cream font-semibold flex items-center gap-2">
-              <Sparkles className="w-4 h-4" /> Join The Faculty & Healing Circle
+              <Sparkles className="w-4 h-4" /> Join The Engineering Faculty & Mentorship Network
             </span>
             <h2 className="font-serif text-2xl sm:text-3xl text-ink">
               Are You a Practicing Instructor or Mentor?
@@ -214,10 +212,7 @@ export default function InstructorsPage() {
         </div>
 
         {loading ? (
-          <div className="py-20 text-center space-y-4">
-            <Sparkles className="w-8 h-8 text-gold animate-spin mx-auto" />
-            <p className="text-sm text-text-muted">Connecting with verified faculty & mentors…</p>
-          </div>
+          <SkeletonGrid count={6} columns="md:grid-cols-2" variant="avatar" />
         ) : instructors.length === 0 ? (
           <div className="py-16 text-center rounded-2xl border border-dashed border-white/10 p-8 space-y-3">
             <Compass className="w-10 h-10 text-cream/60 mx-auto" />
@@ -236,19 +231,16 @@ export default function InstructorsPage() {
               return (
                 <div
                   key={inst.id}
-                  onClick={() => router.push(`/instructors/${inst.id}`)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      if (e.target === e.currentTarget) {
-                        e.preventDefault();
-                        router.push(`/instructors/${inst.id}`);
-                      }
-                    }
-                  }}
-                  role="button"
-                  tabIndex={0}
-                  className="editorial-card rounded-2xl p-6 sm:p-7 flex flex-col justify-between border border-white/[0.08] hover:border-gold/40 transition-all duration-300 hover:shadow-[0_12px_40px_-15px_rgba(251, 146, 60,0.15)] group relative overflow-hidden cursor-pointer focus:outline-none focus:ring-1 focus:ring-gold/40"
+                  className="editorial-card rounded-2xl p-6 sm:p-7 flex flex-col justify-between border border-white/[0.08] hover:border-gold/50 transition-all duration-300 group relative overflow-hidden"
                 >
+                  {/* Stretched link: makes the whole card a real, middle-click/open-in-new-tab-able
+                      link, without nesting it around the buttons below (invalid HTML). */}
+                  <Link
+                    href={`/instructors/${inst.id}`}
+                    aria-label={`View ${inst.name || "mentor"}'s profile`}
+                    className="absolute inset-0 z-0 focus:outline-none focus-visible:ring-1 focus-visible:ring-gold/40"
+                  />
+
                   {/* Top-Right Sparkle Button with Hover Tooltip: Chat with AI version */}
                   <button
                     onClick={(e) => {
@@ -282,7 +274,7 @@ export default function InstructorsPage() {
                             e.stopPropagation();
                             setSelectedAiInstructor(inst);
                           }}
-                          className="absolute -bottom-1 -right-1 p-1 rounded-full bg-black border border-purple-500/50 hover:border-gold hover:scale-110 transition-all text-purple-300 hover:text-gold"
+                          className="absolute -bottom-1 -right-1 z-10 p-1 rounded-full bg-black border border-purple-500/50 hover:border-gold hover:scale-110 transition-all text-purple-300 hover:text-gold"
                           title="Chat with AI version"
                         >
                           <Sparkles className="w-3.5 h-3.5" />
@@ -340,7 +332,7 @@ export default function InstructorsPage() {
 
                     {/* Classes summary */}
                     {inst._count.createdCourses > 0 && (
-                      <div className="pt-2 border-t border-white/[0.06] space-y-1.5">
+                      <div className="relative z-10 pt-2 border-t border-white/[0.06] space-y-1.5">
                         <div className="flex items-center justify-between text-xs text-text-muted">
                           <span className="flex items-center gap-1.5">
                             <BookOpen className="w-3.5 h-3.5 text-cream" />
@@ -370,7 +362,7 @@ export default function InstructorsPage() {
                   </div>
 
                   {/* Actions */}
-                  <div className="pt-5 mt-4 border-t border-white/[0.06] flex items-center justify-between gap-2.5 flex-wrap">
+                  <div className="relative z-10 pt-5 mt-4 border-t border-white/[0.06] flex items-center justify-between gap-2.5 flex-wrap">
                     <div className="flex items-center gap-2">
                       <button
                         onClick={(e) => {

@@ -331,7 +331,7 @@ export default function LessonPage() {
                     : router.push(`/courses/${courseId}/lessons/${nextId}`)
                 }
                 disabled={saving}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] text-sm font-semibold transition-colors disabled:opacity-50"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-orange hover:bg-orange-600 text-white text-sm font-semibold shadow-md shadow-orange/20 transition-colors disabled:opacity-50"
               >
                 {canTrack && !lesson.isCompleted ? "Complete & continue" : "Next lesson"}
                 <ArrowRight className="w-4 h-4" />
@@ -340,14 +340,14 @@ export default function LessonPage() {
               <button
                 onClick={() => toggleComplete("finish")}
                 disabled={saving}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] text-sm font-semibold transition-colors disabled:opacity-50"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-orange hover:bg-orange-600 text-white text-sm font-semibold shadow-md shadow-orange/20 transition-colors disabled:opacity-50"
               >
                 Complete course
               </button>
             ) : (
               <Link
                 href={`/courses/${courseId}`}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] text-sm font-semibold transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-orange hover:bg-orange-600 text-white text-sm font-semibold shadow-md shadow-orange/20 transition-colors"
               >
                 Return to course
               </Link>

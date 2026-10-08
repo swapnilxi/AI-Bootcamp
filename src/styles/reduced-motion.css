@@ -23,6 +23,7 @@
   .card-featured,
   .grain-overlay,
   .spin-slow,
+  .skeleton-sweep,
   .draw-on .pulse-dot {
     animation: none !important;
   }

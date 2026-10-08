@@ -369,7 +369,7 @@ export default function EditClassPage() {
           <button
             type="submit"
             disabled={saving}
-            className="flex-1 py-3 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+            className="flex-1 py-3 rounded-xl bg-orange hover:bg-orange-600 text-white font-semibold text-sm shadow-md shadow-orange/20 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
           >
             <Save className="w-4 h-4" />
             <span>{saving ? "Saving Changes..." : "Save Class Details"}</span>

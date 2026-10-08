@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ComponentProps } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { Session } from "next-auth";
 import { signOut } from "next-auth/react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -18,8 +19,12 @@ interface AccountMenuProps {
 export function AccountMenu({ session, onOpenChange }: AccountMenuProps) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
 
   useEffect(() => onOpenChange?.(open), [open, onOpenChange]);
+
+  // Close on navigation — a menu link click changes the route out from under it.
+  useEffect(() => setOpen(false), [pathname]);
 
   // Dismiss on outside click or Escape
   useEffect(() => {
@@ -49,7 +54,7 @@ export function AccountMenu({ session, onOpenChange }: AccountMenuProps) {
         className={`flex items-center justify-center w-[42px] h-[42px] !min-h-0 rounded-full border transition-[border-color,background-color,color] duration-300 ${
           open
             ? "border-gold/70 bg-gold-soft text-gold"
-            : "border-white/10 bg-white/[0.02] text-text-muted hover:border-gold/50 hover:text-gold"
+            : "border-black-line bg-cream/[0.02] text-text-muted hover:border-gold/50 hover:text-gold"
         }`}
       >
         {session ? (
@@ -68,22 +73,23 @@ export function AccountMenu({ session, onOpenChange }: AccountMenuProps) {
             exit={{ opacity: 0, y: -6, scale: 0.98, transition: { duration: 0.18 } }}
             transition={{ duration: 0.4, ease: EASE_OUT }}
             style={{ transformOrigin: "top right" }}
-            className="absolute right-0 top-[calc(100%+12px)] w-64 max-w-[calc(100vw-2rem)] rounded-xl border border-white/[0.08] bg-[#111114]/95 backdrop-blur-xl p-2 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.9)]"
+            className="absolute right-0 top-[calc(100%+12px)] w-64 max-w-[calc(100vw-2rem)] rounded-xl border border-black-line bg-black-raised/95 backdrop-blur-xl p-2 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.9)]"
           >
             {session ? (
               <>
-                <div className="px-3 pt-2 pb-3 mb-1 border-b border-white/[0.06]">
+                <div className="px-3 pt-2 pb-3 mb-1 border-b border-black-line">
                   <p className="text-[10px] uppercase tracking-[0.2em] text-text-muted">Signed in</p>
                   <p className="text-sm text-text truncate mt-1">{session.user?.name || session.user?.email}</p>
                 </div>
                 {isInstructor && <MenuLink href="/dashboard/instructor" icon="role-instructor" label="Instructor Studio" />}
                 <MenuLink href="/dashboard" icon="user" label="Client Portal" />
                 <MenuLink href="/my-bookings" icon="calendar" label="My Bookings" />
-                <MenuLink href="/profile" icon="settings" label="Profile & Birth Chart" />
+                <MenuLink href="/profile" icon="settings" label="Profile & Settings" />
+                <MenuLink href="/dashboard/settings/ai" icon="model" label="AI Access" hint="Your API keys" />
                 <button
                   role="menuitem"
                   onClick={() => signOut({ callbackUrl: "/" })}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 !min-h-0 rounded-lg text-sm text-text-muted hover:text-text hover:bg-white/[0.04] transition-colors"
+                  className="w-full flex items-center gap-3 px-3 py-2.5 !min-h-0 rounded-lg text-sm text-text-muted hover:text-text hover:bg-cream/[0.06] transition-colors"
                 >
                   <Icon name="close" variant="line" size={15} className="text-text-muted" />
                   Sign out
@@ -93,7 +99,7 @@ export function AccountMenu({ session, onOpenChange }: AccountMenuProps) {
               <>
                 <MenuLink href="/login" icon="user" label="Member Sign In" hint="Clients & subscribers" />
                 <MenuLink href="/login?role=instructor" icon="role-instructor" label="Instructor Sign In" hint="Instructors & mentors" />
-                <div className="mt-1 pt-2 border-t border-white/[0.06]">
+                <div className="mt-1 pt-2 border-t border-black-line">
                   <Link
                     href="/register"
                     role="menuitem"
@@ -124,7 +130,7 @@ function MenuLink({ href, icon, label, hint }: MenuLinkProps) {
     <Link
       href={href}
       role="menuitem"
-      className="group flex items-center gap-3 px-3 py-2.5 !min-h-0 rounded-lg hover:bg-white/[0.04] transition-colors"
+      className="group flex items-center gap-3 px-3 py-2.5 !min-h-0 rounded-lg hover:bg-cream/[0.06] transition-colors"
     >
       <span className="flex items-center justify-center w-8 h-8 rounded-full border border-cream/20 bg-cream/[0.04] text-text transition-colors group-hover:border-gold/50">
         <Icon name={icon} variant="line" size={15} />

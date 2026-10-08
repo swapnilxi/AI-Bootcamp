@@ -194,7 +194,10 @@ export function StarJourney() {
     };
 
     // Reduced motion: the star is a logo detail in the hero and stays one.
-    if (prefersReducedMotion()) {
+    // Same on phone widths: the margin lane it travels assumes the wide empty
+    // gutter beside a centred desktop column, which doesn't exist once content
+    // runs edge to edge — the lane would just cut through the text instead.
+    if (prefersReducedMotion() || m.track === MOBILE) {
       place(0);
       return;
     }

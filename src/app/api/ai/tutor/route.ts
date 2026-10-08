@@ -112,8 +112,8 @@ Steps: ${JSON.stringify(lab.steps)}`;
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
-  const blocked = await aiPreflight(req, "tutor", session?.user?.id, 40);
-  if (blocked) return blocked;
+  const preflight = await aiPreflight(req, "tutor", session?.user?.id, 40);
+  if (!preflight.ok) return preflight.response;
 
   const body = await req.json().catch(() => ({}));
   const messages = sanitizeChat(body?.messages);
@@ -137,5 +137,5 @@ ${learner}
 --- Current page ---
 ${page}`;
 
-  return streamTextResponse({ system, messages, maxTokens: 2048, effort: "medium" });
+  return streamTextResponse({ credential: preflight.credential, system, messages, maxTokens: 2048, effort: "medium" });
 }

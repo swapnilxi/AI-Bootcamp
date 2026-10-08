@@ -3,7 +3,9 @@
 import React, { useState } from "react";
 import { CheckCircle2, HelpCircle, MessageCircle, RotateCcw, Sparkles, XCircle } from "lucide-react";
 import { ChatThread } from "./ChatThread";
+import { AiSetupNotice } from "./AiSetupNotice";
 import { useAiEnabled, useStreamingChat } from "./useAi";
+import { AI_NOT_CONFIGURED_CODE } from "@/lib/ai/constants";
 
 interface QuizQuestion {
   question: string;
@@ -17,15 +19,20 @@ function Quiz({ endpoint }: { endpoint: string }) {
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [needsSetup, setNeedsSetup] = useState(false);
 
   async function generate() {
     setLoading(true);
     setError(null);
+    setNeedsSetup(false);
     setAnswers({});
     try {
       const res = await fetch(endpoint, { method: "POST" });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Could not create a quiz");
+      if (!res.ok) {
+        if (data?.code === AI_NOT_CONFIGURED_CODE) setNeedsSetup(true);
+        throw new Error(data.error || "Could not create a quiz");
+      }
       setQuestions(data.questions);
     } catch (err) {
       setError((err as Error).message);
@@ -48,7 +55,11 @@ function Quiz({ endpoint }: { endpoint: string }) {
           <Sparkles className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
           {loading ? "Writing your quiz…" : "Generate quiz"}
         </button>
-        {error && <p className="text-xs text-text-muted">{error}</p>}
+        {needsSetup ? (
+          <AiSetupNotice className="mx-auto max-w-sm text-left" />
+        ) : (
+          error && <p className="text-xs text-text-muted">{error}</p>
+        )}
       </div>
     );
   }
@@ -157,6 +168,7 @@ export function LessonAiPanel({ courseId, lessonId, lessonTitle }: { courseId: s
           messages={chat.messages}
           streaming={chat.streaming}
           error={chat.error}
+          needsSetup={chat.needsSetup}
           onSend={chat.send}
           placeholder={`Ask about "${lessonTitle}"…`}
           suggestions={["Explain this lesson simply", "Give me a real-life example", "What should I remember most?"]}

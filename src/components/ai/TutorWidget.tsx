@@ -63,7 +63,7 @@ export function TutorWidget() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname() || "/";
   const context = readContext(pathname);
-  const { messages, streaming, error, send, reset } = useStreamingChat("/api/ai/tutor", {
+  const { messages, streaming, error, needsSetup, send, reset } = useStreamingChat("/api/ai/tutor", {
     contextKind: context.kind,
     contextPath: pathname,
   });
@@ -82,10 +82,10 @@ export function TutorWidget() {
         <button
           onClick={() => setOpen(true)}
           aria-label="Open AI Tutor"
-          className="fixed bottom-5 right-5 z-[60] inline-flex items-center gap-2.5 pl-4 pr-5 py-3 rounded-full bg-[linear-gradient(180deg,#FFFFFF_0%,#FAF6F0_55%,#F0E6D4_100%)] text-[#0C0B0A] font-semibold text-sm shadow-[0_10px_30px_-8px_rgba(249, 115, 22,0.55)] hover:-translate-y-0.5 transition-transform"
+          className="fixed bottom-4 right-4 sm:bottom-5 sm:right-5 z-[60] inline-flex items-center justify-center gap-2.5 w-12 h-12 sm:w-auto sm:h-auto sm:pl-4 sm:pr-5 sm:py-3 rounded-full bg-[linear-gradient(180deg,#FFFFFF_0%,#FAF6F0_55%,#F0E6D4_100%)] text-[#0C0B0A] font-semibold text-sm shadow-[0_10px_30px_-8px_rgba(249, 115, 22,0.55)] hover:-translate-y-0.5 transition-transform"
         >
-          <GraduationCap className="w-4 h-4" />
-          AI Tutor
+          <GraduationCap className="w-4 h-4 shrink-0" />
+          <span className="hidden sm:inline">AI Tutor</span>
         </button>
       )}
 
@@ -124,6 +124,7 @@ export function TutorWidget() {
             messages={messages}
             streaming={streaming}
             error={error}
+            needsSetup={needsSetup}
             onSend={send}
             placeholder="Ask about anything you are learning…"
             suggestions={context.suggestions}

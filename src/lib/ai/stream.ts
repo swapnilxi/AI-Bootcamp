@@ -1,54 +1,29 @@
-import type Anthropic from "@anthropic-ai/sdk";
-import { AI_MODEL, FALLBACK_BETA, describeAiError, getAnthropic } from "./client";
+import type { ResolvedCredential } from "./credentials";
+import { describeProviderError, streamProviderChat, type ChatMessage } from "./providers";
 
 interface StreamTextOptions {
+  credential: ResolvedCredential;
   system: string;
-  messages: Anthropic.Beta.BetaMessageParam[];
+  messages: ChatMessage[];
   maxTokens?: number;
   effort?: "low" | "medium" | "high";
 }
 
 /**
- * Stream Claude's text reply to the browser as plain UTF-8 chunks.
- * Thinking stays adaptive (default) but hidden; only text deltas are forwarded.
+ * Stream the assistant's reply to the browser as plain UTF-8 chunks, from
+ * whichever provider `credential` points at.
  */
-export function streamTextResponse({
-  system,
-  messages,
-  maxTokens = 4096,
-  effort = "low",
-}: StreamTextOptions): Response {
+export function streamTextResponse({ credential, system, messages, maxTokens = 4096, effort = "low" }: StreamTextOptions): Response {
   const encoder = new TextEncoder();
 
   const body = new ReadableStream<Uint8Array>({
     async start(controller) {
       try {
-        const stream = getAnthropic().beta.messages.stream({
-          model: AI_MODEL,
-          max_tokens: maxTokens,
-          betas: [FALLBACK_BETA],
-          fallbacks: "default",
-          output_config: { effort },
-          system,
-          messages,
-        });
-
-        for await (const event of stream) {
-          if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
-            controller.enqueue(encoder.encode(event.delta.text));
-          }
-        }
-
-        const final = await stream.finalMessage();
-        if (final.stop_reason === "refusal") {
-          controller.enqueue(
-            encoder.encode("\n\nI'm not able to help with that request. Please try rephrasing your question.")
-          );
-        } else if (final.stop_reason === "max_tokens") {
-          controller.enqueue(encoder.encode("…"));
+        for await (const chunk of streamProviderChat(credential, { system, messages, maxTokens, effort })) {
+          controller.enqueue(encoder.encode(chunk));
         }
       } catch (error) {
-        const { message } = describeAiError(error);
+        const { message } = describeProviderError(error);
         controller.enqueue(encoder.encode(`\n\n[${message}]`));
       } finally {
         controller.close();

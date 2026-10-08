@@ -6,6 +6,7 @@ import { Search, Plus, BookOpen, AlertCircle } from "lucide-react";
 import { ClassCard, useClasses, type ClassFilter } from "@/features/courses";
 import { Button } from "@/components/ui/Button";
 import { canCreateClasses } from "@/lib/roles";
+import { SkeletonGrid } from "@/components/ui/Skeleton";
 
 export default function ClassesCatalogPage() {
   const { data: session } = useSession();
@@ -58,7 +59,7 @@ export default function ClassesCatalogPage() {
             onClick={() => setActiveFilter("all")}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
               activeFilter === "all"
-                ? "bg-cream text-[#0C0B0A] shadow-sm"
+                ? "bg-orange text-white shadow-sm font-semibold"
                 : "bg-black-raised/80 backdrop-blur-sm text-ink border border-white/[0.07] hover:border-gold"
             }`}
           >
@@ -68,7 +69,7 @@ export default function ClassesCatalogPage() {
             onClick={() => setActiveFilter("free")}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
               activeFilter === "free"
-                ? "bg-cream text-[#0C0B0A] shadow-sm"
+                ? "bg-orange text-white shadow-sm font-semibold"
                 : "bg-black-raised/80 backdrop-blur-sm text-ink border border-white/[0.07] hover:border-gold"
             }`}
           >
@@ -78,7 +79,7 @@ export default function ClassesCatalogPage() {
             onClick={() => setActiveFilter("subscriber")}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
               activeFilter === "subscriber"
-                ? "bg-cream text-[#0C0B0A] shadow-sm"
+                ? "bg-orange text-white shadow-sm font-semibold"
                 : "bg-black-raised/80 backdrop-blur-sm text-ink border border-white/[0.07] hover:border-gold"
             }`}
           >
@@ -88,7 +89,7 @@ export default function ClassesCatalogPage() {
             onClick={() => setActiveFilter("protected")}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
               activeFilter === "protected"
-                ? "bg-cream text-[#0C0B0A] shadow-sm"
+                ? "bg-orange text-white shadow-sm font-semibold"
                 : "bg-black-raised/80 backdrop-blur-sm text-ink border border-white/[0.07] hover:border-gold"
             }`}
           >
@@ -99,7 +100,7 @@ export default function ClassesCatalogPage() {
               onClick={() => setActiveFilter("mine")}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                 activeFilter === "mine"
-                  ? "bg-cream text-[#0C0B0A] shadow-sm"
+                  ? "bg-orange text-white shadow-sm font-semibold"
                   : "bg-black-raised/80 backdrop-blur-sm text-ink border border-white/[0.07] hover:border-gold"
               }`}
             >
@@ -135,9 +136,7 @@ export default function ClassesCatalogPage() {
 
       {/* Catalog Grid */}
       {loading ? (
-        <div className="text-center py-20 text-ink/60 text-sm">
-          Loading academy classes...
-        </div>
+        <SkeletonGrid count={6} columns="md:grid-cols-2 lg:grid-cols-3" />
       ) : error ? (
         <div
           role="alert"

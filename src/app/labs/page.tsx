@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { PageHeader, DifficultyPill, MetaPill, CatalogueCard, EmptyState } from "@/components/learning/primitives";
+import { Icon } from "@/components/ui/Icon";
 
 export const metadata = {
   title: "AI Labs | AI Bootcamp",
@@ -34,7 +35,11 @@ export default async function LabsPage() {
       />
 
       {labs.length === 0 ? (
-        <EmptyState title="No labs yet" body="Seed the database to load the lab catalogue." />
+        <EmptyState
+          icon={<Icon name="lab" size={28} />}
+          title="No labs yet"
+          body="Seed the database to load the lab catalogue."
+        />
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {labs.map((lab) => (

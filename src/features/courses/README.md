@@ -1,4 +1,4 @@
-# Classes feature
+# Courses feature
 
 Self-contained course catalog: classes, lessons, enrolment, access keys and
 progress. Everything the feature owns lives under this folder; nothing outside

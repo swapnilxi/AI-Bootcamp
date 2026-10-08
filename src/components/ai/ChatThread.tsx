@@ -3,11 +3,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ArrowUp, Sparkles } from "lucide-react";
 import type { ChatMessage } from "./useAi";
+import { AiSetupNotice } from "./AiSetupNotice";
 
 interface ChatThreadProps {
   messages: ChatMessage[];
   streaming: boolean;
   error: string | null;
+  /** True when the last send failed because no AI key is configured for this user. */
+  needsSetup?: boolean;
   onSend: (text: string) => void;
   placeholder: string;
   suggestions?: string[];
@@ -36,6 +39,7 @@ export function ChatThread({
   messages,
   streaming,
   error,
+  needsSetup = false,
   onSend,
   placeholder,
   suggestions = [],
@@ -96,7 +100,11 @@ export function ChatThread({
             </div>
           </div>
         ))}
-        {error && <p className="text-xs text-cream px-1">{error}</p>}
+        {needsSetup ? (
+          <AiSetupNotice />
+        ) : (
+          error && <p className="text-xs text-cream px-1">{error}</p>
+        )}
       </div>
       <form
         onSubmit={(e) => {

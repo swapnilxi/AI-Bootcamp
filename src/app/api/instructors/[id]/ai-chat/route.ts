@@ -3,7 +3,8 @@ import { getServerSession } from "next-auth/next";
 import { prisma } from "@/lib/prisma";
 import { authOptions } from "@/lib/auth";
 import { aiPreflight, sanitizeChat } from "@/lib/ai/guard";
-import { AI_MODEL, describeAiError, getAnthropic, isAiConfigured } from "@/lib/ai/client";
+import { describeAiError } from "@/lib/ai/client";
+import { chatProviderOnce } from "@/lib/ai/providers";
 import { BRAND_VOICE } from "@/lib/ai/prompts";
 
 interface RouteParams {
@@ -48,8 +49,8 @@ export async function POST(req: Request, { params }: RouteParams) {
   }
 
   const session = await getServerSession(authOptions);
-  const blocked = await aiPreflight(req, `twin:${id}`, session?.user?.id, 25);
-  if (blocked) return blocked;
+  const preflight = await aiPreflight(req, `twin:${id}`, session?.user?.id, 25);
+  if (!preflight.ok) return preflight.response;
 
   const body = await req.json().catch(() => ({}));
   const messages = sanitizeChat(body?.messages);
@@ -88,25 +89,8 @@ Stay inside this instructor's specialties. If a question falls well outside them
 
 ${instructor.aiSystemPrompt || ""}`;
 
-  if (!isAiConfigured()) {
-    return NextResponse.json(
-      {
-        error:
-          "The AI twin is not configured on this server. You can still book a 1-on-1 session with this instructor.",
-      },
-      { status: 503 }
-    );
-  }
-
   try {
-    const response = await getAnthropic().messages.create({
-      model: AI_MODEL,
-      max_tokens: 1024,
-      system: systemPrompt,
-      messages,
-    });
-
-    const reply = response.content[0]?.type === "text" ? response.content[0].text : "";
+    const reply = await chatProviderOnce(preflight.credential, { system: systemPrompt, messages, maxTokens: 1024 });
     if (!reply) {
       return NextResponse.json({ error: "The AI twin had nothing to say. Try rephrasing." }, { status: 502 });
     }
@@ -115,7 +99,6 @@ ${instructor.aiSystemPrompt || ""}`;
       reply,
       instructorName: instructor.name,
       mentorType: instructor.mentorType,
-      model: AI_MODEL,
     });
   } catch (error) {
     const { message, status } = describeAiError(error);

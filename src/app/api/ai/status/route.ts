@@ -1,7 +1,16 @@
 import { NextResponse } from "next/server";
-import { isAiConfigured } from "@/lib/ai/client";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
+import { resolveAiCredential } from "@/lib/ai/credentials";
+import { AI_SETTINGS_PATH } from "@/lib/ai/errors";
 
-/** Lets the UI hide AI features when no Anthropic credential is configured. */
+/** Lets the UI know whether AI features will actually work for the current visitor. */
 export async function GET() {
-  return NextResponse.json({ enabled: true, provider: isAiConfigured() ? "anthropic" : "instructor-engine" });
+  const session = await getServerSession(authOptions);
+  const credential = await resolveAiCredential(session?.user?.id);
+  return NextResponse.json({
+    enabled: true,
+    ready: !!credential,
+    settingsUrl: AI_SETTINGS_PATH,
+  });
 }
