@@ -38,14 +38,84 @@ echo "Generating Prisma Client..."
 npx prisma generate
 
 PORT="${PORT:-3006}"
-MODE="${1:-dev}"
+MODE="dev"
+KILL_PORT=""
 
-# Automatically free port if occupied by a stale instance
-EXISTING_PID=$(lsof -ti :${PORT} 2>/dev/null || true)
-if [ -n "$EXISTING_PID" ]; then
-  echo "Port ${PORT} is currently in use by PID ${EXISTING_PID}. Freeing port..."
-  kill -9 $EXISTING_PID 2>/dev/null || true
-  sleep 1
+for arg in "$@"; do
+  case "$arg" in
+    -k|--kill|--kill-port|-f|--force)
+      KILL_PORT="yes"
+      ;;
+    --no-kill)
+      KILL_PORT="no"
+      ;;
+    prod|start)
+      MODE="prod"
+      ;;
+    dev)
+      MODE="dev"
+      ;;
+  esac
+done
+
+get_port_pids() {
+  local target_port="$1"
+  local listen_pids
+  listen_pids="$(lsof -ti tcp:"$target_port" -sTCP:LISTEN 2>/dev/null || true)"
+  if [ -n "$listen_pids" ]; then
+    echo "$listen_pids"
+  else
+    lsof -ti :"$target_port" 2>/dev/null || true
+  fi
+}
+
+kill_pids() {
+  local pids="$1"
+  for pid in $(echo "$pids"); do
+    if [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null; then
+      echo "Terminating PID $pid..."
+      kill -15 "$pid" 2>/dev/null || true
+    fi
+  done
+  sleep 0.5
+  for pid in $(echo "$pids"); do
+    if [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null; then
+      kill -9 "$pid" 2>/dev/null || true
+    fi
+  done
+}
+
+EXISTING_PIDS="$(get_port_pids "$PORT")"
+if [ -n "$EXISTING_PIDS" ]; then
+  echo "⚠️  Port ${PORT} is currently in use:"
+  lsof -i tcp:"${PORT}" 2>/dev/null || lsof -i :${PORT} 2>/dev/null || true
+
+  SHOULD_KILL=""
+  if [ "$KILL_PORT" = "yes" ]; then
+    SHOULD_KILL="yes"
+  elif [ "$KILL_PORT" = "no" ]; then
+    SHOULD_KILL="no"
+  elif [ -t 0 ] || [ -c /dev/tty ]; then
+    PROMPT_TTY="/dev/tty"
+    [ -t 0 ] && PROMPT_TTY="/dev/stdin"
+    printf "❓  Kill process(es) on port %s to free it? [Y/n]: " "$PORT" > "$PROMPT_TTY"
+    read -r response < "$PROMPT_TTY"
+    case "$response" in
+      [nN]|[nN][oO]) SHOULD_KILL="no" ;;
+      *) SHOULD_KILL="yes" ;;
+    esac
+  else
+    SHOULD_KILL="yes"
+  fi
+
+  if [ "$SHOULD_KILL" = "yes" ]; then
+    echo "Freeing port ${PORT}..."
+    kill_pids "$EXISTING_PIDS"
+    sleep 1
+  else
+    echo "Port $PORT is occupied. Please free the port or pass PORT=<port>."
+    exit 1
+  fi
 fi
 
 if [ "$MODE" = "prod" ] || [ "$MODE" = "start" ]; then
