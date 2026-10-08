@@ -65,7 +65,7 @@ const config: Config = {
         // flip correctly between dark and light mode instead of staying a fixed
         // off-white that would vanish against a light background.
         cream: { ...cream, DEFAULT: "rgb(var(--text-rgb-ch) / <alpha-value>)" },
-        white: { ...cream, DEFAULT: "rgb(var(--text-rgb-ch) / <alpha-value>)" },
+        white: "#FFFFFF",
         black: {
           DEFAULT: "rgb(var(--black-rgb-ch) / <alpha-value>)",
           raised: "rgb(var(--black-raised-rgb-ch) / <alpha-value>)",

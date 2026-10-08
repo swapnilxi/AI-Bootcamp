@@ -176,25 +176,25 @@ export function MentorBookingModal({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} labelledBy={titleId} className="w-full max-w-lg">
-      <div className="relative w-full max-h-[calc(100vh-2rem)] overflow-y-auto bg-[#141418] border border-cream/20 rounded-2xl shadow-2xl p-6 sm:p-8 text-ink">
+      <div className="relative w-full max-h-[calc(100vh-2rem)] overflow-y-auto bg-white dark:bg-[#141418] border border-black/10 dark:border-cream/20 rounded-2xl shadow-2xl p-6 sm:p-8 text-ink">
         {/* Glow ambient background */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
 
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-xl text-text-muted hover:text-white hover:bg-white/5 transition-colors"
+          className="absolute top-4 right-4 p-2 rounded-xl text-text-muted hover:text-ink hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
 
         {confirmedBooking ? (
           <div className="text-center py-6 space-y-5 animate-scale-in">
-            <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mx-auto text-3xl">
+            <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto text-3xl">
               <CheckCircle2 className="w-8 h-8" />
             </div>
 
             <div className="space-y-2">
-              <span className="text-xs uppercase tracking-[0.2em] text-text font-semibold">
+              <span className="text-xs uppercase tracking-[0.2em] text-orange-600 dark:text-orange-400 font-semibold">
                 Direct Session Reserved
               </span>
               <h3 className="font-serif text-2xl text-ink">
@@ -207,7 +207,7 @@ export function MentorBookingModal({
               </p>
             </div>
 
-            <div className="bg-black/40 border border-white/10 rounded-xl p-4 text-left text-xs space-y-2">
+            <div className="bg-black/[0.03] dark:bg-black/40 border border-black/[0.08] dark:border-white/10 rounded-xl p-4 text-left text-xs space-y-2">
               <div className="flex justify-between">
                 <span className="text-text-muted">Mentor:</span>
                 <span className="font-semibold text-ink">{mentor.name}</span>
@@ -226,7 +226,7 @@ export function MentorBookingModal({
               </div>
               <div className="flex justify-between">
                 <span className="text-text-muted">Direct Video Room:</span>
-                <span className="text-text truncate max-w-[200px]">
+                <span className="text-ink truncate max-w-[200px]">
                   {confirmedBooking.meetingLink || "Ready at session time"}
                 </span>
               </div>
@@ -234,7 +234,7 @@ export function MentorBookingModal({
 
             <button
               onClick={onClose}
-              className="w-full py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold text-sm transition-colors shadow-md"
+              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-semibold text-sm transition-all shadow-md active:scale-95"
             >
               Done & Return to Directory
             </button>
@@ -242,10 +242,10 @@ export function MentorBookingModal({
         ) : (
           <form onSubmit={handleBooking} className="space-y-5">
             {/* Header info */}
-            <div className="flex items-center gap-4 border-b border-white/10 pb-4">
+            <div className="flex items-center gap-4 border-b border-black/[0.08] dark:border-white/10 pb-4">
               <Avatar src={mentor.avatarUrl} name={mentor.name} size="md" className="shadow-md" />
               <div className="min-w-0">
-                <span className="text-[10px] uppercase tracking-wider text-text font-semibold block">
+                <span className="text-[10px] uppercase tracking-wider text-orange-600 dark:text-orange-400 font-semibold block">
                   {getRoleBadge(mentor.mentorType)}
                 </span>
                 <h3 id={titleId} className="font-serif text-xl text-ink font-medium truncate">
@@ -258,7 +258,7 @@ export function MentorBookingModal({
             </div>
 
             {error && (
-              <div className="flex items-center gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs">
+              <div className="flex items-center gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 text-xs">
                 <AlertCircle className="w-4 h-4 shrink-0" />
                 <span>{error}</span>
               </div>
@@ -277,7 +277,7 @@ export function MentorBookingModal({
                   min={minDate}
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-black/40 border border-white/10 text-ink text-sm focus:border-gold focus:outline-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-black/[0.03] dark:bg-black/40 border border-black/10 dark:border-white/10 text-ink text-sm focus:border-orange-500 focus:outline-none"
                 />
               </div>
 
@@ -298,7 +298,7 @@ export function MentorBookingModal({
                   <select
                     value={time}
                     onChange={(e) => setTime(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-black/40 border border-white/10 text-ink text-sm focus:border-gold focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-black/[0.03] dark:bg-black/40 border border-black/10 dark:border-white/10 text-ink text-sm focus:border-orange-500 focus:outline-none"
                   >
                     {availableSlots.map((slot) => {
                       const [hStr, mStr] = slot.time.split(":");
@@ -315,7 +315,7 @@ export function MentorBookingModal({
                     })}
                   </select>
                 ) : (
-                  <div className="px-3 py-2 rounded-xl bg-cream/5 border border-cream/15 text-text-muted text-xs">
+                  <div className="px-3 py-2 rounded-xl bg-black/[0.03] dark:bg-cream/5 border border-black/[0.08] dark:border-cream/15 text-text-muted text-xs">
                     {loadingSlots ? "Checking mentor availability…" : slotNotice || "No slots available on this date. Please pick another date."}
                   </div>
                 )}
@@ -335,7 +335,7 @@ export function MentorBookingModal({
                   placeholder="e.g. Alexandra Thorne"
                   value={clientName}
                   onChange={(e) => setClientName(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-black/40 border border-white/10 text-ink text-sm focus:border-gold focus:outline-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-black/[0.03] dark:bg-black/40 border border-black/10 dark:border-white/10 text-ink text-sm focus:border-orange-500 focus:outline-none"
                 />
               </div>
 
@@ -351,7 +351,7 @@ export function MentorBookingModal({
                     placeholder="you@domain.com"
                     value={clientEmail}
                     onChange={(e) => setClientEmail(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-black/40 border border-white/10 text-ink text-sm focus:border-gold focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-black/[0.03] dark:bg-black/40 border border-black/10 dark:border-white/10 text-ink text-sm focus:border-orange-500 focus:outline-none"
                   />
                 </div>
 
@@ -366,7 +366,7 @@ export function MentorBookingModal({
                     placeholder="+1 (555) 000-0000"
                     value={clientPhone}
                     onChange={(e) => setClientPhone(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-black/40 border border-white/10 text-ink text-sm focus:border-gold focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-black/[0.03] dark:bg-black/40 border border-black/10 dark:border-white/10 text-ink text-sm focus:border-orange-500 focus:outline-none"
                   />
                 </div>
               </div>
@@ -380,7 +380,7 @@ export function MentorBookingModal({
                   placeholder="e.g. Review my RAG pipeline, mock system design interview, agent architecture is stuck..."
                   value={clientNotes}
                   onChange={(e) => setClientNotes(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-xl bg-black/40 border border-white/10 text-ink text-xs focus:border-gold focus:outline-none resize-none"
+                  className="w-full px-3.5 py-2 rounded-xl bg-black/[0.03] dark:bg-black/40 border border-black/10 dark:border-white/10 text-ink text-xs focus:border-orange-500 focus:outline-none resize-none"
                 />
               </div>
             </div>
@@ -389,7 +389,7 @@ export function MentorBookingModal({
               <button
                 type="submit"
                 disabled={loading || loadingSlots || availableSlots.length === 0 || !time}
-                className="w-full py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold text-sm transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-semibold text-sm transition-all shadow-md shadow-orange-500/30 flex items-center justify-center gap-2 disabled:opacity-50 active:scale-98"
               >
                 {loading ? (
                   <>

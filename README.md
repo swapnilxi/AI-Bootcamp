@@ -57,7 +57,7 @@ AI-Bootcamp/
 - **Performance Optimized**: Capped device pixel ratio (`Math.min(devicePixelRatio, 2)`), pauses rendering when tab is hidden via `visibilitychange`, and provides a static CSS cosmic gradient fallback for devices without WebGL or with `prefers-reduced-motion: reduce`.
 - **Easy Redirect Binding**: Every Book / Portal / Services link is rewritten from one setting in `public/landing/js/config.js`:
   ```javascript
-  var FALLBACK_APP_URL = "https://your-app.vercel.app";
+  var FALLBACK_APP_URL = "https://ai-bootcamp-lms-zeta.vercel.app";
   ```
 - **Responsive Black & Gold Design**: GSAP + ScrollTrigger reveals, Lenis smooth scroll, glass header, tested from 320px phones and landscape to 2560px displays, with reduced-motion support.
 
@@ -166,22 +166,38 @@ To view the standalone 3D landing page, visit [http://localhost:3000/landing.htm
 
 ##  Deployment on Vercel
 
+### Official Production URL
+👉 **[https://ai-bootcamp-lms-zeta.vercel.app](https://ai-bootcamp-lms-zeta.vercel.app)**
+
+> **Important Deployment Constraint**:
+> Always deploy to the dedicated Vercel project **`ai-bootcamp-lms`** (`prj_eeUC325GKlBlG5qNfFRTsNwXzt18`).
+> **DO NOT** deploy, link, or alias to `miracle-star.vercel.app` (which is a separate/protected deployment).
+
+### Fast Deployment Commands
+```bash
+# Production deploy (auto-targets ai-bootcamp-lms)
+npm run deploy
+
+# Preview deploy
+npm run deploy:preview
+```
+
 Both parts are fully configured for Vercel deployment:
 
 1. **Option A: Co-Deployment (Recommended)**
    - Push this repository to GitHub or GitLab.
-   - Import the repository into [Vercel](https://vercel.com).
-   - In Project Settings -> Environment Variables, add:
+   - Project is linked to Vercel project `ai-bootcamp-lms`.
+   - In Project Settings -> Environment Variables, configure:
      - `DATABASE_URL` = `file:./dev.db` (SQLite, committed at `prisma/dev.db`)
      - `NEXTAUTH_SECRET` (generate using `openssl rand -base64 32`)
-     - `NEXTAUTH_URL` (`https://<your-project>.vercel.app`)
-     - `NEXT_PUBLIC_APP_URL` (`https://<your-project>.vercel.app`)
+     - `NEXTAUTH_URL` (`https://ai-bootcamp-lms-zeta.vercel.app`)
+     - `NEXT_PUBLIC_APP_URL` (`https://ai-bootcamp-lms-zeta.vercel.app`)
    - The landing page is automatically served from `/public/landing.html` (and also available at `/landing` via Next.js rewrite).
-   - Update `APP_URL` in `public/landing/js/config.js` if you are using a custom domain.
+   - `public/landing/js/config.js` is pre-configured with `https://ai-bootcamp-lms-zeta.vercel.app`.
 
 2. **Option B: Standalone Landing Page**
    - Deploy `public/landing.html` together with the `public/landing/` folder as a static site to any static CDN, GitHub Pages, or Vercel static project.
-   - Set `APP_URL` in `landing/js/config.js` to your Next.js app URL (e.g. `https://your-nextjs-app.vercel.app`).
+   - Set `APP_URL` in `landing/js/config.js` to `https://ai-bootcamp-lms-zeta.vercel.app`.
 
 ---
 

@@ -5,7 +5,7 @@
   "use strict";
 
   // Edit this for static hosting (e.g. opening the file from disk or a separate CDN deploy).
-  var FALLBACK_APP_URL = "https://your-app.vercel.app";
+  var FALLBACK_APP_URL = "https://ai-bootcamp-lms-zeta.vercel.app";
 
   MS.APP_URL = window.location.origin.indexOf("http") === 0 ? window.location.origin : FALLBACK_APP_URL;
 

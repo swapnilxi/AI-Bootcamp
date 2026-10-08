@@ -10,7 +10,9 @@
     "postinstall": "prisma generate",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
-    "prisma:seed": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed.ts"
+    "prisma:seed": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed.ts",
+    "deploy": "NO_UPDATE_NOTIFIER=1 vercel deploy --prod --yes",
+    "deploy:preview": "NO_UPDATE_NOTIFIER=1 vercel deploy --yes"
   },
   "prisma": {
     "seed": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed.ts"

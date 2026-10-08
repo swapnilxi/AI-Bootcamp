@@ -1,19 +1,28 @@
 # Vercel Deployment Guide — AI Bootcamp
 
-This project is fully optimized and configured for seamless deployment on **Vercel**.
+This project is fully configured and linked to the dedicated Vercel project **`ai-bootcamp-lms`**.
+
+### Production Endpoints
+- **Production URL**: 👉 **[https://ai-bootcamp-lms-zeta.vercel.app](https://ai-bootcamp-lms-zeta.vercel.app)**
+- **Vercel Project**: `ai-bootcamp-lms` (`prj_eeUC325GKlBlG5qNfFRTsNwXzt18`)
+- **Team**: `swapnilguptaxi-gmailcoms-projects`
+
+> ⚠️ **CRITICAL DEPLOYMENT CONSTRAINT**:
+> All production and preview deployments for this codebase must target `ai-bootcamp-lms`.
+> **DO NOT** deploy or alias to `https://miracle-star.vercel.app`.
 
 ---
 
 ## 1. Prerequisites & Environment Variables
 
-When deploying to Vercel (via GitHub integration or the Vercel CLI), configure the following environment variables in **Project Settings &rarr; Environment Variables**:
+When deploying to Vercel, configure the following environment variables in **Project Settings &rarr; Environment Variables**:
 
 | Variable | Description | Example / Recommended Value |
 |---|---|---|
 | `DATABASE_URL` | SQLite file (committed at `prisma/dev.db`) | `file:./dev.db` |
-| `NEXTAUTH_URL` | Canonical URL of your deployment | `https://your-domain.vercel.app` (or your custom domain) |
+| `NEXTAUTH_URL` | Canonical URL of your deployment | `https://ai-bootcamp-lms-zeta.vercel.app` |
 | `NEXTAUTH_SECRET` | 32+ character random string | Generate with: `openssl rand -base64 32` |
-| `NEXT_PUBLIC_APP_URL`| Canonical frontend URL for links/OG | `https://your-domain.vercel.app` |
+| `NEXT_PUBLIC_APP_URL`| Canonical frontend URL for links/OG | `https://ai-bootcamp-lms-zeta.vercel.app` |
 | `ANTHROPIC_API_KEY` | *(Optional)* Enables AI features (Claude) | Key from console.anthropic.com; unset hides AI features |
 | `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASS` / `EMAIL_FROM` | *(Optional)* Booking emails via any SMTP provider | e.g. Resend: `smtp.resend.com`, port `465` |
 | `TWILIO_ACCOUNT_SID` / `TWILIO_AUTH_TOKEN` / `TWILIO_WHATSAPP_FROM` | *(Optional)* Automatic WhatsApp messages | Twilio WhatsApp sender number |
@@ -53,15 +62,20 @@ DATABASE_URL="file:./dev.db" npm run prisma:seed
 
 ## 4. Deploying via Vercel CLI
 
-```bash
-# Install Vercel CLI if needed
-npm i -g vercel
+The repository is pre-linked to `ai-bootcamp-lms` via `.vercel/project.json`.
 
-# Link and deploy
-vercel
+```bash
+# 1-command Production Deployment (recommended)
+npm run deploy
+
+# Or via Vercel CLI directly:
+NO_UPDATE_NOTIFIER=1 vercel deploy --prod --yes
 ```
 
-Or simply push your repository to **GitHub / GitLab / Bitbucket** and import the project in the [Vercel Dashboard](https://vercel.com/new).
+To re-link if needed:
+```bash
+vercel link --project ai-bootcamp-lms --yes
+```
 
 ---
 

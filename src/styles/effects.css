@@ -325,7 +325,10 @@ html.light .section-band,
 }
 @media (max-width: 639px) {
   .star-journey {
-    --star-journey-size: 30px;
+    /* No real margin beside the content column at this width — the mark shrinks
+       so it can keep clear of copy while hugging the true viewport edge instead
+       (see StarJourney.tsx's MOBILE track: radius here must match half of this). */
+    --star-journey-size: 16px;
   }
 }
 

@@ -15,31 +15,33 @@ const DOCK_GAP = 36;
 /** Below this much scrollable page there is no journey worth making. */
 const MIN_TRAVEL = 240;
 
-/** Keeps the star clear of both edges, so it can never widen the document. */
-const EDGE_PAD = 13;
-
-/** Clearance held between the star's lane and the first column of copy. */
-const COPY_CLEARANCE = 12;
+/** Clearance held between the edge of the star's own mark and the first column of copy. */
+const COPY_CLEARANCE = 10;
 
 /** Scroll distance over which the star steps out of the eyebrow into the margin. */
 const LANE_IN = 340;
 
 type Track = {
-  /** Ceiling on the sideways play in the margin lane; the gutter may allow less. */
+  /** Ceiling on the sideways play in the margin lane; the available room may allow less. */
   wander: number;
-  /** Floor on that play, so the path never reads as a straight vertical line. */
-  minWander: number;
   /** Peak lead/lag against the scroll, in px — the star breathing, not parallax. */
   drift: number;
   /** Progress at which the footer starts drawing the star towards its centre. */
   approach: number;
   /** Viewport fraction the star settles at when it reaches the footer. */
   landing: number;
+  /** Keeps the star clear of both viewport edges, so it can never widen the document. */
+  edgePad: number;
+  /** Half the mark's rendered size (matches --star-journey-size in effects.css), so the
+   *  lane math keeps the star's actual edge clear of copy, not just its centre point. */
+  radius: number;
 };
 
-const DESKTOP: Track = { wander: 62, minWander: 20, drift: 38, approach: 0.76, landing: 0.58 };
-const TABLET: Track = { wander: 32, minWander: 10, drift: 24, approach: 0.78, landing: 0.57 };
-const MOBILE: Track = { wander: 12, minWander: 5, drift: 14, approach: 0.8, landing: 0.55 };
+const DESKTOP: Track = { wander: 62, drift: 38, approach: 0.76, landing: 0.58, edgePad: 13, radius: 20 };
+const TABLET: Track = { wander: 32, drift: 24, approach: 0.78, landing: 0.57, edgePad: 11, radius: 20 };
+// Phones have no real margin beside the content column — it runs edge to edge — so the
+// mark itself shrinks (see effects.css) and hugs the true viewport edge instead of a lane.
+const MOBILE: Track = { wander: 6, drift: 10, approach: 0.82, landing: 0.55, edgePad: 3, radius: 8 };
 
 type Metrics = {
   startX: number;
@@ -102,13 +104,19 @@ function measure(): Metrics | null {
   const track = vw >= 1024 ? DESKTOP : vw >= 640 ? TABLET : MOBILE;
 
   // The dock spans the page's content column, so its left edge is where copy
-  // begins. The lane and its sideways play are fitted to the gutter left of it,
-  // which is how the star keeps off the text without ever measuring the text.
+  // begins. The lane and its sideways play are fitted to the gutter left of it —
+  // accounting for the mark's own radius, not just a point — which is how the
+  // star keeps its actual edge off the text without ever measuring the text.
   const contentLeft = d.x;
-  const gutter = Math.max(0, contentLeft - EDGE_PAD);
-  const laneWander = clamp(gutter * 0.42, track.minWander, track.wander);
-  // Wide gutters hold the whole swing; narrow ones only shave the column's edge.
-  const laneX = Math.max(EDGE_PAD + laneWander, contentLeft - COPY_CLEARANCE - laneWander);
+  // The right-most centre position whose mark still clears the copy, even at
+  // the peak of its sideways wander (place() swings up to ±laneWander from
+  // laneX, so the wander itself must come out of this budget, not sit on top).
+  const safeLaneX = contentLeft - COPY_CLEARANCE - track.radius;
+  // Wide gutters hold the whole swing, centred with room either side. Narrow
+  // ones (mostly phones) may have no room at all — then the wander collapses
+  // to 0 and the mark just holds the safe line, rather than being pushed past it.
+  const laneWander = clamp((safeLaneX - track.edgePad) / 2, 0, track.wander);
+  const laneX = safeLaneX - laneWander;
 
   // Arrive while the footer's crown is comfortably on screen, not at the very
   // bottom of the document — so the last of the travel is visible, and the rest
@@ -125,8 +133,8 @@ function measure(): Metrics | null {
     endVY: endY - endScroll,
     laneX,
     laneWander,
-    minX: EDGE_PAD,
-    maxX: Math.max(EDGE_PAD, vw - EDGE_PAD),
+    minX: track.edgePad,
+    maxX: Math.max(track.edgePad, vw - track.edgePad),
     track,
     flourish: maxScroll < MIN_TRAVEL ? 0 : Math.min(1, endScroll / 1600),
   };
@@ -194,10 +202,7 @@ export function StarJourney() {
     };
 
     // Reduced motion: the star is a logo detail in the hero and stays one.
-    // Same on phone widths: the margin lane it travels assumes the wide empty
-    // gutter beside a centred desktop column, which doesn't exist once content
-    // runs edge to edge — the lane would just cut through the text instead.
-    if (prefersReducedMotion() || m.track === MOBILE) {
+    if (prefersReducedMotion()) {
       place(0);
       return;
     }

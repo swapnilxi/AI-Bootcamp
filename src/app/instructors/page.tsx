@@ -85,19 +85,19 @@ export default function InstructorsPage() {
 
   const getBadgeColor = (type?: string | null) => {
     if (type === "MENTOR") {
-      return "bg-emerald-500/10 text-emerald-400 border-emerald-500/30";
+      return "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/30";
     }
     if (type === "BOTH") {
-      return "bg-purple-500/10 text-purple-300 border-purple-500/30";
+      return "bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-500/30";
     }
-    return "bg-cream/10 text-cream border-cream/20";
+    return "bg-orange-500/10 text-orange-700 dark:text-cream border-orange-500/30 dark:border-cream/20";
   };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 space-y-16">
       {/* Hero Header */}
       <div className="text-center max-w-3xl mx-auto space-y-4">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cream/10 border border-cream/20 text-cream text-xs uppercase tracking-[0.2em] font-semibold">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 dark:bg-cream/10 border border-orange-500/20 dark:border-cream/20 text-orange-600 dark:text-cream text-xs uppercase tracking-[0.2em] font-semibold">
           <GraduationCap className="w-4 h-4" />
           <span>Instructors & Mentors</span>
         </div>
@@ -110,11 +110,11 @@ export default function InstructorsPage() {
       </div>
 
       {/* Become an Instructor or Mentor Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-[linear-gradient(135deg,#21140f_0%,#141417_50%,#0f0f12_100%)] border border-cream/20 p-8 sm:p-10 shadow-2xl">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-orange-500/5 via-amber-500/5 to-transparent dark:from-orange-950/30 dark:via-black-raised dark:to-black-raised border border-orange-500/20 dark:border-cream/20 p-8 sm:p-10 shadow-xl">
         <div className="absolute top-0 right-0 w-96 h-96 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2 max-w-2xl">
-            <span className="text-xs uppercase tracking-[0.2em] text-cream font-semibold flex items-center gap-2">
+            <span className="text-xs uppercase tracking-[0.2em] text-orange-600 dark:text-cream font-semibold flex items-center gap-2">
               <Sparkles className="w-4 h-4" /> Join The Engineering Faculty & Mentorship Network
             </span>
             <h2 className="font-serif text-2xl sm:text-3xl text-ink">
@@ -129,7 +129,7 @@ export default function InstructorsPage() {
               session.user?.role === "INSTRUCTOR" || session.user?.role === "ADMIN" || session.user?.role === "SUPER_ADMIN" ? (
                 <Link
                   href="/dashboard/instructor"
-                  className="px-6 py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold text-sm transition-all shadow-md flex items-center gap-2"
+                  className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-semibold text-sm transition-all shadow-md shadow-orange-500/20 flex items-center gap-2"
                 >
                   <GraduationCap className="w-4 h-4" />
                   <span>Open Teaching Studio</span>
@@ -137,7 +137,7 @@ export default function InstructorsPage() {
               ) : (
                 <Link
                   href="/profile#instructor-activation"
-                  className="px-6 py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold text-sm transition-all shadow-md flex items-center gap-2"
+                  className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-semibold text-sm transition-all shadow-md shadow-orange-500/20 flex items-center gap-2"
                 >
                   <Sparkles className="w-4 h-4" />
                   <span>Activate Mentor Profile</span>
@@ -147,14 +147,14 @@ export default function InstructorsPage() {
               <div className="flex flex-wrap items-center gap-3">
                 <Link
                   href="/register?role=instructor"
-                  className="px-6 py-3.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold text-sm transition-all shadow-md flex items-center gap-2"
+                  className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-semibold text-sm transition-all shadow-md shadow-orange-500/20 flex items-center gap-2"
                 >
                   <span>Register as Instructor / Mentor</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
                   href="/login?role=instructor"
-                  className="px-5 py-3.5 rounded-xl bg-black-raised hover:border-gold/50 border border-white/10 text-ink text-sm font-medium transition-colors"
+                  className="px-5 py-3.5 rounded-xl bg-black/[0.04] dark:bg-black-raised hover:border-gold/50 border border-black/10 dark:border-white/10 text-ink text-sm font-medium transition-colors"
                 >
                   <span>Faculty Sign In</span>
                 </Link>
@@ -177,23 +177,23 @@ export default function InstructorsPage() {
           </div>
 
           {/* Filter Tabs */}
-          <div className="inline-flex p-1 rounded-xl bg-black/60 border border-white/10">
+          <div className="inline-flex p-1 rounded-xl bg-black/5 dark:bg-black/60 border border-black/10 dark:border-white/10">
             <button
               onClick={() => setActiveFilter("ALL")}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
+              className={`px-3.5 py-1.5 rounded-full text-xs transition-all ${
                 activeFilter === "ALL"
-                  ? "bg-cream text-[#0C0B0A] shadow-md font-semibold"
-                  : "text-text-muted hover:text-white"
+                  ? "bg-orange text-white shadow-md shadow-orange/20 font-semibold"
+                  : "text-text-muted hover:text-ink"
               }`}
             >
               All Masters
             </button>
             <button
               onClick={() => setActiveFilter("INSTRUCTOR")}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
+              className={`px-3.5 py-1.5 rounded-full text-xs transition-all ${
                 activeFilter === "INSTRUCTOR"
-                  ? "bg-cream text-[#0C0B0A] shadow-md font-semibold"
-                  : "text-text-muted hover:text-white"
+                  ? "bg-orange text-white shadow-md shadow-orange/20 font-semibold"
+                  : "text-text-muted hover:text-ink"
               }`}
             >
               AI Engineering Instructors
@@ -202,8 +202,8 @@ export default function InstructorsPage() {
               onClick={() => setActiveFilter("MENTOR")}
               className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
                 activeFilter === "MENTOR"
-                  ? "bg-emerald-400 text-[#0C0B0A] shadow-md font-semibold"
-                  : "text-text-muted hover:text-white"
+                  ? "bg-emerald-600 dark:bg-emerald-500 text-white shadow-md font-semibold"
+                  : "text-text-muted hover:text-ink"
               }`}
             >
               Mentors
@@ -247,11 +247,11 @@ export default function InstructorsPage() {
                       e.stopPropagation();
                       setSelectedAiInstructor(inst);
                     }}
-                    className="group/ai absolute top-4 right-4 p-2 rounded-xl bg-purple-500/15 hover:bg-purple-500/30 border border-purple-500/35 hover:border-purple-400 text-purple-300 hover:text-white transition-all shadow-md z-10 flex items-center gap-1.5"
+                    className="group/ai absolute top-4 right-4 p-2 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 hover:border-purple-400 text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-white transition-all shadow-sm z-10 flex items-center gap-1.5"
                     aria-label="Chat with AI version"
                   >
-                    <Sparkles className="w-4 h-4 text-purple-300 group-hover/ai:rotate-12 transition-transform animate-pulse" />
-                    <span className="text-[10px] font-semibold text-purple-200 hidden sm:inline">AI Twin</span>
+                    <Sparkles className="w-4 h-4 text-purple-600 dark:text-purple-300 group-hover/ai:rotate-12 transition-transform animate-pulse" />
+                    <span className="text-[10px] font-semibold text-purple-700 dark:text-purple-200 hidden sm:inline">AI Twin</span>
                     {/* Tooltip on hover */}
                     <span className="absolute -bottom-8 right-0 px-2.5 py-1 rounded-full bg-black/95 border border-purple-500/40 text-[10px] text-purple-200 font-medium whitespace-nowrap opacity-0 group-hover/ai:opacity-100 transition-opacity pointer-events-none shadow-xl z-30">
                       Chat with AI version ✨
@@ -274,7 +274,7 @@ export default function InstructorsPage() {
                             e.stopPropagation();
                             setSelectedAiInstructor(inst);
                           }}
-                          className="absolute -bottom-1 -right-1 z-10 p-1 rounded-full bg-black border border-purple-500/50 hover:border-gold hover:scale-110 transition-all text-purple-300 hover:text-gold"
+                          className="absolute -bottom-1 -right-1 z-10 p-1 rounded-full bg-white dark:bg-black border border-purple-500/50 hover:border-gold hover:scale-110 transition-all text-purple-600 dark:text-purple-300 hover:text-gold shadow-sm"
                           title="Chat with AI version"
                         >
                           <Sparkles className="w-3.5 h-3.5" />
@@ -299,7 +299,7 @@ export default function InstructorsPage() {
                         </div>
 
                         {/* Price & Duration */}
-                        <p className="text-xs text-cream/90 font-medium pt-1">
+                        <p className="text-xs text-text-muted font-medium pt-1">
                           Private 1:1 Session:{" "}
                           <strong className="text-ink font-semibold">
                             ${inst.sessionPrice || 150} USD
@@ -321,9 +321,9 @@ export default function InstructorsPage() {
                         {specialtiesList.slice(0, 3).map((spec, i) => (
                           <span
                             key={i}
-                            className="inline-flex items-center gap-1 text-[10px] text-text-muted bg-white/[0.04] hover:bg-gold/10 px-2 py-1 rounded-full border border-white/5 transition-colors"
+                            className="inline-flex items-center gap-1 text-[10px] text-text-muted bg-black/[0.03] dark:bg-white/[0.04] hover:bg-orange-500/10 dark:hover:bg-gold/10 px-2 py-1 rounded-full border border-black/[0.08] dark:border-white/5 transition-colors"
                           >
-                            <Tag className="w-2.5 h-2.5 text-cream/60" />
+                            <Tag className="w-2.5 h-2.5 text-orange-600 dark:text-cream/60" />
                             <span>{spec}</span>
                           </span>
                         ))}
@@ -332,10 +332,10 @@ export default function InstructorsPage() {
 
                     {/* Classes summary */}
                     {inst._count.createdCourses > 0 && (
-                      <div className="relative z-10 pt-2 border-t border-white/[0.06] space-y-1.5">
+                      <div className="relative z-10 pt-2 border-t border-black/[0.06] dark:border-white/[0.06] space-y-1.5">
                         <div className="flex items-center justify-between text-xs text-text-muted">
                           <span className="flex items-center gap-1.5">
-                            <BookOpen className="w-3.5 h-3.5 text-cream" />
+                            <BookOpen className="w-3.5 h-3.5 text-orange-600 dark:text-cream" />
                             <span>Curriculum & Workshops</span>
                           </span>
                           <span className="font-semibold text-ink">
@@ -369,10 +369,10 @@ export default function InstructorsPage() {
                           e.stopPropagation();
                           setSelectedMentor(inst);
                         }}
-                        className="px-3.5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] text-xs font-semibold shadow-md transition-colors flex items-center gap-1.5 shrink-0"
+                        className="px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white text-xs font-semibold shadow-md shadow-orange-500/25 transition-all flex items-center gap-1.5 shrink-0 active:scale-95"
                       >
-                        <Calendar className="w-3.5 h-3.5" />
-                        <span>Book 1:1</span>
+                        <Calendar className="w-3.5 h-3.5 text-white" />
+                        <span>Book Session</span>
                       </button>
 
                       <button
@@ -380,9 +380,9 @@ export default function InstructorsPage() {
                           e.stopPropagation();
                           setSelectedAiInstructor(inst);
                         }}
-                        className="px-3 py-2.5 rounded-xl bg-purple-500/15 hover:bg-purple-500/25 border border-purple-500/30 text-purple-200 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5 group/ai relative shrink-0"
+                        className="px-3 py-2.5 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 text-purple-700 dark:text-purple-200 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5 group/ai relative shrink-0"
                       >
-                        <Sparkles className="w-3.5 h-3.5 text-purple-300 group-hover/ai:rotate-12 transition-transform" />
+                        <Sparkles className="w-3.5 h-3.5 text-purple-600 dark:text-purple-300 group-hover/ai:rotate-12 transition-transform" />
                         <span>Chat AI</span>
                         <span className="absolute -top-8 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded-full bg-black/95 border border-purple-500/40 text-[10px] text-purple-200 font-medium whitespace-nowrap opacity-0 group-hover/ai:opacity-100 transition-opacity pointer-events-none shadow-xl z-30">
                           Chat with AI version ✨

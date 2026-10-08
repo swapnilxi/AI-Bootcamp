@@ -292,12 +292,12 @@ export default function InstructorProfilePage({
 
   const getBadgeColor = (type?: string | null) => {
     if (type === "MENTOR") {
-      return "bg-emerald-500/15 text-emerald-400 border-emerald-500/30";
+      return "bg-emerald-500/10 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border-emerald-500/30";
     }
     if (type === "BOTH") {
-      return "bg-purple-500/15 text-purple-300 border-purple-500/30";
+      return "bg-purple-500/10 dark:bg-purple-500/15 text-purple-700 dark:text-purple-300 border-purple-500/30";
     }
-    return "bg-cream/15 text-cream border-cream/20";
+    return "bg-orange-500/10 dark:bg-cream/15 text-orange-700 dark:text-cream border-orange-500/30 dark:border-cream/20";
   };
 
   const handleCopyLink = () => {
@@ -415,7 +415,7 @@ export default function InstructorProfilePage({
         {/* ========================================================= */}
         {/* SECTION 1: MENTOR HERO                                   */}
         {/* ========================================================= */}
-        <div className="relative overflow-hidden rounded-3xl bg-[linear-gradient(135deg,#23160f_0%,#131317_45%,#0d0d10_100%)] border border-cream/25 p-6 sm:p-10 md:p-12 shadow-[0_24px_70px_-20px_rgba(0,0,0,0.85)]">
+        <div className="relative overflow-hidden rounded-3xl bg-white dark:bg-[linear-gradient(135deg,#23160f_0%,#131317_45%,#0d0d10_100%)] border border-black/10 dark:border-cream/25 p-6 sm:p-10 md:p-12 shadow-xl dark:shadow-[0_24px_70px_-20px_rgba(0,0,0,0.85)]">
           {/* Ambient Cosmic Auras */}
           <div className="absolute top-0 right-0 w-96 h-96 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -437,10 +437,10 @@ export default function InstructorProfilePage({
                 {/* Online 24/7 AI Badge */}
                 <button
                   onClick={() => setIsAiChatOpen(true)}
-                  className="absolute -bottom-2 -right-2 px-2.5 py-1 rounded-full bg-black/90 border border-purple-500/60 text-purple-300 text-[10px] font-semibold flex items-center gap-1 shadow-lg hover:border-gold transition-colors"
+                  className="absolute -bottom-2 -right-2 px-2.5 py-1 rounded-full bg-white dark:bg-black/90 border border-purple-500/60 text-purple-700 dark:text-purple-300 text-[10px] font-semibold flex items-center gap-1 shadow-md hover:border-gold transition-colors"
                   title="24/7 Virtual AI Twin Available"
                 >
-                  <Sparkles className="w-3 h-3 text-purple-300 animate-pulse" />
+                  <Sparkles className="w-3 h-3 text-purple-600 dark:text-purple-300 animate-pulse" />
                   <span>AI Twin</span>
                 </button>
               </div>
@@ -457,13 +457,13 @@ export default function InstructorProfilePage({
                   </span>
 
                   {instructor.birthPlace && (
-                    <span className="inline-flex items-center gap-1 text-xs text-text-muted bg-white/[0.04] px-2.5 py-1 rounded-full border border-white/5">
-                      <MapPin className="w-3 h-3 text-cream/70" />
+                    <span className="inline-flex items-center gap-1 text-xs text-text-muted bg-black/[0.03] dark:bg-white/[0.04] px-2.5 py-1 rounded-full border border-black/[0.08] dark:border-white/5">
+                      <MapPin className="w-3 h-3 text-orange-600 dark:text-cream/70" />
                       {instructor.birthPlace}
                     </span>
                   )}
 
-                  <span className="inline-flex items-center gap-1 text-[11px] text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
+                  <span className="inline-flex items-center gap-1 text-[11px] text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
                     <CheckCircle2 className="w-3 h-3" />
                     Verified Instructor
                   </span>
@@ -480,7 +480,7 @@ export default function InstructorProfilePage({
 
                 {/* Session fee */}
                 <div className="flex flex-wrap items-center gap-4 pt-1 text-xs">
-                  <div className="text-cream/90 font-medium bg-cream/10 px-3 py-1.5 rounded-xl border border-cream/20">
+                  <div className="text-text-muted font-medium bg-black/[0.03] dark:bg-cream/10 px-3 py-1.5 rounded-xl border border-black/[0.08] dark:border-cream/20">
                     1-on-1 mentor session:{" "}
                     <strong className="text-ink font-semibold">${instructor.sessionPrice || 150} USD</strong>{" "}
                     ({instructor.sessionDuration || 60} mins)
@@ -512,9 +512,9 @@ export default function InstructorProfilePage({
                 <>
                   <button
                     onClick={() => setIsBookingOpen(true)}
-                    className="px-7 py-4 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold text-xs uppercase tracking-widest transition-all shadow-[0_10px_30px_rgba(251, 146, 60,0.25)] hover:shadow-[0_15px_40px_rgba(251, 146, 60,0.4)] flex items-center justify-center gap-2.5 group"
+                    className="px-7 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-semibold text-xs uppercase tracking-widest transition-all shadow-[0_10px_30px_rgba(249,115,22,0.35)] hover:shadow-[0_15px_40px_rgba(249,115,22,0.5)] flex items-center justify-center gap-2.5 group active:scale-95"
                   >
-                    <Calendar className="w-4 h-4 text-[#0C0B0A] group-hover:scale-110 transition-transform" />
+                    <Calendar className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
                     <span>Book 1:1 Session</span>
                   </button>
 
@@ -523,9 +523,9 @@ export default function InstructorProfilePage({
                       setActiveAiQuestion(null);
                       setIsAiChatOpen(true);
                     }}
-                    className="px-6 py-3.5 rounded-xl bg-purple-500/15 hover:bg-purple-500/25 border border-purple-500/35 hover:border-purple-400 text-purple-200 hover:text-white font-semibold text-xs uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-2 group/ai"
+                    className="px-6 py-3.5 rounded-xl bg-purple-500/10 dark:bg-purple-500/15 hover:bg-purple-500/20 dark:hover:bg-purple-500/25 border border-purple-500/30 hover:border-purple-400 text-purple-700 dark:text-purple-200 hover:text-purple-900 dark:hover:text-white font-semibold text-xs uppercase tracking-wider transition-all shadow-sm flex items-center justify-center gap-2 group/ai"
                   >
-                    <Sparkles className="w-4 h-4 text-purple-300 group-hover/ai:rotate-12 transition-transform animate-pulse" />
+                    <Sparkles className="w-4 h-4 text-purple-600 dark:text-purple-300 group-hover/ai:rotate-12 transition-transform animate-pulse" />
                     <span>Consult AI Twin (Free Preview)</span>
                   </button>
                 </>
@@ -534,21 +534,21 @@ export default function InstructorProfilePage({
           </div>
 
           {/* Credential stats ribbon */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-8 pt-6 border-t border-white/[0.08]">
-            <div className="p-3 sm:p-4 rounded-2xl bg-black/40 border border-white/5 backdrop-blur-sm">
-              <div className="text-cream font-serif text-lg sm:text-xl font-medium">17+ Years</div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-8 pt-6 border-t border-black/[0.08] dark:border-white/[0.08]">
+            <div className="p-3 sm:p-4 rounded-2xl bg-black/[0.03] dark:bg-black/40 border border-black/[0.08] dark:border-white/5 backdrop-blur-sm">
+              <div className="text-ink font-serif text-lg sm:text-xl font-medium">17+ Years</div>
               <div className="text-[11px] text-text-muted uppercase tracking-wider mt-0.5">Years teaching</div>
             </div>
-            <div className="p-3 sm:p-4 rounded-2xl bg-black/40 border border-white/5 backdrop-blur-sm">
-              <div className="text-cream font-serif text-lg sm:text-xl font-medium">1,200+</div>
+            <div className="p-3 sm:p-4 rounded-2xl bg-black/[0.03] dark:bg-black/40 border border-black/[0.08] dark:border-white/5 backdrop-blur-sm">
+              <div className="text-ink font-serif text-lg sm:text-xl font-medium">1,200+</div>
               <div className="text-[11px] text-text-muted uppercase tracking-wider mt-0.5">Mentoring Sessions</div>
             </div>
-            <div className="p-3 sm:p-4 rounded-2xl bg-black/40 border border-white/5 backdrop-blur-sm">
-              <div className="text-cream font-serif text-lg sm:text-xl font-medium">100%</div>
+            <div className="p-3 sm:p-4 rounded-2xl bg-black/[0.03] dark:bg-black/40 border border-black/[0.08] dark:border-white/5 backdrop-blur-sm">
+              <div className="text-ink font-serif text-lg sm:text-xl font-medium">100%</div>
               <div className="text-[11px] text-text-muted uppercase tracking-wider mt-0.5">Session Confidentiality</div>
             </div>
-            <div className="p-3 sm:p-4 rounded-2xl bg-black/40 border border-white/5 backdrop-blur-sm">
-              <div className="text-cream font-serif text-lg sm:text-xl font-medium">4.99 / 5</div>
+            <div className="p-3 sm:p-4 rounded-2xl bg-black/[0.03] dark:bg-black/40 border border-black/[0.08] dark:border-white/5 backdrop-blur-sm">
+              <div className="text-ink font-serif text-lg sm:text-xl font-medium">4.99 / 5</div>
               <div className="text-[11px] text-text-muted uppercase tracking-wider mt-0.5">Learner rating</div>
             </div>
           </div>
@@ -557,18 +557,18 @@ export default function InstructorProfilePage({
         {/* ========================================================= */}
         {/* SECTION 2: SUGGESTED QUESTIONS FOR THE AI TWIN            */}
         {/* ========================================================= */}
-        <section className="editorial-card rounded-3xl p-6 sm:p-8 border border-purple-500/25 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-purple-950/20 via-black-raised to-black space-y-4 shadow-xl">
+        <section className="editorial-card rounded-3xl p-6 sm:p-8 border border-purple-500/25 bg-purple-500/[0.03] dark:bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] dark:from-purple-950/20 dark:via-black-raised dark:to-black space-y-4 shadow-xl">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <div className="flex items-center gap-2 text-purple-300 text-xs font-semibold uppercase tracking-widest">
-                <Bot className="w-4 h-4 text-purple-400" />
+              <div className="flex items-center gap-2 text-purple-700 dark:text-purple-300 text-xs font-semibold uppercase tracking-widest">
+                <Bot className="w-4 h-4 text-purple-600 dark:text-purple-400" />
                 <span>24/7 Autonomous AI Twin Inquiries</span>
               </div>
               <h2 className="font-serif text-xl sm:text-2xl text-ink font-normal mt-1">
                 Explore {instructor.name}&apos;s Doctrine & Remedy Systems
               </h2>
             </div>
-            <span className="text-[11px] text-purple-300/80 bg-purple-500/10 px-3 py-1 rounded-full border border-purple-500/20 self-start sm:self-auto">
+            <span className="text-[11px] text-purple-700 dark:text-purple-300/80 bg-purple-500/10 px-3 py-1 rounded-full border border-purple-500/20 self-start sm:self-auto font-medium">
               Trained on this instructor&apos;s own courses and notes
             </span>
           </div>
@@ -582,11 +582,11 @@ export default function InstructorProfilePage({
               <button
                 key={idx}
                 onClick={() => handleLaunchAiQuestion(q)}
-                className="group text-left inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-purple-500/10 hover:bg-purple-500/25 border border-purple-500/30 hover:border-purple-400 text-purple-100 text-xs font-medium transition-all shadow-sm hover:scale-[1.02] active:scale-95"
+                className="group text-left inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/25 hover:border-purple-400 text-purple-900 dark:text-purple-100 text-xs font-medium transition-all shadow-sm hover:scale-[1.02] active:scale-95"
               >
-                <Sparkles className="w-3.5 h-3.5 text-purple-300 group-hover:rotate-12 transition-transform shrink-0" />
+                <Sparkles className="w-3.5 h-3.5 text-purple-600 dark:text-purple-300 group-hover:rotate-12 transition-transform shrink-0" />
                 <span className="line-clamp-1">{q}</span>
-                <ChevronRight className="w-3 h-3 text-purple-400/60 group-hover:translate-x-0.5 transition-transform shrink-0" />
+                <ChevronRight className="w-3 h-3 text-purple-500 dark:text-purple-400/60 group-hover:translate-x-0.5 transition-transform shrink-0" />
               </button>
             ))}
           </div>
@@ -597,8 +597,8 @@ export default function InstructorProfilePage({
         {/* ========================================================= */}
         {specialtiesList.length > 0 && (
           <section className="space-y-6">
-            <div className="border-b border-white/[0.08] pb-4">
-              <div className="flex items-center gap-2 text-cream text-xs font-semibold uppercase tracking-widest">
+            <div className="border-b border-black/[0.08] dark:border-white/[0.08] pb-4">
+              <div className="flex items-center gap-2 text-orange-600 dark:text-cream text-xs font-semibold uppercase tracking-widest">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Diagnostic Architecture</span>
               </div>
@@ -620,13 +620,13 @@ export default function InstructorProfilePage({
                     onClick={() => setSelectedModality(spec)}
                     className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs transition-all ${
                       isSelected
-                        ? "bg-cream text-[#0C0B0A] shadow-[0_4px_20px_rgba(251, 146, 60,0.35)] scale-105 font-bold border border-cream"
-                        : "bg-white/[0.04] hover:bg-white/[0.09] text-ink/90 border border-white/10 hover:border-gold/30 font-medium"
+                        ? "bg-orange text-white shadow-md shadow-orange/30 scale-105 font-bold border border-orange-500"
+                        : "bg-black/[0.03] dark:bg-white/[0.04] hover:bg-black/[0.06] dark:hover:bg-white/[0.09] text-ink border border-black/[0.08] dark:border-white/10 hover:border-orange-500/30 font-medium"
                     }`}
                   >
-                    <Tag className={`w-3.5 h-3.5 ${isSelected ? "text-[#0C0B0A]" : "text-cream"}`} />
+                    <Tag className={`w-3.5 h-3.5 ${isSelected ? "text-white" : "text-orange-600 dark:text-cream"}`} />
                     <span>{spec}</span>
-                    {isSelected && <Check className="w-3.5 h-3.5 text-[#0C0B0A] stroke-[3]" />}
+                    {isSelected && <Check className="w-3.5 h-3.5 text-white stroke-[3]" />}
                   </button>
                 );
               })}
@@ -634,10 +634,10 @@ export default function InstructorProfilePage({
 
             {/* Detailed Modality Dossier Card */}
             {activeDossier && (
-              <div className="editorial-card rounded-3xl p-6 sm:p-9 border border-cream/20 bg-gradient-to-br from-black-raised via-[#15151a] to-black space-y-6 shadow-2xl animate-fade-in">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.08] pb-5">
+              <div className="editorial-card rounded-3xl p-6 sm:p-9 border border-black/10 dark:border-cream/20 bg-white dark:bg-gradient-to-br dark:from-black-raised dark:via-[#15151a] dark:to-black space-y-6 shadow-xl animate-fade-in">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-black/[0.08] dark:border-white/[0.08] pb-5">
                   <div className="space-y-1">
-                    <span className="text-[11px] uppercase tracking-wider font-semibold text-cream bg-cream/10 px-3 py-1 rounded-full border border-cream/20 inline-block">
+                    <span className="text-[11px] uppercase tracking-wider font-semibold text-orange-700 dark:text-cream bg-orange-500/10 dark:bg-cream/10 px-3 py-1 rounded-full border border-orange-500/20 dark:border-cream/20 inline-block">
                       {activeDossier.category}
                     </span>
                     <h3 className="font-serif text-2xl sm:text-3xl text-ink font-normal">
@@ -658,9 +658,9 @@ export default function InstructorProfilePage({
                     </button>
                     <button
                       onClick={() => setIsBookingOpen(true)}
-                      className="px-4 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] text-xs font-semibold shadow-md transition-colors flex items-center gap-1.5"
+                      className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white text-xs font-semibold shadow-md shadow-orange-500/25 transition-all flex items-center gap-1.5 active:scale-95"
                     >
-                      <Calendar className="w-3.5 h-3.5" />
+                      <Calendar className="w-3.5 h-3.5 text-white" />
                       <span>Include in 1:1</span>
                     </button>
                   </div>
@@ -670,7 +670,7 @@ export default function InstructorProfilePage({
                   {/* Left Column: Mechanism & Instruments */}
                   <div className="space-y-5">
                     <div>
-                      <h4 className="text-xs font-semibold uppercase tracking-wider text-cream flex items-center gap-1.5 mb-2">
+                      <h4 className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-cream flex items-center gap-1.5 mb-2">
                         <Activity className="w-3.5 h-3.5" />
                         <span>How it works</span>
                       </h4>
@@ -679,9 +679,9 @@ export default function InstructorProfilePage({
                       </p>
                     </div>
 
-                    <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 space-y-1.5">
+                    <div className="p-4 rounded-2xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/[0.08] dark:border-white/5 space-y-1.5">
                       <div className="text-[11px] font-semibold uppercase tracking-wider text-ink/70 flex items-center gap-1.5">
-                        <Gem className="w-3.5 h-3.5 text-cream" />
+                        <Gem className="w-3.5 h-3.5 text-orange-600 dark:text-cream" />
                         <span>Tools & techniques</span>
                       </div>
                       <p className="text-xs text-text-muted font-mono">
@@ -692,14 +692,14 @@ export default function InstructorProfilePage({
 
                   {/* Right Column: Clinical Transformations */}
                   <div className="space-y-4">
-                    <h4 className="text-xs font-semibold uppercase tracking-wider text-cream flex items-center gap-1.5">
+                    <h4 className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-cream flex items-center gap-1.5">
                       <CheckCircle2 className="w-3.5 h-3.5" />
                       <span>Expected Breakthroughs & Resolutions</span>
                     </h4>
                     <ul className="space-y-3">
                       {activeDossier.benefits.map((b, i) => (
                         <li key={i} className="flex items-start gap-3 text-xs sm:text-sm text-ink/80">
-                          <span className="w-5 h-5 rounded-full bg-cream/15 text-cream border border-cream/20 flex items-center justify-center shrink-0 text-xs font-bold mt-0.5">
+                          <span className="w-5 h-5 rounded-full bg-orange-500/10 dark:bg-cream/15 text-orange-600 dark:text-cream border border-orange-500/20 dark:border-cream/20 flex items-center justify-center shrink-0 text-xs font-bold mt-0.5">
                             ✦
                           </span>
                           <span className="leading-relaxed">{b}</span>
@@ -717,9 +717,9 @@ export default function InstructorProfilePage({
         {/* SECTION 4: BACKGROUND, SESSION FORMAT, OUTCOMES          */}
         {/* ========================================================= */}
         <section className="space-y-6">
-          <div className="border-b border-white/[0.08] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div className="border-b border-black/[0.08] dark:border-white/[0.08] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
-              <div className="flex items-center gap-2 text-cream text-xs font-semibold uppercase tracking-widest">
+              <div className="flex items-center gap-2 text-orange-600 dark:text-cream text-xs font-semibold uppercase tracking-widest">
                 <Shield className="w-3.5 h-3.5" />
                 <span>Pedagogical Doctrine</span>
               </div>
@@ -729,7 +729,7 @@ export default function InstructorProfilePage({
             </div>
 
             {/* Tab Switcher Pills */}
-            <div className="flex flex-wrap gap-1.5 bg-black/60 p-1.5 rounded-2xl border border-white/10">
+            <div className="flex flex-wrap gap-1.5 bg-black/5 dark:bg-black/60 p-1.5 rounded-2xl border border-black/10 dark:border-white/10">
               {[
                 { id: "background", label: "Background" },
                 { id: "protocol", label: "1:1 Session Protocol" },
@@ -741,7 +741,7 @@ export default function InstructorProfilePage({
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${
                     activeTab === tab.id
-                      ? "bg-cream text-[#0C0B0A] shadow-md"
+                      ? "bg-orange text-white shadow-md shadow-orange/20"
                       : "text-text-muted hover:text-ink hover:bg-white/5"
                   }`}
                 >
@@ -774,35 +774,35 @@ export default function InstructorProfilePage({
                 </div>
 
                 {/* Teaching philosophy */}
-                <div className="lg:col-span-4 p-6 sm:p-7 rounded-2xl bg-gradient-to-br from-cream/8 via-black-raised to-black border border-cream/20 space-y-3 shadow-lg">
-                  <div className="text-cream font-serif text-4xl leading-none">&ldquo;</div>
+                <div className="lg:col-span-4 p-6 sm:p-7 rounded-2xl bg-orange-500/5 dark:bg-gradient-to-br dark:from-cream/8 dark:via-black-raised dark:to-black border border-orange-500/20 dark:border-cream/20 space-y-3 shadow-md">
+                  <div className="text-orange-500 dark:text-cream font-serif text-4xl leading-none">&ldquo;</div>
                   <p className="font-serif text-sm sm:text-base text-ink italic leading-relaxed">
                     If you cannot measure it, you are not engineering it — you are hoping. Most of what separates a demo from a system is the evaluation nobody wanted to write.
                   </p>
-                  <div className="pt-2 border-t border-white/10 flex items-center gap-2 text-xs text-cream font-semibold">
+                  <div className="pt-2 border-t border-black/10 dark:border-white/10 flex items-center gap-2 text-xs text-orange-600 dark:text-cream font-semibold">
                     <span>— {instructor.name}</span>
                   </div>
                 </div>
               </div>
 
               {/* Three Core Axioms */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-white/[0.08]">
-                <div className="space-y-1.5 p-4 rounded-2xl bg-white/[0.02] border border-white/5">
-                  <span className="text-cream font-bold text-xs uppercase tracking-wider">Axiom I</span>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-black/[0.08] dark:border-white/[0.08]">
+                <div className="space-y-1.5 p-4 rounded-2xl bg-black/[0.03] dark:bg-white/[0.02] border border-black/[0.08] dark:border-white/5">
+                  <span className="text-orange-600 dark:text-cream font-bold text-xs uppercase tracking-wider">Axiom I</span>
                   <h5 className="font-serif text-base text-ink">Mechanism Before Recipe</h5>
                   <p className="text-xs text-text-muted leading-relaxed">
                     A rule you can apply is worth less than a mechanism you can reason from when the rule stops holding.
                   </p>
                 </div>
-                <div className="space-y-1.5 p-4 rounded-2xl bg-white/[0.02] border border-white/5">
-                  <span className="text-cream font-bold text-xs uppercase tracking-wider">Axiom II</span>
+                <div className="space-y-1.5 p-4 rounded-2xl bg-black/[0.03] dark:bg-white/[0.02] border border-black/[0.08] dark:border-white/5">
+                  <span className="text-orange-600 dark:text-cream font-bold text-xs uppercase tracking-wider">Axiom II</span>
                   <h5 className="font-serif text-base text-ink">Failure Modes Before Features</h5>
                   <p className="text-xs text-text-muted leading-relaxed">
                     A system&apos;s edge cases and failure modes teach you more about its design than any feature you add to it.
                   </p>
                 </div>
-                <div className="space-y-1.5 p-4 rounded-2xl bg-white/[0.02] border border-white/5">
-                  <span className="text-cream font-bold text-xs uppercase tracking-wider">Axiom III</span>
+                <div className="space-y-1.5 p-4 rounded-2xl bg-black/[0.03] dark:bg-white/[0.02] border border-black/[0.08] dark:border-white/5">
+                  <span className="text-orange-600 dark:text-cream font-bold text-xs uppercase tracking-wider">Axiom III</span>
                   <h5 className="font-serif text-base text-ink">Measure, Then Claim</h5>
                   <p className="text-xs text-text-muted leading-relaxed">
                     If a change cannot be shown to have helped on a fixed test set, it is a preference, not an improvement.
@@ -853,14 +853,14 @@ export default function InstructorProfilePage({
                 ].map((step, idx) => (
                   <div
                     key={idx}
-                    className="p-6 rounded-2xl bg-white/[0.02] border border-white/5 space-y-2.5 hover:border-gold/30 transition-colors"
+                    className="p-6 rounded-2xl bg-black/[0.03] dark:bg-white/[0.02] border border-black/[0.08] dark:border-white/5 space-y-2.5 hover:border-orange-500/30 transition-colors"
                   >
                     <div className="flex items-center justify-between text-xs">
-                      <span className="text-cream font-bold uppercase tracking-wider flex items-center gap-1.5">
+                      <span className="text-orange-600 dark:text-cream font-bold uppercase tracking-wider flex items-center gap-1.5">
                         <step.icon className="w-3.5 h-3.5" />
                         {step.phase}
                       </span>
-                      <span className="text-[11px] text-text-muted bg-white/5 px-2 py-0.5 rounded-full font-mono">
+                      <span className="text-[11px] text-text-muted bg-black/5 dark:bg-white/5 px-2 py-0.5 rounded-full font-mono">
                         {step.time}
                       </span>
                     </div>
@@ -877,7 +877,7 @@ export default function InstructorProfilePage({
                 </span>
                 <button
                   onClick={() => setIsBookingOpen(true)}
-                  className="px-5 py-2.5 rounded-xl bg-cream text-[#0C0B0A] font-semibold text-xs uppercase tracking-wider hover:bg-cream/90 transition-colors"
+                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-semibold text-xs uppercase tracking-wider shadow-md shadow-orange-500/25 transition-all active:scale-95"
                 >
                   Schedule Private Session →
                 </button>
@@ -1034,9 +1034,9 @@ export default function InstructorProfilePage({
         {/* SECTION 6: CURRICULUM & MASTERCLASSES                     */}
         {/* ========================================================= */}
         <section className="space-y-6">
-          <div className="flex items-center justify-between border-b border-white/[0.07] pb-4">
+          <div className="flex items-center justify-between border-b border-black/[0.07] dark:border-white/[0.07] pb-4">
             <div>
-              <div className="flex items-center gap-2 text-cream text-xs font-semibold uppercase tracking-widest">
+              <div className="flex items-center gap-2 text-orange-600 dark:text-cream text-xs font-semibold uppercase tracking-widest">
                 <BookOpen className="w-3.5 h-3.5" />
                 <span>Academy Curriculum</span>
               </div>
@@ -1047,7 +1047,7 @@ export default function InstructorProfilePage({
             {isSelf && (
               <Link
                 href="/courses/new"
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-cream text-[#0C0B0A] font-semibold text-xs hover:bg-cream/90 transition-colors"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-orange hover:bg-orange-600 text-white font-semibold text-xs shadow-md transition-colors"
               >
                 <span>+ Create Class</span>
               </Link>
@@ -1055,15 +1055,15 @@ export default function InstructorProfilePage({
           </div>
 
           {instructor.createdCourses.length === 0 ? (
-            <div className="p-12 text-center rounded-2xl border border-dashed border-white/10 space-y-3">
-              <BookOpen className="w-10 h-10 text-cream/50 mx-auto" />
+            <div className="p-12 text-center rounded-2xl border border-dashed border-black/10 dark:border-white/10 space-y-3">
+              <BookOpen className="w-10 h-10 text-orange-500/50 dark:text-cream/50 mx-auto" />
               <h3 className="font-serif text-xl text-ink">No upcoming classes scheduled</h3>
               <p className="text-sm text-text-muted max-w-sm mx-auto">
                 This mentor is currently dedicating time to private 1:1 sessions and authoring their next curriculum.
               </p>
               <Link
                 href="/courses"
-                className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cream hover:underline pt-2"
+                className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-cream hover:underline pt-2"
               >
                 <span>Browse All Academy Classes</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -1078,20 +1078,20 @@ export default function InstructorProfilePage({
                 return (
                   <div
                     key={cls.id}
-                    className="editorial-card rounded-2xl p-6 sm:p-7 border border-white/[0.08] hover:border-gold/40 flex flex-col justify-between transition-all duration-300 group"
+                    className="editorial-card rounded-2xl p-6 sm:p-7 border border-black/[0.08] dark:border-white/[0.08] hover:border-orange-500/40 flex flex-col justify-between transition-all duration-300 group"
                   >
                     <div className="space-y-4">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-[11px] font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-cream/10 text-cream border border-cream/20">
+                        <span className="text-[11px] font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-orange-500/10 dark:bg-cream/10 text-orange-700 dark:text-cream border border-orange-500/20 dark:border-cream/20">
                           {isFree ? "Free Class" : `$${priceNum.toFixed(2)}`}
                         </span>
                         {cls.isSubscriberOnly && (
-                          <span className="text-[10px] uppercase tracking-wider font-semibold text-purple-300 bg-purple-950/40 px-2 py-0.5 rounded-full border border-purple-800/40">
+                          <span className="text-[10px] uppercase tracking-wider font-semibold text-purple-700 dark:text-purple-300 bg-purple-500/10 dark:bg-purple-950/40 px-2 py-0.5 rounded-full border border-purple-500/20 dark:border-purple-800/40">
                             Subscriber
                           </span>
                         )}
                         {cls.isPasswordProtected && (
-                          <span className="text-[10px] uppercase tracking-wider font-semibold text-cream bg-cream/10 px-2 py-0.5 rounded-full border border-cream/20">
+                          <span className="text-[10px] uppercase tracking-wider font-semibold text-ink/80 dark:text-cream bg-black/5 dark:bg-cream/10 px-2 py-0.5 rounded-full border border-black/10 dark:border-cream/20">
                             Secret Key
                           </span>
                         )}
@@ -1185,7 +1185,7 @@ export default function InstructorProfilePage({
       {/* FLOATING STICKY BOOKING BAR (ON SCROLL)                   */}
       {/* ========================================================= */}
       {showStickyBar && (
-        <div className="fixed bottom-0 inset-x-0 z-40 bg-[#121217]/95 border-t border-cream/20 backdrop-blur-md py-3 px-4 sm:px-8 shadow-2xl animate-fade-in">
+        <div className="fixed bottom-0 inset-x-0 z-40 bg-white/95 dark:bg-[#121217]/95 border-t border-black/10 dark:border-cream/20 backdrop-blur-md py-3 px-4 sm:px-8 shadow-2xl animate-fade-in">
           <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
             <div className="flex items-center gap-3 min-w-0">
               <Avatar src={instructor.avatarUrl} name={instructor.name} size="sm" radius="xl" />
@@ -1193,7 +1193,7 @@ export default function InstructorProfilePage({
                 <div className="font-serif text-sm text-ink truncate font-medium">
                   {instructor.name}
                 </div>
-                <div className="text-[11px] text-cream/90 truncate">
+                <div className="text-[11px] text-text-muted truncate">
                   1:1 Session: ${instructor.sessionPrice || 150} USD ({instructor.sessionDuration || 60}m)
                 </div>
               </div>
@@ -1205,18 +1205,18 @@ export default function InstructorProfilePage({
                   setActiveAiQuestion(null);
                   setIsAiChatOpen(true);
                 }}
-                className="px-3.5 py-2 rounded-xl bg-purple-500/15 hover:bg-purple-500/25 border border-purple-500/30 text-purple-200 text-xs font-semibold transition-colors flex items-center gap-1.5 hidden sm:flex"
+                className="px-3.5 py-2 rounded-xl bg-purple-500/10 dark:bg-purple-500/15 hover:bg-purple-500/20 dark:hover:bg-purple-500/25 border border-purple-500/30 text-purple-700 dark:text-purple-200 text-xs font-semibold transition-colors flex items-center gap-1.5 hidden sm:flex"
               >
-                <Sparkles className="w-3.5 h-3.5 text-purple-300" />
+                <Sparkles className="w-3.5 h-3.5 text-purple-600 dark:text-purple-300" />
                 <span>Chat AI</span>
               </button>
 
               <button
                 onClick={() => setIsBookingOpen(true)}
-                className="px-5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] text-xs font-semibold uppercase tracking-wider shadow-md transition-colors flex items-center gap-1.5"
+                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white text-xs font-semibold uppercase tracking-wider shadow-md shadow-orange-500/30 transition-all flex items-center gap-1.5 active:scale-95"
               >
-                <Calendar className="w-3.5 h-3.5 text-[#0C0B0A]" />
-                <span>Book 1:1</span>
+                <Calendar className="w-3.5 h-3.5 text-white" />
+                <span>Book Session</span>
               </button>
             </div>
           </div>

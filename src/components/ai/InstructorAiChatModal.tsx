@@ -294,17 +294,17 @@ export function InstructorAiChatModal({
       labelledBy={titleId}
       className="w-full max-w-2xl h-[min(760px,calc(100vh-2rem))] max-h-[90vh]"
     >
-      <div className="relative w-full h-full bg-[#121217] border border-cream/15 rounded-3xl shadow-[0_20px_60px_-15px_rgba(251, 146, 60,0.25)] flex flex-col overflow-hidden text-ink">
+      <div className="relative w-full h-full bg-white dark:bg-[#121217] border border-black/10 dark:border-cream/15 rounded-3xl shadow-2xl dark:shadow-[0_20px_60px_-15px_rgba(251,146,60,0.25)] flex flex-col overflow-hidden text-ink">
         {/* Glow ambient background */}
-        <div className="absolute top-0 right-0 w-80 h-80 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-80 h-80 bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
 
         {/* Header */}
-        <div className="relative z-10 px-5 py-4 border-b border-white/10 flex items-center justify-between bg-black/40 backdrop-blur-sm">
+        <div className="relative z-10 px-5 py-4 border-b border-black/[0.08] dark:border-white/10 flex items-center justify-between bg-black/[0.02] dark:bg-black/40 backdrop-blur-sm">
           <div className="flex items-center gap-3.5 min-w-0">
             <div className="relative shrink-0">
               <Avatar src={instructor.avatarUrl} name={instructor.name} size="md" className="shadow-md" />
-              <div className="absolute -bottom-1 -right-1 p-0.5 rounded-full bg-emerald-500 text-[#0C0B0A] border-2 border-black" title="AI Twin Online 24/7">
+              <div className="absolute -bottom-1 -right-1 p-0.5 rounded-full bg-emerald-500 text-white border-2 border-white dark:border-black" title="AI Twin Online 24/7">
                 <Sparkles className="w-3 h-3 text-white" />
               </div>
             </div>
@@ -314,7 +314,7 @@ export function InstructorAiChatModal({
                 <h3 id={titleId} className="font-serif text-lg text-ink font-medium truncate">
                   {instructor.name}
                 </h3>
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold tracking-wider bg-cream/10 text-text border border-cream/20">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold tracking-wider bg-purple-500/10 text-purple-700 dark:text-purple-300 border border-purple-500/20">
                   <Bot className="w-3 h-3" />
                   <span>AI Twin</span>
                 </span>
@@ -331,8 +331,8 @@ export function InstructorAiChatModal({
                 onClick={() => setShowSettings(!showSettings)}
                 className={`p-2 rounded-xl transition-all ${
                   showSettings
-                    ? "bg-cream text-[#0C0B0A]"
-                    : "text-text-muted hover:text-gold hover:bg-white/5"
+                    ? "bg-orange-500 text-white"
+                    : "text-text-muted hover:text-ink hover:bg-black/5 dark:hover:bg-white/5"
                 }`}
                 title="Manage AI Persona Context & Chatting Style"
               >
@@ -346,16 +346,16 @@ export function InstructorAiChatModal({
                   onClose();
                   onOpenBooking(instructor);
                 }}
-                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cream/10 hover:bg-cream/15 border border-cream/25 text-text text-xs font-semibold transition-colors"
+                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-orange-500/10 hover:bg-orange-500/20 border border-orange-500/30 text-orange-700 dark:text-cream text-xs font-semibold transition-colors"
               >
-                <Calendar className="w-3.5 h-3.5" />
+                <Calendar className="w-3.5 h-3.5 text-orange-600 dark:text-cream" />
                 <span>Book Live 1:1</span>
               </button>
             )}
 
             <button
               onClick={onClose}
-              className="p-2 rounded-xl text-text-muted hover:text-white hover:bg-white/5 transition-colors"
+              className="p-2 rounded-xl text-text-muted hover:text-ink hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -463,11 +463,11 @@ export function InstructorAiChatModal({
         )}
 
         {/* Disclaimer Bar */}
-        <div className="px-5 py-2 bg-cream/5 border-b border-white/5 flex items-center justify-between text-[11px] text-text-muted">
+        <div className="px-5 py-2 bg-black/[0.02] dark:bg-cream/5 border-b border-black/[0.06] dark:border-white/5 flex items-center justify-between text-[11px] text-text-muted">
           <div className="flex items-center gap-1.5">
             <Shield className="w-3.5 h-3.5 text-text-muted shrink-0" />
             <span>
-              Speaking with <strong className="text-text">{instructor.name}&apos;s</strong> AI Twin for demo & 24/7 inquiries.
+              Speaking with <strong className="text-ink">{instructor.name}&apos;s</strong> AI Twin for demo & 24/7 inquiries.
             </span>
           </div>
           <span className="text-[10px] hidden sm:inline text-text-muted">
@@ -478,7 +478,7 @@ export function InstructorAiChatModal({
         {/* Message Thread */}
         <div
           ref={messagesContainerRef}
-          className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-5 space-y-4 overscroll-contain [scrollbar-width:thin] [scrollbar-color:rgba(251, 146, 60,0.4)_transparent]"
+          className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-5 space-y-4 overscroll-contain [scrollbar-width:thin] [scrollbar-color:rgba(251,146,60,0.4)_transparent]"
         >
           {messages.map((msg) => {
             const isBot = msg.role === "assistant";
@@ -488,11 +488,11 @@ export function InstructorAiChatModal({
                 className={`flex gap-3 ${isBot ? "justify-start" : "justify-end"} animate-fade-in`}
               >
                 {isBot && (
-                  <div className="relative shrink-0 w-8 h-8 rounded-xl bg-cream/10 border border-cream/20 text-text flex items-center justify-center shadow-sm overflow-hidden">
+                  <div className="relative shrink-0 w-8 h-8 rounded-xl bg-orange-500/10 border border-orange-500/20 text-orange-600 dark:text-cream flex items-center justify-center shadow-sm overflow-hidden">
                     {instructor.avatarUrl ? (
                       <Image src={instructor.avatarUrl} alt="Avatar" fill unoptimized sizes="32px" className="object-cover" />
                     ) : (
-                      <Sparkles className="w-4 h-4 text-text" />
+                      <Sparkles className="w-4 h-4 text-orange-600 dark:text-cream" />
                     )}
                   </div>
                 )}
@@ -500,12 +500,12 @@ export function InstructorAiChatModal({
                 <div
                   className={`max-w-[85%] sm:max-w-[80%] rounded-2xl p-4 sm:p-4.5 text-xs sm:text-sm leading-relaxed ${
                     isBot
-                      ? "bg-white/[0.04] border border-white/10 text-ink/90 shadow-sm"
-                      : "bg-gold text-[#0C0B0A] font-medium shadow-md ml-auto"
+                      ? "bg-black/[0.03] dark:bg-white/[0.04] border border-black/[0.08] dark:border-white/10 text-ink shadow-sm"
+                      : "bg-gradient-to-r from-orange-500 to-amber-500 text-white font-medium shadow-md ml-auto"
                   }`}
                 >
                   {isBot ? (
-                    <div className="prose prose-invert prose-xs sm:prose-sm max-w-none text-ink/90 leading-relaxed font-sans space-y-2 [&_p]:leading-relaxed [&_p]:mb-2.5 last:[&_p]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1.5 [&_ul]:my-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1.5 [&_ol]:my-2 [&_strong]:text-text [&_strong]:font-semibold [&_em]:italic [&_em]:text-text-muted [&_li]:text-ink/90 [&_li]:leading-relaxed [&_h1]:text-base [&_h2]:text-sm [&_h3]:text-xs [&_h1]:font-serif [&_h2]:font-serif [&_h3]:font-serif [&_blockquote]:border-l-2 [&_blockquote]:border-cream/30 [&_blockquote]:pl-3 [&_blockquote]:italic">
+                    <div className="prose dark:prose-invert prose-xs sm:prose-sm max-w-none text-ink leading-relaxed font-sans space-y-2 [&_p]:leading-relaxed [&_p]:mb-2.5 last:[&_p]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1.5 [&_ul]:my-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1.5 [&_ol]:my-2 [&_strong]:text-ink [&_strong]:font-semibold [&_em]:italic [&_em]:text-text-muted [&_li]:text-ink [&_li]:leading-relaxed [&_h1]:text-base [&_h2]:text-sm [&_h3]:text-xs [&_h1]:font-serif [&_h2]:font-serif [&_h3]:font-serif [&_blockquote]:border-l-2 [&_blockquote]:border-orange-500/40 [&_blockquote]:pl-3 [&_blockquote]:italic">
                       <ReactMarkdown>{msg.content}</ReactMarkdown>
                     </div>
                   ) : (
@@ -513,7 +513,7 @@ export function InstructorAiChatModal({
                   )}
                   <span
                     className={`block text-[10px] mt-2 ${
-                      isBot ? "text-text-muted text-right" : "text-[#0C0B0A]/60 text-right"
+                      isBot ? "text-text-muted text-right" : "text-white/80 text-right"
                     }`}
                   >
                     {msg.timestamp}
@@ -521,7 +521,7 @@ export function InstructorAiChatModal({
                 </div>
 
                 {!isBot && (
-                  <div className="shrink-0 w-8 h-8 rounded-xl bg-white/10 border border-white/20 text-white flex items-center justify-center shadow-sm">
+                  <div className="shrink-0 w-8 h-8 rounded-xl bg-orange-500/15 border border-orange-500/30 text-orange-600 dark:text-white flex items-center justify-center shadow-sm">
                     <User className="w-4 h-4" />
                   </div>
                 )}
@@ -531,13 +531,13 @@ export function InstructorAiChatModal({
 
           {loading && (
             <div className="flex gap-3 justify-start animate-fade-in">
-              <div className="shrink-0 w-8 h-8 rounded-xl bg-cream/10 border border-cream/20 text-text flex items-center justify-center">
-                <Sparkles className="w-4 h-4 animate-spin text-text" />
+              <div className="shrink-0 w-8 h-8 rounded-xl bg-orange-500/10 border border-orange-500/20 text-orange-600 dark:text-cream flex items-center justify-center">
+                <Sparkles className="w-4 h-4 animate-spin text-orange-600 dark:text-cream" />
               </div>
-              <div className="rounded-2xl p-3.5 bg-white/[0.04] border border-white/10 flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-gold animate-bounce" />
-                <div className="w-2 h-2 rounded-full bg-gold animate-bounce [animation-delay:0.2s]" />
-                <div className="w-2 h-2 rounded-full bg-gold animate-bounce [animation-delay:0.4s]" />
+              <div className="rounded-2xl p-3.5 bg-black/[0.03] dark:bg-white/[0.04] border border-black/[0.08] dark:border-white/10 flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-orange-500 animate-bounce" />
+                <div className="w-2 h-2 rounded-full bg-orange-500 animate-bounce [animation-delay:0.2s]" />
+                <div className="w-2 h-2 rounded-full bg-orange-500 animate-bounce [animation-delay:0.4s]" />
                 <span className="text-xs text-text-muted ml-1">
                   Channeling {instructor.name}…
                 </span>
@@ -550,14 +550,14 @@ export function InstructorAiChatModal({
 
         {/* Quick Suggestion Chips */}
         {sampleQuestions.length > 0 && messages.length <= 3 && (
-          <div className="px-4 py-2 border-t border-white/5 bg-black/20 flex gap-2 overflow-x-auto scrollbar-none">
+          <div className="px-4 py-2 border-t border-black/[0.06] dark:border-white/5 bg-black/[0.02] dark:bg-black/20 flex gap-2 overflow-x-auto scrollbar-none">
             {sampleQuestions.slice(0, 3).map((q, idx) => (
               <button
                 key={idx}
                 type="button"
                 onClick={() => handleSendMessage(q)}
                 disabled={loading}
-                className="shrink-0 px-3 py-1.5 rounded-full bg-white/[0.04] hover:bg-gold/15 border border-white/10 hover:border-gold/40 text-[11px] text-text-muted hover:text-gold transition-all text-left"
+                className="shrink-0 px-3 py-1.5 rounded-full bg-black/[0.03] dark:bg-white/[0.04] hover:bg-orange-500/10 border border-black/[0.08] dark:border-white/10 hover:border-orange-500/40 text-[11px] text-text-muted hover:text-orange-600 dark:hover:text-cream transition-all text-left"
               >
                 ✨ {q}
               </button>
@@ -566,7 +566,7 @@ export function InstructorAiChatModal({
         )}
 
         {/* Input Bar */}
-        <div className="p-3 sm:p-4 border-t border-white/10 bg-black/40 backdrop-blur-sm">
+        <div className="p-3 sm:p-4 border-t border-black/[0.08] dark:border-white/10 bg-black/[0.02] dark:bg-black/40 backdrop-blur-sm">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -581,16 +581,16 @@ export function InstructorAiChatModal({
               onChange={(e) => setInputValue(e.target.value)}
               placeholder={`Ask ${instructor.name || "the mentor"} about their teachings or timing...`}
               disabled={loading}
-              className="flex-1 px-4 py-3 rounded-2xl bg-black/50 border border-white/15 text-ink text-xs sm:text-sm focus:border-gold focus:outline-none placeholder:text-text-muted"
+              className="flex-1 px-4 py-3 rounded-2xl bg-black/[0.03] dark:bg-black/50 border border-black/10 dark:border-white/15 text-ink text-xs sm:text-sm focus:border-orange-500 focus:outline-none placeholder:text-text-muted"
             />
 
             <button
               type="submit"
               disabled={loading || !inputValue.trim()}
-              className="p-3 rounded-2xl bg-cream hover:bg-cream/90 text-[#0C0B0A] font-semibold shadow-md transition-all disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+              className="p-3 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-semibold shadow-md transition-all disabled:opacity-40 disabled:cursor-not-allowed shrink-0 active:scale-95"
               title="Send Message"
             >
-              <Send className="w-4 h-4" />
+              <Send className="w-4 h-4 text-white" />
             </button>
           </form>
         </div>
