@@ -83,10 +83,17 @@ export async function GET(req: Request, { params }: RouteParams) {
       return NextResponse.json({ error: "This mentor profile is currently under review." }, { status: 403 });
     }
 
+const DEFAULT_INSTRUCTOR_AVATARS: Record<string, string> = {
+  "Arun Chauhan": "/instructors/arun-chauhan.svg",
+  "Swapnil Gupta": "/instructors/swapnil-gupta.svg",
+  "Shresth Sahai": "/instructors/shresth-sahai.svg",
+};
+
     return NextResponse.json(
       {
         instructor: {
           ...instructor,
+          avatarUrl: instructor.avatarUrl || DEFAULT_INSTRUCTOR_AVATARS[instructor.name || ""] || null,
           sessionPrice: instructor.sessionPrice ? Number(instructor.sessionPrice) : 120,
           mentorType: instructor.mentorType || (instructor.role === "INSTRUCTOR" ? "INSTRUCTOR" : "BOTH"),
         },

@@ -437,10 +437,10 @@ export default function InstructorProfilePage({
                 {/* Online 24/7 AI Badge */}
                 <button
                   onClick={() => setIsAiChatOpen(true)}
-                  className="absolute -bottom-2 -right-2 px-2.5 py-1 rounded-full bg-white dark:bg-black/90 border border-purple-500/60 text-purple-700 dark:text-purple-300 text-[10px] font-semibold flex items-center gap-1 shadow-md hover:border-gold transition-colors"
+                  className="absolute -bottom-2 -right-2 px-3 py-1.5 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-600 text-white text-[11px] font-semibold flex items-center gap-1.5 shadow-lg shadow-purple-500/25 ring-2 ring-white dark:ring-[#131317] hover:scale-105 active:scale-95 transition-all"
                   title="24/7 Virtual AI Twin Available"
                 >
-                  <Sparkles className="w-3 h-3 text-purple-600 dark:text-purple-300 animate-pulse" />
+                  <Sparkles className="w-3.5 h-3.5 text-white animate-pulse" />
                   <span>AI Twin</span>
                 </button>
               </div>

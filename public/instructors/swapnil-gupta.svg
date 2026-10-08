@@ -1,0 +1,69 @@
+<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="swapnil-bg" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#161224" />
+      <stop offset="50%" stop-color="#111019" />
+      <stop offset="100%" stop-color="#0B0912" />
+    </linearGradient>
+    <linearGradient id="swapnil-purple" x1="20" y1="20" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#C084FC" />
+      <stop offset="50%" stop-color="#9333EA" />
+      <stop offset="100%" stop-color="#6366F1" />
+    </linearGradient>
+    <radialGradient id="swapnil-glow" cx="60" cy="60" r="48" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#9333EA" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#9333EA" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Ambient Canvas -->
+  <rect width="120" height="120" rx="24" fill="url(#swapnil-bg)" />
+  <circle cx="60" cy="60" r="48" fill="url(#swapnil-glow)" />
+
+  <!-- Orbital Agent Loops -->
+  <ellipse
+    cx="60"
+    cy="60"
+    rx="42"
+    ry="18"
+    stroke="url(#swapnil-purple)"
+    stroke-width="1.5"
+    stroke-dasharray="4 3"
+    stroke-opacity="0.6"
+    transform="rotate(-25 60 60)"
+  />
+  <ellipse
+    cx="60"
+    cy="60"
+    rx="42"
+    ry="18"
+    stroke="#F97316"
+    stroke-width="1.5"
+    stroke-opacity="0.4"
+    transform="rotate(35 60 60)"
+  />
+
+  <!-- Central Coordinator Core -->
+  <circle cx="60" cy="60" r="18" fill="rgba(147, 51, 234, 0.2)" stroke="url(#swapnil-purple)" stroke-width="2" />
+  <circle cx="60" cy="60" r="9" fill="url(#swapnil-purple)" />
+  <circle cx="60" cy="60" r="3.5" fill="#FFFFFF" />
+
+  <!-- Orbiting Specialist Sub-Agents -->
+  <circle cx="28" cy="38" r="5" fill="#A855F7" stroke="#FFFFFF" stroke-width="1.2" />
+  <line x1="33" y1="41" x2="51" y2="52" stroke="#A855F7" stroke-width="1.2" stroke-dasharray="2 2" />
+
+  <circle cx="92" cy="42" r="5.5" fill="#F97316" stroke="#FFFFFF" stroke-width="1.2" />
+  <line x1="87" y1="45" x2="69" y2="55" stroke="#F97316" stroke-width="1.2" stroke-dasharray="2 2" />
+
+  <circle cx="86" cy="84" r="5" fill="#6366F1" stroke="#FFFFFF" stroke-width="1.2" />
+  <line x1="81" y1="80" x2="67" y2="67" stroke="#6366F1" stroke-width="1.2" stroke-dasharray="2 2" />
+
+  <circle cx="34" cy="80" r="4.5" fill="#EC4899" stroke="#FFFFFF" stroke-width="1.2" />
+  <line x1="39" y1="76" x2="53" y2="66" stroke="#EC4899" stroke-width="1.2" stroke-dasharray="2 2" />
+
+  <!-- Sparkle Synthesis Mark -->
+  <path
+    d="M60 22L61.5 27L66.5 28.5L61.5 30L60 35L58.5 30L53.5 28.5L58.5 27L60 22Z"
+    fill="#FDE047"
+  />
+</svg>

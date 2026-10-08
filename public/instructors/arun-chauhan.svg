@@ -1,0 +1,67 @@
+<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="arun-bg" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1E140F" />
+      <stop offset="50%" stop-color="#141113" />
+      <stop offset="100%" stop-color="#0D0C10" />
+    </linearGradient>
+    <linearGradient id="arun-orange" x1="20" y1="20" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FB923C" />
+      <stop offset="60%" stop-color="#F97316" />
+      <stop offset="100%" stop-color="#C2410C" />
+    </linearGradient>
+    <linearGradient id="arun-purple" x1="0" y1="120" x2="120" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#A855F7" />
+      <stop offset="100%" stop-color="#EC4899" />
+    </linearGradient>
+    <radialGradient id="arun-glow" cx="60" cy="60" r="45" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F97316" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#F97316" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Ambient Canvas -->
+  <rect width="120" height="120" rx="24" fill="url(#arun-bg)" />
+  <circle cx="60" cy="60" r="45" fill="url(#arun-glow)" />
+
+  <!-- Outer Hexagon Matrix -->
+  <polygon
+    points="60,18 96,39 96,81 60,102 24,81 24,39"
+    stroke="url(#arun-orange)"
+    stroke-width="1.5"
+    stroke-dasharray="4 2"
+    stroke-opacity="0.45"
+  />
+
+  <!-- Mid Hexagon -->
+  <polygon
+    points="60,28 88,44 88,76 60,92 32,76 32,44"
+    stroke="url(#arun-orange)"
+    stroke-width="1.75"
+    fill="rgba(249,115,22,0.06)"
+  />
+
+  <!-- Retrieval Cross-Lattice Streams -->
+  <line x1="60" y1="28" x2="60" y2="92" stroke="url(#arun-orange)" stroke-width="1.2" stroke-opacity="0.6" />
+  <line x1="32" y1="44" x2="88" y2="76" stroke="url(#arun-orange)" stroke-width="1.2" stroke-opacity="0.6" />
+  <line x1="32" y1="76" x2="88" y2="44" stroke="url(#arun-orange)" stroke-width="1.2" stroke-opacity="0.6" />
+
+  <!-- Vector Nodes -->
+  <circle cx="60" cy="18" r="3.5" fill="#FB923C" />
+  <circle cx="96" cy="39" r="3" fill="#F97316" />
+  <circle cx="96" cy="81" r="3" fill="#F97316" />
+  <circle cx="60" cy="102" r="3.5" fill="#FB923C" />
+  <circle cx="24" cy="81" r="3" fill="#F97316" />
+  <circle cx="24" cy="39" r="3" fill="#F97316" />
+
+  <!-- Central Retrieval Diamond -->
+  <polygon
+    points="60,42 75,60 60,78 45,60"
+    fill="url(#arun-purple)"
+    stroke="#FFFFFF"
+    stroke-width="1.5"
+    stroke-opacity="0.8"
+  />
+  <circle cx="60" cy="60" r="3.5" fill="#FFFFFF" />
+  <circle cx="60" cy="60" r="6" stroke="#FB923C" stroke-width="1.2" stroke-opacity="0.75" />
+</svg>

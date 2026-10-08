@@ -42,6 +42,7 @@ async function seedAccounts() {
       email: "arun@aibootcamp.dev",
       name: "Arun Chauhan",
       role: "INSTRUCTOR" as const,
+      avatarUrl: "/instructors/arun-chauhan.svg",
       bio: "Principal AI Architect & Staff Engineer. Specializes in Enterprise RAG, LLM Orchestration, and Production AI Engineering.",
       specialties: "Enterprise RAG, Production AI Systems, Retrieval Evaluation",
       aiGreeting: "Ask me anything about production AI architecture, enterprise retrieval, or LLM engineering at scale.",
@@ -51,6 +52,7 @@ async function seedAccounts() {
       email: "swapnil@aibootcamp.dev",
       name: "Swapnil Gupta",
       role: "INSTRUCTOR" as const,
+      avatarUrl: "/instructors/swapnil-gupta.svg",
       bio: "Lead Agent Systems Engineer. Specializes in Autonomous AI Agents, Multi-Agent Coordination, and Tool-Calling Workflows.",
       specialties: "Autonomous AI Agents, Multi-Agent Systems, Tool Design, Memory",
       aiGreeting: "Bring me your multi-agent architecture or workflow challenges and we'll engineer rock-solid execution loops.",
@@ -60,6 +62,7 @@ async function seedAccounts() {
       email: "shresth@aibootcamp.dev",
       name: "Shresth Sahai",
       role: "INSTRUCTOR" as const,
+      avatarUrl: "/instructors/shresth-sahai.svg",
       bio: "Applied Machine Learning Lead & Deep Learning Specialist. Specializes in Foundation Models, Fine-Tuning, and Neural Architectures.",
       specialties: "Deep Learning, Foundation Models, Fine-Tuning, Neural Architectures",
       aiGreeting: "Foundations, model fine-tuning, and neural architectures welcome. Let's build intuition from first principles.",
@@ -85,9 +88,17 @@ async function seedAccounts() {
   const users = [];
   for (const p of people) {
     const accountPassword = "password" in p && p.password ? await bcrypt.hash(p.password, 10) : password;
+    const avatarUrl = "avatarUrl" in p ? (p as any).avatarUrl : null;
     const user = await prisma.user.upsert({
       where: { email: p.email },
-      update: { name: p.name, role: p.role, bio: p.bio, specialties: p.specialties, password: accountPassword },
+      update: {
+        name: p.name,
+        role: p.role,
+        bio: p.bio,
+        specialties: p.specialties,
+        password: accountPassword,
+        ...(avatarUrl ? { avatarUrl } : {}),
+      },
       create: {
         email: p.email,
         name: p.name,
@@ -95,6 +106,7 @@ async function seedAccounts() {
         role: p.role,
         bio: p.bio,
         specialties: p.specialties,
+        avatarUrl,
         approvalStatus: "APPROVED",
         aiChatEnabled: true,
         aiGreeting: "aiGreeting" in p ? p.aiGreeting : null,

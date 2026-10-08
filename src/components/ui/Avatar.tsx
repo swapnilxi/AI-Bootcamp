@@ -1,10 +1,10 @@
 import Image from "next/image";
+import { InstructorIllustration } from "./InstructorIllustration";
 
 /**
- * One avatar treatment for every mentor/user photo in the app — a premium
- * ivory initial tile when there's no photo, next/image with a cream rim and
- * optional orange glow when there is. Centralises a pattern that used to be
- * hand-rolled (raw <img> + initials fallback) at seven call sites.
+ * One avatar treatment for every mentor/user in the app — renders
+ * bespoke engineering vector illustrations for instructors, next/image
+ * for photo avatars, and rich deterministic gradient monograms as fallback.
  */
 
 export type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl";
@@ -43,16 +43,46 @@ export function Avatar({
   className?: string;
 }) {
   const initial = name?.trim()?.charAt(0)?.toUpperCase() || "•";
+  const lowerName = (name || "").toLowerCase();
+  const lowerSrc = (src || "").toLowerCase();
+
+  const isIllustration =
+    lowerName.includes("arun") ||
+    lowerName.includes("swapnil") ||
+    lowerName.includes("shresth") ||
+    lowerSrc.includes("arun") ||
+    lowerSrc.includes("swapnil") ||
+    lowerSrc.includes("shresth");
+
+  const illustrationType =
+    lowerName.includes("arun") || lowerSrc.includes("arun")
+      ? "arun"
+      : lowerName.includes("swapnil") || lowerSrc.includes("swapnil")
+      ? "swapnil"
+      : "shresth";
+
+  // Deterministic aesthetic gradient palette for initials fallback
+  const charCode = (name || "mentor").split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
+  const gradients = [
+    "from-orange-500/20 via-amber-500/10 to-transparent text-orange-600 dark:text-orange-300 border-orange-500/30",
+    "from-purple-500/20 via-indigo-500/10 to-transparent text-purple-600 dark:text-purple-300 border-purple-500/30",
+    "from-emerald-500/20 via-teal-500/10 to-transparent text-emerald-600 dark:text-emerald-300 border-emerald-500/30",
+    "from-blue-500/20 via-cyan-500/10 to-transparent text-blue-600 dark:text-blue-300 border-blue-500/30",
+    "from-rose-500/20 via-amber-500/10 to-transparent text-rose-600 dark:text-rose-300 border-rose-500/30",
+  ];
+  const activeGradient = gradients[charCode % gradients.length];
 
   return (
     <div
-      className={`relative shrink-0 overflow-hidden border border-cream/30 bg-black-raised shadow-inner transition-[box-shadow,border-color] duration-300 ${
+      className={`relative shrink-0 overflow-hidden border border-black/10 dark:border-cream/20 bg-black/[0.02] dark:bg-[#16161c] shadow-sm transition-all duration-300 ${
         SIZE_CLASS[size]
       } ${RADIUS_CLASS[radius]} ${
-        glow ? "shadow-[0_0_28px_-10px_rgba(249,115,22,0.5)] group-hover:border-orange/50" : ""
+        glow ? "shadow-[0_8px_30px_-6px_rgba(249,115,22,0.35)] ring-2 ring-orange-500/30" : ""
       } ${className}`}
     >
-      {src ? (
+      {isIllustration ? (
+        <InstructorIllustration type={illustrationType} />
+      ) : src ? (
         <Image
           src={src}
           alt={name || "Avatar"}
@@ -62,7 +92,7 @@ export function Avatar({
           className="object-cover"
         />
       ) : (
-        <div className="flex h-full w-full items-center justify-center font-serif font-bold text-cream">
+        <div className={`flex h-full w-full items-center justify-center font-serif font-semibold bg-gradient-to-br ${activeGradient} backdrop-blur-sm select-none`}>
           {initial}
         </div>
       )}

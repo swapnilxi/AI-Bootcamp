@@ -241,17 +241,17 @@ export default function InstructorsPage() {
                     className="absolute inset-0 z-0 focus:outline-none focus-visible:ring-1 focus-visible:ring-gold/40"
                   />
 
-                  {/* Top-Right Sparkle Button with Hover Tooltip: Chat with AI version */}
+                  {/* Top-Right Pill: Chat with AI version */}
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       setSelectedAiInstructor(inst);
                     }}
-                    className="group/ai absolute top-4 right-4 p-2 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 hover:border-purple-400 text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-white transition-all shadow-sm z-10 flex items-center gap-1.5"
+                    className="group/ai absolute top-4 right-4 px-3 py-1.5 rounded-full bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/25 hover:border-purple-400 text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-white transition-all shadow-sm z-10 flex items-center gap-1.5"
                     aria-label="Chat with AI version"
                   >
-                    <Sparkles className="w-4 h-4 text-purple-600 dark:text-purple-300 group-hover/ai:rotate-12 transition-transform animate-pulse" />
-                    <span className="text-[10px] font-semibold text-purple-700 dark:text-purple-200 hidden sm:inline">AI Twin</span>
+                    <Sparkles className="w-3.5 h-3.5 text-purple-600 dark:text-purple-300 group-hover/ai:rotate-12 transition-transform animate-pulse" />
+                    <span className="text-[11px] font-semibold text-purple-700 dark:text-purple-200 hidden sm:inline">AI Twin</span>
                     {/* Tooltip on hover */}
                     <span className="absolute -bottom-8 right-0 px-2.5 py-1 rounded-full bg-black/95 border border-purple-500/40 text-[10px] text-purple-200 font-medium whitespace-nowrap opacity-0 group-hover/ai:opacity-100 transition-opacity pointer-events-none shadow-xl z-30">
                       Chat with AI version ✨
@@ -261,23 +261,25 @@ export default function InstructorsPage() {
                   <div className="space-y-5">
                     {/* Top Identity Row */}
                     <div className="flex items-start gap-4">
-                      <div className="relative shrink-0">
+                      <div className="relative shrink-0 group/avatar">
                         <Avatar
                           src={inst.avatarUrl}
                           name={inst.name}
                           size="lg"
                           glow
-                          className="shadow-lg group-hover:scale-105 group-hover:border-gold transition-transform duration-300"
+                          className="shadow-md group-hover:scale-105 group-hover:border-gold transition-transform duration-300"
                         />
+                        {/* Redesigned spacious, perfectly circular AI Twin badge */}
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
                             setSelectedAiInstructor(inst);
                           }}
-                          className="absolute -bottom-1 -right-1 z-10 p-1 rounded-full bg-white dark:bg-black border border-purple-500/50 hover:border-gold hover:scale-110 transition-all text-purple-600 dark:text-purple-300 hover:text-gold shadow-sm"
-                          title="Chat with AI version"
+                          className="absolute -bottom-1 -right-1 z-10 w-7 h-7 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-600 text-white ring-2 ring-white dark:ring-[#141418] shadow-md shadow-purple-500/25 hover:shadow-purple-500/50 hover:scale-115 active:scale-95 transition-all flex items-center justify-center group/ai-btn"
+                          title="Chat with AI version ✨"
+                          aria-label="Chat with AI version"
                         >
-                          <Sparkles className="w-3.5 h-3.5" />
+                          <Sparkles className="w-3.5 h-3.5 text-white group-hover/ai-btn:rotate-12 transition-transform" />
                         </button>
                       </div>
 

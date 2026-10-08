@@ -16,6 +16,12 @@ const ALLOWED_INSTRUCTOR_NAMES = [
   "Shresth Sahai",
 ];
 
+const DEFAULT_INSTRUCTOR_AVATARS: Record<string, string> = {
+  "Arun Chauhan": "/instructors/arun-chauhan.svg",
+  "Swapnil Gupta": "/instructors/swapnil-gupta.svg",
+  "Shresth Sahai": "/instructors/shresth-sahai.svg",
+};
+
 export async function GET(req: Request) {
   try {
     const session = await getServerSession(authOptions);
@@ -89,6 +95,7 @@ export async function GET(req: Request) {
     return NextResponse.json({
       instructors: sorted.map((inst) => ({
         ...inst,
+        avatarUrl: inst.avatarUrl || DEFAULT_INSTRUCTOR_AVATARS[inst.name || ""] || null,
         sessionPrice: inst.sessionPrice ? Number(inst.sessionPrice) : 150,
         mentorType: inst.mentorType || "BOTH",
       })),
