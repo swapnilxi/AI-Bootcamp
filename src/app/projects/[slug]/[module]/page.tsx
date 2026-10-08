@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { PageHeader, MetaPill } from "@/components/learning/primitives";
 import { ModuleStepper, ModulePager } from "../ModuleStepper";
 import { getModule, tasksForStage, type Task } from "../modules";
+import { BuildPreview } from "@/components/projects/BuildPreview";
 
 export const revalidate = 3600;
 
@@ -35,6 +37,23 @@ export default async function ProjectModulePage({
 
   return (
     <div className="mx-auto max-w-5xl space-y-12 px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+      {/* Top back navigation */}
+      <div className="flex items-center justify-between -mb-6">
+        <Link
+          href={`/projects/${slug}`}
+          className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-text-muted hover:text-gold transition-colors group"
+        >
+          <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+          <span>Back to Project Overview</span>
+        </Link>
+        <Link
+          href="/projects"
+          className="hidden sm:inline-flex items-center text-xs text-text-muted hover:text-gold transition-colors"
+        >
+          All Projects →
+        </Link>
+      </div>
+
       <PageHeader
         eyebrow={`Module · ${project.title}`}
         title={projectModule.title}
@@ -82,6 +101,8 @@ export default async function ProjectModulePage({
           )}
         </section>
       )}
+
+      {projectModule.stage === "IMPLEMENTATION" && <BuildPreview projectSlug={slug} />}
 
       {projectModule.stage === "DEPLOYMENT" && project.datasetUrl && (
         <section className="editorial-card glow-tr space-y-2 rounded-2xl p-6 sm:p-8">

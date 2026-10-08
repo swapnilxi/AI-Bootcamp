@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { PageHeader, DifficultyPill, MetaPill } from "@/components/learning/primitives";
 import { ModuleStepper, ModulePager } from "./ModuleStepper";
@@ -38,6 +39,27 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
 
   return (
     <div className="mx-auto max-w-5xl space-y-12 px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+      {/* Top back navigation */}
+      <div className="flex items-center justify-between -mb-6">
+        <Link
+          href="/projects"
+          className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-text-muted hover:text-gold transition-colors group"
+        >
+          <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+          <span>All Projects</span>
+        </Link>
+        {project.path && (
+          <Link
+            href={`/paths/${project.path.slug}`}
+            className="hidden sm:inline-flex items-center gap-1.5 text-xs text-text-muted hover:text-gold transition-colors"
+          >
+            <span>Part of</span>
+            <span className="font-medium text-text">{project.path.title}</span>
+            <span>path →</span>
+          </Link>
+        )}
+      </div>
+
       <PageHeader
         eyebrow={project.isCapstone ? "Capstone project" : "Project"}
         title={project.title}
