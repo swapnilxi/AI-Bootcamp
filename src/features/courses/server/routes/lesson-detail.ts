@@ -13,7 +13,7 @@ interface RouteParams {
 async function loadLesson(courseId: string, lessonId: string) {
   const lesson = await prisma.lesson.findUnique({
     where: { id: lessonId },
-    include: { course: true },
+    include: { course: true, author: { select: { id: true, name: true } } },
   });
   if (!lesson || lesson.courseId !== courseId) return null;
   return lesson;
@@ -78,6 +78,13 @@ export async function GET(req: Request, { params }: RouteParams) {
         isPreview: lesson.isPreview,
         position: index + 1,
         isCompleted: completedIds.has(lesson.id),
+        generatedHtml: lesson.generatedHtml,
+        variants: lesson.variants,
+        htmlUpdatedAt: lesson.htmlUpdatedAt,
+        authorId: lesson.authorId,
+        authorName: lesson.author?.name ?? null,
+        showAuthor: lesson.showAuthor,
+        canClaimAuthorship: access.canManage && lesson.authorId !== session?.user?.id,
       },
       course: {
         id: lesson.course.id,
@@ -121,7 +128,8 @@ export async function PUT(req: Request, { params }: RouteParams) {
       );
     }
 
-    const result = updateLessonSchema.safeParse(await req.json());
+    const body = await req.json().catch(() => ({}));
+    const result = updateLessonSchema.safeParse(body);
     if (!result.success) {
       return NextResponse.json(
         { error: result.error.errors[0]?.message || "Validation error", issues: result.error.format() },
@@ -131,7 +139,12 @@ export async function PUT(req: Request, { params }: RouteParams) {
 
     const data = Object.fromEntries(
       Object.entries(result.data).filter(([, v]) => v !== undefined)
-    );
+    ) as Record<string, unknown>;
+    // "Claim authorship" is an action, not a plain field: it can only ever
+    // credit the caller themselves, never an arbitrary user id from the body.
+    if (body?.claimAuthorship === true) {
+      data.authorId = session.user.id;
+    }
     // An instructor revising a declined lesson resubmits it for review
     if (!isAdminRole(session.user.role) && lesson.approvalStatus === "REJECTED") {
       data.approvalStatus = "PENDING";

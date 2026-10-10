@@ -17,6 +17,7 @@ import { StarfieldBackground } from "@/components/three/StarfieldBackground";
 import { MotionEffects } from "@/components/motion/MotionEffects";
 import { Suspense } from "react";
 import { TutorWidget } from "@/components/ai/TutorWidget";
+import { AccentApplier } from "@/components/ui/AccentApplier";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -85,6 +86,7 @@ export default function RootLayout({
     <html lang="en" className={`${cormorant.variable} ${inter.variable} ${montserrat.variable}`} suppressHydrationWarning>
       <body className="bg-black text-text min-h-screen flex flex-col font-sans selection:bg-gold selection:text-[#0C0B0A] overflow-x-hidden" suppressHydrationWarning>
         <Providers>
+          <AccentApplier />
           <SmoothScrollProvider>
             <StarfieldBackground />
             <div className="grain-overlay" aria-hidden="true" />

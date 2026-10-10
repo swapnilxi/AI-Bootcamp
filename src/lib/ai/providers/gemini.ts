@@ -2,7 +2,7 @@ import type { ChatOptions, ChatStream, ProviderAdapter } from "./types";
 import { ProviderError } from "./types";
 import { collectStream, providerErrorFrom, readJsonStream } from "./http";
 
-const DEFAULT_MODEL = "gemini-2.5-flash";
+const DEFAULT_MODEL = "gemini-3.5-flash";
 const BASE = "https://generativelanguage.googleapis.com/v1beta";
 
 function toContents(messages: ChatOptions["messages"]) {

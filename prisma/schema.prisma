@@ -132,6 +132,8 @@ model User {
   bio               String?
   phone             String?
   timezone          String?   @default("America/New_York")
+  /// UI accent color: "orange" (default) | "purple" | "pink" | "yellow" | "green"
+  accentColor       String    @default("orange")
   resetToken        String?   @unique
   resetTokenExpires DateTime?
   createdAt         DateTime  @default(now())
@@ -176,6 +178,8 @@ model User {
   entitlements       Entitlement[]
   createdCourses     Course[]            @relation("CourseInstructor")
   lessonProgress     LessonProgress[]
+  authoredLessons    Lesson[]            @relation("LessonAuthor")
+  authoredModuleLessons ProjectModuleLesson[] @relation("ProjectModuleLessonAuthor")
   pathEnrollments    PathEnrollment[]
   practiceAttempts   PracticeAttempt[]
   labRuns            LabRun[]
@@ -342,6 +346,24 @@ model Lesson {
   rejectionReason String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+
+  // Generated, previewable lesson views (the interactive "Read / Easy Read /
+  // Visualize / Explain Deeper / Breakdown" experience). `generatedHtml` is the
+  // standalone "Read" document; `variants` holds the rest, keyed by view — see
+  // `LessonVariants` in `src/lib/ai/lessonHtml.ts`. Both are nullable so an
+  // authored-but-not-yet-generated lesson still renders as plain text.
+  generatedHtml String?
+  variants      Json?
+  htmlUpdatedAt DateTime?
+
+  // Who actually wrote/generated this lesson's content, which can differ from
+  // the course's instructor-of-record (e.g. an admin authoring into someone
+  // else's course). Null means "attribute to the course instructor" so
+  // existing lessons are unaffected. `showAuthor` lets whoever holds
+  // authorship opt out of a public byline entirely.
+  authorId   String?
+  author     User?   @relation("LessonAuthor", fields: [authorId], references: [id], onDelete: SetNull)
+  showAuthor Boolean @default(true)
 
   course            Course             @relation(fields: [courseId], references: [id], onDelete: Cascade)
   module            Module?            @relation(fields: [moduleId], references: [id], onDelete: SetNull)
@@ -613,9 +635,31 @@ model Project {
 
   submissions   ProjectSubmission[]
   bootcampWeeks BootcampWeek[]
+  moduleLessons ProjectModuleLesson[]
 
   @@index([difficulty, order])
   @@index([pathId])
+}
+
+/// A generated, previewable lesson for one stage of a project's build (the
+/// Project equivalent of `Lesson`). Project stages are a fixed sequence
+/// defined in code (`app/projects/[slug]/modules.ts`), not authored rows, so
+/// this is keyed by `(projectId, stage)` rather than a module foreign key.
+model ProjectModuleLesson {
+  id            String       @id @default(cuid())
+  projectId     String
+  project       Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  stage         ProjectStage
+  generatedHtml String?
+  variants      Json?
+  htmlUpdatedAt DateTime?
+  authorId      String?
+  author        User?        @relation("ProjectModuleLessonAuthor", fields: [authorId], references: [id], onDelete: SetNull)
+  showAuthor    Boolean      @default(true)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@unique([projectId, stage])
 }
 
 model ProjectSubmission {

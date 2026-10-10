@@ -28,7 +28,9 @@
   --card-glass-top-rgb-ch: 31 29 27;
   --card-glass-bottom-rgb-ch: 16 15 14;
 
-  /* Premium orange for Dark Mode — the standard, pure Tailwind orange ramp */
+  /* Premium orange for Dark Mode — the standard, pure Tailwind orange ramp.
+     This is the "orange" accent; an [data-accent="..."] attribute on <html>
+     (set by the appearance picker) overrides this whole block, see below. */
   --orange: #F97316;
   --orange-bright: #FB923C;
   --orange-pale: #FDBA74;
@@ -36,6 +38,24 @@
   --orange-soft: rgba(249, 115, 22, 0.14);
   --orange-glow: rgba(249, 115, 22, 0.25);
   --orange-rgb: 249, 115, 22;
+  /* Space-separated channel so Tailwind's rgb(var(--x) / <alpha-value>)
+     utilities (bg-gold, text-gold, border-gold, ...) can opacity-modify it. */
+  --orange-rgb-ch: 249 115 22;
+
+  /* The numbered accent ramp (50-950) behind orange-50..orange-950 / gold-50..
+     gold-950 / amber-* Tailwind classes. Doesn't vary by light/dark mode,
+     same as upstream Tailwind's own color scales don't. */
+  --orange-50-rgb-ch: 255 247 237;
+  --orange-100-rgb-ch: 255 237 213;
+  --orange-200-rgb-ch: 254 215 170;
+  --orange-300-rgb-ch: 253 186 116;
+  --orange-400-rgb-ch: 251 146 60;
+  --orange-500-rgb-ch: 249 115 22;
+  --orange-600-rgb-ch: 234 88 12;
+  --orange-700-rgb-ch: 194 65 12;
+  --orange-800-rgb-ch: 154 52 18;
+  --orange-900-rgb-ch: 124 45 18;
+  --orange-950-rgb-ch: 67 20 7;
 
   /* Cream: Carrying headings, copy, hairlines and glass highlights */
   --cream: #FAF6F0;
@@ -52,11 +72,11 @@
   --text-muted-rgb-ch: 216 203 180;
   --text-rgb: 250, 246, 240;
 
-  /* Flat AI Icon Tokens with Subtle Neon Orange Glow */
-  --ai-icon-bg: rgba(249, 115, 22, 0.1);
-  --ai-icon-border: rgba(249, 115, 22, 0.3);
-  --ai-icon-glow: rgba(249, 115, 22, 0.25);
-  --ai-icon-color: #FB923C;
+  /* Flat AI Icon Tokens with Subtle Neon Accent Glow */
+  --ai-icon-bg: rgba(var(--orange-rgb), 0.1);
+  --ai-icon-border: rgba(var(--orange-rgb), 0.3);
+  --ai-icon-glow: rgba(var(--orange-rgb), 0.25);
+  --ai-icon-color: var(--orange-bright);
 
   /* Status semantics — distinct from the single orange brand accent, used for
      state (success/warning/danger) rather than identity. Same hue in both
@@ -105,6 +125,7 @@ html.light,
   --orange-soft: rgba(234, 88, 12, 0.08);
   --orange-glow: rgba(234, 88, 12, 0.22);
   --orange-rgb: 234, 88, 12;
+  --orange-rgb-ch: 234 88 12;
 
   /* Cream Accents in Light Mode */
   --cream: #FDFAF6;
@@ -121,12 +142,155 @@ html.light,
   --text-muted-rgb-ch: 107 99 91;
 
   /* Flat AI Icon Tokens in Light Mode */
-  --ai-icon-bg: rgba(234, 88, 12, 0.07);
-  --ai-icon-border: rgba(234, 88, 12, 0.22);
-  --ai-icon-glow: rgba(234, 88, 12, 0.16);
-  --ai-icon-color: #EA580C;
+  --ai-icon-bg: rgba(var(--orange-rgb), 0.07);
+  --ai-icon-border: rgba(var(--orange-rgb), 0.22);
+  --ai-icon-glow: rgba(var(--orange-rgb), 0.16);
+  --ai-icon-color: var(--orange);
 
   --ink: var(--text);
   --ivory: var(--black);
   --mist: var(--black-line);
+}
+
+/* =========================================================================
+   ACCENT COLOR OVERRIDES
+
+   The appearance picker in Settings sets [data-accent="..."] on <html>.
+   Each block below re-points the whole orange/gold/amber token set (and its
+   numbered ramp) at a different hue, using the same lightness steps as the
+   orange ramp so every accent behaves the same way in light vs. dark mode and
+   at every Tailwind shade. No [data-accent], or [data-accent="orange"],
+   keeps the default values above untouched.
+   ========================================================================= */
+
+[data-accent="purple"] {
+  --orange: #7131CC;
+  --orange-bright: #8750D5;
+  --orange-pale: #A77FE0;
+  --orange-deep: #662CB8;
+  --orange-soft: rgba(113, 49, 204, 0.14);
+  --orange-glow: rgba(113, 49, 204, 0.25);
+  --orange-rgb: 113, 49, 204;
+  --orange-rgb-ch: 113 49 204;
+  --orange-50-rgb-ch: 235 226 248;
+  --orange-100-rgb-ch: 222 207 243;
+  --orange-200-rgb-ch: 197 171 235;
+  --orange-300-rgb-ch: 167 127 224;
+  --orange-400-rgb-ch: 135 80 213;
+  --orange-500-rgb-ch: 113 49 204;
+  --orange-600-rgb-ch: 102 44 184;
+  --orange-700-rgb-ch: 84 36 152;
+  --orange-800-rgb-ch: 69 30 124;
+  --orange-900-rgb-ch: 55 24 100;
+  --orange-950-rgb-ch: 25 11 45;
+}
+html.light[data-accent="purple"],
+[data-theme="light"][data-accent="purple"] {
+  --orange: #662CB8;
+  --orange-bright: #7131CC;
+  --orange-pale: #A77FE0;
+  --orange-deep: #542498;
+  --orange-soft: rgba(102, 44, 184, 0.08);
+  --orange-glow: rgba(102, 44, 184, 0.22);
+  --orange-rgb: 102, 44, 184;
+  --orange-rgb-ch: 102 44 184;
+}
+
+[data-accent="pink"] {
+  --orange: #E92688;
+  --orange-bright: #ED4A9C;
+  --orange-pale: #F27FB8;
+  --orange-deep: #E0167B;
+  --orange-soft: rgba(233, 38, 136, 0.14);
+  --orange-glow: rgba(233, 38, 136, 0.25);
+  --orange-rgb: 233, 38, 136;
+  --orange-rgb-ch: 233 38 136;
+  --orange-50-rgb-ch: 253 239 246;
+  --orange-100-rgb-ch: 251 217 234;
+  --orange-200-rgb-ch: 247 177 212;
+  --orange-300-rgb-ch: 242 127 184;
+  --orange-400-rgb-ch: 237 74 156;
+  --orange-500-rgb-ch: 233 38 136;
+  --orange-600-rgb-ch: 224 22 123;
+  --orange-700-rgb-ch: 187 19 103;
+  --orange-800-rgb-ch: 157 15 86;
+  --orange-900-rgb-ch: 129 13 71;
+  --orange-950-rgb-ch: 67 7 37;
+}
+html.light[data-accent="pink"],
+[data-theme="light"][data-accent="pink"] {
+  --orange: #E0167B;
+  --orange-bright: #E92688;
+  --orange-pale: #F27FB8;
+  --orange-deep: #BB1367;
+  --orange-soft: rgba(224, 22, 123, 0.08);
+  --orange-glow: rgba(224, 22, 123, 0.22);
+  --orange-rgb: 224, 22, 123;
+  --orange-rgb-ch: 224 22 123;
+}
+
+[data-accent="yellow"] {
+  --orange: #F6CC23;
+  --orange-bright: #F7D54A;
+  --orange-pale: #FAE281;
+  --orange-deep: #F5C60B;
+  --orange-soft: rgba(246, 204, 35, 0.14);
+  --orange-glow: rgba(246, 204, 35, 0.25);
+  --orange-rgb: 246, 204, 35;
+  --orange-rgb-ch: 246 204 35;
+  --orange-50-rgb-ch: 254 252 240;
+  --orange-100-rgb-ch: 254 248 224;
+  --orange-200-rgb-ch: 252 238 182;
+  --orange-300-rgb-ch: 250 226 129;
+  --orange-400-rgb-ch: 247 213 74;
+  --orange-500-rgb-ch: 246 204 35;
+  --orange-600-rgb-ch: 245 198 11;
+  --orange-700-rgb-ch: 208 168 9;
+  --orange-800-rgb-ch: 175 141 7;
+  --orange-900-rgb-ch: 146 118 6;
+  --orange-950-rgb-ch: 81 65 3;
+}
+html.light[data-accent="yellow"],
+[data-theme="light"][data-accent="yellow"] {
+  --orange: #F5C60B;
+  --orange-bright: #F6CC23;
+  --orange-pale: #FAE281;
+  --orange-deep: #D0A809;
+  --orange-soft: rgba(245, 198, 11, 0.08);
+  --orange-glow: rgba(245, 198, 11, 0.22);
+  --orange-rgb: 245, 198, 11;
+  --orange-rgb-ch: 245 198 11;
+}
+
+[data-accent="green"] {
+  --orange: #26CA7E;
+  --orange-bright: #3EDA91;
+  --orange-pale: #6FE4AD;
+  --orange-deep: #22B571;
+  --orange-soft: rgba(38, 202, 126, 0.14);
+  --orange-glow: rgba(38, 202, 126, 0.25);
+  --orange-rgb: 38, 202, 126;
+  --orange-rgb-ch: 38 202 126;
+  --orange-50-rgb-ch: 214 247 232;
+  --orange-100-rgb-ch: 194 243 220;
+  --orange-200-rgb-ch: 157 236 199;
+  --orange-300-rgb-ch: 111 228 173;
+  --orange-400-rgb-ch: 62 218 145;
+  --orange-500-rgb-ch: 38 202 126;
+  --orange-600-rgb-ch: 34 181 113;
+  --orange-700-rgb-ch: 28 147 92;
+  --orange-800-rgb-ch: 23 119 74;
+  --orange-900-rgb-ch: 18 94 58;
+  --orange-950-rgb-ch: 7 36 23;
+}
+html.light[data-accent="green"],
+[data-theme="light"][data-accent="green"] {
+  --orange: #22B571;
+  --orange-bright: #26CA7E;
+  --orange-pale: #6FE4AD;
+  --orange-deep: #1C935C;
+  --orange-soft: rgba(34, 181, 113, 0.08);
+  --orange-glow: rgba(34, 181, 113, 0.22);
+  --orange-rgb: 34, 181, 113;
+  --orange-rgb-ch: 34 181 113;
 }

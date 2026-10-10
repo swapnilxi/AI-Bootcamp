@@ -30,7 +30,7 @@ export async function GET(req: Request) {
     const type = searchParams.get("type"); // INSTRUCTOR | MENTOR | ALL
 
     const where: any = {
-      role: "INSTRUCTOR",
+      role: { in: ["INSTRUCTOR", "ADMIN", "SUPER_ADMIN"] },
       name: { in: ALLOWED_INSTRUCTOR_NAMES },
       approvalStatus: "APPROVED",
     };

@@ -133,9 +133,10 @@ function RegisterForm() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder={role === "INSTRUCTOR" ? "Dr. Jonathan Cross" : "Eleanor Vance"}
-                className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-mist bg-black/60 text-ink text-base focus:outline-none focus:border-gold"
+                style={{ paddingLeft: "3rem" }}
+                className="w-full pl-11 pr-4 py-2.5 rounded-lg border border-mist bg-black/60 text-ink text-base focus:outline-none focus:border-gold"
               />
-              <User className="absolute left-3.5 top-3 w-4 h-4 text-ink/40 pointer-events-none" />
+              <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40 pointer-events-none" />
             </div>
           </div>
 
@@ -150,9 +151,10 @@ function RegisterForm() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={role === "INSTRUCTOR" ? "jonathan@example.com" : "eleanor@example.com"}
-                className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-mist bg-black/60 text-ink text-base focus:outline-none focus:border-gold"
+                style={{ paddingLeft: "3rem" }}
+                className="w-full pl-11 pr-4 py-2.5 rounded-lg border border-mist bg-black/60 text-ink text-base focus:outline-none focus:border-gold"
               />
-              <Mail className="absolute left-3.5 top-3 w-4 h-4 text-ink/40 pointer-events-none" />
+              <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40 pointer-events-none" />
             </div>
           </div>
 
@@ -167,9 +169,10 @@ function RegisterForm() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-mist bg-black/60 text-ink text-base focus:outline-none focus:border-gold"
+                style={{ paddingLeft: "3rem" }}
+                className="w-full pl-11 pr-4 py-2.5 rounded-lg border border-mist bg-black/60 text-ink text-base focus:outline-none focus:border-gold"
               />
-              <Lock className="absolute left-3.5 top-3 w-4 h-4 text-ink/40 pointer-events-none" />
+              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40 pointer-events-none" />
             </div>
           </div>
 

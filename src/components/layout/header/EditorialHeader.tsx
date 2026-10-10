@@ -12,10 +12,12 @@ import { EASE_OUT } from "@/lib/motion";
 import { DesktopNav } from "./DesktopNav";
 import { AccountMenu } from "./AccountMenu";
 import { InstructorMenu } from "./InstructorMenu";
+import { NotificationBell } from "./NotificationBell";
 import { MenuToggle } from "./MenuToggle";
 import { MobileMenu, MOBILE_MENU_ID } from "./MobileMenu";
 import { useHeaderScroll } from "./useHeaderScroll";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { ViewModeBanner } from "./ViewModeBanner";
 
 /** Distance the bar travels when tucked away; clears its height plus drop shadow. */
 const HIDDEN_OFFSET_PX = -140;
@@ -98,6 +100,8 @@ export function EditorialHeader() {
             <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
               <ThemeToggle />
 
+              <NotificationBell />
+
               <InstructorMenu session={session} onOpenChange={setInstructorOpen} />
 
               <span className="magnetic inline-flex">
@@ -115,6 +119,8 @@ export function EditorialHeader() {
           </div>
         </div>
       </motion.header>
+
+      <ViewModeBanner />
 
       <MobileMenu open={mobileOpen} pathname={pathname} session={session} onClose={closeMobile} />
     </>

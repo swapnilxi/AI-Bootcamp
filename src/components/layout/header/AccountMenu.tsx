@@ -41,7 +41,10 @@ export function AccountMenu({ session, onOpenChange }: AccountMenuProps) {
     };
   }, [open]);
 
-  const isInstructor = session?.user?.role === "INSTRUCTOR";
+  const role = session?.user?.role;
+  const isSuperAdmin = role === "SUPER_ADMIN";
+  const isAdmin = role === "ADMIN" || isSuperAdmin;
+  const isInstructor = role === "INSTRUCTOR" || isAdmin;
   const initial = (session?.user?.name || session?.user?.email || "M").trim().charAt(0).toUpperCase();
 
   return (
@@ -80,12 +83,22 @@ export function AccountMenu({ session, onOpenChange }: AccountMenuProps) {
                 <div className="px-3 pt-2 pb-3 mb-1 border-b border-black-line">
                   <p className="text-[10px] uppercase tracking-[0.2em] text-text-muted">Signed in</p>
                   <p className="text-sm text-text truncate mt-1">{session.user?.name || session.user?.email}</p>
+                  <span className="inline-block mt-1 px-2 py-0.5 text-[9px] uppercase tracking-wider font-semibold rounded bg-orange/15 text-orange border border-orange/20">
+                    {role || "USER"}
+                  </span>
                 </div>
+                {isSuperAdmin && <MenuLink href="/dashboard/super-admin" icon="settings" label="Super Admin Studio" hint="Global controls" />}
+                {isAdmin && !isSuperAdmin && <MenuLink href="/dashboard/admin" icon="settings" label="Admin Console" hint="Platform management" />}
                 {isInstructor && <MenuLink href="/dashboard/instructor" icon="role-instructor" label="Instructor Studio" />}
-                <MenuLink href="/dashboard" icon="user" label="Client Portal" />
+                <MenuLink
+                  href="/dashboard"
+                  icon="user"
+                  label={isAdmin ? "Staff Dashboard" : isInstructor ? "Faculty Portal" : "Client Portal"}
+                />
                 <MenuLink href="/my-bookings" icon="calendar" label="My Bookings" />
                 <MenuLink href="/profile" icon="settings" label="Profile & Settings" />
                 <MenuLink href="/dashboard/settings/ai" icon="model" label="AI Access" hint="Your API keys" />
+                <MenuLink href="/dashboard/settings/appearance" icon="settings" label="Appearance" hint="Accent color" />
                 <button
                   role="menuitem"
                   onClick={() => signOut({ callbackUrl: "/" })}

@@ -36,6 +36,9 @@ export async function GET(req: Request) {
       whereClause.enrollments = { some: { userId: session.user.id } };
     }
 
+    const pathId = searchParams.get("pathId");
+    if (pathId) whereClause.pathId = pathId;
+
     const classes = await prisma.course.findMany({
       where: whereClause,
       include: {
@@ -86,6 +89,7 @@ export async function GET(req: Request) {
       isSubscriberOnly: c.isSubscriberOnly,
       isPasswordProtected: c.isPasswordProtected,
       instructor: c.instructor,
+      pathId: c.pathId,
       enrollmentCount: c._count.enrollments,
       lessonCount: c._count.lessons,
       completedLessons: completedByClass.get(c.id) || 0,
@@ -150,6 +154,7 @@ export async function POST(req: Request) {
       isPasswordProtected,
       password,
       instructorId: requestedInstructorId,
+      pathId,
     } = result.data;
 
     // Instructors always teach their own classes; admins may assign any instructor-level user
@@ -202,6 +207,7 @@ export async function POST(req: Request) {
         isPasswordProtected,
         passwordHash,
         instructorId,
+        pathId: pathId || null,
         approvalStatus: isAdmin ? "APPROVED" : "PENDING",
         isPublished: isAdmin,
       },
@@ -218,6 +224,7 @@ export async function POST(req: Request) {
         isSubscriberOnly: true,
         isPasswordProtected: true,
         instructorId: true,
+        pathId: true,
         createdAt: true,
       },
     });

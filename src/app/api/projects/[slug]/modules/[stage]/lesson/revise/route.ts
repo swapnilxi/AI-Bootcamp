@@ -1,0 +1,65 @@
+import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth/next";
+import { z } from "zod";
+import { authOptions } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+import { aiPreflight } from "@/lib/ai/guard";
+import { describeAiError } from "@/lib/ai/client";
+import { AiRefusalError } from "@/lib/ai/structured";
+import { runLessonRevise } from "@/lib/ai/lessonHtml";
+import { loadOrCreateModuleLesson } from "@/lib/projects/moduleLesson";
+
+interface RouteParams {
+  params: Promise<{ slug: string; stage: string }>;
+}
+
+const reviseSchema = z.object({
+  instruction: z.string().trim().max(500).optional(),
+  html: z.string().optional(),
+});
+
+/** "Update" (AI reprompt) and "Edit" (direct save) both land here, distinguished by which field is sent. */
+export async function POST(req: Request, { params }: RouteParams) {
+  const { slug, stage } = await params;
+  const loaded = await loadOrCreateModuleLesson(slug, stage);
+  if ("error" in loaded) return loaded.error;
+  const { moduleLesson } = loaded;
+
+  const body = await req.json().catch(() => ({}));
+  const parsed = reviseSchema.safeParse(body);
+  if (!parsed.success) return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+  const { instruction, html: directHtml } = parsed.data;
+  if (!instruction && !directHtml) {
+    return NextResponse.json({ error: "Provide an instruction or edited HTML" }, { status: 400 });
+  }
+  if (!moduleLesson.generatedHtml && !directHtml) {
+    return NextResponse.json({ error: "Generate the lesson first" }, { status: 400 });
+  }
+
+  if (directHtml) {
+    const updated = await prisma.projectModuleLesson.update({
+      where: { id: moduleLesson.id },
+      data: { generatedHtml: directHtml, htmlUpdatedAt: new Date() },
+    });
+    return NextResponse.json({ generatedHtml: updated.generatedHtml, htmlUpdatedAt: updated.htmlUpdatedAt });
+  }
+
+  const session = await getServerSession(authOptions);
+  const gate = await aiPreflight(req, "project-module-lesson", session?.user?.id, 10);
+  if (!gate.ok) return gate.response;
+
+  try {
+    const html = await runLessonRevise(gate.credential, instruction!, moduleLesson.generatedHtml!);
+    const updated = await prisma.projectModuleLesson.update({
+      where: { id: moduleLesson.id },
+      data: { generatedHtml: html, htmlUpdatedAt: new Date() },
+    });
+    return NextResponse.json({ generatedHtml: updated.generatedHtml, htmlUpdatedAt: updated.htmlUpdatedAt });
+  } catch (error) {
+    if (error instanceof AiRefusalError) {
+      return NextResponse.json({ error: "Couldn't apply that instruction — try narrowing it." }, { status: 422 });
+    }
+    const { message, status } = describeAiError(error);
+    return NextResponse.json({ error: message }, { status });
+  }
+}

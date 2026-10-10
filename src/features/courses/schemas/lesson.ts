@@ -15,6 +15,7 @@ export const createLessonSchema = z.object({
   videoUrl: optionalUrl,
   durationMinutes: z.coerce.number().int().min(1).max(600).optional().nullable(),
   isPreview: z.boolean().default(false),
+  showAuthor: z.boolean().default(true),
 });
 
 export const updateLessonSchema = z.object({
@@ -30,6 +31,7 @@ export const updateLessonSchema = z.object({
     .transform((v) => (v === undefined ? undefined : v || null)),
   durationMinutes: z.coerce.number().int().min(1).max(600).optional().nullable(),
   isPreview: z.boolean().optional(),
+  showAuthor: z.boolean().optional(),
 });
 
 export const reorderLessonsSchema = z.object({

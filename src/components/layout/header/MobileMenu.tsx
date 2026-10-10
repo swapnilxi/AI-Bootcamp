@@ -7,6 +7,7 @@ import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { EASE_OUT } from "@/lib/motion";
+import { isInstructorRole } from "@/lib/roles";
 import { NAV_LINKS, WHATSAPP_URL, isActivePath } from "./nav-config";
 
 export const MOBILE_MENU_ID = "mobile-menu";
@@ -36,7 +37,7 @@ interface MobileMenuProps {
  * Type and spacing scale with viewport height so it also fits landscape phones.
  */
 export function MobileMenu({ open, pathname, session, onClose }: MobileMenuProps) {
-  const isInstructor = session?.user?.role === "INSTRUCTOR";
+  const isInstructor = isInstructorRole(session?.user?.role);
 
   return (
     <AnimatePresence>

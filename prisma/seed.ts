@@ -41,7 +41,7 @@ async function seedAccounts() {
     {
       email: "arun@aibootcamp.dev",
       name: "Arun Chauhan",
-      role: "INSTRUCTOR" as const,
+      role: "SUPER_ADMIN" as const,
       avatarUrl: "/instructors/arun-chauhan.svg",
       bio: "Principal AI Architect & Staff Engineer. Specializes in Enterprise RAG, LLM Orchestration, and Production AI Engineering.",
       specialties: "Enterprise RAG, Production AI Systems, Retrieval Evaluation",
@@ -51,7 +51,7 @@ async function seedAccounts() {
     {
       email: "swapnil@aibootcamp.dev",
       name: "Swapnil Gupta",
-      role: "INSTRUCTOR" as const,
+      role: "SUPER_ADMIN" as const,
       avatarUrl: "/instructors/swapnil-gupta.svg",
       bio: "Lead Agent Systems Engineer. Specializes in Autonomous AI Agents, Multi-Agent Coordination, and Tool-Calling Workflows.",
       specialties: "Autonomous AI Agents, Multi-Agent Systems, Tool Design, Memory",
@@ -61,7 +61,7 @@ async function seedAccounts() {
     {
       email: "shresth@aibootcamp.dev",
       name: "Shresth Sahai",
-      role: "INSTRUCTOR" as const,
+      role: "SUPER_ADMIN" as const,
       avatarUrl: "/instructors/shresth-sahai.svg",
       bio: "Applied Machine Learning Lead & Deep Learning Specialist. Specializes in Foundation Models, Fine-Tuning, and Neural Architectures.",
       specialties: "Deep Learning, Foundation Models, Fine-Tuning, Neural Architectures",
@@ -82,6 +82,14 @@ async function seedAccounts() {
       bio: "Development and testing account with full super-admin access.",
       specialties: "Full-Stack AI Engineering, Architecture, Testing",
       password: "test1234",
+    },
+    {
+      email: "swapnilgupta.xi@gmail.com",
+      name: "Swapnil Gupta",
+      role: "SUPER_ADMIN" as const,
+      bio: "Platform Super Administrator.",
+      specialties: "Autonomous AI Agents, Platform Engineering, Architecture",
+      password: "Guptaswap@12",
     },
   ];
 
@@ -553,7 +561,7 @@ async function main() {
   console.log("Seeding AI Bootcamp…");
 
   const users = await seedAccounts();
-  const instructors = users.filter((u) => u.role === "INSTRUCTOR");
+  const instructors = users.filter((u) => u.role === "INSTRUCTOR" || (u.role === "SUPER_ADMIN" && u.avatarUrl));
   const learner = users.find((u) => u.email === "learner@aibootcamp.dev");
 
   const skillIds = await seedSkills();

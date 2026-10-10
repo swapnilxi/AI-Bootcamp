@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
   ArrowDown,
@@ -13,9 +13,14 @@ import {
   Save,
   Sparkles,
   Trash2,
+  Upload,
   X,
 } from "lucide-react";
 import { useAiEnabled } from "@/components/ai/useAi";
+import { AiSetupNotice } from "@/components/ai/AiSetupNotice";
+import { AI_NOT_CONFIGURED_CODE } from "@/lib/ai/constants";
+
+const MAX_DOCUMENT_CHARS = 20000;
 
 interface Lesson {
   id: string;
@@ -28,6 +33,10 @@ interface Lesson {
   order: number;
   approvalStatus?: string;
   rejectionReason?: string | null;
+  authorId?: string | null;
+  authorName?: string | null;
+  showAuthor?: boolean;
+  canClaimAuthorship?: boolean;
 }
 
 interface Draft {
@@ -37,6 +46,7 @@ interface Draft {
   videoUrl: string;
   durationMinutes: string;
   isPreview: boolean;
+  showAuthor: boolean;
 }
 
 const EMPTY_DRAFT: Draft = {
@@ -46,6 +56,7 @@ const EMPTY_DRAFT: Draft = {
   videoUrl: "",
   durationMinutes: "",
   isPreview: false,
+  showAuthor: true,
 };
 
 const fieldClass =
@@ -62,6 +73,61 @@ export function LessonManager({ courseId }: { courseId: string }) {
   const [error, setError] = useState<string | null>(null);
   const [drafting, setDrafting] = useState(false);
   const aiEnabled = useAiEnabled();
+
+  const [genTopic, setGenTopic] = useState("");
+  const [genFileName, setGenFileName] = useState<string | null>(null);
+  const [genDocText, setGenDocText] = useState<string | null>(null);
+  const [generating, setGenerating] = useState(false);
+  const [genError, setGenError] = useState<string | null>(null);
+  const [genNeedsSetup, setGenNeedsSetup] = useState(false);
+  const [justCreatedId, setJustCreatedId] = useState<string | null>(null);
+  const [genShowAuthor, setGenShowAuthor] = useState(true);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [editingLesson, setEditingLesson] = useState<Lesson | null>(null);
+  const [claimAuthorship, setClaimAuthorship] = useState(false);
+
+  function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const text = String(reader.result ?? "").slice(0, MAX_DOCUMENT_CHARS);
+      setGenDocText(text);
+      setGenFileName(file.name);
+    };
+    reader.readAsText(file);
+  }
+
+  async function generateLesson() {
+    if (!genTopic.trim()) return;
+    setGenerating(true);
+    setGenError(null);
+    setGenNeedsSetup(false);
+    setJustCreatedId(null);
+    try {
+      const res = await fetch(`/api/courses/${courseId}/lessons/generate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ topic: genTopic.trim(), documentText: genDocText || undefined, showAuthor: genShowAuthor }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        if (data?.code === AI_NOT_CONFIGURED_CODE) setGenNeedsSetup(true);
+        throw new Error(data.error || "Couldn't generate a lesson");
+      }
+      setGenTopic("");
+      setGenDocText(null);
+      setGenFileName(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      setJustCreatedId(data.lesson.id);
+      load();
+    } catch (err) {
+      setGenError((err as Error).message);
+    } finally {
+      setGenerating(false);
+    }
+  }
 
   async function draftWithAi() {
     if (draft.title.trim().length < 3) {
@@ -110,6 +176,8 @@ export function LessonManager({ courseId }: { courseId: string }) {
   function startNew() {
     setDraft(EMPTY_DRAFT);
     setEditingId("new");
+    setEditingLesson(null);
+    setClaimAuthorship(false);
     setError(null);
   }
 
@@ -121,8 +189,11 @@ export function LessonManager({ courseId }: { courseId: string }) {
       videoUrl: lesson.videoUrl || "",
       durationMinutes: lesson.durationMinutes ? String(lesson.durationMinutes) : "",
       isPreview: lesson.isPreview,
+      showAuthor: lesson.showAuthor ?? true,
     });
     setEditingId(lesson.id);
+    setEditingLesson(lesson);
+    setClaimAuthorship(false);
     setError(null);
   }
 
@@ -130,14 +201,16 @@ export function LessonManager({ courseId }: { courseId: string }) {
     e.preventDefault();
     setBusy(true);
     setError(null);
-    const payload = {
+    const payload: Record<string, unknown> = {
       title: draft.title,
       summary: draft.summary,
       content: draft.content,
       videoUrl: draft.videoUrl,
       durationMinutes: draft.durationMinutes ? Number(draft.durationMinutes) : null,
       isPreview: draft.isPreview,
+      showAuthor: draft.showAuthor,
     };
+    if (claimAuthorship) payload.claimAuthorship = true;
     const isNew = editingId === "new";
     const res = await fetch(
       isNew ? `/api/courses/${courseId}/lessons` : `/api/courses/${courseId}/lessons/${editingId}`,
@@ -154,6 +227,8 @@ export function LessonManager({ courseId }: { courseId: string }) {
       return;
     }
     setEditingId(null);
+    setEditingLesson(null);
+    setClaimAuthorship(false);
     load();
   }
 
@@ -278,6 +353,26 @@ export function LessonManager({ courseId }: { courseId: string }) {
         />
         Free preview: visible to everyone, even without enrollment
       </label>
+      <label className="flex items-center gap-2.5 text-sm text-text cursor-pointer select-none">
+        <input
+          type="checkbox"
+          checked={draft.showAuthor}
+          onChange={(e) => setDraft({ ...draft, showAuthor: e.target.checked })}
+          className="w-4 h-4 min-h-0 accent-[#F97316]"
+        />
+        Show my name as this lesson&apos;s author
+      </label>
+      {editingLesson?.canClaimAuthorship && (
+        <label className="flex items-center gap-2.5 text-sm text-text cursor-pointer select-none">
+          <input
+            type="checkbox"
+            checked={claimAuthorship}
+            onChange={(e) => setClaimAuthorship(e.target.checked)}
+            className="w-4 h-4 min-h-0 accent-[#F97316]"
+          />
+          Credit me as the author instead of {editingLesson.authorName || "the current author"}
+        </label>
+      )}
       <div className="flex justify-end gap-3">
         <button
           type="button"
@@ -318,6 +413,84 @@ export function LessonManager({ courseId }: { courseId: string }) {
             <Plus className="w-4 h-4" /> Add lesson
           </button>
         )}
+      </div>
+
+      <div className="p-5 sm:p-6 rounded-2xl border border-cream/15 bg-cream/5 space-y-4">
+        <div>
+          <h3 className="font-serif text-lg text-ink flex items-center gap-2">
+            <Sparkles className="w-4 h-4" /> Generate lesson with AI
+          </h3>
+          <p className="text-xs text-text-muted mt-1">One text box for a topic or pasted notes — attach a document anytime.</p>
+        </div>
+
+        <textarea
+          value={genTopic}
+          onChange={(e) => setGenTopic(e.target.value)}
+          onKeyDown={(e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === "Enter") generateLesson();
+          }}
+          rows={5}
+          placeholder={`Type a topic or paste notes to generate a lesson… (e.g. "Retrieval-Augmented Generation", or paste notes)`}
+          className={`${fieldClass} leading-relaxed`}
+        />
+        {genFileName && (
+          <p className="text-xs text-text-muted">
+            Attached: {genFileName} ({genDocText?.length.toLocaleString()} chars)
+            <button
+              type="button"
+              onClick={() => {
+                setGenFileName(null);
+                setGenDocText(null);
+                if (fileInputRef.current) fileInputRef.current.value = "";
+              }}
+              className="ml-2 min-h-0 text-text-muted hover:text-gold underline"
+            >
+              Remove
+            </button>
+          </p>
+        )}
+
+        <label className="flex items-center gap-2.5 text-xs text-text-muted cursor-pointer select-none">
+          <input
+            type="checkbox"
+            checked={genShowAuthor}
+            onChange={(e) => setGenShowAuthor(e.target.checked)}
+            className="w-3.5 h-3.5 min-h-0 accent-[#F97316]"
+          />
+          Show my name as this lesson&apos;s author
+        </label>
+
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-white/10 px-4 py-2 text-xs font-semibold text-text-muted hover:text-gold transition-colors">
+              <Upload className="w-3.5 h-3.5" /> Upload document
+              <input ref={fileInputRef} type="file" accept=".txt,.md,.markdown,.mdx" onChange={handleFileUpload} className="hidden" />
+            </label>
+            <span className="hidden sm:inline text-[11px] text-text-muted">Plain text / Markdown · Press ⌘/Ctrl + Enter</span>
+          </div>
+          <button
+            type="button"
+            onClick={generateLesson}
+            disabled={generating || !genTopic.trim()}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] text-sm font-semibold transition-colors disabled:opacity-50"
+          >
+            <Sparkles className={`w-4 h-4 ${generating ? "animate-spin" : ""}`} />
+            {generating ? "Generating…" : "Generate lesson"}
+          </button>
+        </div>
+
+        {genNeedsSetup ? (
+          <AiSetupNotice />
+        ) : genError ? (
+          <p className="text-xs text-text-muted">{genError}</p>
+        ) : justCreatedId ? (
+          <p className="text-xs text-text-muted">
+            Lesson created.{" "}
+            <Link href={`/courses/${courseId}/lessons/${justCreatedId}`} className="text-gold hover:underline">
+              View it →
+            </Link>
+          </p>
+        ) : null}
       </div>
 
       {error && (
@@ -367,6 +540,7 @@ export function LessonManager({ courseId }: { courseId: string }) {
                         <Eye className="w-3 h-3" /> Free preview
                       </span>
                     )}
+                    {lesson.showAuthor && lesson.authorName && <span>by {lesson.authorName}</span>}
                   </div>
                 </div>
                 <div className="flex items-center gap-1 shrink-0">

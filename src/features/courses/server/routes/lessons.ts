@@ -25,6 +25,7 @@ export async function GET(req: Request, { params }: RouteParams) {
     const lessons = await prisma.lesson.findMany({
       where: access.canManage ? { courseId: id } : { courseId: id, approvalStatus: "APPROVED" },
       orderBy: { order: "asc" },
+      include: { author: { select: { id: true, name: true } } },
     });
 
     return NextResponse.json({
@@ -43,6 +44,10 @@ export async function GET(req: Request, { params }: RouteParams) {
           // Managers need raw fields to edit; learners get content only when accessible
           content: isAccessible ? l.content : null,
           videoUrl: isAccessible ? l.videoUrl : null,
+          authorId: l.authorId,
+          authorName: l.author?.name ?? null,
+          showAuthor: l.showAuthor,
+          canClaimAuthorship: access.canManage && l.authorId !== session?.user?.id,
         };
       }),
       canManage: access.canManage,
@@ -94,6 +99,7 @@ export async function POST(req: Request, { params }: RouteParams) {
         ...result.data,
         durationMinutes: result.data.durationMinutes ?? null,
         courseId: id,
+        authorId: session.user.id,
         order: (last?.order ?? -1) + 1,
         // Lessons authored by instructors go through admin module review
         approvalStatus: isAdminRole(session.user.role) ? "APPROVED" : "PENDING",

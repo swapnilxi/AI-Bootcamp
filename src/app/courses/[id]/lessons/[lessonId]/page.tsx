@@ -18,6 +18,8 @@ import {
 } from "lucide-react";
 import { parseVideoUrl } from "@/lib/video";
 import { LessonAiPanel } from "@/components/ai/LessonAiPanel";
+import { LessonViewer } from "@/components/lessons/LessonViewer";
+import type { LessonVariants } from "@/lib/lessons/shared";
 
 interface OutlineItem {
   id: string;
@@ -39,6 +41,10 @@ interface LessonResponse {
     isPreview: boolean;
     position: number;
     isCompleted: boolean;
+    generatedHtml: string | null;
+    variants: LessonVariants | null;
+    authorName: string | null;
+    showAuthor: boolean;
   };
   course: {
     id: string;
@@ -256,6 +262,9 @@ export default function LessonPage() {
           </div>
           <h1 className="font-serif text-3xl sm:text-5xl text-ink leading-tight">{lesson.title}</h1>
           {lesson.summary && <p className="text-text-muted text-base sm:text-lg">{lesson.summary}</p>}
+          {lesson.showAuthor && lesson.authorName && (
+            <p className="text-xs text-text-muted">By {lesson.authorName}</p>
+          )}
         </header>
 
         {video && (
@@ -286,6 +295,26 @@ export default function LessonPage() {
             )}
           </div>
         )}
+
+        <LessonViewer
+          breadcrumb={[data.course.title, lesson.title]}
+          title={lesson.title}
+          positionLabel={`Lesson ${lesson.position} of ${outline.length}`}
+          readTimeMinutes={lesson.durationMinutes ?? undefined}
+          initialGeneratedHtml={lesson.generatedHtml}
+          initialVariants={lesson.variants}
+          endpoints={{
+            generate: `/api/courses/${courseId}/lessons/${lessonId}/html/generate`,
+            easyRead: `/api/courses/${courseId}/lessons/${lessonId}/html/easy-read`,
+            deeper: `/api/courses/${courseId}/lessons/${lessonId}/html/deeper`,
+            breakdown: `/api/courses/${courseId}/lessons/${lessonId}/html/breakdown`,
+            visualize: `/api/courses/${courseId}/lessons/${lessonId}/html/visualize`,
+            revise: `/api/courses/${courseId}/lessons/${lessonId}/html/revise`,
+          }}
+          canManage={data.course.canManage}
+          clearEndpoint={`/api/courses/${courseId}/lessons/${lessonId}/html`}
+          downloadFilename={`${lesson.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.html`}
+        />
 
         <div className="rounded-2xl bg-black-raised/80 backdrop-blur-sm border border-white/[0.07] p-6 sm:p-10">
           <div className="text-text text-base leading-relaxed whitespace-pre-wrap">{lesson.content}</div>

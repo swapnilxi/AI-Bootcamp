@@ -49,7 +49,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
-      className={`relative inline-flex items-center justify-center w-9 h-9 rounded-full transition-colors duration-200 border border-black-line bg-black-raised/80 text-cream hover:border-orange hover:shadow-[0_0_12px_rgba(249,115,22,0.25)] ${className}`}
+      className={`relative inline-flex items-center justify-center w-9 h-9 rounded-full transition-colors duration-200 border border-black-line bg-black-raised/80 text-cream hover:border-orange hover:shadow-[0_0_12px_rgba(var(--orange-rgb),0.25)] ${className}`}
     >
       {isDark ? (
         /* Sun Icon for Dark Mode (click to switch to Light) */
@@ -60,7 +60,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="w-4 h-4 text-orange filter drop-shadow-[0_0_4px_rgba(249, 115, 22,0.4)]"
+          className="w-4 h-4 text-orange filter drop-shadow-[0_0_4px_rgba(var(--orange-rgb),0.4)]"
         >
           <circle cx="12" cy="12" r="4" />
           <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
@@ -74,7 +74,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="w-4 h-4 text-orange filter drop-shadow-[0_0_4px_rgba(234, 88, 12,0.3)]"
+          className="w-4 h-4 text-orange filter drop-shadow-[0_0_4px_rgba(var(--orange-rgb),0.3)]"
         >
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
         </svg>

@@ -38,7 +38,8 @@ function LoginForm() {
       setError(res.error);
       setLoading(false);
     } else {
-      router.push(callbackUrl);
+      const explicitCallback = searchParams.get("callbackUrl");
+      router.push(explicitCallback || "/dashboard");
       router.refresh();
     }
   }
@@ -179,7 +180,7 @@ function LoginForm() {
             variant="primary"
             size="lg"
             disabled={loading}
-            className="w-full !py-3 !rounded-xl !bg-orange hover:!bg-orange-hover text-white font-bold tracking-wide shadow-md shadow-orange/25"
+            className="w-full"
           >
             {loading
               ? "Authenticating..."

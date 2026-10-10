@@ -7,18 +7,18 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   GraduationCap,
   ChevronDown,
-  BookOpen,
   PlusCircle,
   Users,
   Sparkles,
   LogIn,
-  UserPlus,
-  Calendar,
-  Layers,
   ArrowRight,
+  Eye,
+  Shield,
+  User,
 } from "lucide-react";
 import { EASE_OUT } from "@/lib/motion";
-import { isInstructorRole } from "@/lib/roles";
+import { isInstructorRole, isAdminRole } from "@/lib/roles";
+import { useViewMode, type ViewMode } from "@/components/providers/ViewModeProvider";
 
 interface InstructorMenuProps {
   session: Session | null;
@@ -47,7 +47,10 @@ export function InstructorMenu({ session, onOpenChange }: InstructorMenuProps) {
     };
   }, [open]);
 
-  const isInstructor = isInstructorRole(session?.user?.role);
+  const role = session?.user?.role;
+  const isInstructor = isInstructorRole(role);
+  const isAdmin = isAdminRole(role);
+  const { viewMode, setViewMode } = useViewMode();
 
   return (
     <div ref={rootRef} className="relative hidden md:block">
@@ -128,6 +131,14 @@ export function InstructorMenu({ session, onOpenChange }: InstructorMenuProps) {
                 label="1-on-1 Mentorship"
                 hint="Personalized AI engineering guidance"
               />
+
+              <InstructorMenuLink
+                href="/courses"
+                onClick={() => setOpen(false)}
+                icon={<Eye className="w-4 h-4 text-gold" />}
+                label="Browse as Viewer"
+                hint="Explore curriculum as a student"
+              />
             </div>
 
             {/* Account / Onboarding Shortcuts */}
@@ -152,9 +163,32 @@ export function InstructorMenu({ session, onOpenChange }: InstructorMenuProps) {
                   </Link>
                 </>
               ) : isInstructor ? (
-                <div className="px-3 py-1.5 rounded-xl bg-cream/[0.03] border border-black-line text-[11px] text-text-muted flex items-center justify-between">
-                  <span>Logged in as Faculty</span>
-                  <span className="text-gold font-medium">Active</span>
+                <div className="space-y-1">
+                  {/* Status chip */}
+                  <div className="px-3 py-1.5 rounded-xl bg-cream/[0.03] border border-black-line text-[11px] text-text-muted flex items-center justify-between">
+                    <span>{isAdmin ? "Logged in as Admin" : "Logged in as Faculty"}</span>
+                    <span className="text-gold font-medium">Active</span>
+                  </div>
+
+                  {/* View-as switcher — visible to admins; instructors only get viewer toggle */}
+                  {isAdmin ? (
+                    <ViewAsSwitcher
+                      current={viewMode}
+                      onChange={(m) => { setViewMode(m); setOpen(false); }}
+                    />
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => { setViewMode("user"); setOpen(false); }}
+                      className="group w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-medium text-text-muted hover:text-gold hover:bg-gold-soft transition-colors"
+                    >
+                      <span className="flex items-center gap-1.5">
+                        <Eye className="w-3.5 h-3.5 text-gold" />
+                        <span>Browse as Viewer</span>
+                      </span>
+                      <ArrowRight className="w-3 h-3 text-text-muted group-hover:text-gold transition-transform group-hover:translate-x-0.5" />
+                    </button>
+                  )}
                 </div>
               ) : (
                 <Link
@@ -203,3 +237,104 @@ function InstructorMenuLink({ href, icon, label, hint, onClick }: InstructorMenu
     </Link>
   );
 }
+
+/* ------------------------------------------------------------------ */
+/* View-as switcher (admin only)                                        */
+/* ------------------------------------------------------------------ */
+
+interface ViewAsSwitcherProps {
+  current: ViewMode;
+  onChange: (mode: ViewMode) => void;
+}
+
+const VIEW_OPTIONS: {
+  mode: ViewMode;
+  label: string;
+  hint: string;
+  Icon: React.ElementType;
+  iconClass: string;
+  activeBg: string;
+  activeBorder: string;
+  activeText: string;
+}[] = [
+  {
+    mode: "admin",
+    label: "Admin view",
+    hint: "Full platform controls",
+    Icon: Shield,
+    iconClass: "text-orange",
+    activeBg: "bg-orange/10",
+    activeBorder: "border-orange/40",
+    activeText: "text-orange",
+  },
+  {
+    mode: "instructor",
+    label: "Instructor view",
+    hint: "Teaching dashboard & tools",
+    Icon: GraduationCap,
+    iconClass: "text-gold",
+    activeBg: "bg-gold/10",
+    activeBorder: "border-gold/40",
+    activeText: "text-gold",
+  },
+  {
+    mode: "user",
+    label: "User view",
+    hint: "Student / learner perspective",
+    Icon: User,
+    iconClass: "text-cream/70",
+    activeBg: "bg-cream/8",
+    activeBorder: "border-cream/25",
+    activeText: "text-cream",
+  },
+];
+
+function ViewAsSwitcher({ current, onChange }: ViewAsSwitcherProps) {
+  return (
+    <div className="pt-1">
+      <p className="px-3 pb-1.5 text-[9px] uppercase tracking-[0.18em] font-semibold text-text-muted">
+        View as
+      </p>
+      <div className="space-y-0.5">
+        {VIEW_OPTIONS.map(({ mode, label, hint, Icon, iconClass, activeBg, activeBorder, activeText }) => {
+          const active = current === mode;
+          return (
+            <button
+              key={mode}
+              type="button"
+              onClick={() => onChange(mode)}
+              className={`group w-full flex items-center gap-3 px-3 py-2 rounded-xl border transition-all duration-150 text-left ${
+                active
+                  ? `${activeBg} ${activeBorder} ${activeText}`
+                  : "border-transparent hover:bg-cream/[0.05] text-text-muted hover:text-text"
+              }`}
+            >
+              {/* Icon */}
+              <span
+                className={`flex items-center justify-center w-7 h-7 rounded-lg border shrink-0 transition-colors ${
+                  active
+                    ? `${activeBorder} ${activeBg}`
+                    : "border-cream/15 bg-cream/[0.03] group-hover:border-gold/30"
+                }`}
+              >
+                <Icon className={`w-3.5 h-3.5 ${active ? iconClass : "text-text-muted group-hover:text-gold"}`} />
+              </span>
+
+              {/* Label + hint */}
+              <span className="flex flex-col min-w-0 flex-1">
+                <span className={`text-xs font-medium truncate ${active ? activeText : ""}`}>{label}</span>
+                <span className="text-[10px] text-text-muted truncate">{hint}</span>
+              </span>
+
+              {/* Active checkmark */}
+              {active && (
+                <span className={`ml-auto text-[10px] font-bold ${iconClass}`}>✓</span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+

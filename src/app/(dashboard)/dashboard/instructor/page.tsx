@@ -181,6 +181,12 @@ export default function InstructorDashboardPage() {
 
         <div className="flex flex-wrap items-center gap-3 shrink-0">
           <Link
+            href="/dashboard/lessons/generate"
+            className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-cream/25 bg-cream/[0.08] hover:bg-cream/15 text-cream text-xs font-semibold uppercase tracking-wider transition-colors"
+          >
+            <Sparkles className="w-4 h-4" /> Generate Lesson
+          </Link>
+          <Link
             href="/courses/new"
             className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] text-xs font-semibold uppercase tracking-wider transition-colors shadow-md"
           >

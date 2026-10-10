@@ -125,6 +125,9 @@ export default function AdminDashboardPage() {
           <Button href="/book" variant="primary" size="md">
             <span>New Booking</span>
           </Button>
+          <Button href="/dashboard/lessons/generate" variant="secondary" size="md">
+            <span>Generate Lesson</span>
+          </Button>
           <Button href="/courses/new" variant="secondary" size="md">
             <span>Author Class</span>
           </Button>

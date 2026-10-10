@@ -6,13 +6,20 @@ import { AI_SETTINGS_PATH } from "@/lib/ai/constants";
 export function AiSetupNotice({ className = "" }: { className?: string }) {
   return (
     <div
-      className={`flex flex-wrap items-center gap-2.5 rounded-xl border border-gold/25 bg-gold/[0.06] px-3.5 py-2.5 text-xs text-text-muted ${className}`}
+      className={`flex items-center gap-2.5 rounded-2xl border border-gold/25 bg-gold/[0.06] px-4 py-3 text-xs text-text-muted ${className}`}
     >
-      <KeyRound className="w-3.5 h-3.5 shrink-0 text-gold" />
-      <span>This needs an AI key — yours, or one an admin has set up.</span>
-      <Link href={`${AI_SETTINGS_PATH}?missing=1`} className="font-semibold text-gold hover:underline">
-        Set up AI access →
-      </Link>
+      <KeyRound className="w-4 h-4 shrink-0 text-gold" />
+      <span className="leading-normal">
+        This needs an AI key — yours, or one an admin has set up.{" "}
+        <Link
+          href={`${AI_SETTINGS_PATH}?missing=1`}
+          className="inline font-semibold text-gold hover:underline whitespace-nowrap ml-1"
+        >
+          Set up AI access &rarr;
+        </Link>
+      </span>
     </div>
   );
 }
+
+

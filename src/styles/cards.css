@@ -99,7 +99,7 @@
       60% 125% at var(--glow-x) var(--glow-y),
       rgba(255, 237, 225, var(--hot)),
       rgba(250, 171, 129, calc(var(--hot) * 0.42)) 34%,
-      rgba(249, 115, 22, 0) 78%
+      rgba(var(--orange-rgb), 0) 78%
     ),
     /* long falloff, so the rim grades instead of stepping */
     radial-gradient(
@@ -135,11 +135,11 @@
 .editorial-card {
   position: relative;
   background-color: var(--black-raised);
-  border: 1px solid rgba(249, 115, 22, 0.08);
+  border: 1px solid rgba(var(--orange-rgb), 0.08);
   border-radius: var(--radius-card);
   box-shadow:
     0 14px 30px -26px rgba(0, 0, 0, 0.9),
-    var(--glow-ox) var(--glow-oy) 64px -32px rgba(249, 115, 22, var(--bloom));
+    var(--glow-ox) var(--glow-oy) 64px -32px rgba(var(--orange-rgb), var(--bloom));
   transition:
     transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
     border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
@@ -156,7 +156,7 @@ html.light .editorial-card,
   box-shadow:
     0 2px 8px -2px rgba(0, 0, 0, 0.03),
     0 18px 36px -15px rgba(0, 0, 0, 0.05),
-    var(--glow-ox) var(--glow-oy) 54px -28px rgba(234, 88, 12, calc(var(--bloom) * 0.35));
+    var(--glow-ox) var(--glow-oy) 54px -28px rgba(var(--orange-rgb), calc(var(--bloom) * 0.35));
 }
 
 /* Inner wash: a bloom at the corner over a wide, barely-there halo */
@@ -170,12 +170,12 @@ html.light .editorial-card,
     radial-gradient(
       56% 44% at var(--glow-x) var(--glow-y),
       rgba(254, 215, 170, calc(0.085 + 0.055 * var(--glow-lit))),
-      rgba(249, 115, 22, 0) 72%
+      rgba(var(--orange-rgb), 0) 72%
     ),
     radial-gradient(
       130% 110% at var(--glow-x) var(--glow-y),
-      rgba(249, 115, 22, calc(0.03 + 0.025 * var(--glow-lit))),
-      rgba(249, 115, 22, 0) 62%
+      rgba(var(--orange-rgb), calc(0.03 + 0.025 * var(--glow-lit))),
+      rgba(var(--orange-rgb), 0) 62%
     );
 }
 
@@ -189,22 +189,22 @@ html.light .editorial-card,
   --glow-rim: 0.55;
   --cursor-lit: 1;
   transform: translateY(-4px);
-  border-color: rgba(249, 115, 22, 0.55);
+  border-color: rgba(var(--orange-rgb), 0.55);
   box-shadow:
     0 16px 36px -12px rgba(0, 0, 0, 0.85),
     0 0 1px 1px rgba(251, 146, 60, 0.45),
-    0 0 22px 2px rgba(249, 115, 22, 0.38),
-    0 0 45px 6px rgba(249, 115, 22, 0.2);
+    0 0 22px 2px rgba(var(--orange-rgb), 0.38),
+    0 0 45px 6px rgba(var(--orange-rgb), 0.2);
 }
 
 html.light .editorial-card:hover,
 [data-theme="light"] .editorial-card:hover {
-  border-color: rgba(234, 88, 12, 0.5);
+  border-color: rgba(var(--orange-rgb), 0.5);
   box-shadow:
     0 14px 32px -10px rgba(0, 0, 0, 0.05),
-    0 0 1px 1px rgba(234, 88, 12, 0.35),
-    0 0 20px 2px rgba(234, 88, 12, 0.3),
-    0 0 42px 6px rgba(234, 88, 12, 0.16);
+    0 0 1px 1px rgba(var(--orange-rgb), 0.35),
+    0 0 20px 2px rgba(var(--orange-rgb), 0.3),
+    0 0 42px 6px rgba(var(--orange-rgb), 0.16);
 }
 
 /* A soft orange flash on click/tap — fires even where :hover doesn't (touch). */
@@ -215,8 +215,8 @@ html.light .editorial-card:hover,
   transform: translateY(-1px) scale(0.99);
   box-shadow:
     0 10px 24px -12px rgba(0, 0, 0, 0.8),
-    0 0 0 1px rgba(249, 115, 22, 0.45),
-    0 0 18px 2px rgba(249, 115, 22, 0.32);
+    0 0 0 1px rgba(var(--orange-rgb), 0.45),
+    0 0 18px 2px rgba(var(--orange-rgb), 0.32);
   transition-duration: 0.12s;
 }
 
@@ -229,26 +229,26 @@ html.light .editorial-card:hover,
 /* ================================================================== */
 .card-premium {
   position: relative;
-  border: 1px solid rgba(249, 115, 22, 0.1);
+  border: 1px solid rgba(var(--orange-rgb), 0.1);
   border-radius: var(--radius-panel);
   background-clip: padding-box;
   background-image:
     /* spotlight under the cursor */
     radial-gradient(
       360px circle at var(--mx, 50%) var(--my, 0%),
-      rgba(249, 115, 22, calc(0.085 * var(--cursor-lit))),
-      rgba(249, 115, 22, 0) 55%
+      rgba(var(--orange-rgb), calc(0.085 * var(--cursor-lit))),
+      rgba(var(--orange-rgb), 0) 55%
     ),
     /* corner wash */
     radial-gradient(
       56% 46% at var(--glow-x) var(--glow-y),
       rgba(254, 215, 170, calc(0.1 + 0.06 * var(--glow-lit))),
-      rgba(249, 115, 22, 0) 72%
+      rgba(var(--orange-rgb), 0) 72%
     ),
     radial-gradient(
       130% 110% at var(--glow-x) var(--glow-y),
-      rgba(249, 115, 22, calc(0.032 + 0.028 * var(--glow-lit))),
-      rgba(249, 115, 22, 0) 62%
+      rgba(var(--orange-rgb), calc(0.032 + 0.028 * var(--glow-lit))),
+      rgba(var(--orange-rgb), 0) 62%
     ),
     /* glass */
     linear-gradient(
@@ -260,7 +260,7 @@ html.light .editorial-card:hover,
     inset 0 1px 0 rgba(250, 246, 240, 0.03),
     0 1px 2px rgba(0, 0, 0, 0.4),
     0 16px 36px -28px rgba(0, 0, 0, 0.9),
-    var(--glow-ox) var(--glow-oy) 74px -32px rgba(249, 115, 22, var(--bloom));
+    var(--glow-ox) var(--glow-oy) 74px -32px rgba(var(--orange-rgb), var(--bloom));
   transform: perspective(1200px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg))
     translateY(var(--lift, 0px));
   transition:
@@ -278,13 +278,13 @@ html.light .editorial-card:hover,
   --glow-edge: 0.75;
   --glow-rim: 0.55;
   --cursor-lit: 1;
-  border-color: rgba(249, 115, 22, 0.55);
+  border-color: rgba(var(--orange-rgb), 0.55);
   box-shadow:
     inset 0 1px 0 rgba(250, 246, 240, 0.05),
     0 20px 44px -18px rgba(0, 0, 0, 0.85),
     0 0 1px 1px rgba(251, 146, 60, 0.45),
-    0 0 24px 2px rgba(249, 115, 22, 0.38),
-    0 0 48px 6px rgba(249, 115, 22, 0.2);
+    0 0 24px 2px rgba(var(--orange-rgb), 0.38),
+    0 0 48px 6px rgba(var(--orange-rgb), 0.2);
 }
 .card-premium:active {
   --lift: -2px;
@@ -294,8 +294,8 @@ html.light .editorial-card:hover,
   box-shadow:
     inset 0 1px 0 rgba(250, 246, 240, 0.05),
     0 12px 28px -14px rgba(0, 0, 0, 0.85),
-    0 0 0 1px rgba(249, 115, 22, 0.45),
-    0 0 20px -2px rgba(249, 115, 22, 0.32);
+    0 0 0 1px rgba(var(--orange-rgb), 0.45),
+    0 0 20px -2px rgba(var(--orange-rgb), 0.32);
   transition-duration: 0.12s;
 }
 .card-premium > :not(.absolute) {
@@ -308,10 +308,10 @@ html.light .editorial-card:hover,
 .card-icon {
   position: relative;
   z-index: 20;
-  border-color: rgba(249, 115, 22, calc(0.3 + 0.4 * var(--glow-lit)));
+  border-color: rgba(var(--orange-rgb), calc(0.3 + 0.4 * var(--glow-lit)));
   background-color: #0d0d10;
   box-shadow: 0 0 calc(10px + 14px * var(--glow-lit)) -4px
-    rgba(249, 115, 22, calc(0.05 + 0.3 * var(--glow-lit)));
+    rgba(var(--orange-rgb), calc(0.05 + 0.3 * var(--glow-lit)));
   transition:
     transform var(--dur-slow) var(--ease-out),
     border-color var(--dur-fast) var(--ease-soft),
@@ -321,21 +321,21 @@ html.light .editorial-card:hover,
 html.light .card-icon,
 [data-theme="light"] .card-icon {
   background-color: #FFFFFF;
-  border-color: rgba(234, 88, 12, calc(0.35 + 0.35 * var(--glow-lit)));
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05), 0 0 calc(8px + 10px * var(--glow-lit)) -2px rgba(234, 88, 12, calc(0.12 + 0.25 * var(--glow-lit)));
+  border-color: rgba(var(--orange-rgb), calc(0.35 + 0.35 * var(--glow-lit)));
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05), 0 0 calc(8px + 10px * var(--glow-lit)) -2px rgba(var(--orange-rgb), calc(0.12 + 0.25 * var(--glow-lit)));
 }
 .group:hover .card-icon {
   transform: translateY(-2px) rotate(-6deg);
-  border-color: rgba(249, 115, 22, 0.5);
-  background-color: rgba(249, 115, 22, 0.08);
-  box-shadow: 0 0 18px -4px rgba(249, 115, 22, 0.35);
+  border-color: rgba(var(--orange-rgb), 0.5);
+  background-color: rgba(var(--orange-rgb), 0.08);
+  box-shadow: 0 0 18px -4px rgba(var(--orange-rgb), 0.35);
 }
 html.light .group:hover .card-icon,
 [data-theme="light"] .group:hover .card-icon {
   transform: translateY(-2px) rotate(-6deg);
-  border-color: rgba(234, 88, 12, 0.6);
-  background-color: rgba(234, 88, 12, 0.08);
-  box-shadow: 0 0 18px -3px rgba(234, 88, 12, 0.35);
+  border-color: rgba(var(--orange-rgb), 0.6);
+  background-color: rgba(var(--orange-rgb), 0.08);
+  box-shadow: 0 0 18px -3px rgba(var(--orange-rgb), 0.35);
 }
 html.light .card-premium,
 [data-theme="light"] .card-premium {
@@ -344,16 +344,16 @@ html.light .card-premium,
   box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.03),
     0 20px 40px -15px rgba(0, 0, 0, 0.06),
-    var(--glow-ox) var(--glow-oy) 64px -28px rgba(234, 88, 12, calc(var(--bloom) * 0.5));
+    var(--glow-ox) var(--glow-oy) 64px -28px rgba(var(--orange-rgb), calc(var(--bloom) * 0.5));
 }
 html.light .card-premium:hover,
 [data-theme="light"] .card-premium:hover {
-  border-color: rgba(234, 88, 12, 0.5);
+  border-color: rgba(var(--orange-rgb), 0.5);
   box-shadow:
     0 16px 36px -10px rgba(0, 0, 0, 0.06),
-    0 0 1px 1px rgba(234, 88, 12, 0.35),
-    0 0 22px 2px rgba(234, 88, 12, 0.3),
-    0 0 44px 6px rgba(234, 88, 12, 0.16);
+    0 0 1px 1px rgba(var(--orange-rgb), 0.35),
+    0 0 22px 2px rgba(var(--orange-rgb), 0.3),
+    0 0 44px 6px rgba(var(--orange-rgb), 0.16);
 }
 
 /* Featured card: slow rotating orange border + breathing ambient glow.    */
@@ -372,7 +372,7 @@ html.light .card-premium:hover,
     radial-gradient(
         56% 46% at var(--glow-x) var(--glow-y),
         rgba(254, 215, 170, calc(0.09 + 0.05 * var(--glow-lit))),
-        rgba(249, 115, 22, 0) 72%
+        rgba(var(--orange-rgb), 0) 72%
       )
       padding-box,
     linear-gradient(
@@ -383,12 +383,12 @@ html.light .card-premium:hover,
       padding-box,
     conic-gradient(
         from var(--angle),
-        rgba(249, 115, 22, 0.18),
+        rgba(var(--orange-rgb), 0.18),
         rgba(254, 215, 170, 0.75) 8%,
-        rgba(249, 115, 22, 0.18) 20%,
-        rgba(249, 115, 22, 0.18) 55%,
+        rgba(var(--orange-rgb), 0.18) 20%,
+        rgba(var(--orange-rgb), 0.18) 55%,
         rgba(254, 215, 170, 0.45) 65%,
-        rgba(249, 115, 22, 0.18) 78%
+        rgba(var(--orange-rgb), 0.18) 78%
       )
       border-box;
   animation:
@@ -400,15 +400,15 @@ html.light .card-premium:hover,
   border-color: transparent;
   box-shadow:
     inset 0 1px 0 rgba(250, 246, 240, 0.06),
-    0 0 32px -4px rgba(249, 115, 22, 0.35),
-    0 0 60px -8px rgba(249, 115, 22, 0.2);
+    0 0 32px -4px rgba(var(--orange-rgb), 0.35),
+    0 0 60px -8px rgba(var(--orange-rgb), 0.2);
 }
 html.light .card-featured:hover,
 [data-theme="light"] .card-featured:hover {
   box-shadow:
     0 16px 36px -10px rgba(0, 0, 0, 0.06),
-    0 0 28px -2px rgba(234, 88, 12, 0.28),
-    0 0 54px -6px rgba(234, 88, 12, 0.16);
+    0 0 28px -2px rgba(var(--orange-rgb), 0.28),
+    0 0 54px -6px rgba(var(--orange-rgb), 0.16);
 }
 @keyframes rotateBorder {
   to { --angle: 360deg; }
@@ -417,14 +417,14 @@ html.light .card-featured:hover,
   0%, 100% {
     box-shadow:
       inset 0 1px 0 rgba(250, 246, 240, 0.04),
-      var(--glow-ox) var(--glow-oy) 74px -32px rgba(249, 115, 22, var(--bloom)),
-      0 0 32px -14px rgba(249, 115, 22, 0.18);
+      var(--glow-ox) var(--glow-oy) 74px -32px rgba(var(--orange-rgb), var(--bloom)),
+      0 0 32px -14px rgba(var(--orange-rgb), 0.18);
   }
   50% {
     box-shadow:
       inset 0 1px 0 rgba(250, 246, 240, 0.06),
-      var(--glow-ox) var(--glow-oy) 88px -28px rgba(249, 115, 22, calc(var(--bloom) + 0.1)),
-      0 0 56px -12px rgba(249, 115, 22, 0.3);
+      var(--glow-ox) var(--glow-oy) 88px -28px rgba(var(--orange-rgb), calc(var(--bloom) + 0.1)),
+      0 0 56px -12px rgba(var(--orange-rgb), 0.3);
   }
 }
 

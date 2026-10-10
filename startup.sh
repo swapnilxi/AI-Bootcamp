@@ -6,6 +6,7 @@
 #  Options:
 #    -k, --kill, --kill-port   Force kill process occupying port without prompting
 #    --no-kill                 Do not kill process if port is in use
+#    -i, --install, --reinstall Force reinstall dependencies
 #    -p, --port <number>       Specify port (default: 3006 or $PORT)
 #    -h, --help                Show help message
 # ─────────────────────────────────────────────────────────────
@@ -18,6 +19,7 @@ cd "$PROJECT_DIR"
 # Parse CLI options
 KILL_PORT=""
 CHOSEN_PORT=""
+FORCE_INSTALL="no"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -27,6 +29,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --no-kill)
       KILL_PORT="no"
+      shift
+      ;;
+    -i|--install|--reinstall)
+      FORCE_INSTALL="yes"
       shift
       ;;
     -p|--port)
@@ -40,6 +46,7 @@ while [[ $# -gt 0 ]]; do
       echo "Options:"
       echo "  -k, --kill, --kill-port   Force kill process occupying port without prompting"
       echo "  --no-kill                 Do not kill process if port is in use"
+      echo "  -i, --install             Force reinstall dependencies"
       echo "  -p, --port <number>       Specify port to run on (default: 3006 or \$PORT)"
       echo "  -h, --help                Show this help message"
       exit 0
@@ -60,12 +67,18 @@ echo ""
 echo "✨  AI Bootcamp – Starting Dev Environment"
 echo "────────────────────────────────────────────"
 
-# 1. Install dependencies if node_modules is missing or package.json changed
-if [ ! -d "node_modules" ] || [ "package.json" -nt "node_modules" ]; then
-  echo "📦  Installing dependencies…"
+# 1. Install dependencies only if missing or if forced
+if [ "$FORCE_INSTALL" = "yes" ]; then
+  echo "📦  Forcing dependency installation…"
+  npm install
+elif [ ! -d "node_modules" ]; then
+  echo "📦  node_modules not found. Installing dependencies…"
+  npm install
+elif ! npm ls --depth=0 >/dev/null 2>&1; then
+  echo "📦  Missing packages detected. Installing dependencies…"
   npm install
 else
-  echo "✅  Dependencies up to date"
+  echo "✅  Dependencies already installed"
 fi
 
 # 2. Generate Prisma client if schema changed

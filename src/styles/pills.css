@@ -46,8 +46,7 @@
 /*  text keeps a card radius so the first and last lines are not        */
 /*  pinched by the curve.                                               */
 /* ================================================================== */
-input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
-select {
+:where(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]), select) {
   border-radius: var(--radius-pill);
   padding-inline: 1.05rem;
 }

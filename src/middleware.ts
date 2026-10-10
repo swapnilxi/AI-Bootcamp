@@ -26,6 +26,7 @@ export default withAuth(
     // Instructor routes: class authoring (per-class ownership is enforced by the API)
     if (
       pathname.startsWith("/dashboard/instructor") ||
+      pathname.startsWith("/dashboard/lessons") ||
       pathname.startsWith("/courses/new") ||
       /^\/classes\/[^/]+\/edit/.test(pathname)
     ) {

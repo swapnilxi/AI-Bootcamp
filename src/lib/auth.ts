@@ -55,7 +55,26 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Invalid credentials");
         }
 
-        const isValid = await bcrypt.compare(parsed.data.password, user.password);
+        let isValid = false;
+        try {
+          isValid = await bcrypt.compare(parsed.data.password, user.password);
+        } catch {
+          isValid = false;
+        }
+
+        // Support plain text development passwords and automatically upgrade them to bcrypt
+        if (!isValid && user.password === parsed.data.password) {
+          isValid = true;
+          try {
+            const upgradedHash = await bcrypt.hash(parsed.data.password, 10);
+            await prisma.user.update({
+              where: { id: user.id },
+              data: { password: upgradedHash },
+            });
+          } catch {
+            // non-fatal
+          }
+        }
 
         if (!isValid) {
           throw new Error("Invalid credentials");

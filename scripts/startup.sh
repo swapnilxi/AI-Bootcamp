@@ -27,10 +27,15 @@ EOF
   fi
 fi
 
-# Ensure node_modules exist
+# Ensure packages are installed
 if [ ! -d "node_modules" ]; then
   echo "Installing dependencies..."
   npm install
+elif ! npm ls --depth=0 >/dev/null 2>&1; then
+  echo "Missing dependencies detected. Installing..."
+  npm install
+else
+  echo "Dependencies already installed."
 fi
 
 # Ensure Prisma client is generated
