@@ -1,12 +1,14 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Sparkles, Upload, Plus, X, Loader2 } from "lucide-react";
 import { AiSetupNotice } from "@/components/ai/AiSetupNotice";
+import { InlineAiContextEditor } from "@/components/ai/InlineAiContextEditor";
 import { AI_NOT_CONFIGURED_CODE } from "@/lib/ai/constants";
-import { isAdminRole } from "@/lib/roles";
+import { isAdminRole, isInstructorRole } from "@/lib/roles";
 import { PROJECT_MODULES } from "@/app/projects/[slug]/modules";
 
 const MAX_DOCUMENT_CHARS = 20000;
@@ -35,18 +37,19 @@ const fieldClass =
   "w-full px-4 py-2.5 rounded-xl border border-white/10 focus:border-gold focus:ring-1 focus:ring-gold text-ink text-sm bg-black/60";
 const labelClass = "block text-[11px] font-semibold text-text-muted uppercase tracking-wider mb-1.5";
 
-export default function GenerateLessonPage() {
+function GenerateLessonForm() {
   const { data: session } = useSession();
+  const searchParams = useSearchParams();
   const canManageAll = isAdminRole(session?.user?.role);
 
-  const [mode, setMode] = useState<"course" | "project">("course");
+  const [mode, setMode] = useState<"course" | "project">(searchParams.get("mode") === "project" ? "project" : "course");
   const [paths, setPaths] = useState<PathOption[]>([]);
   const [pathId, setPathId] = useState("");
 
   const [courses, setCourses] = useState<CourseOption[]>([]);
-  const [courseId, setCourseId] = useState("");
+  const [courseId, setCourseId] = useState(searchParams.get("course") ?? "");
   const [projects, setProjects] = useState<ProjectOption[]>([]);
-  const [projectSlug, setProjectSlug] = useState("");
+  const [projectSlug, setProjectSlug] = useState(searchParams.get("project") ?? "");
   const [stage, setStage] = useState(STAGE_MODULES[0]?.stage ?? "REQUIREMENTS");
 
   const [topic, setTopic] = useState("");
@@ -119,11 +122,18 @@ export default function GenerateLessonPage() {
     }
   }, []);
 
+  const skipNextReset = useRef(!!searchParams.get("project") || !!searchParams.get("course"));
+
   useEffect(() => {
-    setCourseId("");
-    setProjectSlug("");
+    if (skipNextReset.current) {
+      skipNextReset.current = false;
+    } else {
+      setCourseId("");
+      setProjectSlug("");
+    }
     if (mode === "course") loadCourses(pathId);
     else loadProjects(pathId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathId, mode, loadCourses, loadProjects]);
 
   async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
@@ -299,6 +309,16 @@ export default function GenerateLessonPage() {
                 </option>
               ))}
             </select>
+            {pathId && canManageAll && (
+              <div className="mt-1.5">
+                <InlineAiContextEditor
+                  label="Class"
+                  getUrl={`/api/learning-paths/${pathId}`}
+                  patchUrl={`/api/learning-paths/${pathId}`}
+                  unwrapKey="path"
+                />
+              </div>
+            )}
           </div>
 
           {mode === "course" ? (
@@ -321,6 +341,17 @@ export default function GenerateLessonPage() {
                   </option>
                 ))}
               </select>
+              {courseId && (
+                <div className="mt-1.5">
+                  <InlineAiContextEditor
+                    label="Subject"
+                    getUrl={`/api/courses/${courseId}`}
+                    patchUrl={`/api/courses/${courseId}`}
+                    unwrapKey="course"
+                    method="PUT"
+                  />
+                </div>
+              )}
             </div>
           ) : (
             <div>
@@ -333,6 +364,16 @@ export default function GenerateLessonPage() {
                   </option>
                 ))}
               </select>
+              {projectSlug && isInstructorRole(session?.user?.role) && (
+                <div className="mt-1.5">
+                  <InlineAiContextEditor
+                    label="Project"
+                    getUrl={`/api/projects/${projectSlug}`}
+                    patchUrl={`/api/projects/${projectSlug}`}
+                    unwrapKey="project"
+                  />
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -509,5 +550,13 @@ export default function GenerateLessonPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function GenerateLessonPage() {
+  return (
+    <Suspense fallback={null}>
+      <GenerateLessonForm />
+    </Suspense>
   );
 }

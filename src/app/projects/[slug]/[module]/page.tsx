@@ -12,6 +12,7 @@ import { BuildPreview } from "@/components/projects/BuildPreview";
 import { StageEditor } from "@/components/projects/StageEditor";
 import { LessonViewer } from "@/components/lessons/LessonViewer";
 import { loadOrCreateModuleLesson } from "@/lib/projects/moduleLesson";
+import { CustomModulePage } from "./CustomModulePage";
 import type { LessonVariants } from "@/lib/lessons/shared";
 
 export const revalidate = 3600;
@@ -19,10 +20,17 @@ export const revalidate = 3600;
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; module: string }> }) {
   const { slug, module: moduleSlug } = await params;
   const projectModule = getModule(moduleSlug);
-  if (!projectModule) return { title: "Module not found | AI Bootcamp" };
-  const project = await prisma.project.findUnique({ where: { slug }, select: { title: true } });
+  const project = await prisma.project.findUnique({ where: { slug }, select: { id: true, title: true } });
   if (!project) return { title: "Project not found | AI Bootcamp" };
-  return { title: `${projectModule.title} — ${project.title} | AI Bootcamp`, description: projectModule.description };
+  if (projectModule) {
+    return { title: `${projectModule.title} — ${project.title} | AI Bootcamp`, description: projectModule.description };
+  }
+  const customModule = await prisma.projectModule.findUnique({
+    where: { projectId_slug: { projectId: project.id, slug: moduleSlug } },
+    select: { title: true, description: true },
+  });
+  if (!customModule) return { title: "Module not found | AI Bootcamp" };
+  return { title: `${customModule.title} — ${project.title} | AI Bootcamp`, description: customModule.description };
 }
 
 /** One stage of a project's brief, broken out of the overview into its own module. */
@@ -33,7 +41,9 @@ export default async function ProjectModulePage({
 }) {
   const { slug, module: moduleSlug } = await params;
   const projectModule = getModule(moduleSlug);
-  if (!projectModule || !projectModule.stage) notFound();
+  if (!projectModule || !projectModule.stage) {
+    return <CustomModulePage slug={slug} moduleSlug={moduleSlug} />;
+  }
 
   const project = await prisma.project.findUnique({ where: { slug } });
   if (!project) notFound();
@@ -51,6 +61,11 @@ export default async function ProjectModulePage({
     ? await prisma.user.findUnique({ where: { id: moduleLesson.authorId }, select: { name: true } })
     : null;
   const stageIndex = STAGES.indexOf(projectModule.stage);
+  const customModules = await prisma.projectModule.findMany({
+    where: { projectId: project.id },
+    orderBy: { order: "asc" },
+    select: { slug: true, title: true },
+  });
 
   return (
     <div className="mx-auto max-w-5xl space-y-12 px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
@@ -77,7 +92,7 @@ export default async function ProjectModulePage({
         lede={projectModule.description}
       />
 
-      <ModuleStepper projectSlug={slug} activeSlug={moduleSlug} />
+      <ModuleStepper projectSlug={slug} activeSlug={moduleSlug} customModules={customModules} />
 
       {moduleLesson && (
         <LessonViewer
@@ -168,7 +183,7 @@ export default async function ProjectModulePage({
 
       {projectModule.stage === "IMPLEMENTATION" && <BuildPreview projectSlug={slug} />}
 
-      <ModulePager projectSlug={slug} activeSlug={moduleSlug} />
+      <ModulePager projectSlug={slug} activeSlug={moduleSlug} customModules={customModules} />
     </div>
   );
 }

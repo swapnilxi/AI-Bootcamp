@@ -101,6 +101,8 @@ export async function GET(req: Request, { params }: RouteParams) {
         description: foundClass.description,
         syllabus: foundClass.syllabus,
         content: access.canViewContent ? foundClass.content : null,
+        aiContext: access.canManage ? foundClass.aiContext : null,
+        pathId: foundClass.pathId,
         schedule: foundClass.schedule,
         durationMinutes: foundClass.durationMinutes,
         price: Number(foundClass.price),
@@ -206,6 +208,8 @@ export async function PUT(req: Request, { params }: RouteParams) {
         ...(data.isPasswordProtected !== undefined && { isPasswordProtected: data.isPasswordProtected }),
         ...(passwordHash !== undefined && { passwordHash }),
         ...(instructorId !== undefined && { instructorId }),
+        ...(data.pathId !== undefined && { pathId: data.pathId || null }),
+        ...(data.aiContext !== undefined && { aiContext: data.aiContext }),
         // An instructor revising a declined class resubmits it for review
         ...(!isAdminRole(session.user.role) &&
           existing.approvalStatus === "REJECTED" && { approvalStatus: "PENDING", rejectionReason: null }),
@@ -221,6 +225,8 @@ export async function PUT(req: Request, { params }: RouteParams) {
         isSubscriberOnly: true,
         isPasswordProtected: true,
         instructorId: true,
+        pathId: true,
+        aiContext: true,
         updatedAt: true,
       },
     });

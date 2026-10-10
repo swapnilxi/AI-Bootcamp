@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { aiPreflight } from "@/lib/ai/guard";
 import { describeAiError } from "@/lib/ai/client";
 import { AiRefusalError } from "@/lib/ai/structured";
-import { runLessonRevise } from "@/lib/ai/lessonHtml";
+import { runLessonRevise, TruncatedGenerationError } from "@/lib/ai/lessonHtml";
 import { loadOrCreateModuleLesson } from "@/lib/projects/moduleLesson";
 
 interface RouteParams {
@@ -58,6 +58,9 @@ export async function POST(req: Request, { params }: RouteParams) {
   } catch (error) {
     if (error instanceof AiRefusalError) {
       return NextResponse.json({ error: "Couldn't apply that instruction — try narrowing it." }, { status: 422 });
+    }
+    if (error instanceof TruncatedGenerationError) {
+      return NextResponse.json({ error: error.message }, { status: 422 });
     }
     const { message, status } = describeAiError(error);
     return NextResponse.json({ error: message }, { status });

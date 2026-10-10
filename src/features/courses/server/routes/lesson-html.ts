@@ -15,6 +15,7 @@ import {
   runLessonDeeper,
   runLessonBreakdown,
   runLessonVisualize,
+  TruncatedGenerationError,
   type LessonVariants,
 } from "@/lib/ai/lessonHtml";
 
@@ -24,7 +25,7 @@ interface RouteParams {
 
 async function loadLessonWithAccess(courseId: string, lessonId: string, req: Request) {
   const session = await getServerSession(authOptions);
-  const lesson = await prisma.lesson.findUnique({ where: { id: lessonId }, include: { course: true } });
+  const lesson = await prisma.lesson.findUnique({ where: { id: lessonId }, include: { course: { include: { path: true } } } });
   if (!lesson || lesson.courseId !== courseId) {
     return { error: NextResponse.json({ error: "Lesson not found" }, { status: 404 }) } as const;
   }
@@ -37,9 +38,18 @@ async function loadLessonWithAccess(courseId: string, lessonId: string, req: Req
   return { ok: true, lesson, access, credential: preflight.credential } as const;
 }
 
+/** Combines the parent path's AI guidance with the course's own, as "inherited" + course-level context. */
+function courseGuidance(course: { aiContext: string; path: { aiContext: string } | null }): string | undefined {
+  const parts = [course.path?.aiContext?.trim(), course.aiContext?.trim()].filter(Boolean);
+  return parts.length ? parts.join("\n\n") : undefined;
+}
+
 function handleAiError(error: unknown) {
   if (error instanceof AiRefusalError) {
     return NextResponse.json({ error: "Couldn't generate that — try a narrower request." }, { status: 422 });
+  }
+  if (error instanceof TruncatedGenerationError) {
+    return NextResponse.json({ error: error.message }, { status: 422 });
   }
   const { message, status } = describeAiError(error);
   return NextResponse.json({ error: message }, { status });
@@ -76,6 +86,7 @@ export async function generateHandler(req: Request, { params }: RouteParams) {
       title: lesson.title,
       domainLabel: lesson.course.title,
       domainDescription: lesson.course.description,
+      guidance: courseGuidance(lesson.course),
       sourceText: lesson.content,
     });
     const updated = await prisma.lesson.update({
@@ -209,7 +220,13 @@ export async function visualizeHandler(req: Request, { params }: RouteParams) {
   try {
     const result = await runLessonVisualize(
       credential,
-      { title: lesson.title, domainLabel: lesson.course.title, domainDescription: lesson.course.description, sourceText: lesson.generatedHtml! },
+      {
+        title: lesson.title,
+        domainLabel: lesson.course.title,
+        domainDescription: lesson.course.description,
+        guidance: courseGuidance(lesson.course),
+        sourceText: lesson.generatedHtml!,
+      },
       lesson.generatedHtml!
     );
     const variants = await saveVariant(

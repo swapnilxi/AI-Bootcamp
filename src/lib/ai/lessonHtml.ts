@@ -39,6 +39,20 @@ const Visual = z.object({
     ),
 });
 
+/** Thrown when the model's response was cut off before producing a complete HTML document (usually hit the token ceiling). */
+export class TruncatedGenerationError extends Error {
+  constructor() {
+    super("The generated lesson was cut off before it finished. Try again, or narrow the topic.");
+  }
+}
+
+function assertCompleteHtml(html: string): string {
+  if (!/<\/html\s*>\s*$/i.test(html.trim())) {
+    throw new TruncatedGenerationError();
+  }
+  return html;
+}
+
 function lessonSystemPreamble(ctx: LessonContext): string {
   const track = ctx.projectTrack;
   return `${BRAND_VOICE}
@@ -57,13 +71,15 @@ export async function runLessonRead(credential: ResolvedCredential, ctx: LessonC
     credential,
     schema: StandaloneLesson,
     effort: "high",
-    maxTokens: 8000,
+    maxTokens: 20000,
     system: `${lessonSystemPreamble(ctx)}
 
 Restrained, editorial, content-first design. Embed this exact :root custom-property block inside your <style>:
 ${LESSON_TOKENS_CSS}
 
-Structure: header with read time, 3-4 learning objectives, core concepts with analogies, an inline SVG/CSS diagram where it clarifies something, deep dive into edge cases and trade-offs, syntax-highlighted code with a working copy button, a 2+ question interactive quiz with instant feedback, and a closing summary or checklist. Content max-width ~800px, centered.`,
+Structure: header with read time, 3-4 learning objectives, core concepts with analogies, an inline SVG/CSS diagram where it clarifies something, deep dive into edge cases and trade-offs, syntax-highlighted code with a working copy button, a 2+ question interactive quiz with instant feedback, and a closing summary or checklist. Content max-width ~800px, centered.
+
+Budget discipline: you have a finite output budget and MUST finish the document — an unfinished document is worse than a shorter complete one. Keep every code example to at most 10-15 lines (a representative fragment, not a full file or type definitions). If the topic is broad, cover fewer sub-points well rather than many shallowly. Always end with the closing </html> tag.`,
     prompt: `Write the interactive lesson "${ctx.title}".
 
 <source_material>
@@ -72,7 +88,7 @@ ${ctx.sourceText}
 
 The result must run standalone, offline, with no network calls.`,
   });
-  return result.html;
+  return assertCompleteHtml(result.html);
 }
 
 /** Prompt 8: in-place reviser, used by both the "Update" (AI instruction) and "Edit" (direct save) actions. */
@@ -81,10 +97,12 @@ export async function runLessonRevise(credential: ResolvedCredential, instructio
     credential,
     schema: StandaloneLesson,
     effort: "medium",
-    maxTokens: 8000,
+    maxTokens: 20000,
     system: `${BRAND_VOICE}
 
-You are updating an existing interactive HTML lesson according to the learner's instruction. Apply the instruction and change as little else as possible: keep every section, diagram, quiz, script and style the instruction does not touch, exactly as it is. Keep the same visual design, CSS variables and self-contained structure — no external CDNs, scripts must still run in a sandboxed iframe.`,
+You are updating an existing interactive HTML lesson according to the learner's instruction. Apply the instruction and change as little else as possible: keep every section, diagram, quiz, script and style the instruction does not touch, exactly as it is. Keep the same visual design, CSS variables and self-contained structure — no external CDNs, scripts must still run in a sandboxed iframe.
+
+Budget discipline: you must reproduce the whole document plus the change within your output budget — an unfinished document is worse than skipping a nice-to-have. If the instruction would make the document too long to finish, trim existing code examples to their essentials rather than leaving the document incomplete. Always end with the closing </html> tag.`,
     prompt: `<instruction>
 ${instruction}
 </instruction>
@@ -93,7 +111,7 @@ ${instruction}
 ${currentHtml}
 </current_html>`,
   });
-  return result.html;
+  return assertCompleteHtml(result.html);
 }
 
 /** Prompt 6: Easy Read. */

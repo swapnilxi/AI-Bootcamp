@@ -19,6 +19,7 @@ import {
 import { useAiEnabled } from "@/components/ai/useAi";
 import { AiSetupNotice } from "@/components/ai/AiSetupNotice";
 import { AI_NOT_CONFIGURED_CODE } from "@/lib/ai/constants";
+import { CourseAiContextCard } from "./CourseAiContextCard";
 
 const MAX_DOCUMENT_CHARS = 20000;
 
@@ -414,6 +415,8 @@ export function LessonManager({ courseId }: { courseId: string }) {
           </button>
         )}
       </div>
+
+      <CourseAiContextCard courseId={courseId} />
 
       <div className="p-5 sm:p-6 rounded-2xl border border-cream/15 bg-cream/5 space-y-4">
         <div>

@@ -1,13 +1,35 @@
 import Link from "next/link";
 import { PROJECT_MODULES, moduleHref } from "./modules";
 
-export function ModuleStepper({ projectSlug, activeSlug }: { projectSlug: string; activeSlug: string }) {
-  const activeIndex = PROJECT_MODULES.findIndex((m) => m.slug === activeSlug);
+export interface CustomModuleStep {
+  slug: string;
+  title: string;
+  shortTitle?: string;
+}
+
+function allSteps(customModules: CustomModuleStep[]) {
+  return [
+    ...PROJECT_MODULES,
+    ...customModules.map((m) => ({ slug: m.slug, title: m.title, shortTitle: m.shortTitle ?? m.title, description: "" })),
+  ];
+}
+
+export function ModuleStepper({
+  projectSlug,
+  activeSlug,
+  customModules = [],
+}: {
+  projectSlug: string;
+  activeSlug: string;
+  customModules?: CustomModuleStep[];
+}) {
+  const steps = allSteps(customModules);
+  const activeIndex = steps.findIndex((m) => m.slug === activeSlug);
 
   return (
     <nav aria-label="Project modules" className="overflow-x-auto">
       <ol className="flex min-w-max items-center gap-2">
-        {PROJECT_MODULES.map((module, idx) => {
+        {steps.map((module, idx) => {
           const isActive = idx === activeIndex;
           const isDone = idx < activeIndex;
           return (
@@ -41,10 +63,19 @@ export function ModuleStepper({ projectSlug, activeSlug }: { projectSlug: string
   );
 }
 
-export function ModulePager({ projectSlug, activeSlug }: { projectSlug: string; activeSlug: string }) {
-  const activeIndex = PROJECT_MODULES.findIndex((m) => m.slug === activeSlug);
-  const prev = activeIndex > 0 ? PROJECT_MODULES[activeIndex - 1] : undefined;
-  const next = activeIndex < PROJECT_MODULES.length - 1 ? PROJECT_MODULES[activeIndex + 1] : undefined;
+export function ModulePager({
+  projectSlug,
+  activeSlug,
+  customModules = [],
+}: {
+  projectSlug: string;
+  activeSlug: string;
+  customModules?: CustomModuleStep[];
+}) {
+  const steps = allSteps(customModules);
+  const activeIndex = steps.findIndex((m) => m.slug === activeSlug);
+  const prev = activeIndex > 0 ? steps[activeIndex - 1] : undefined;
+  const next = activeIndex < steps.length - 1 ? steps[activeIndex + 1] : undefined;
 
   return (
     <div className="flex items-center justify-between gap-3 border-t border-black-line pt-6">

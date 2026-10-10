@@ -29,7 +29,7 @@ export async function loadOrCreateModuleLesson(slug: string, stage: string) {
 
 /** Builds the shared lesson-generation context for a project's stage. */
 export function buildProjectStageContext(
-  project: { title: string; problemStatement: string; architecture: string; requirements: unknown; tasks: unknown },
+  project: { title: string; problemStatement: string; architecture: string; requirements: unknown; tasks: unknown; aiContext?: string },
   stage: ProjectStage,
   sourceText: string
 ): LessonContext {
@@ -40,6 +40,7 @@ export function buildProjectStageContext(
     title: projectModule?.title ?? stage,
     domainLabel: project.title,
     domainDescription: project.problemStatement,
+    guidance: project.aiContext?.trim() || undefined,
     sourceText: `${sourceText}
 
 <architecture>

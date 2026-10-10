@@ -1,10 +1,16 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { getServerSession } from "next-auth/next";
 import { ArrowLeft } from "lucide-react";
+import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { isInstructorRole } from "@/lib/roles";
+import { Sparkles } from "lucide-react";
 import { PageHeader, DifficultyPill, MetaPill } from "@/components/learning/primitives";
 import { ModuleStepper, ModulePager } from "./ModuleStepper";
 import { PROJECT_MODULES, moduleHref } from "./modules";
+import { AddModuleButton } from "@/components/projects/AddModuleButton";
+import { CustomModulesGrid } from "@/components/projects/CustomModulesGrid";
 
 export const revalidate = 3600;
 
@@ -24,6 +30,15 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   });
 
   if (!project) notFound();
+
+  const session = await getServerSession(authOptions);
+  const isInstructor = isInstructorRole(session?.user?.role);
+
+  const customModules = await prisma.projectModule.findMany({
+    where: { projectId: project.id },
+    orderBy: { order: "asc" },
+    select: { id: true, slug: true, title: true, description: true },
+  });
 
   return (
     <div className="mx-auto max-w-5xl space-y-12 px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
@@ -66,10 +81,23 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         )}
       </div>
 
-      <ModuleStepper projectSlug={slug} activeSlug="" />
+      <ModuleStepper projectSlug={slug} activeSlug="" customModules={customModules} />
 
       <section className="space-y-5">
-        <h2 className="font-serif text-2xl text-text">Project modules</h2>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="font-serif text-2xl text-text">Project modules</h2>
+          {isInstructor && (
+            <div className="flex items-center gap-2">
+              <Link
+                href={`/dashboard/lessons/generate?mode=project&project=${slug}`}
+                className="inline-flex items-center gap-1.5 rounded-full border border-cream/25 bg-cream/[0.08] px-4 py-2 text-xs font-semibold text-cream transition-colors hover:bg-cream/15"
+              >
+                <Sparkles className="h-3.5 w-3.5" /> Generate lesson
+              </Link>
+              <AddModuleButton projectSlug={slug} />
+            </div>
+          )}
+        </div>
         <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {PROJECT_MODULES.map((module, idx) => (
             <li key={module.slug || "overview"}>
@@ -87,6 +115,12 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
               </Link>
             </li>
           ))}
+          <CustomModulesGrid
+            projectSlug={slug}
+            initialModules={customModules}
+            isInstructor={isInstructor}
+            startIndex={PROJECT_MODULES.length + 1}
+          />
         </ol>
       </section>
 
@@ -107,7 +141,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         </p>
       </section>
 
-      <ModulePager projectSlug={slug} activeSlug="" />
+      <ModulePager projectSlug={slug} activeSlug="" customModules={customModules} />
     </div>
   );
 }

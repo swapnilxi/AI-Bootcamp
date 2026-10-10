@@ -16,6 +16,7 @@ export const createClassSchema = z.object({
   // Admins may assign a teaching instructor; instructors always teach their own classes
   instructorId: z.string().optional(),
   pathId: z.string().optional(),
+  aiContext: z.string().max(2000).optional(),
 }).refine(
   (data) => {
     if (data.isPasswordProtected && (!data.password || data.password.trim().length === 0)) {
@@ -43,6 +44,8 @@ export const updateClassSchema = z.object({
   isPasswordProtected: z.boolean().optional(),
   password: z.string().optional(),
   instructorId: z.string().optional(),
+  pathId: z.string().optional(),
+  aiContext: z.string().max(2000).optional(),
 });
 
 export const unlockClassSchema = z.object({

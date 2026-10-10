@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState, type ReactNode } from "react";
 import {
   BookOpen,
   FileText,
@@ -10,6 +10,7 @@ import {
   ListTree,
   RotateCw,
   Download,
+  Upload,
   Pencil,
   Maximize2,
   Minimize2,
@@ -120,6 +121,8 @@ export function LessonViewer({
   const [instruction, setInstruction] = useState("");
   const [pendingPrevious, setPendingPrevious] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const uploadInputRef = useRef<HTMLInputElement>(null);
 
   const hasRead = !!generatedHtml;
 
@@ -208,6 +211,28 @@ export function LessonViewer({
     }
   }
 
+  async function handleUploadHtml(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setError(null);
+    setNeedsSetup(false);
+    try {
+      const previous = generatedHtml;
+      const text = await file.text();
+      const data = await postJson(endpoints.revise, { html: text });
+      setGeneratedHtml(data.generatedHtml);
+      if (previous) setPendingPrevious(previous);
+      setTab("read");
+      setEditing(false);
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setUploading(false);
+      if (uploadInputRef.current) uploadInputRef.current.value = "";
+    }
+  }
+
   async function handleDelete() {
     if (!clearEndpoint) return;
     if (!window.confirm(`${deleteLabel}? This can't be undone.`)) return;
@@ -267,7 +292,21 @@ export function LessonViewer({
     }
 
     if (tab === "read" && !generatedHtml) {
-      return <GenerateCta label="Generate lesson" loading={loadingTab === "read"} onClick={runGenerate} />;
+      return (
+        <GenerateCta
+          label="Generate lesson"
+          loading={loadingTab === "read"}
+          onClick={runGenerate}
+          secondary={
+            canManage ? (
+              <label className="inline-flex min-h-0 cursor-pointer items-center gap-1.5 text-xs text-text-muted transition-colors hover:text-gold">
+                <Upload className="h-3.5 w-3.5" /> or upload an HTML file
+                <input type="file" accept=".html,.htm" disabled={uploading} onChange={handleUploadHtml} className="hidden" />
+              </label>
+            ) : undefined
+          }
+        />
+      );
     }
     if (tab !== "read" && !currentDoc) {
       const labels: Record<string, string> = {
@@ -380,6 +419,23 @@ export function LessonViewer({
               <Download className="h-3.5 w-3.5" /> Download
             </button>
             {canManage && (
+              <label
+                className={`inline-flex min-h-0 cursor-pointer items-center gap-1.5 rounded-full border border-white/10 px-3 py-1.5 text-xs text-text-muted transition-colors hover:text-gold ${
+                  uploading ? "opacity-50" : ""
+                }`}
+              >
+                <Upload className={`h-3.5 w-3.5 ${uploading ? "animate-pulse" : ""}`} /> Upload HTML
+                <input
+                  ref={uploadInputRef}
+                  type="file"
+                  accept=".html,.htm"
+                  disabled={uploading}
+                  onChange={handleUploadHtml}
+                  className="hidden"
+                />
+              </label>
+            )}
+            {canManage && (
               <button
                 onClick={() => {
                   if (!editing) setEditValue(generatedHtml ?? "");
@@ -483,12 +539,14 @@ function GenerateCta({
   onClick,
   disabled,
   disabledHint,
+  secondary,
 }: {
   label: string;
   loading: boolean;
   onClick: () => void;
   disabled?: boolean;
   disabledHint?: string;
+  secondary?: ReactNode;
 }) {
   return (
     <div className="flex h-full min-h-[320px] flex-col items-center justify-center gap-3 p-8 text-center">
@@ -501,6 +559,7 @@ function GenerateCta({
         <Sparkles className={`h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`} />
         {loading ? "Generating…" : label}
       </button>
+      {secondary}
     </div>
   );
 }

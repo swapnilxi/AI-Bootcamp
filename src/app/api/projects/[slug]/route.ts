@@ -19,6 +19,7 @@ const patchSchema = z.object({
   starterRepoUrl: z.string().trim().max(300).optional(),
   datasetUrl: z.string().trim().max(300).optional(),
   tasks: z.array(taskSchema).max(100).optional(),
+  aiContext: z.string().max(2000).optional(),
 });
 
 /** Instructor content editing for a project's stage fields: requirements, architecture, tech stack and the staged task list. */
@@ -50,8 +51,21 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ slug: 
       ...(data.starterRepoUrl !== undefined && { starterRepoUrl: data.starterRepoUrl || null }),
       ...(data.datasetUrl !== undefined && { datasetUrl: data.datasetUrl || null }),
       ...(data.tasks !== undefined && { tasks: data.tasks }),
+      ...(data.aiContext !== undefined && { aiContext: data.aiContext }),
     },
   });
 
   return NextResponse.json({ ok: true });
+}
+
+/** A project's AI context, for the lesson generator's "Edit" panel (instructor/admin only). */
+export async function GET(_req: Request, { params }: { params: Promise<{ slug: string }> }) {
+  const session = await getServerSession(authOptions);
+  if (!isInstructorRole(session?.user?.role)) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+  const { slug } = await params;
+  const project = await prisma.project.findUnique({ where: { slug }, select: { id: true, title: true, aiContext: true } });
+  if (!project) return NextResponse.json({ error: "Project not found" }, { status: 404 });
+  return NextResponse.json({ project });
 }

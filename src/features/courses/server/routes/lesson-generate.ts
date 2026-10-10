@@ -42,10 +42,11 @@ export async function POST(req: Request, { params }: RouteParams) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const cls = await prisma.course.findUnique({ where: { id } });
+  const cls = await prisma.course.findUnique({ where: { id }, include: { path: true } });
   if (!cls) {
     return NextResponse.json({ error: "Class not found" }, { status: 404 });
   }
+  const guidance = [cls.path?.aiContext?.trim(), cls.aiContext?.trim()].filter(Boolean).join("\n\n") || undefined;
 
   const access = await getClassAccess(session, cls);
   if (!access.canManage) {
@@ -86,7 +87,7 @@ You help academy instructors turn a topic or a set of pasted notes into a new le
 Title: ${cls.title}
 Description: ${cls.description}
 </class>
-
+${guidance ? `\n<guidance>\n${guidance}\n</guidance>\n` : ""}
 <existing_lessons>
 ${existingList}
 </existing_lessons>
@@ -108,6 +109,7 @@ Build on the existing lessons without repeating them.`,
         title,
         domainLabel: cls.title,
         domainDescription: cls.description,
+        guidance,
         sourceText: draft.content,
       });
     } catch {

@@ -180,6 +180,7 @@ model User {
   lessonProgress     LessonProgress[]
   authoredLessons    Lesson[]            @relation("LessonAuthor")
   authoredModuleLessons ProjectModuleLesson[] @relation("ProjectModuleLessonAuthor")
+  authoredProjectModules ProjectModule[] @relation("ProjectModuleAuthor")
   pathEnrollments    PathEnrollment[]
   practiceAttempts   PracticeAttempt[]
   labRuns            LabRun[]
@@ -218,6 +219,8 @@ model LearningPath {
   iconName       String        @default("path")
   status         ContentStatus @default(PUBLISHED)
   order          Int           @default(0)
+  /// Steers AI lesson generation for every course under this path — the "class-level" guidance courses inherit.
+  aiContext      String        @default("")
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
 
@@ -273,6 +276,8 @@ model Course {
   technologies   Json       @default("[]")
   prerequisites  Json       @default("[]")
   order          Int        @default(0)
+  /// Steers AI lesson generation for this course (tone, focus, scope). Combined with the parent path's own aiContext as "inherited guidance".
+  aiContext      String     @default("")
 
   pathId String?
   path   LearningPath? @relation(fields: [pathId], references: [id], onDelete: SetNull)
@@ -620,6 +625,8 @@ model Project {
   techStack        Json          @default("[]")
   /// Ordered task list: [{ title, detail, stage }]
   tasks            Json          @default("[]")
+  /// Steers AI lesson generation for this project's stages and modules.
+  aiContext        String        @default("")
   starterRepoUrl   String?
   datasetUrl       String?
   estimatedHours   Int           @default(8)
@@ -636,9 +643,34 @@ model Project {
   submissions   ProjectSubmission[]
   bootcampWeeks BootcampWeek[]
   moduleLessons ProjectModuleLesson[]
+  customModules ProjectModule[]
 
   @@index([difficulty, order])
   @@index([pathId])
+}
+
+/// An instructor/admin-added module beyond the project's fixed 5 build stages —
+/// title, description and generated lesson content folded into one row, since
+/// (unlike Course Module/Lesson) each custom module maps 1:1 to one lesson.
+model ProjectModule {
+  id            String   @id @default(cuid())
+  projectId     String
+  project       Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  slug          String
+  title         String
+  description   String
+  order         Int      @default(0)
+  generatedHtml String?
+  variants      Json?
+  htmlUpdatedAt DateTime?
+  authorId      String?
+  author        User?    @relation("ProjectModuleAuthor", fields: [authorId], references: [id], onDelete: SetNull)
+  showAuthor    Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([projectId, slug])
+  @@index([projectId, order])
 }
 
 /// A generated, previewable lesson for one stage of a project's build (the
