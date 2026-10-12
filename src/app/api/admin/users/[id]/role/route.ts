@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { isSuperAdmin } from "@/lib/rbac";
 import { Role } from "@prisma/client";
 import { z } from "zod";
+import { notify } from "@/lib/notify/dispatch";
 
 const roleUpdateSchema = z.object({
   role: z.nativeEnum(Role),
@@ -70,6 +71,16 @@ export async function PATCH(req: Request, { params }: RouteParams) {
         updatedAt: true,
       },
     });
+
+    if (targetUser.role !== updatedUser.role) {
+      await notify(updatedUser, {
+        kind: "role_changed",
+        title: "Your account role was updated",
+        body: `Your role is now ${updatedUser.role.replace("_", " ").toLowerCase()}. Sign out and back in if you don't see your new menus.`,
+        href: "/dashboard",
+        sentById: session.user.id,
+      });
+    }
 
     return NextResponse.json({
       message: `User role successfully updated to ${updatedUser.role}`,

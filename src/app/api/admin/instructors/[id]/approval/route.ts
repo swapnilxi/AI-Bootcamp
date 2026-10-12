@@ -4,6 +4,7 @@ import { z } from "zod";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { isAdminRole } from "@/lib/roles";
+import { notify } from "@/lib/notify/dispatch";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -64,22 +65,18 @@ export async function PUT(req: Request, { params }: RouteParams) {
 
       const bodyText =
         status === "APPROVED"
-          ? `Greetings ${user.name || "Mentor"},\n\nCongratulations! Your instructor & mentor profile has been approved by academy administration. Your profile is now published in our global Faculty Directory, and learners can book private sessions or enroll in your courses.\n\nAccess your teaching studio: https://aibootcamp.com/dashboard/instructor`
+          ? `Greetings ${user.name || "Mentor"},\n\nCongratulations! Your instructor & mentor profile has been approved by academy administration. Your profile is now published in our global Faculty Directory, and learners can book private sessions or enroll in your courses.`
           : status === "REJECTED"
           ? `Greetings ${user.name || "Mentor"},\n\nThank you for submitting your application to the AI Bootcamp faculty. After review, administration was unable to approve your profile at this time.\n\nReason: ${rejectionReason || "Application requirements not fulfilled."}\n\nYou may update your credentials and submit again anytime.`
-          : `Greetings ${user.name},\n\nYour profile has been set back to pending review status.`;
+          : `Greetings ${user.name || "Mentor"},\n\nYour profile has been set back to pending review status.`;
 
-      await prisma.notificationLog.create({
-        data: {
-          channel: "EMAIL",
-          kind: status === "APPROVED" ? "profile_approved" : "profile_rejected",
-          recipient: user.email,
-          subject,
-          body: bodyText,
-          status: "SENT",
-          userId: user.id,
-        },
-      }).catch(() => null);
+      await notify(user, {
+        kind: status === "APPROVED" ? "profile_approved" : status === "REJECTED" ? "profile_rejected" : "profile_pending",
+        title: subject,
+        body: bodyText,
+        href: "/dashboard/instructor",
+        sentById: session.user.id,
+      });
     }
 
     return NextResponse.json({

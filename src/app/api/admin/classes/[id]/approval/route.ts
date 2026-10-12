@@ -4,6 +4,7 @@ import { z } from "zod";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { isAdminRole } from "@/lib/roles";
+import { notify } from "@/lib/notify/dispatch";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -108,17 +109,13 @@ export async function PUT(req: Request, { params }: RouteParams) {
         note = `\n\nNote: ${rejectedMods.length} individual module(s) require modifications before they can be made visible to learners.`;
       }
 
-      await prisma.notificationLog.create({
-        data: {
-          channel: "EMAIL",
-          kind: isApproved ? "class_approved" : "class_status_change",
-          recipient: existingClass.instructor.email,
-          subject: `Curriculum Review Update: ${existingClass.title}`,
-          body: `Greetings ${existingClass.instructor.name || "Instructor"},\n\nYour curriculum submission "${existingClass.title}" has been reviewed by administration.\nStatus: ${approvalStatus || existingClass.approvalStatus}\nPublished to Academy: ${isPublished ?? existingClass.isPublished ? "YES" : "NO"}${note}\n\nReview your curriculum studio: https://aibootcamp.com/dashboard/instructor`,
-          status: "SENT",
-          userId: existingClass.instructor.id,
-        },
-      }).catch(() => null);
+      await notify(existingClass.instructor, {
+        kind: isApproved ? "class_approved" : "class_status_change",
+        title: `Curriculum review update: ${existingClass.title}`,
+        body: `Your curriculum submission "${existingClass.title}" has been reviewed by administration.\nStatus: ${approvalStatus || existingClass.approvalStatus}\nPublished: ${(isPublished ?? existingClass.isPublished) ? "yes" : "no"}${note}`,
+        href: "/dashboard/instructor",
+        sentById: session.user.id,
+      });
     }
 
     const updated = await prisma.course.findUnique({

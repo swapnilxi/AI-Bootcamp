@@ -174,20 +174,21 @@ model User {
   activeAiProvider AiProvider?
   aiCredentials    AiCredential[]
 
-  enrollments        Enrollment[]
-  entitlements       Entitlement[]
-  createdCourses     Course[]            @relation("CourseInstructor")
-  lessonProgress     LessonProgress[]
-  authoredLessons    Lesson[]            @relation("LessonAuthor")
-  authoredModuleLessons ProjectModuleLesson[] @relation("ProjectModuleLessonAuthor")
-  authoredProjectModules ProjectModule[] @relation("ProjectModuleAuthor")
-  pathEnrollments    PathEnrollment[]
-  practiceAttempts   PracticeAttempt[]
-  labRuns            LabRun[]
-  projectSubmissions ProjectSubmission[]
-  skills             UserSkill[]
-  bookmarks          Bookmark[]
-  tutorThreads       TutorThread[]
+  enrollments            Enrollment[]
+  entitlements           Entitlement[]
+  createdCourses         Course[]              @relation("CourseInstructor")
+  lessonProgress         LessonProgress[]
+  authoredLessons        Lesson[]              @relation("LessonAuthor")
+  authoredModuleLessons  ProjectModuleLesson[] @relation("ProjectModuleLessonAuthor")
+  authoredProjectModules ProjectModule[]       @relation("ProjectModuleAuthor")
+  pathEnrollments        PathEnrollment[]
+  practiceAttempts       PracticeAttempt[]
+  labRuns                LabRun[]
+  projectSubmissions     ProjectSubmission[]
+  skills                 UserSkill[]
+  bookmarks              Bookmark[]
+  tutorThreads           TutorThread[]
+  notifications          Notification[]
 
   bookings         Booking[]  @relation("ClientBookings")
   assignedBookings Booking[]  @relation("AssignedMentor")
@@ -653,21 +654,21 @@ model Project {
 /// title, description and generated lesson content folded into one row, since
 /// (unlike Course Module/Lesson) each custom module maps 1:1 to one lesson.
 model ProjectModule {
-  id            String   @id @default(cuid())
+  id            String    @id @default(cuid())
   projectId     String
-  project       Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project       Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
   slug          String
   title         String
   description   String
-  order         Int      @default(0)
+  order         Int       @default(0)
   generatedHtml String?
   variants      Json?
   htmlUpdatedAt DateTime?
   authorId      String?
-  author        User?    @relation("ProjectModuleAuthor", fields: [authorId], references: [id], onDelete: SetNull)
-  showAuthor    Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  author        User?     @relation("ProjectModuleAuthor", fields: [authorId], references: [id], onDelete: SetNull)
+  showAuthor    Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   @@unique([projectId, slug])
   @@index([projectId, order])
@@ -943,10 +944,26 @@ model PlatformSetting {
   updatedAt DateTime @updatedAt
 }
 
+/// In-app inbox item shown in the header bell and /notifications. One row per
+/// recipient; email/WhatsApp copies of the same event are tracked in NotificationLog.
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kind      String // e.g. booking_received | class_approved | instructor_applied | broadcast
+  title     String
+  body      String
+  href      String? // app-relative link opened on click
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId, readAt, createdAt])
+}
+
 /// Every email / WhatsApp message the platform sends (or skips), for the admin audit trail
 model NotificationLog {
   id        String   @id @default(cuid())
-  channel   String // EMAIL | WHATSAPP
+  channel   String // EMAIL | WHATSAPP | IN_APP
   kind      String // received | confirmed | declined | rescheduled | cancelled | reminder | custom | admin_alert
   recipient String
   subject   String?

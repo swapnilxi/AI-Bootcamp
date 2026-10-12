@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { prisma } from "@/lib/prisma";
 import { constructWebhookEvent } from "../payments/stripe";
+import { notifyUserId } from "@/lib/notify/dispatch";
+import { enrollmentNotices } from "../notifyEnrollment";
 
 /**
  * Stripe webhook. This is the only thing that grants a paid entitlement — the
@@ -49,6 +51,8 @@ async function grantFromSession(s: Stripe.Checkout.Session): Promise<void> {
     return;
   }
 
+  const alreadyGranted = await prisma.entitlement.findUnique({ where: { userId_courseId: { userId, courseId } } });
+
   // Both rows are written together: a paid seat that failed to enrol would look
   // to the student exactly like a payment that vanished.
   await prisma.$transaction(async (tx) => {
@@ -72,4 +76,21 @@ async function grantFromSession(s: Stripe.Checkout.Session): Promise<void> {
       update: {},
     });
   });
+
+  // Stripe retries deliveries — only announce a purchase the first time we see it.
+  if (!alreadyGranted) {
+    const [course, learner] = await Promise.all([
+      prisma.course.findUnique({ where: { id: courseId }, select: { id: true, title: true, instructorId: true } }),
+      prisma.user.findUnique({ where: { id: userId }, select: { name: true } }),
+    ]);
+    if (course) {
+      await notifyUserId(userId, {
+        kind: "payment_received",
+        title: `Payment received: ${course.title}`,
+        body: `Thanks! Your payment went through and your seat in "${course.title}" is unlocked.`,
+        href: `/courses/${course.id}`,
+      });
+      await enrollmentNotices(userId, learner?.name, course);
+    }
+  }
 }

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+import { notify, notifyRoles } from "@/lib/notify/dispatch";
 import { registerSchema } from "@/lib/validations/auth";
 import { Role } from "@prisma/client";
 
@@ -55,6 +56,26 @@ export async function POST(req: Request) {
         createdAt: true,
       },
     });
+
+    // Welcome the new member; if they applied to teach, tell admins there's a review waiting.
+    await Promise.all([
+      notify(user, {
+        kind: "welcome",
+        title: "Welcome to AI Bootcamp",
+        body: wantsInstructor
+          ? "Your account is created and your instructor application is awaiting admin review. We'll notify you as soon as it's decided."
+          : "Your account is ready. Pick a learning path to get started.",
+        href: wantsInstructor ? "/dashboard/instructor" : "/paths",
+      }),
+      wantsInstructor
+        ? notifyRoles(["ADMIN", "SUPER_ADMIN"], {
+            kind: "instructor_applied",
+            title: `New instructor application: ${user.name || user.email}`,
+            body: `${user.name || user.email} applied to teach and is waiting for approval.`,
+            href: "/dashboard/admin",
+          })
+        : Promise.resolve(),
+    ]);
 
     return NextResponse.json(
       { message: "Registration successful", user },

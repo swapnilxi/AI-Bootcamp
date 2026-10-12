@@ -1,54 +1,75 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "@/components/ui/Icon";
+import { timeAgo, type NotificationItem } from "@/lib/notify/client";
 
-interface Notification {
-  id: string;
-  title: string;
-  body: string;
-  time: string;
-  read: boolean;
-}
-
-const DEMO_NOTIFICATIONS: Notification[] = [
-  {
-    id: "1",
-    title: "New lesson available",
-    body: "RAG with Gemini 2.0 is now live in the AI Engineering path.",
-    time: "2m ago",
-    read: false,
-  },
-  {
-    id: "2",
-    title: "Project feedback",
-    body: "Your RAG chatbot submission has been reviewed.",
-    time: "1h ago",
-    read: false,
-  },
-  {
-    id: "3",
-    title: "Bootcamp reminder",
-    body: "Live session starts in 30 minutes — AI Agents deep-dive.",
-    time: "3h ago",
-    read: true,
-  },
-];
+const POLL_MS = 60_000;
 
 export function NotificationBell() {
+  const { status } = useSession();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [notifications, setNotifications] = useState(DEMO_NOTIFICATIONS);
+  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
 
-  const unreadCount = notifications.filter((n) => !n.read).length;
+  const load = useCallback(async () => {
+    try {
+      const res = await fetch("/api/notifications?limit=10", { cache: "no-store" });
+      if (!res.ok) return;
+      const data = await res.json();
+      setNotifications(data.items);
+      setUnreadCount(data.unreadCount);
+    } catch {
+      /* offline — keep what we have */
+    }
+  }, []);
 
-  const markAllRead = () =>
-    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+  // Poll while signed in; refresh on tab focus so a returning user sees fresh items.
+  useEffect(() => {
+    if (status !== "authenticated") return;
+    load();
+    const timer = setInterval(load, POLL_MS);
+    const onFocus = () => load();
+    window.addEventListener("focus", onFocus);
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener("focus", onFocus);
+    };
+  }, [status, load]);
 
-  const markRead = (id: string) =>
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
-    );
+  const markAllRead = () => {
+    setNotifications((prev) => prev.map((n) => ({ ...n, readAt: n.readAt ?? new Date().toISOString() })));
+    setUnreadCount(0);
+    fetch("/api/notifications", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ all: true }),
+    }).catch(() => load());
+  };
+
+  const openItem = (n: NotificationItem) => {
+    if (!n.readAt) {
+      setNotifications((prev) => prev.map((x) => (x.id === n.id ? { ...x, readAt: new Date().toISOString() } : x)));
+      setUnreadCount((c) => Math.max(0, c - 1));
+      fetch("/api/notifications", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids: [n.id] }),
+      }).catch(() => load());
+    }
+    if (n.href) {
+      setOpen(false);
+      router.push(n.href);
+    }
+  };
+
+  // Notifications are per-account; nothing to show a signed-out visitor.
+  if (status !== "authenticated") return null;
 
   return (
     <div className="relative">
@@ -73,7 +94,7 @@ export function NotificationBell() {
               exit={{ scale: 0 }}
               className="absolute -top-0.5 -right-0.5 flex items-center justify-center w-4 h-4 rounded-full bg-orange text-black text-[9px] font-bold leading-none"
             >
-              {unreadCount}
+              {unreadCount > 9 ? "9+" : unreadCount}
             </motion.span>
           )}
         </AnimatePresence>
@@ -121,9 +142,9 @@ export function NotificationBell() {
                   notifications.map((n) => (
                     <li
                       key={n.id}
-                      onClick={() => markRead(n.id)}
+                      onClick={() => openItem(n)}
                       className={`flex gap-3 px-4 py-3 cursor-pointer transition-colors duration-150 ${
-                        n.read
+                        n.readAt
                           ? "hover:bg-white/5"
                           : "bg-orange/5 hover:bg-orange/8"
                       }`}
@@ -132,7 +153,7 @@ export function NotificationBell() {
                       <div className="mt-1.5 shrink-0">
                         <span
                           className={`block w-2 h-2 rounded-full ${
-                            n.read ? "bg-transparent" : "bg-orange"
+                            n.readAt ? "bg-transparent" : "bg-orange"
                           }`}
                         />
                       </div>
@@ -143,7 +164,7 @@ export function NotificationBell() {
                         <p className="text-xs text-cream/55 mt-0.5 line-clamp-2">
                           {n.body}
                         </p>
-                        <p className="text-[10px] text-cream/35 mt-1">{n.time}</p>
+                        <p className="text-[10px] text-cream/35 mt-1">{timeAgo(n.createdAt)}</p>
                       </div>
                     </li>
                   ))
@@ -152,9 +173,13 @@ export function NotificationBell() {
 
               {/* Footer */}
               <div className="px-4 py-2.5 border-t border-black-line/60">
-                <button className="w-full text-center text-xs text-cream/40 hover:text-orange transition-colors">
+                <Link
+                  href="/notifications"
+                  onClick={() => setOpen(false)}
+                  className="block w-full text-center text-xs text-cream/40 hover:text-orange transition-colors"
+                >
                   View all notifications
-                </button>
+                </Link>
               </div>
             </motion.div>
           </>

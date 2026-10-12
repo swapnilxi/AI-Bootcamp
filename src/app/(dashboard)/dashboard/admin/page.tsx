@@ -26,12 +26,13 @@ import { AdminClients } from "@/components/admin/AdminClients";
 import { AdminAvailability } from "@/components/admin/AdminAvailability";
 import { AdminMentors } from "@/components/admin/AdminMentors";
 import { AdminClassesReview } from "@/components/admin/AdminClassesReview";
+import { AdminBroadcast } from "@/components/admin/AdminBroadcast";
 import { EventDashboardPanel } from "@/features/events";
 
 export default function AdminDashboardPage() {
   const { data: session } = useSession();
   const [activeTab, setActiveTab] = useState<
-    "bookings" | "clients" | "availability" | "services" | "classes" | "faculty" | "curriculum" | "events"
+    "bookings" | "clients" | "availability" | "services" | "classes" | "faculty" | "curriculum" | "events" | "announce"
   >("bookings");
   const [pendingCount, setPendingCount] = useState(0);
   const [upcomingCount, setUpcomingCount] = useState(0);
@@ -270,7 +271,18 @@ export default function AdminDashboardPage() {
         >
           All Classes ({classes.length})
         </button>
+        <button
+          onClick={() => setActiveTab("announce")}
+          className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${activeTab === "announce"
+            ? "bg-cream text-[#0C0B0A] shadow-sm"
+            : "text-ink/70 hover:text-ink hover:bg-mist/40"
+            }`}
+        >
+          Announcements
+        </button>
       </div>
+
+      {activeTab === "announce" && <AdminBroadcast />}
 
       {/* TAB: FACULTY & HEALERS APPROVALS */}
       {activeTab === "faculty" && <AdminMentors />}

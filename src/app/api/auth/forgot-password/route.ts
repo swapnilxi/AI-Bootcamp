@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import crypto from "crypto";
 import { prisma } from "@/lib/prisma";
 import { forgotPasswordSchema } from "@/lib/validations/auth";
+import { appUrl } from "@/features/booking/server/access";
+import { sendEmail } from "@/lib/notify/channels";
+import { renderEmailHtml } from "@/lib/notify/templates";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
 
 export async function POST(req: Request) {
@@ -51,6 +54,21 @@ export async function POST(req: Request) {
         resetTokenExpires,
       },
     });
+
+    // Email the reset link (in-app inbox is skipped: the user isn't signed in).
+    const resetUrl = `${appUrl()}/reset-password?token=${resetToken}`;
+    const first = (user.name || "").split(" ")[0] || "there";
+    const text = `Hi ${first},\n\nUse this link to reset your password (valid for 1 hour):\n${resetUrl}\n\nIf you didn't ask for this, you can ignore this email.`;
+    const sent = await sendEmail(
+      user.email,
+      "Reset your AI Bootcamp password",
+      text,
+      renderEmailHtml("Reset your password", [`Hi ${first},`, "Use the button below to choose a new password. The link is valid for 1 hour. If you didn't ask for this, you can ignore this email."], {
+        label: "Reset password",
+        url: resetUrl,
+      })
+    );
+    if (sent.status === "FAILED") console.error("Password reset email failed:", sent.error);
 
     return NextResponse.json({
       message: "If an account with that email exists, password reset instructions have been generated.",

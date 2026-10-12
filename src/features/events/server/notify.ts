@@ -1,11 +1,11 @@
 import { prisma } from "@/lib/prisma";
+import { notifyUserId } from "@/lib/notify/dispatch";
 import { EVENT_PATHS } from "../routes";
 
 /**
- * Event notices are recorded in `NotificationLog` rather than sent through the
- * booking pipeline, which is scoped to `Booking` rows. Like the classes
- * approval route, these are best-effort audit entries: a failure here must
- * never fail the request that triggered it.
+ * Event notices go through the shared dispatcher: an in-app notification plus an
+ * email (when SMTP is configured), with an honest delivery log. Best-effort: a
+ * failure here must never fail the request that triggered it.
  */
 async function record(entry: {
     kind: string;
@@ -13,22 +13,16 @@ async function record(entry: {
     userId?: string;
     subject: string;
     body: string;
+    href?: string;
     sentById?: string;
 }) {
-    await prisma.notificationLog
-        .create({
-            data: {
-                channel: "EMAIL",
-                kind: entry.kind,
-                recipient: entry.recipient,
-                subject: entry.subject,
-                body: entry.body.slice(0, 4000),
-                status: "SENT",
-                userId: entry.userId,
-                sentById: entry.sentById,
-            },
-        })
-        .catch((err) => console.error("event notification log failed:", err));
+    await notifyUserId(entry.userId, {
+        kind: entry.kind,
+        title: entry.subject,
+        body: entry.body,
+        href: entry.href,
+        sentById: entry.sentById,
+    });
 }
 
 const displayName = (name?: string | null) => name || "there";
@@ -48,13 +42,14 @@ export async function notifyHostOfDecision(event: {
 
     await record({
         kind: approved ? "event_approved" : "event_status_change",
+        href: url,
         recipient: event.host.email,
         userId: event.host.id,
         sentById: event.reviewedById,
         subject: `Event review update: ${event.title}`,
         body: approved
-            ? `Greetings ${displayName(event.host.name)},\n\nYour event "${event.title}" has been approved by administration and is now visible to members.\n\nManage your events: ${url}`
-            : `Greetings ${displayName(event.host.name)},\n\nYour event "${event.title}" was not approved.\nReason: ${event.rejectionReason || "Not specified"}\n\nRevise it and resubmit: ${url}`,
+            ? `Greetings ${displayName(event.host.name)},\n\nYour event "${event.title}" has been approved by administration and is now visible to members.`
+            : `Greetings ${displayName(event.host.name)},\n\nYour event "${event.title}" was not approved.\nReason: ${event.rejectionReason || "Not specified"}`,
     });
 }
 
@@ -73,11 +68,12 @@ export async function notifyRequesterOfApproval(event: {
 
     await record({
         kind: "event_request_approved",
+                href: EVENT_PATHS.detail(event.id),
         recipient: requester.email,
         userId: requester.id,
         sentById: event.reviewedById,
         subject: `Your requested event is confirmed: ${event.title}`,
-        body: `Dear ${displayName(requester.name)},\n\nGood news — the event you requested, "${event.title}", has been approved and is now open to members.\n\nView the event: ${EVENT_PATHS.detail(event.id)}`,
+        body: `Dear ${displayName(requester.name)},\n\nGood news — the event you requested, "${event.title}", has been approved and is now open to members.`,
     });
 }
 
@@ -97,10 +93,11 @@ export async function alertAdminsOfSubmission(event: {
         admins.map((admin) =>
             record({
                 kind: "event_submitted",
+                href: EVENT_PATHS.detail(event.id),
                 recipient: admin.email,
                 userId: admin.id,
                 subject: `Event awaiting approval: ${event.title}`,
-                body: `${displayName(event.host.name)} submitted "${event.title}" for ${event.startsAt.toDateString()}.\n\nThis event is not visible to members until it is approved.\n\nReview it: ${EVENT_PATHS.detail(event.id)}`,
+                body: `${displayName(event.host.name)} submitted "${event.title}" for ${event.startsAt.toDateString()}.\n\nThis event is not visible to members until it is approved.`,
             })
         )
     );
@@ -117,10 +114,11 @@ export async function notifyTaggedUserOfRequest(request: {
 
     await record({
         kind: "event_request_tagged",
+                href: EVENT_PATHS.list,
         recipient: request.taggedUser.email,
         userId: request.taggedUser.id,
         subject: `A member requested an event: ${request.title}`,
-        body: `Greetings ${displayName(request.taggedUser.name)},\n\n${displayName(request.requester?.name)} has asked the practice to host an event titled "${request.title}".\n\nPlan it from your dashboard: ${EVENT_PATHS.list}`,
+        body: `Greetings ${displayName(request.taggedUser.name)},\n\n${displayName(request.requester?.name)} has asked the practice to host an event titled "${request.title}".`,
     });
 }
 
@@ -138,13 +136,14 @@ export async function notifyRequesterOfStatus(request: {
 
     await record({
         kind: planned ? "event_request_planned" : "event_request_declined",
+        href: EVENT_PATHS.list,
         recipient: request.requester.email,
         userId: request.requester.id,
         subject: planned
             ? `We're planning your event: ${request.title}`
             : `An update on your event request: ${request.title}`,
         body: planned
-            ? `Dear ${displayName(request.requester.name)},\n\nThank you for suggesting "${request.title}". We are planning it now — you will hear from us again once it is announced.\n\nRequest details: ${EVENT_PATHS.list}`
+            ? `Dear ${displayName(request.requester.name)},\n\nThank you for suggesting "${request.title}". We are planning it now — you will hear from us again once it is announced.`
             : `Dear ${displayName(request.requester.name)},\n\nThank you for suggesting "${request.title}". We are not able to host this one at the present time.\n\n${request.adminNotes ? `Notes: ${request.adminNotes}\n\n` : ""}You are always welcome to suggest another.`,
     });
 }

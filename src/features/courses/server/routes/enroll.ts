@@ -5,6 +5,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { canManageClass } from "@/lib/roles";
 import { hasClassEntitlement } from "../entitlements";
+import { enrollmentNotices } from "../notifyEnrollment";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -84,6 +85,8 @@ export async function POST(req: Request, { params }: RouteParams) {
     const enrollment = await prisma.enrollment.create({
       data: { userId: session.user.id, courseId: id, unlockedWithPassword },
     });
+
+    await enrollmentNotices(session.user.id, session.user.name, targetClass);
 
     return NextResponse.json({ message: "Successfully enrolled in class!", enrollment });
   } catch (error) {

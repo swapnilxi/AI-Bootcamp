@@ -13,6 +13,7 @@ import {
   sendWhatsApp,
   whatsappLink,
 } from "./channels";
+import { notifyRoles, notifyUserId } from "./dispatch";
 import { BookingNoticeKind, renderBookingNotice, renderEmailHtml } from "./templates";
 
 export type Channel = "EMAIL" | "WHATSAPP";
@@ -100,6 +101,17 @@ export async function notifyBooking(
     }
   }
 
+  // In-app copy for clients with an account (email/WhatsApp already went out above).
+  if (booking.userId) {
+    await notifyUserId(booking.userId, {
+      kind: `booking_${kind}`,
+      title: msg.subject,
+      body: msg.text.split("\n\n").slice(1, 3).join("\n"),
+      href: "/my-bookings",
+      email: false,
+    });
+  }
+
   return { deliveries, whatsappLink: whatsappLink(booking.clientPhone, msg.whatsapp) };
 }
 
@@ -107,12 +119,17 @@ export async function notifyBooking(
 export async function alertAdmin(bookingId: string, event: "new" | "rescheduled" | "cancelled") {
   try {
     const settings = await getBookingSettings();
-    if (!settings.adminNotifyEmail) return;
     const b = await prisma.booking.findUnique({ where: { id: bookingId }, include: { service: true } });
     if (!b) return;
     const when = formatInZone(b.scheduledAt, settings.timezone);
     const verb = { new: "New booking request", rescheduled: "Booking rescheduled by client", cancelled: "Booking cancelled by client" }[event];
     const subject = `${verb}: ${b.clientName} · ${b.service.title}`;
+
+    // In-app alert for admins (and the assigned mentor), independent of the alert inbox below.
+    const inApp = { kind: `admin_booking_${event}`, title: subject, body: `${when} · ${b.durationMinutes} min · Ref ${b.referenceCode}`, href: `/dashboard/admin?booking=${b.id}`, email: false };
+    await Promise.all([notifyRoles(["ADMIN", "SUPER_ADMIN"], inApp), notifyUserId(b.instructorId, inApp)]);
+
+    if (!settings.adminNotifyEmail) return;
     const lines = [
       `${verb}.`,
       `${b.service.title}\n${when} · ${b.durationMinutes} min\nReference: ${b.referenceCode}`,
@@ -144,6 +161,9 @@ export async function notifyUser(
   const wa = `*AI Bootcamp*\n\n${message.body}`;
   const deliveries: DeliveryReport[] = [];
 
+  // Always drop it in the user's in-app inbox as well.
+  await notifyUserId(user.id, { kind: "custom", title: message.subject, body: message.body, email: false, sentById });
+
   for (const channel of channels) {
     let result: ChannelResult;
     if (channel === "EMAIL") {
@@ -167,3 +187,7 @@ export async function notifyUser(
   }
   return { deliveries, whatsappLink: whatsappLink(user.phone, wa) };
 }
+
+export { notify, absoluteUrl } from "./dispatch";
+
+export { notifyUserId, notifyRoles } from "./dispatch";

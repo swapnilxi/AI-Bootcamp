@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { notifyRoles } from "@/lib/notify/dispatch";
 
 export async function POST(req: Request) {
   try {
@@ -82,18 +83,13 @@ export async function POST(req: Request) {
       },
     });
 
-    // Record notification for admins
-    await prisma.notificationLog.create({
-      data: {
-        channel: "EMAIL",
-        kind: "admin_alert",
-        recipient: "admin@aibootcamp.com",
-        subject: `[Expedited Review ${updatedNudges}/3] Mentor Profile: ${user.name || user.email}`,
-        body: `Instructor/Mentor ${user.name || "Mentor"} (${user.email}, Type: ${user.mentorType || "INSTRUCTOR"}) has sent nudge #${updatedNudges} requesting expedited verification of their profile.\n\nReview now in the Admin Console under Faculty Approvals.`,
-        status: "SENT",
-        userId: user.id,
-      },
-    }).catch(() => null);
+    // Alert every admin (in-app + email) — replaces the old placeholder log row.
+    await notifyRoles(["ADMIN", "SUPER_ADMIN"], {
+      kind: "admin_alert",
+      title: `[Expedited review ${updatedNudges}/3] Mentor profile: ${user.name || user.email}`,
+      body: `${user.name || "A mentor"} (${user.email}, type: ${user.mentorType || "INSTRUCTOR"}) has sent nudge #${updatedNudges} requesting expedited verification of their profile.`,
+      href: "/dashboard/admin",
+    });
 
     return NextResponse.json({
       success: true,
