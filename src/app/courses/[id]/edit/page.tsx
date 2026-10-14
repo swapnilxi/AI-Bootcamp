@@ -14,16 +14,40 @@ import {
   Star,
   AlertCircle,
   Save,
+  CheckCircle2,
+  Eye,
+  Globe,
+  Wand2,
+  Loader2,
+  Tag,
+  X,
+  BookOpen,
+  Settings2,
+  Layers,
 } from "lucide-react";
 import { isAdminRole } from "@/lib/roles";
 import { InstructorSelect, LessonManager } from "@/features/courses";
+
+/* ─── Design tokens ────────────────────────────────────────────────── */
+const fieldClass =
+  "w-full px-4 py-3 rounded-xl border border-white/10 focus:border-gold focus:ring-1 focus:ring-gold/50 text-ink text-sm bg-black/50 outline-none transition-all placeholder:text-ink/30";
+const labelClass =
+  "block text-[11px] font-semibold text-ink/50 uppercase tracking-widest mb-1.5";
+
+type Tab = "details" | "lessons" | "settings";
 
 export default function EditClassPage() {
   const params = useParams();
   const id = params?.id as string;
   const router = useRouter();
   const { data: session, status } = useSession();
+  const searchParams = useSearchParams();
 
+  const [activeTab, setActiveTab] = useState<Tab>(
+    searchParams.get("created") === "1" ? "lessons" : "details"
+  );
+
+  /* ── Form fields ── */
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
@@ -38,24 +62,27 @@ export default function EditClassPage() {
   const [canManage, setCanManage] = useState(false);
   const [reviewStatus, setReviewStatus] = useState<string>("APPROVED");
   const [rejectionReason, setRejectionReason] = useState<string | null>(null);
-  const [savedMsg, setSavedMsg] = useState<string | null>(null);
-  const justCreated = useSearchParams().get("created") === "1";
 
+  /* ── AI helpers ── */
+  const [aiGenerating, setAiGenerating] = useState(false);
+  const [aiField, setAiField] = useState<"description" | "content" | null>(null);
+
+  /* ── UI state ── */
+  const [savedMsg, setSavedMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
+  const justCreated = searchParams.get("created") === "1";
+
   useEffect(() => {
-    if (id) {
-      fetchClass();
-    }
+    if (id) fetchClass();
   }, [id]);
 
   async function fetchClass() {
     try {
       const res = await fetch(`/api/courses/${id}`);
       if (!res.ok) throw new Error("Failed to load class");
-
       const data = await res.json();
       const c = data.course;
       setTitle(c.title);
@@ -63,7 +90,6 @@ export default function EditClassPage() {
       setContent(c.content || "");
       if (c.schedule) {
         const d = new Date(c.schedule);
-        // format for datetime-local input YYYY-MM-DDTHH:mm
         const pad = (n: number) => n.toString().padStart(2, "0");
         const formatted = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
         setSchedule(formatted);
@@ -77,44 +103,77 @@ export default function EditClassPage() {
       setRejectionReason(c.rejectionReason || null);
       setInstructorId(c.instructorId || "");
       setOriginalInstructorId(c.instructorId || "");
-    } catch (err) {
-      console.error(err);
+    } catch {
       setErrorMsg("Failed to load class data");
     } finally {
       setLoading(false);
     }
   }
 
+  /* ── Loading skeleton ── */
   if (status === "loading" || loading) {
     return (
-      <div className="max-w-4xl mx-auto py-24 text-center text-ink/60">
-        <Sparkles className="w-8 h-8 text-gold animate-spin mx-auto mb-2" />
-        Loading class details...
+      <div className="max-w-5xl mx-auto py-32 text-center">
+        <div className="w-10 h-10 rounded-full border-2 border-gold border-t-transparent animate-spin mx-auto mb-3" />
+        <p className="text-ink/40 text-sm">Loading class editor…</p>
       </div>
     );
   }
 
   const isAdmin = isAdminRole(session?.user?.role);
+
   if (!canManage) {
     return (
-      <div className="max-w-xl mx-auto my-20 p-8 rounded-2xl bg-black-raised/80 backdrop-blur-sm border border-cream/20 text-center space-y-4 shadow-sm">
-        <AlertCircle className="w-12 h-12 text-cream mx-auto" />
-        <h2 className="font-serif text-2xl font-bold text-ink">Only this class&apos;s instructor or an administrator can edit it</h2>
+      <div className="max-w-xl mx-auto my-20 p-10 rounded-3xl bg-black-raised/80 backdrop-blur-sm border border-white/[0.07] text-center space-y-5">
+        <div className="w-16 h-16 rounded-2xl bg-red-500/10 flex items-center justify-center mx-auto">
+          <AlertCircle className="w-8 h-8 text-red-400" />
+        </div>
+        <h2 className="font-serif text-2xl font-bold text-ink">Access Denied</h2>
+        <p className="text-sm text-ink/60">Only this class&apos;s instructor or an admin can edit it.</p>
         <Link
           href={`/courses/${id}`}
-          className="inline-block px-5 py-2.5 rounded-xl bg-cream text-[#0C0B0A] text-sm font-medium hover:bg-cream/90 transition-colors"
+          className="inline-block px-6 py-3 rounded-xl bg-orange text-white text-sm font-semibold hover:bg-orange-600 transition-colors"
         >
-          Return to Class
+          Back to Class
         </Link>
       </div>
     );
   }
 
+  /* ── AI draft helpers ── */
+  async function generateWithAi(field: "description" | "content") {
+    setAiGenerating(true);
+    setAiField(field);
+    try {
+      const res = await fetch("/api/ai/lesson-draft", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          courseId: id,
+          title,
+          brief:
+            field === "description"
+              ? "Write a compelling 2-3 sentence course overview."
+              : "Write a detailed course syllabus with weekly modules.",
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "AI generation failed");
+      if (field === "description") setDescription(data.draft?.summary || description);
+      if (field === "content") setContent(data.draft?.content || content);
+    } catch {
+      /* silent */
+    } finally {
+      setAiGenerating(false);
+      setAiField(null);
+    }
+  }
+
+  /* ── Save ── */
   async function handleUpdate(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
     setErrorMsg(null);
-
     try {
       const res = await fetch(`/api/courses/${id}`, {
         method: "PUT",
@@ -132,252 +191,375 @@ export default function EditClassPage() {
           ...(isAdmin && instructorId && instructorId !== originalInstructorId && { instructorId }),
         }),
       });
-
       const data = await res.json();
-
       if (!res.ok) {
         setErrorMsg(data.error || "Failed to update class");
         setSaving(false);
         return;
       }
-
-      // Stay on the editor so lessons can be managed alongside class details
       setSaving(false);
       setOriginalInstructorId(instructorId);
       if (reviewStatus === "REJECTED" && !isAdmin) {
         setReviewStatus("PENDING");
         setRejectionReason(null);
       }
-      setSavedMsg("Class details saved.");
-      setTimeout(() => setSavedMsg(null), 3000);
-    } catch (err) {
-      console.error(err);
+      setSavedMsg("Class details saved successfully.");
+      setTimeout(() => setSavedMsg(null), 3500);
+    } catch {
       setErrorMsg("Failed to update class");
       setSaving(false);
     }
   }
 
+  /* ─── Render ────────────────────────────────────────────────────── */
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
-      <div className="pb-6 border-b border-mist">
-        <Link
-          href={`/courses/${id}`}
-          className="inline-flex items-center gap-1.5 text-xs text-ink/60 hover:text-gold transition-colors mb-2 font-medium"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>View Class</span>
-        </Link>
-        <h1 className="font-serif text-3xl sm:text-4xl font-bold text-ink">Edit AI Engineering Class</h1>
-      </div>
+    <div className="min-h-screen bg-gradient-to-b from-black via-black to-black-raised/50">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-7">
 
-      {justCreated && (
-        <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/25 text-emerald-300 text-sm">
-          Class created. Now add lessons below to build the curriculum.
-        </div>
-      )}
-      {reviewStatus === "REJECTED" && (
-        <div className="p-4 rounded-xl bg-cream/8 border border-cream/20 text-text text-sm">
-          This class was declined{rejectionReason ? `: ${rejectionReason}` : "."} Saving your changes resubmits it for review.
-        </div>
-      )}
-      {reviewStatus === "PENDING" && (
-        <div className="p-4 rounded-xl bg-cream/8 border border-cream/20 text-text text-sm">
-          This class is under review and not yet visible to learners. You can keep editing meanwhile.
-        </div>
-      )}
-      {savedMsg && (
-        <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/25 text-emerald-300 text-sm">
-          {savedMsg}
-        </div>
-      )}
+        {/* ── Top nav ── */}
+        <div className="flex items-center justify-between gap-4 flex-wrap">
+          <div className="space-y-1">
+            <Link
+              href={`/courses/${id}`}
+              className="inline-flex items-center gap-1.5 text-xs text-ink/50 hover:text-gold transition-colors font-medium group"
+            >
+              <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" />
+              View Class
+            </Link>
+            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-ink line-clamp-1">{title || "Edit Class"}</h1>
+          </div>
 
-      {errorMsg && (
-        <div className="p-4 rounded-xl bg-cream/8 border border-cream/20 text-text text-sm flex items-center gap-2">
-          <AlertCircle className="w-4 h-4 shrink-0" />
-          <span>{errorMsg}</span>
-        </div>
-      )}
-
-      <form onSubmit={handleUpdate} className="p-8 sm:p-10 rounded-3xl bg-black-raised/80 backdrop-blur-sm border border-white/[0.07] shadow-sm space-y-6">
-        <div>
-          <label className="block text-xs font-semibold text-ink/80 uppercase tracking-wider mb-2">
-            Class Title
-          </label>
-          <input
-            type="text"
-            required
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-4 py-2.5 rounded-xl border border-white/10 focus:border-gold focus:ring-1 focus:ring-gold text-ink text-sm bg-black/60"
-          />
+          {/* Approval badge */}
+          {reviewStatus === "PENDING" && (
+            <span className="px-3 py-1.5 rounded-full bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 text-xs font-semibold">
+              Under Review
+            </span>
+          )}
+          {reviewStatus === "REJECTED" && (
+            <span className="px-3 py-1.5 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-semibold">
+              Declined
+            </span>
+          )}
+          {reviewStatus === "APPROVED" && (
+            <span className="px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold flex items-center gap-1.5">
+              <CheckCircle2 className="w-3.5 h-3.5" /> Published
+            </span>
+          )}
         </div>
 
-        <div>
-          <label className="block text-xs font-semibold text-ink/80 uppercase tracking-wider mb-2">
-            Short Description
-          </label>
-          <textarea
-            rows={3}
-            required
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full p-4 rounded-xl border border-white/10 focus:border-gold focus:ring-1 focus:ring-gold text-ink text-sm bg-black/60 resize-none"
-          />
-        </div>
-
-        <div>
-          <label className="block text-xs font-semibold text-ink/80 uppercase tracking-wider mb-2">
-            Course Overview & Materials (optional)
-          </label>
-          <textarea
-            rows={6}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            className="w-full p-4 rounded-xl border border-white/10 focus:border-gold focus:ring-1 focus:ring-gold text-ink text-sm font-mono bg-black/60"
-          />
-        </div>
-
-        {isAdmin && (
-          <div>
-            <label className="block text-xs font-semibold text-ink/80 uppercase tracking-wider mb-2">
-              Teaching Instructor
-            </label>
-            <InstructorSelect value={instructorId} onChange={setInstructorId} />
+        {/* ── Status banners ── */}
+        {justCreated && (
+          <div className="flex items-center gap-3 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-sm">
+            <CheckCircle2 className="w-4 h-4 shrink-0" />
+            Class created! Now build the curriculum by adding lessons below.
+          </div>
+        )}
+        {reviewStatus === "REJECTED" && (
+          <div className="flex items-center gap-3 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-300 text-sm">
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            This class was declined{rejectionReason ? `: ${rejectionReason}` : "."}
+            {" "}Saving your changes resubmits it for review.
+          </div>
+        )}
+        {reviewStatus === "PENDING" && !justCreated && (
+          <div className="flex items-center gap-3 p-4 rounded-xl bg-yellow-500/10 border border-yellow-500/20 text-yellow-300 text-sm">
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            This class is under review and not yet visible to learners. You can keep editing.
+          </div>
+        )}
+        {savedMsg && (
+          <div className="flex items-center gap-3 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-sm">
+            <CheckCircle2 className="w-4 h-4 shrink-0" />
+            {savedMsg}
+          </div>
+        )}
+        {errorMsg && (
+          <div className="flex items-center gap-3 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-300 text-sm">
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            {errorMsg}
           </div>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div>
-            <label className="block text-xs font-semibold text-ink/80 uppercase tracking-wider mb-2">
-              Date & Time
-            </label>
-            <div className="relative">
-              <input
-                type="datetime-local"
-                required
-                value={schedule}
-                onChange={(e) => setSchedule(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-white/10 focus:border-gold focus:ring-1 focus:ring-gold text-ink text-sm bg-black/60"
-              />
-              <Calendar className="absolute left-3.5 top-3 w-4 h-4 text-ink/40" />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-ink/80 uppercase tracking-wider mb-2">
-              Duration (Minutes)
-            </label>
-            <div className="relative">
-              <input
-                type="number"
-                min={15}
-                max={360}
-                value={durationMinutes}
-                onChange={(e) => setDurationMinutes(Number(e.target.value))}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-white/10 focus:border-gold focus:ring-1 focus:ring-gold text-ink text-sm bg-black/60"
-              />
-              <Clock className="absolute left-3.5 top-3 w-4 h-4 text-ink/40" />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-ink/80 uppercase tracking-wider mb-2">
-              Price ($ USD)
-            </label>
-            <div className="relative">
-              <input
-                type="number"
-                min={0}
-                step="0.01"
-                value={price}
-                onChange={(e) => setPrice(Number(e.target.value))}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-white/10 focus:border-gold focus:ring-1 focus:ring-gold text-ink text-sm bg-black/60"
-              />
-              <DollarSign className="absolute left-3.5 top-3 w-4 h-4 text-ink/40" />
-            </div>
-          </div>
+        {/* ── Tab bar ── */}
+        <div className="flex gap-1 p-1 rounded-2xl bg-white/[0.03] border border-white/[0.07] w-fit">
+          {(
+            [
+              { id: "details" as Tab, label: "Details", icon: Settings2 },
+              { id: "lessons" as Tab, label: "Curriculum", icon: Layers },
+            ] as const
+          ).map(({ id: tabId, label, icon: Icon }) => (
+            <button
+              key={tabId}
+              type="button"
+              onClick={() => setActiveTab(tabId)}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all
+                ${activeTab === tabId
+                  ? "bg-orange text-white shadow-lg shadow-orange/20"
+                  : "text-ink/50 hover:text-ink/80 hover:bg-white/5"
+                }`}
+            >
+              <Icon className="w-4 h-4" />
+              {label}
+            </button>
+          ))}
         </div>
 
-        <div className="pt-4 border-t border-mist space-y-4">
-          <div className="flex items-center justify-between p-4 rounded-2xl bg-ivory border border-mist">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-cream/10 flex items-center justify-center text-cream">
-                <Star className="w-5 h-5" />
+        {/* ════════════════════════════════════════════════════════════
+            TAB: Details
+        ════════════════════════════════════════════════════════════ */}
+        {activeTab === "details" && (
+          <form onSubmit={handleUpdate} className="space-y-6">
+            {/* ── Core info card ── */}
+            <div className="p-7 sm:p-9 rounded-3xl bg-black-raised/80 backdrop-blur-sm border border-white/[0.07] space-y-6 shadow-xl shadow-black/30">
+              <div className="flex items-center gap-3 pb-1 border-b border-white/[0.05]">
+                <BookOpen className="w-4 h-4 text-orange" />
+                <h2 className="font-serif text-lg text-ink">Core Information</h2>
               </div>
+
+              {/* Title */}
               <div>
-                <p className="text-sm font-semibold text-ink">Subscriber Only Class</p>
-                <p className="text-xs text-ink/60">Restrict access exclusively to subscribers.</p>
+                <label className={labelClass}>Class Title</label>
+                <input
+                  type="text"
+                  required
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className={fieldClass}
+                />
               </div>
-            </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                checked={isSubscriberOnly}
-                onChange={(e) => setIsSubscriberOnly(e.target.checked)}
-                className="sr-only peer"
-              />
-              <div className="w-11 h-6 bg-mist peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-mist after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gold"></div>
-            </label>
-          </div>
 
-          <div className="p-4 rounded-2xl bg-ivory border border-mist space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg bg-cream/10 flex items-center justify-center text-cream">
-                  <Lock className="w-5 h-5" />
+              {/* Description */}
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className={`${labelClass} mb-0`}>Short Description</label>
+                  <button
+                    type="button"
+                    onClick={() => generateWithAi("description")}
+                    disabled={aiGenerating || title.length < 3}
+                    className="inline-flex items-center gap-1.5 text-[10px] font-semibold text-ink/40 hover:text-orange transition-colors disabled:opacity-30 uppercase tracking-wider"
+                  >
+                    {aiGenerating && aiField === "description" ? (
+                      <Loader2 className="w-3 h-3 animate-spin" />
+                    ) : (
+                      <Wand2 className="w-3 h-3" />
+                    )}
+                    AI Rewrite
+                  </button>
                 </div>
+                <textarea
+                  rows={3}
+                  required
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className={`${fieldClass} resize-none`}
+                />
+              </div>
+
+              {/* Syllabus */}
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className={`${labelClass} mb-0`}>
+                    Syllabus & Materials
+                    <span className="ml-2 text-ink/25 normal-case tracking-normal font-normal">optional</span>
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => generateWithAi("content")}
+                    disabled={aiGenerating || title.length < 3}
+                    className="inline-flex items-center gap-1.5 text-[10px] font-semibold text-ink/40 hover:text-orange transition-colors disabled:opacity-30 uppercase tracking-wider"
+                  >
+                    {aiGenerating && aiField === "content" ? (
+                      <Loader2 className="w-3 h-3 animate-spin" />
+                    ) : (
+                      <Sparkles className="w-3 h-3" />
+                    )}
+                    Generate Syllabus
+                  </button>
+                </div>
+                <textarea
+                  rows={7}
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  className={`${fieldClass} font-mono text-[13px] resize-none leading-relaxed`}
+                  placeholder="Week-by-week plan, reading lists, resource links…"
+                />
+                <p className="text-[11px] text-ink/30 mt-1.5">Protected — shown only to enrolled students.</p>
+              </div>
+
+              {/* Admin instructor */}
+              {isAdmin && (
+                <div className="p-4 rounded-2xl bg-orange/[0.04] border border-orange/15">
+                  <label className={labelClass}>Teaching Instructor</label>
+                  <InstructorSelect value={instructorId} onChange={setInstructorId} />
+                </div>
+              )}
+            </div>
+
+            {/* ── Schedule card ── */}
+            <div className="p-7 sm:p-9 rounded-3xl bg-black-raised/80 backdrop-blur-sm border border-white/[0.07] space-y-5 shadow-xl shadow-black/30">
+              <div className="flex items-center gap-3 pb-1 border-b border-white/[0.05]">
+                <Calendar className="w-4 h-4 text-orange" />
+                <h2 className="font-serif text-lg text-ink">Schedule & Pricing</h2>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {/* Date */}
                 <div>
-                  <p className="text-sm font-semibold text-ink">Password Protection</p>
-                  <p className="text-xs text-ink/60">Require an invitation access key.</p>
+                  <label className={labelClass}>Date & Time</label>
+                  <div className="relative">
+                    <input
+                      type="datetime-local"
+                      required
+                      value={schedule}
+                      onChange={(e) => setSchedule(e.target.value)}
+                      className={`${fieldClass} pl-11`}
+                    />
+                    <Calendar className="absolute left-3.5 top-3.5 w-4 h-4 text-ink/30 pointer-events-none" />
+                  </div>
+                </div>
+
+                {/* Duration */}
+                <div>
+                  <label className={labelClass}>Duration (min)</label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      min={15}
+                      max={360}
+                      value={durationMinutes}
+                      onChange={(e) => setDurationMinutes(Number(e.target.value))}
+                      className={`${fieldClass} pl-11`}
+                    />
+                    <Clock className="absolute left-3.5 top-3.5 w-4 h-4 text-ink/30 pointer-events-none" />
+                  </div>
+                </div>
+
+                {/* Price */}
+                <div>
+                  <label className={labelClass}>Price (USD)</label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      min={0}
+                      step="0.01"
+                      value={price}
+                      onChange={(e) => setPrice(Number(e.target.value))}
+                      className={`${fieldClass} pl-11`}
+                    />
+                    <DollarSign className="absolute left-3.5 top-3.5 w-4 h-4 text-ink/30 pointer-events-none" />
+                  </div>
+                  {price === 0 && (
+                    <p className="text-[11px] text-emerald-400/70 mt-1">Free class</p>
+                  )}
                 </div>
               </div>
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={isPasswordProtected}
-                  onChange={(e) => setIsPasswordProtected(e.target.checked)}
-                  className="sr-only peer"
-                />
-                <div className="w-11 h-6 bg-mist peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-mist after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gold"></div>
-              </label>
             </div>
 
-            {isPasswordProtected && (
-              <div className="pt-2">
-                <label className="block text-xs font-semibold text-ink/80 uppercase tracking-wider mb-2">
-                  Update Secret Password (Leave blank to keep existing password)
-                </label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="New password (optional)..."
-                  className="w-full px-4 py-2.5 rounded-xl border border-cream/40 focus:border-gold focus:ring-1 focus:ring-gold text-ink text-sm bg-black/60"
-                />
+            {/* ── Access controls card ── */}
+            <div className="p-7 sm:p-9 rounded-3xl bg-black-raised/80 backdrop-blur-sm border border-white/[0.07] space-y-4 shadow-xl shadow-black/30">
+              <div className="flex items-center gap-3 pb-1 border-b border-white/[0.05]">
+                <Lock className="w-4 h-4 text-orange" />
+                <h2 className="font-serif text-lg text-ink">Access Controls</h2>
               </div>
-            )}
-          </div>
-        </div>
 
-        <div className="flex gap-4 pt-4">
-          <Link
-            href={`/courses/${id}`}
-            className="px-6 py-3 rounded-xl border border-mist text-sm font-medium text-ink/70 hover:bg-mist/30 transition-colors"
-          >
-            Cancel
-          </Link>
-          <button
-            type="submit"
-            disabled={saving}
-            className="flex-1 py-3 rounded-xl bg-orange hover:bg-orange-600 text-white font-semibold text-sm shadow-md shadow-orange/20 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
-          >
-            <Save className="w-4 h-4" />
-            <span>{saving ? "Saving Changes..." : "Save Class Details"}</span>
-          </button>
-        </div>
-      </form>
+              {/* Subscriber only */}
+              <div
+                onClick={() => setIsSubscriberOnly(!isSubscriberOnly)}
+                className={`flex items-center justify-between p-5 rounded-2xl border cursor-pointer transition-all
+                  ${isSubscriberOnly ? "border-orange/30 bg-orange/[0.04]" : "border-white/[0.07] bg-white/[0.02] hover:border-white/15"}`}
+              >
+                <div className="flex items-center gap-4">
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors
+                    ${isSubscriberOnly ? "bg-orange/10 text-orange" : "bg-white/5 text-ink/30"}`}>
+                    <Star className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-ink">Subscriber Only</p>
+                    <p className="text-xs text-ink/50 mt-0.5">Restricted to Subscriber and Admin tiers</p>
+                  </div>
+                </div>
+                <div className={`w-11 h-6 rounded-full relative transition-colors ${isSubscriberOnly ? "bg-orange" : "bg-white/10"}`}>
+                  <div className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-transform ${isSubscriberOnly ? "translate-x-6" : "translate-x-1"}`} />
+                </div>
+              </div>
 
-      <LessonManager courseId={id} />
+              {/* Password protected */}
+              <div className={`rounded-2xl border transition-all ${isPasswordProtected ? "border-orange/30 bg-orange/[0.04]" : "border-white/[0.07] bg-white/[0.02]"}`}>
+                <div
+                  onClick={() => setIsPasswordProtected(!isPasswordProtected)}
+                  className="flex items-center justify-between p-5 cursor-pointer"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors
+                      ${isPasswordProtected ? "bg-orange/10 text-orange" : "bg-white/5 text-ink/30"}`}>
+                      <Lock className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-ink">Password Protection</p>
+                      <p className="text-xs text-ink/50 mt-0.5">Require a secret key to enroll</p>
+                    </div>
+                  </div>
+                  <div className={`w-11 h-6 rounded-full relative transition-colors ${isPasswordProtected ? "bg-orange" : "bg-white/10"}`}>
+                    <div className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-transform ${isPasswordProtected ? "translate-x-6" : "translate-x-1"}`} />
+                  </div>
+                </div>
+                {isPasswordProtected && (
+                  <div className="px-5 pb-5">
+                    <label className={labelClass}>Update Password (leave blank to keep current)</label>
+                    <input
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="New password (optional)…"
+                      className={`${fieldClass} border-orange/20`}
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Access description */}
+              <div className="flex items-center gap-3 p-4 rounded-xl bg-white/[0.02] border border-white/[0.05]">
+                <Globe className="w-4 h-4 text-ink/30 shrink-0" />
+                <p className="text-xs text-ink/50 leading-relaxed">
+                  {isSubscriberOnly && isPasswordProtected
+                    ? "Maximum restriction — subscriber + password required."
+                    : isSubscriberOnly
+                    ? "Subscribers and admins only."
+                    : isPasswordProtected
+                    ? "Anyone with the access key can enroll."
+                    : "Publicly enrollable — open to all registered users."}
+                </p>
+              </div>
+            </div>
+
+            {/* ── Save bar ── */}
+            <div className="flex gap-3">
+              <Link
+                href={`/courses/${id}`}
+                className="px-6 py-3 rounded-xl border border-white/10 text-sm font-medium text-ink/50 hover:bg-white/5 hover:text-ink transition-colors"
+              >
+                View Class
+              </Link>
+              <button
+                type="submit"
+                disabled={saving}
+                className="flex-1 flex items-center justify-center gap-2.5 py-3 rounded-xl bg-orange hover:bg-orange-600 text-white font-bold text-sm transition-all disabled:opacity-50 shadow-lg shadow-orange/20"
+              >
+                {saving ? (
+                  <><Loader2 className="w-4 h-4 animate-spin" /> Saving…</>
+                ) : (
+                  <><Save className="w-4 h-4" /> Save Class Details</>
+                )}
+              </button>
+            </div>
+          </form>
+        )}
+
+        {/* ════════════════════════════════════════════════════════════
+            TAB: Curriculum (Lessons)
+        ════════════════════════════════════════════════════════════ */}
+        {activeTab === "lessons" && <LessonManager courseId={id} />}
+      </div>
     </div>
   );
 }

@@ -200,6 +200,7 @@ model User {
   eventInterests      EventInterest[]
   eventRequestsMade   EventRequest[]  @relation("EventRequester")
   eventRequestsTagged EventRequest[]  @relation("EventRequestAssignee")
+  pushTokens          PushToken[]
 }
 
 // ====================================================================
@@ -960,10 +961,24 @@ model Notification {
   @@index([userId, readAt, createdAt])
 }
 
+/// A browser/device registered for push (Firebase Cloud Messaging web token).
+/// A user can have several (phone + laptop). Stale tokens are deleted when FCM rejects them.
+model PushToken {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token      String   @unique
+  userAgent  String?
+  createdAt  DateTime @default(now())
+  lastUsedAt DateTime @default(now())
+
+  @@index([userId])
+}
+
 /// Every email / WhatsApp message the platform sends (or skips), for the admin audit trail
 model NotificationLog {
   id        String   @id @default(cuid())
-  channel   String // EMAIL | WHATSAPP | IN_APP
+  channel   String // EMAIL | WHATSAPP | PUSH
   kind      String // received | confirmed | declined | rescheduled | cancelled | reminder | custom | admin_alert
   recipient String
   subject   String?

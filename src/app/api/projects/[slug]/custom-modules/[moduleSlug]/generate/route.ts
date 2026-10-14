@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { aiPreflight } from "@/lib/ai/guard";
 import { describeAiError } from "@/lib/ai/client";
 import { AiRefusalError } from "@/lib/ai/structured";
+import { parseInteractivity } from "@/lib/lessons/shared";
 import { TruncatedGenerationError, runLessonRead } from "@/lib/ai/lessonHtml";
 import { loadCustomModule, buildCustomModuleContext } from "@/lib/projects/customModule";
 
@@ -42,7 +43,9 @@ export async function POST(req: Request, { params }: RouteParams) {
   const gate = await aiPreflight(req, "project-module-lesson", session?.user?.id, 10);
   if (!gate.ok) return gate.response;
 
-  const parsed = requestSchema.safeParse(await req.json().catch(() => ({})));
+  const body = await req.json().catch(() => ({}));
+  const interactivity = parseInteractivity((body as { interactivity?: unknown })?.interactivity);
+  const parsed = requestSchema.safeParse(body);
   const { topic, documentText, customTitle, showAuthor } = parsed.success
     ? parsed.data
     : { topic: undefined, documentText: undefined, customTitle: undefined, showAuthor: true };
@@ -53,7 +56,7 @@ export async function POST(req: Request, { params }: RouteParams) {
       .join("\n\n");
     const ctx = buildCustomModuleContext(project, customModule, extra || customModule.description);
     if (customTitle) ctx.title = customTitle;
-    const html = await runLessonRead(gate.credential, ctx);
+    const html = await runLessonRead(gate.credential, ctx, interactivity);
     const updated = await prisma.projectModule.update({
       where: { id: customModule.id },
       data: {

@@ -147,3 +147,18 @@ export async function notifyRequesterOfStatus(request: {
             : `Dear ${displayName(request.requester.name)},\n\nThank you for suggesting "${request.title}". We are not able to host this one at the present time.\n\n${request.adminNotes ? `Notes: ${request.adminNotes}\n\n` : ""}You are always welcome to suggest another.`,
     });
 }
+
+/** Tell the host someone wants to attend. Folded into one running tally per event, in-app only. */
+export async function notifyHostOfInterest(eventId: string, interestedUserId: string, total: number) {
+    const event = await prisma.event.findUnique({ where: { id: eventId }, select: { title: true, hostId: true } });
+    if (!event || event.hostId === interestedUserId) return;
+    await notifyUserId(event.hostId, {
+        kind: "event_interest",
+        title: `${total} ${total === 1 ? "person is" : "people are"} interested in ${event.title}`,
+        body: `Your event "${event.title}" now has ${total} interested ${total === 1 ? "member" : "members"}.`,
+        href: EVENT_PATHS.detail(eventId),
+        coalesce: true,
+        email: false,
+        push: false,
+    });
+}

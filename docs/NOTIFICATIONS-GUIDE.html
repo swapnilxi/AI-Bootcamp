@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Bootcamp — Notifications Guide</title>
+<style>
+  :root { --bg:#fbfaf7; --fg:#1c1b19; --muted:#6b675f; --line:#e4e0d6; --card:#fff; --accent:#d9620f; --code:#f3f0e8; --ok:#1f7a45; --warn:#9a5b00; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#121110; --fg:#ece8df; --muted:#a09a8d; --line:#2a2825; --card:#1a1917; --accent:#f97316; --code:#22201d; --ok:#5fcf8a; --warn:#f0b04a; } }
+  * { box-sizing:border-box }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui,-apple-system,Segoe UI,sans-serif }
+  .wrap { max-width:920px; margin:0 auto; padding:32px 16px 80px }
+  h1 { font-size:2rem; margin:0 0 4px } h2 { margin-top:48px; padding-top:8px; border-top:1px solid var(--line); font-size:1.4rem }
+  h3 { margin-top:28px; font-size:1.05rem }
+  .sub { color:var(--muted); margin:0 0 24px }
+  nav { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 18px; margin:20px 0 }
+  nav a { color:var(--accent); text-decoration:none; margin-right:14px; white-space:nowrap; display:inline-block }
+  code { background:var(--code); padding:1px 6px; border-radius:5px; font-size:.88em }
+  pre { background:var(--code); padding:14px 16px; border-radius:10px; overflow-x:auto; font-size:.85rem; line-height:1.5 }
+  pre code { padding:0; background:none }
+  table { width:100%; border-collapse:collapse; margin:14px 0; font-size:.92rem; display:block; overflow-x:auto }
+  th,td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); vertical-align:top }
+  th { font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted) }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin:14px 0 }
+  .tag { display:inline-block; font-size:.72rem; font-weight:600; padding:1px 8px; border-radius:999px; border:1px solid var(--line); color:var(--muted) }
+  .tag.req { color:var(--warn); border-color:var(--warn) } .tag.opt { color:var(--ok); border-color:var(--ok) }
+  .note { border-left:3px solid var(--accent); padding:4px 14px; margin:14px 0; color:var(--muted) }
+  ul { padding-left:20px } li { margin:3px 0 }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Notifications Guide</h1>
+<p class="sub">How notifications work in AI Bootcamp, who gets what, what you need to configure, and how to test it. Written 2026-10-12.</p>
+
+<nav>
+  <a href="#overview">Overview</a><a href="#matrix">Who gets what</a><a href="#creators">Creators</a><a href="#env">.env &amp; credentials</a><a href="#email">Email setup</a><a href="#push">Browser push</a><a href="#whatsapp">WhatsApp</a><a href="#cron">Cron</a><a href="#test">Testing</a><a href="#code">Code map</a><a href="#limits">Limitations</a><a href="#next">Next steps</a>
+</nav>
+
+<h2 id="overview">1. Overview</h2>
+<p>Every notification goes through one function, <code>notify()</code> in <code>src/lib/notify/dispatch.ts</code>. It does four things and never throws, so a failed notification can't break the action that triggered it:</p>
+<ol>
+  <li><b>In-app</b>: writes a <code>Notification</code> row. It shows in the header bell (polls every 60s and on tab focus) and on <code>/notifications</code>. <b>No setup needed.</b></li>
+  <li><b>Browser push</b>: sends a Firebase Cloud Messaging web push to every browser/device the user has enabled alerts on. Needs Firebase credentials (section 5); without them it silently does nothing.</li>
+  <li><b>Email</b>: sends through SMTP (nodemailer) when SMTP env vars are set. Otherwise it is skipped and, in development, the message is printed to the server console.</li>
+  <li><b>Audit log</b>: writes a <code>NotificationLog</code> row with the real status (<code>SENT</code> / <code>FAILED</code> / <code>SKIPPED</code>), visible on each user in Admin &rarr; Clients.</li>
+</ol>
+<div class="card">
+  <b>Channels</b>
+  <table>
+    <tr><th>Channel</th><th>Used for</th><th>Needs</th></tr>
+    <tr><td>In-app bell</td><td>Every event, every role</td><td>Nothing</td></tr>
+    <tr><td>Browser push (Firebase FCM)</td><td>Every event, for users who clicked "Turn on browser alerts" (works on Android Chrome/Edge and desktop)</td><td>Firebase project (free), see section 5</td></tr>
+    <tr><td>Email (SMTP)</td><td>Everything except a few in-app-only items (see table)</td><td>SMTP credentials</td></tr>
+    <tr><td>WhatsApp (Twilio)</td><td>Booking messages and admin direct messages</td><td>Twilio credentials (optional). Without it, admins get one-click <code>wa.me</code> links.</td></tr>
+  </table>
+</div>
+<p>Helpers: <code>notify(user, payload)</code>, <code>notifyUserId(id, payload)</code>, <code>notifyRoles(roles, payload)</code>. Payload is <code>{ kind, title, body, href?, email?, push?, sentById? }</code>. Pass <code>email: false</code> and/or <code>push: false</code> to skip a channel. Push follows the same rules as in-app: every row in the table in section 2 also pushes (the Email column does not apply to push).</p>
+
+<h2 id="matrix">2. Who gets what</h2>
+<table>
+  <tr><th>Event</th><th>Recipient</th><th>In-app</th><th>Email</th><th>Trigger (file)</th></tr>
+  <tr><td>Registration</td><td>New user</td><td>Yes</td><td>Yes</td><td><code>api/auth/register</code></td></tr>
+  <tr><td>Instructor application submitted</td><td>All admins + super admins</td><td>Yes</td><td>Yes</td><td><code>api/auth/register</code></td></tr>
+  <tr><td>Password reset requested</td><td>That user</td><td>No (signed out)</td><td>Yes, with reset link</td><td><code>api/auth/forgot-password</code></td></tr>
+  <tr><td>Instructor profile approved / rejected / set pending</td><td>The mentor</td><td>Yes</td><td>Yes</td><td><code>api/admin/instructors/[id]/approval</code></td></tr>
+  <tr><td>Mentor clicks "expedite my review"</td><td>All admins + super admins</td><td>Yes</td><td>Yes</td><td><code>api/instructors/nudge-approval</code></td></tr>
+  <tr><td>Course approved / rejected / published</td><td>The course's instructor</td><td>Yes</td><td>Yes</td><td><code>api/admin/classes/[id]/approval</code></td></tr>
+  <tr><td>Role changed by super admin</td><td>That user</td><td>Yes</td><td>Yes</td><td><code>api/admin/users/[id]/role</code></td></tr>
+  <tr><td>Enrolment (free / password)</td><td>Learner</td><td>Yes</td><td>Yes</td><td><code>features/courses/server/routes/enroll</code></td></tr>
+  <tr><td>Enrolment</td><td>Course instructor</td><td>Yes</td><td>No (avoids inbox spam)</td><td>same</td></tr>
+  <tr><td>Stripe payment completed</td><td>Learner, then instructor</td><td>Yes</td><td>Learner only</td><td><code>features/courses/server/routes/stripe-webhook</code> (sent once per purchase, retries are ignored)</td></tr>
+  <tr><td>Booking received / confirmed / declined / rescheduled / cancelled / reminder</td><td>Client</td><td>Only if the client has an account</td><td>Yes (+ WhatsApp if opted in)</td><td><code>lib/notify/index.ts</code> &rarr; <code>notifyBooking</code></td></tr>
+  <tr><td>New / rescheduled / cancelled booking by a client</td><td>Admins + assigned mentor</td><td>Yes</td><td>To <code>ADMIN_NOTIFY_EMAIL</code> only</td><td><code>alertAdmin</code></td></tr>
+  <tr><td>Event submitted for approval</td><td>All admins + super admins</td><td>Yes</td><td>Yes</td><td><code>features/events/server/notify.ts</code></td></tr>
+  <tr><td>Event approved / rejected</td><td>Host (and requester if it came from a request)</td><td>Yes</td><td>Yes</td><td>same</td></tr>
+  <tr><td>Event request tagged / planned / declined</td><td>Tagged user / requester</td><td>Yes</td><td>Yes</td><td>same</td></tr>
+  <tr><td>Admin direct message to one user</td><td>That user</td><td>Always</td><td>If EMAIL chosen</td><td><code>api/admin/users/[id]/notify</code></td></tr>
+  <tr><td>Creator events (review submitted, milestones, completions, digest)</td><td>See section 2b</td><td>Yes</td><td>See 2b</td><td><code>features/courses/server/notifyCreator.ts</code></td></tr>
+  <tr><td>Admin broadcast</td><td>Chosen roles (learners, subscribers, instructors, admins, super admins)</td><td>Yes</td><td>Optional checkbox</td><td><code>api/admin/notifications/broadcast</code> (Admin &rarr; Announcements tab)</td></tr>
+</table>
+<div class="note"><b>Roles:</b> every role (USER, SUBSCRIBER, INSTRUCTOR, ADMIN, SUPER_ADMIN) has the same personal inbox and sees only their own rows. The API scopes every query by the session user id, so nobody can read or mark someone else's notifications. Broadcast and direct messages require ADMIN or above (checked server-side). Broadcast is also rate-limited to 10 per hour per admin.</div>
+
+<h3>Endpoints</h3>
+<table>
+  <tr><th>Method &amp; path</th><th>Who</th><th>What</th></tr>
+  <tr><td><code>GET /api/notifications?limit=&amp;unread=1</code></td><td>Signed in</td><td>My items + unread count</td></tr>
+  <tr><td><code>PATCH /api/notifications</code> <code>{ids}</code> or <code>{all:true}</code></td><td>Signed in</td><td>Mark read</td></tr>
+  <tr><td><code>DELETE /api/notifications</code> or <code>?id=</code></td><td>Signed in</td><td>Clear my read items, or delete one of mine</td></tr>
+  <tr><td><code>POST /api/notifications/push</code> <code>{token}</code></td><td>Signed in</td><td>Register this browser for push (503 until Firebase is configured)</td></tr>
+  <tr><td><code>DELETE /api/notifications/push</code> <code>{token}</code></td><td>Signed in</td><td>Unregister this browser (only your own token)</td></tr>
+  <tr><td><code>POST /api/admin/notifications/broadcast</code></td><td>Admin+</td><td><code>{roles[], title, message, href?, email?}</code></td></tr>
+</table>
+
+<h2 id="creators">2b. For creators (instructors &amp; mentors)</h2>
+<p>Creators get notifications about their content, and admins get the matching review pings. Related lesson alerts are <b>coalesced</b>: while an admin hasn't read one, further "lessons awaiting review" in the same hour update that single row instead of adding more (and send no extra push/email).</p>
+<table>
+  <tr><th>Event</th><th>Who</th><th>Channels</th></tr>
+  <tr><td>You submit a course (or resubmit a rejected one)</td><td>Creator (confirmation) and all admins</td><td>Creator: in-app. Admins: in-app + email + push</td></tr>
+  <tr><td>You add/generate/resubmit a lesson</td><td>Creator (confirmation) and all admins</td><td>In-app only, coalesced</td></tr>
+  <tr><td>Course/lesson approved or rejected</td><td>Creator</td><td>In-app + email + push</td></tr>
+  <tr><td>Enrolment milestone: 1st, 10th, 25th, 50th, 100th, 250th, 500th, 1000th learner</td><td>Course creator</td><td>In-app + email + push</td></tr>
+  <tr><td>Each new enrolment / paid enrolment</td><td>Course creator</td><td>In-app only</td></tr>
+  <tr><td>A learner finishes every approved lesson in your course</td><td>Creator (and the learner gets a "Course complete" notice)</td><td>In-app only</td></tr>
+  <tr><td>Someone is interested in your event</td><td>Event host</td><td>In-app only, one running tally per event</td></tr>
+  <tr><td><b>Weekly digest</b>: new learners, lessons completed, event interest, lessons awaiting review, lessons needing changes</td><td>Every creator with activity (quiet weeks send nothing)</td><td>In-app + email</td></tr>
+</table>
+<p>The digest runs from <code>/api/cron/creator-digest</code>, scheduled in <code>vercel.json</code> for Mondays 07:00 UTC, and uses the same <code>CRON_SECRET</code> as the reminders cron. Test it locally with <code>curl -H "Authorization: Bearer $CRON_SECRET" http://localhost:3000/api/cron/creator-digest</code>. Code: <code>src/features/courses/server/notifyCreator.ts</code>.</p>
+
+<h3>The notification view</h3>
+<ul>
+  <li><b>Icons</b> by type (trophy for milestones, graduation cap for enrolments, clipboard for reviews, and so on) in the bell and on the page. The mapping lives in <code>kindMeta()</code> in <code>src/lib/notify/client.ts</code>; add a rule there for any new <code>kind</code>.</li>
+  <li><b>Category tabs</b> on <code>/notifications</code> (Learning, Reviews, Bookings, Events, Account, Announcements) with unread counts, plus an "Unread only" toggle.</li>
+  <li><b>Grouped by day</b>: Today, Yesterday, Earlier this week, Older.</li>
+  <li><b>Dismiss</b> a single item with the &times; button (<code>DELETE /api/notifications?id=</code>), or "Clear read" for all read items.</li>
+</ul>
+
+<h2 id="env">3. .env and credentials you need</h2>
+<p><b>Minimum to see everything in-app: nothing.</b> The bell, <code>/notifications</code> and broadcasts all work with the current <code>.env</code>. To actually deliver email, add the SMTP block. These are in <code>.env.example</code>.</p>
+
+<table>
+  <tr><th>Variable</th><th></th><th>What it is</th></tr>
+  <tr><td><code>SMTP_HOST</code></td><td><span class="tag req">for email</span></td><td>SMTP server host, e.g. <code>smtp.resend.com</code>, <code>smtp.gmail.com</code>, <code>smtp.sendgrid.net</code></td></tr>
+  <tr><td><code>SMTP_PORT</code></td><td><span class="tag opt">default 587</span></td><td>587 (STARTTLS) or 465 (SSL)</td></tr>
+  <tr><td><code>SMTP_USER</code></td><td><span class="tag req">for email</span></td><td>Provider username (Resend: <code>resend</code>; SendGrid: <code>apikey</code>; Gmail: your address)</td></tr>
+  <tr><td><code>SMTP_PASS</code></td><td><span class="tag req">for email</span></td><td>API key or app password</td></tr>
+  <tr><td><code>EMAIL_FROM</code></td><td><span class="tag req">for email</span></td><td>Sender, e.g. <code>AI Bootcamp &lt;no-reply@your-domain.com&gt;</code>. The domain must be verified with your provider.</td></tr>
+  <tr><td><code>NEXT_PUBLIC_APP_URL</code></td><td><span class="tag req">for email</span></td><td>Public site URL. Used to build links in emails (reset password, "Open in AI Bootcamp"). Must NOT be the placeholder.</td></tr>
+  <tr><td><code>NEXTAUTH_URL</code></td><td><span class="tag req">prod</span></td><td>Same production URL (fallback for the link base)</td></tr>
+  <tr><td><code>ADMIN_NOTIFY_EMAIL</code></td><td><span class="tag opt">optional</span></td><td>Inbox for new-booking alerts (also editable in Admin &rarr; Availability)</td></tr>
+  <tr><td><code>TWILIO_ACCOUNT_SID</code> / <code>TWILIO_AUTH_TOKEN</code> / <code>TWILIO_WHATSAPP_FROM</code></td><td><span class="tag opt">optional</span></td><td>WhatsApp sending. Sandbox number is <code>+14155238886</code>.</td></tr>
+  <tr><td><code>DEFAULT_COUNTRY_CODE</code></td><td><span class="tag opt">optional</span></td><td>Applied to phone numbers typed without "+" (1 = US, 91 = India)</td></tr>
+  <tr><td><code>NEXT_PUBLIC_FIREBASE_API_KEY</code>, <code>_AUTH_DOMAIN</code>, <code>_PROJECT_ID</code>, <code>_MESSAGING_SENDER_ID</code>, <code>_APP_ID</code></td><td><span class="tag opt">for push</span></td><td>Firebase web app config (public values, safe in the browser bundle)</td></tr>
+  <tr><td><code>NEXT_PUBLIC_FIREBASE_VAPID_KEY</code></td><td><span class="tag opt">for push</span></td><td>Web Push certificate public key</td></tr>
+  <tr><td><code>FIREBASE_SERVICE_ACCOUNT_JSON</code></td><td><span class="tag opt">for push</span></td><td><b>Secret.</b> The whole service-account JSON on one line. Server-only; never give it a <code>NEXT_PUBLIC_</code> prefix and never commit it.</td></tr>
+  <tr><td><code>CRON_SECRET</code></td><td><span class="tag req">for reminders</span></td><td>Any long random string. Protects <code>/api/cron/reminders</code>. Vercel sends it automatically.</td></tr>
+</table>
+
+<div class="card"><b>Send me these when you have them</b> and I'll wire and test them:
+  <ul>
+    <li>Which email provider you picked, plus <code>SMTP_HOST</code>, <code>SMTP_USER</code>, <code>SMTP_PASS</code>, <code>EMAIL_FROM</code> (put them in <code>.env.local</code>; don't paste secrets into chat if you'd rather just add them yourself and tell me to test).</li>
+    <li>Your real production domain for <code>NEXT_PUBLIC_APP_URL</code>.</li>
+    <li>(For push) the six Firebase values and the service-account JSON, in <code>.env.local</code>. Restart <code>npm run dev</code> afterwards because <code>NEXT_PUBLIC_*</code> values are baked in at build/start time.</li>
+    <li>(Optional) Twilio SID, auth token and WhatsApp-enabled number.</li>
+  </ul>
+</div>
+
+<h2 id="email">4. Email provider setup</h2>
+<h3>Option A: Resend (recommended, simple)</h3>
+<ol>
+  <li>Sign up at resend.com, then Domains &rarr; add your domain and add the DNS records they show (SPF/DKIM).</li>
+  <li>API Keys &rarr; create a key.</li>
+</ol>
+<pre><code>SMTP_HOST="smtp.resend.com"
+SMTP_PORT="465"
+SMTP_USER="resend"
+SMTP_PASS="re_xxxxxxxxxxxx"
+EMAIL_FROM="AI Bootcamp &lt;no-reply@your-domain.com&gt;"</code></pre>
+<h3>Option B: Gmail (fast for testing)</h3>
+<p>Turn on 2-step verification, then create an App Password (Google Account &rarr; Security &rarr; App passwords).</p>
+<pre><code>SMTP_HOST="smtp.gmail.com"
+SMTP_PORT="587"
+SMTP_USER="you@gmail.com"
+SMTP_PASS="xxxx xxxx xxxx xxxx"
+EMAIL_FROM="AI Bootcamp &lt;you@gmail.com&gt;"</code></pre>
+<h3>Option C: SendGrid / Postmark / SES</h3>
+<p>Any SMTP relay works. SendGrid uses <code>SMTP_USER="apikey"</code> and the API key as <code>SMTP_PASS</code>.</p>
+<div class="note"><b>Libraries:</b> email uses the existing <code>nodemailer</code>, WhatsApp uses <code>fetch</code> to Twilio. Browser push added two packages: <code>firebase</code> (browser SDK, loaded only when a user turns alerts on) and <code>firebase-admin</code> (server sender).</div>
+
+<h2 id="push">5. Browser push (Firebase Cloud Messaging)</h2>
+<p><b>How it works.</b> A signed-in user clicks <b>Turn on browser alerts</b> at the bottom of the bell dropdown. The browser asks permission, Firebase issues a token for that browser, and <code>POST /api/notifications/push</code> stores it in <code>PushToken</code>. From then on every <code>notify()</code> also calls FCM for that user's tokens. The service worker <code>public/firebase-messaging-sw.js</code> shows the notification (even when the site is closed) and opens the link on click. If the tab is open, the bell refreshes instantly. Dead tokens are deleted automatically when FCM rejects them. The toggle link is hidden until the Firebase variables are set.</p>
+
+<h3>One-time Firebase setup (free, Spark plan)</h3>
+<ol>
+  <li>Go to <b>console.firebase.google.com</b> &rarr; <b>Add project</b> (Analytics not needed).</li>
+  <li><b>Project settings &rarr; General &rarr; Your apps &rarr; Web (&lt;/&gt;)</b> &rarr; register an app. Copy <code>apiKey</code>, <code>authDomain</code>, <code>projectId</code>, <code>messagingSenderId</code>, <code>appId</code> into the matching <code>NEXT_PUBLIC_FIREBASE_*</code> variables.</li>
+  <li><b>Project settings &rarr; Cloud Messaging &rarr; Web Push certificates &rarr; Generate key pair</b>. Copy the public key into <code>NEXT_PUBLIC_FIREBASE_VAPID_KEY</code>.</li>
+  <li><b>Project settings &rarr; Service accounts &rarr; Generate new private key</b>. Open the downloaded JSON, remove the line breaks so it is one line (for example <code>jq -c . key.json</code>), and paste it as <code>FIREBASE_SERVICE_ACCOUNT_JSON='...'</code> (single quotes in <code>.env.local</code>). Delete the downloaded file afterwards.</li>
+  <li>On Vercel add the same variables under Project &rarr; Settings &rarr; Environment Variables and redeploy.</li>
+  <li>If the console says the <b>Firebase Cloud Messaging API (V1)</b> is disabled, enable it (Cloud Messaging tab). The legacy server key is not used.</li>
+</ol>
+
+<h3>Test it</h3>
+<ol>
+  <li>Restart <code>npm run dev</code>, open <code>http://localhost:3000</code> (localhost counts as secure; any other host needs HTTPS), sign in, click the bell &rarr; <b>Turn on browser alerts</b> &rarr; Allow.</li>
+  <li>As an admin send an announcement to that user's role. You should get an OS notification within a few seconds, even if you switch to another tab or minimise the browser.</li>
+  <li>On Android: open the deployed HTTPS site in Chrome, enable alerts the same way. Installing it to the home screen is optional on Android.</li>
+  <li>Admin &rarr; Clients &rarr; user shows a <code>PUSH</code> row in the delivery log (only written when a device was actually attempted).</li>
+</ol>
+
+<h3>Push limitations</h3>
+<ul>
+  <li><b>iOS Safari</b> only supports web push after the site is added to the home screen (iOS 16.4+). Not supported in other iOS in-app browsers.</li>
+  <li>Needs <b>HTTPS</b> in production, and the user must grant permission. If they block it, they must re-allow it in browser site settings (the bell shows a hint).</li>
+  <li>Tokens are per browser profile. A user with a phone and laptop registers both and gets both.</li>
+  <li>Tokens live in the database, so the Vercel <code>/tmp</code> SQLite caveat in section 10 applies: registrations are lost when the serverless instance recycles.</li>
+  <li>Push is not queued or retried by us; for large broadcasts consider a background job later.</li>
+  <li>This is <b>web push only</b>. A native Android app would need an app wrapper (Capacitor/TWA) and the same Firebase project, plus <code>google-services.json</code>.</li>
+  <li>Check Firebase's current free-tier terms; FCM messaging has historically had no per-message charge.</li>
+</ul>
+
+<h2 id="whatsapp">6. WhatsApp (optional)</h2>
+<ol>
+  <li>Create a Twilio account &rarr; Messaging &rarr; Try WhatsApp (sandbox) to test. Recipients must join the sandbox first.</li>
+  <li>For production, get a WhatsApp sender approved and register message templates. WhatsApp blocks free-form business-initiated messages outside a 24-hour window.</li>
+  <li>Set the three <code>TWILIO_*</code> variables.</li>
+</ol>
+
+<h2 id="cron">7. Cron / reminders</h2>
+<p><code>vercel.json</code> runs <code>/api/cron/reminders</code> daily at 06:00 UTC (and <code>/api/cron/creator-digest</code> weekly, section 2b). It reminds confirmed bookings starting in the next 36 hours, once each. Set <code>CRON_SECRET</code> in Vercel. Test locally:</p>
+<pre><code>curl -H "Authorization: Bearer $CRON_SECRET" http://localhost:3000/api/cron/reminders</code></pre>
+
+<h2 id="test">8. How to test</h2>
+<ol>
+  <li><code>npm run dev</code>, sign in as an admin, open <b>Dashboard &rarr; Admin &rarr; Announcements</b>, pick "Learners", send.</li>
+  <li>Sign in as a learner in another browser: the bell shows a badge within 60 seconds (or on tab focus). Click the item to mark it read and follow its link.</li>
+  <li>With no SMTP configured, the server console prints <code>[email:dev-preview]</code> and the log shows <code>SKIPPED</code>. That's expected.</li>
+  <li>Other quick checks: register a new instructor (admins get a notice), approve them in Admin &rarr; Faculty (they get a notice), change a role as super admin, enrol in a course.</li>
+</ol>
+<p>I ran these checks against a local server: broadcast as admin delivered 3 inbox items and 3 honest <code>SKIPPED</code> email logs, a learner calling broadcast got <code>403</code>, an admin couldn't mark a learner's notification read, and mark-read dropped the unread count to 0.</p>
+
+<h2 id="code">9. Code map</h2>
+<table>
+  <tr><th>File</th><th>Role</th></tr>
+  <tr><td><code>prisma/schema.prisma</code></td><td><code>Notification</code> (inbox) and <code>NotificationLog</code> (delivery audit)</td></tr>
+  <tr><td><code>src/lib/notify/dispatch.ts</code></td><td><code>notify</code>, <code>notifyUserId</code>, <code>notifyRoles</code></td></tr>
+  <tr><td><code>src/lib/notify/channels.ts</code></td><td>SMTP and Twilio senders</td></tr>
+  <tr><td><code>src/lib/notify/templates.ts</code></td><td>Branded email HTML and booking copy</td></tr>
+  <tr><td><code>src/lib/notify/index.ts</code></td><td>Booking notifications, admin direct messages, re-exports</td></tr>
+  <tr><td><code>src/components/layout/header/NotificationBell.tsx</code></td><td>Header bell (live data)</td></tr>
+  <tr><td><code>src/lib/push/server.ts</code></td><td>FCM sender (<code>sendPushToUser</code>), no-op when unconfigured</td></tr>
+  <tr><td><code>src/lib/push/client.ts</code></td><td>Permission, token and register helpers (browser)</td></tr>
+  <tr><td><code>public/firebase-messaging-sw.js</code></td><td>Service worker: shows notification, handles click</td></tr>
+  <tr><td><code>src/app/api/notifications/push/route.ts</code></td><td>Register / unregister a browser token</td></tr>
+  <tr><td><code>src/app/notifications/page.tsx</code></td><td>Full inbox page</td></tr>
+  <tr><td><code>src/components/admin/AdminBroadcast.tsx</code></td><td>Admin announcements form</td></tr>
+  <tr><td><code>src/features/courses/server/notifyEnrollment.ts</code></td><td>Enrolment notices (learner and instructor)</td></tr>
+</table>
+<p><b>Adding a new notification:</b> call <code>notifyUserId(id, { kind: "my_event", title, body, href })</code> (or <code>notifyRoles</code>) from the route that causes it. Nothing else is needed.</p>
+
+<h2 id="limits">10. Known limitations</h2>
+<ul>
+  <li><b>Vercel + SQLite:</b> <code>src/lib/prisma.ts</code> copies the DB to <code>/tmp</code> on Vercel, so writes (including notifications) are ephemeral per serverless instance. In-app notifications won't reliably persist there until you move to a hosted database (Postgres/Turso). <code>scripts/startup.postgres.sh</code> hints you've considered it.</li>
+  <li>The committed <code>prisma/dev.db</code> now includes the new <code>Notification</code> and <code>PushToken</code> tables. On any other database run <code>npx prisma db push</code>.</li>
+  <li>The in-app bell polls every 60s (instant only when push is on and the tab is open).</li>
+  <li>Email isn't queued: it is sent inline, with 10 recipients at a time for broadcasts. For thousands of users, move broadcasts to a background queue.</li>
+  <li>No per-user preferences yet (users can't mute email).</li>
+  <li>Event start reminders (like booking reminders) are not implemented.</li>
+  <li>Event-interest notices to hosts are type-checked but I had no upcoming approved event in the dev DB to exercise them end to end.</li>
+  <li><code>prisma format</code> realigned some whitespace in <code>schema.prisma</code>. That is cosmetic.</li>
+</ul>
+
+<h2 id="next">11. Suggested next steps</h2>
+<ol>
+  <li>Add SMTP credentials and a real <code>NEXT_PUBLIC_APP_URL</code> (section 3) and re-run the tests.</li>
+  <li>Move off SQLite-on-Vercel before relying on in-app history in production.</li>
+  <li>Add a per-user "email me" toggle on the profile page.</li>
+  <li>Add event reminders to the cron route.</li>
+  <li>Add the Firebase credentials (section 5) and test push on your Android phone.</li>
+</ol>
+
+</div>
+</body>
+</html>

@@ -6,6 +6,8 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "@/components/ui/Icon";
+import { currentPushState, disablePush, enablePush, onForegroundPush, type PushState } from "@/lib/push/client";
+import { NotificationIcon } from "@/components/notifications/NotificationIcon";
 import { timeAgo, type NotificationItem } from "@/lib/notify/client";
 
 const POLL_MS = 60_000;
@@ -28,6 +30,32 @@ export function NotificationBell() {
       /* offline — keep what we have */
     }
   }, []);
+
+  const [push, setPush] = useState<PushState>("unconfigured");
+  const [pushBusy, setPushBusy] = useState(false);
+  const [pushError, setPushError] = useState("");
+
+  useEffect(() => setPush(currentPushState()), []);
+
+  // Foreground push (tab open) → refresh the bell immediately instead of waiting for the poll.
+  useEffect(() => {
+    if (status !== "authenticated" || push !== "on") return;
+    let off = () => {};
+    onForegroundPush(() => load()).then((unsub) => (off = unsub));
+    return () => off();
+  }, [status, push, load]);
+
+  const togglePush = async () => {
+    setPushBusy(true);
+    setPushError("");
+    try {
+      setPush(push === "on" ? await disablePush() : await enablePush());
+    } catch (e) {
+      setPushError((e as Error).message || "Couldn't change browser alerts");
+    } finally {
+      setPushBusy(false);
+    }
+  };
 
   // Poll while signed in; refresh on tab focus so a returning user sees fresh items.
   useEffect(() => {
@@ -149,17 +177,11 @@ export function NotificationBell() {
                           : "bg-orange/5 hover:bg-orange/8"
                       }`}
                     >
-                      {/* Unread dot */}
-                      <div className="mt-1.5 shrink-0">
-                        <span
-                          className={`block w-2 h-2 rounded-full ${
-                            n.readAt ? "bg-transparent" : "bg-orange"
-                          }`}
-                        />
-                      </div>
+                      <NotificationIcon kind={n.kind} />
                       <div className="min-w-0">
-                        <p className="text-xs font-semibold text-cream truncate">
-                          {n.title}
+                        <p className="flex items-center gap-1.5 text-xs font-semibold text-cream">
+                          <span className="truncate">{n.title}</span>
+                          {!n.readAt && <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-orange" aria-label="unread" />}
                         </p>
                         <p className="text-xs text-cream/55 mt-0.5 line-clamp-2">
                           {n.body}
@@ -172,7 +194,24 @@ export function NotificationBell() {
               </ul>
 
               {/* Footer */}
-              <div className="px-4 py-2.5 border-t border-black-line/60">
+              <div className="px-4 py-2.5 border-t border-black-line/60 space-y-1.5">
+                {push !== "unsupported" && push !== "unconfigured" && (
+                  <div className="text-center">
+                    {push === "denied" ? (
+                      <p className="text-[11px] text-cream/40">Browser alerts are blocked — allow them in your browser's site settings.</p>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={togglePush}
+                        disabled={pushBusy}
+                        className="text-[11px] text-orange hover:text-orange/80 disabled:opacity-50"
+                      >
+                        {pushBusy ? "Working…" : push === "on" ? "Turn off browser alerts" : "Turn on browser alerts"}
+                      </button>
+                    )}
+                    {pushError && <p className="text-[11px] text-red-400 mt-1">{pushError}</p>}
+                  </div>
+                )}
                 <Link
                   href="/notifications"
                   onClick={() => setOpen(false)}

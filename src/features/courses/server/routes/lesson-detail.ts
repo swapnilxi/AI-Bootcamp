@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getClassAccess } from "../access";
 import { isAdminRole } from "@/lib/roles";
+import { notifyReviewSubmitted } from "../notifyCreator";
 import { updateLessonSchema } from "../../schemas/lesson";
 
 interface RouteParams {
@@ -151,6 +152,10 @@ export async function PUT(req: Request, { params }: RouteParams) {
       data.rejectionReason = null;
     }
     const updated = await prisma.lesson.update({ where: { id: lessonId }, data });
+
+    if (data.approvalStatus === "PENDING") {
+      await notifyReviewSubmitted({ what: "lesson", course: { id: lesson.course.id, title: lesson.course.title }, creatorId: session.user.id });
+    }
 
     return NextResponse.json({ message: "Lesson updated", lesson: updated });
   } catch (error) {

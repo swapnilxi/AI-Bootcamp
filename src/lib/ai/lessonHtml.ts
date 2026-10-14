@@ -2,7 +2,7 @@ import { z } from "zod/v4";
 import { generateStructured } from "./structured";
 import type { ResolvedCredential } from "./credentials";
 import { BRAND_VOICE } from "./prompts";
-import { LESSON_TOKENS_CSS, type LessonContext } from "@/lib/lessons/shared";
+import { LESSON_TOKENS_CSS, INTERACTIVE_STYLES, type InteractivityOptions, type LessonContext } from "@/lib/lessons/shared";
 
 export type { LessonVariants, LessonContext } from "@/lib/lessons/shared";
 
@@ -65,8 +65,46 @@ ${ctx.guidance ? `Guidance: ${ctx.guidance}\n` : ""}${
   }`;
 }
 
+const STYLE_DIRECTION: Record<string, string> = {
+  standard: "Editorial lesson: explanation first, interactive checks near the end.",
+  guided: "Guided practice: after every concept, give the learner a small exercise to complete before moving on. Never go more than ~2 short paragraphs without something to click, type or answer.",
+  handson: "Hands-on lab: minimal theory, then step-by-step tasks the learner performs in the page (editable code, runnable snippets, results shown instantly). Each step has a hint and a reveal-solution button.",
+  story: "Scenario-driven: open with a realistic situation and have the learner make decisions that branch the story. Teach each concept at the moment the scenario needs it, and end with a debrief of the choices made.",
+};
+
+const ELEMENT_DIRECTION: Record<string, string> = {
+  quiz: "Knowledge checks: 3+ multiple-choice questions, instant right/wrong feedback, an explanation for every answer, a running score.",
+  fillBlank: "Fill-in-the-blank: input fields inside a sentence or code line, a Check button, per-blank feedback, and a Show answer option.",
+  ordering: "Order-the-steps: items the learner reorders with up/down buttons (must work by keyboard and touch, not only drag), a Check button, and feedback on which positions are wrong.",
+  matching: "Match-pairs: two columns; click one item then its partner; correct pairs lock in, wrong pairs shake and reset.",
+  playground: "Code playground: an editable <textarea> of starter code, a Run button that evaluates it with vanilla JS in the page (use try/catch, show output or errors in an output panel), and a Reset button.",
+  simulation: "Live simulation: sliders/toggles/inputs that update an inline SVG or canvas visual and a numeric readout in real time, with a one-line 'what to notice' caption.",
+  scenario: "Branching scenario: a decision with 2-3 choices; each reveals a consequence and the next decision; track the path and finish with a summary of what each choice teaches.",
+  flashcards: "Flashcards: click-to-flip cards for key terms, 'Got it' / 'Review again' buttons, and a tally; review-again cards return to the deck.",
+  reflection: "Reflection prompts: a free-text box, then a 'Compare with an expert answer' button that reveals a model answer.",
+  checklist: "Done-when checklist: checkboxes; when all are ticked, show a congratulatory completion message.",
+};
+
+/** Appends creator-chosen interactivity requirements to the lesson system prompt. */
+function interactivityDirection(options?: InteractivityOptions): string {
+  if (!options) return "";
+  const style = INTERACTIVE_STYLES.find((s) => s.key === options.style);
+  const els = options.elements.map((k) => `- ${ELEMENT_DIRECTION[k]}`).join("\n");
+  return `
+
+INTERACTIVITY BRIEF (this overrides the default structure where they conflict):
+Format — ${style?.label}: ${STYLE_DIRECTION[options.style]}
+${els ? `Include ALL of these interactive elements, woven into the lesson where they teach best (not dumped at the end):\n${els}\n` : ""}${options.notes ? `Creator's note: ${options.notes}\n` : ""}
+Interaction rules:
+- Everything runs offline in a sandboxed iframe with vanilla JS only. Do NOT use localStorage, cookies, fetch or any network; keep state in memory.
+- Add a slim sticky progress bar at the top ("3 of 7 activities done") that updates as the learner completes activities.
+- Every activity gives immediate, specific feedback (what was right/wrong and why), lets the learner retry, and is fully keyboard accessible with visible focus states and aria-live feedback regions.
+- Use the provided CSS variables for all colors (success/danger for feedback) so light and dark mode both work.
+- Keep each activity compact so the whole document still finishes within the output budget.`;
+}
+
 /** Prompt 4: the full standalone interactive lesson ("Read" view). */
-export async function runLessonRead(credential: ResolvedCredential, ctx: LessonContext): Promise<string> {
+export async function runLessonRead(credential: ResolvedCredential, ctx: LessonContext, interactivity?: InteractivityOptions): Promise<string> {
   const result = await generateStructured({
     credential,
     schema: StandaloneLesson,
@@ -79,7 +117,7 @@ ${LESSON_TOKENS_CSS}
 
 Structure: header with read time, 3-4 learning objectives, core concepts with analogies, an inline SVG/CSS diagram where it clarifies something, deep dive into edge cases and trade-offs, syntax-highlighted code with a working copy button, a 2+ question interactive quiz with instant feedback, and a closing summary or checklist. Content max-width ~800px, centered.
 
-Budget discipline: you have a finite output budget and MUST finish the document — an unfinished document is worse than a shorter complete one. Keep every code example to at most 10-15 lines (a representative fragment, not a full file or type definitions). If the topic is broad, cover fewer sub-points well rather than many shallowly. Always end with the closing </html> tag.`,
+Budget discipline: you have a finite output budget and MUST finish the document — an unfinished document is worse than a shorter complete one. Keep every code example to at most 10-15 lines (a representative fragment, not a full file or type definitions). If the topic is broad, cover fewer sub-points well rather than many shallowly. Always end with the closing </html> tag.${interactivityDirection(interactivity)}`,
     prompt: `Write the interactive lesson "${ctx.title}".
 
 <source_material>

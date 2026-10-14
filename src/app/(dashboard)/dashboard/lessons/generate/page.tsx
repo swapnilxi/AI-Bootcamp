@@ -9,6 +9,8 @@ import { AiSetupNotice } from "@/components/ai/AiSetupNotice";
 import { InlineAiContextEditor } from "@/components/ai/InlineAiContextEditor";
 import { AI_NOT_CONFIGURED_CODE } from "@/lib/ai/constants";
 import { isAdminRole, isInstructorRole } from "@/lib/roles";
+import { InteractivityPicker } from "@/components/lessons/InteractivityPicker";
+import { DEFAULT_INTERACTIVITY, type InteractivityOptions } from "@/lib/lessons/shared";
 import { PROJECT_MODULES } from "@/app/projects/[slug]/modules";
 
 const MAX_DOCUMENT_CHARS = 20000;
@@ -55,6 +57,8 @@ function GenerateLessonForm() {
   const [topic, setTopic] = useState("");
   const [customTitle, setCustomTitle] = useState("");
   const [showAuthor, setShowAuthor] = useState(true);
+  const [interactive, setInteractive] = useState(true);
+  const [interactivity, setInteractivity] = useState<InteractivityOptions>(DEFAULT_INTERACTIVITY);
   const [fileName, setFileName] = useState<string | null>(null);
   const [docText, setDocText] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -233,6 +237,7 @@ function GenerateLessonForm() {
           documentText: docText || undefined,
           customTitle: customTitle.trim() || undefined,
           showAuthor,
+          interactivity: interactive ? interactivity : undefined,
         }),
       });
       const data = await res.json();
@@ -513,6 +518,19 @@ function GenerateLessonForm() {
             placeholder="Leave blank to let AI synthesize a polished title"
             className={fieldClass}
           />
+        </div>
+
+        <div className="space-y-3 rounded-xl border border-white/10 p-4">
+          <label className="flex cursor-pointer select-none items-center gap-2.5 text-xs font-semibold text-text">
+            <input
+              type="checkbox"
+              checked={interactive}
+              onChange={(e) => setInteractive(e.target.checked)}
+              className="w-3.5 h-3.5 min-h-0 accent-[#F97316]"
+            />
+            Make it an interactive experience (exercises, simulations, scenarios)
+          </label>
+          {interactive && <InteractivityPicker value={interactivity} onChange={setInteractivity} compact />}
         </div>
 
         <label className="flex items-center gap-2.5 text-xs text-text-muted cursor-pointer select-none">

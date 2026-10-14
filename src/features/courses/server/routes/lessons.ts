@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { getClassAccess } from "../access";
 import { isAdminRole } from "@/lib/roles";
 import { createLessonSchema } from "../../schemas/lesson";
+import { notifyReviewSubmitted } from "../notifyCreator";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -105,6 +106,11 @@ export async function POST(req: Request, { params }: RouteParams) {
         approvalStatus: isAdminRole(session.user.role) ? "APPROVED" : "PENDING",
       },
     });
+
+    if (!isAdminRole(session.user.role)) {
+      const course = await prisma.course.findUnique({ where: { id }, select: { id: true, title: true } });
+      if (course) await notifyReviewSubmitted({ what: "lesson", course, creatorId: session.user.id });
+    }
 
     return NextResponse.json({ message: "Lesson added", lesson }, { status: 201 });
   } catch (error) {

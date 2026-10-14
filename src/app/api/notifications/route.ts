@@ -42,10 +42,15 @@ export async function PATCH(req: Request) {
   return NextResponse.json({ updated: count });
 }
 
-/** Delete read notifications (clear history). */
-export async function DELETE() {
+/** Delete one notification (?id=) or, with no id, all of the caller's read notifications. */
+export async function DELETE(req: Request) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const id = new URL(req.url).searchParams.get("id");
+  if (id) {
+    const { count } = await prisma.notification.deleteMany({ where: { id, userId: session.user.id } });
+    return NextResponse.json({ deleted: count });
+  }
   const { count } = await prisma.notification.deleteMany({ where: { userId: session.user.id, readAt: { not: null } } });
   return NextResponse.json({ deleted: count });
 }

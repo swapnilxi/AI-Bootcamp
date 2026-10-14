@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { getClassAccess } from "../access";
 import { isAdminRole, isInstructorRole } from "@/lib/roles";
 import { updateClassSchema } from "../../schemas/class";
+import { notifyReviewSubmitted } from "../notifyCreator";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -230,6 +231,10 @@ export async function PUT(req: Request, { params }: RouteParams) {
         updatedAt: true,
       },
     });
+
+    if (!isAdminRole(session.user.role) && existing.approvalStatus === "REJECTED") {
+      await notifyReviewSubmitted({ what: "course", course: { id, title: updated.title }, creatorId: session.user.id });
+    }
 
     return NextResponse.json({ message: "Course updated successfully", course: updated });
   } catch (error) {

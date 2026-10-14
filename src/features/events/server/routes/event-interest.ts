@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { isAdminRole } from "@/lib/roles";
+import { notifyHostOfInterest } from "../notify";
 
 interface RouteParams {
     params: Promise<{ id: string }>;
@@ -10,12 +11,14 @@ interface RouteParams {
 
 /** Members express interest in an event. One row per person per event. */
 async function setInterest(eventId: string, userId: string) {
+    const existed = await prisma.eventInterest.findUnique({ where: { eventId_userId: { eventId, userId } }, select: { id: true } });
     await prisma.eventInterest.upsert({
         where: { eventId_userId: { eventId, userId } },
         create: { eventId, userId },
         update: {},
     });
     const count = await prisma.eventInterest.count({ where: { eventId } });
+    if (!existed) await notifyHostOfInterest(eventId, userId, count);
     return count;
 }
 

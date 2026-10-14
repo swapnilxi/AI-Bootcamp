@@ -1,4 +1,5 @@
 import { notifyUserId } from "@/lib/notify/dispatch";
+import { notifyEnrollmentMilestone } from "./notifyCreator";
 
 /** Confirm to the learner and tell the instructor of record about a new enrolment. */
 export async function enrollmentNotices(
@@ -24,5 +25,6 @@ export async function enrollmentNotices(
           email: false,
         })
       : Promise.resolve(),
+    notifyEnrollmentMilestone(course),
   ]);
 }

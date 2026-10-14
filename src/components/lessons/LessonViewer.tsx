@@ -18,7 +18,14 @@ import {
 } from "lucide-react";
 import { AiSetupNotice } from "@/components/ai/AiSetupNotice";
 import { AI_NOT_CONFIGURED_CODE } from "@/lib/ai/constants";
-import { wrapLessonFragment, type LessonVariants } from "@/lib/lessons/shared";
+import {
+  wrapLessonFragment,
+  DEFAULT_INTERACTIVITY,
+  INTERACTIVE_ELEMENTS,
+  type InteractivityOptions,
+  type LessonVariants,
+} from "@/lib/lessons/shared";
+import { InteractivityPicker } from "./InteractivityPicker";
 import { SwipeDeck } from "./SwipeDeck";
 
 type TabKey = "read" | "easyRead" | "visualize" | "swipe" | "deeper" | "breakdown" | "update";
@@ -39,6 +46,12 @@ const UPDATE_SUGGESTIONS = [
   "Add a section on common mistakes",
   "Add two more quiz questions",
 ];
+
+/** One-click "make it more interactive" instructions, built from the element catalog. */
+const INTERACTIVE_UPGRADES = INTERACTIVE_ELEMENTS.map((e) => ({
+  label: `Add: ${e.label}`,
+  instruction: `Make this lesson more interactive: add ${e.label.toLowerCase()} — ${e.hint}. Place it where it best reinforces the concept, give instant feedback, and update the progress bar if there is one.`,
+}));
 
 export interface LessonViewerEndpoints {
   generate: string;
@@ -123,6 +136,7 @@ export function LessonViewer({
   const [deleting, setDeleting] = useState(false);
   const [uploading, setUploading] = useState(false);
   const uploadInputRef = useRef<HTMLInputElement>(null);
+  const [interactivity, setInteractivity] = useState<InteractivityOptions>(DEFAULT_INTERACTIVITY);
 
   const hasRead = !!generatedHtml;
 
@@ -131,7 +145,7 @@ export function LessonViewer({
     setError(null);
     setNeedsSetup(false);
     try {
-      const data = await postJson(endpoints.generate);
+      const data = await postJson(endpoints.generate, { interactivity });
       setGeneratedHtml(data.generatedHtml);
     } catch (err) {
       const e = err as Error & { code?: string };
@@ -167,7 +181,7 @@ export function LessonViewer({
     const previous = generatedHtml;
     try {
       const data =
-        kind === "regenerate" ? await postJson(endpoints.generate) : await postJson(endpoints.revise, { instruction: instruction.trim() });
+        kind === "regenerate" ? await postJson(endpoints.generate, { interactivity }) : await postJson(endpoints.revise, { instruction: instruction.trim() });
       setGeneratedHtml(data.generatedHtml);
       if (previous) setPendingPrevious(previous);
       setInstruction("");
@@ -272,6 +286,8 @@ export function LessonViewer({
           onRegenerate={() => applyChange("regenerate")}
           onUpdate={() => applyChange("update")}
           updating={updating}
+          interactivity={interactivity}
+          setInteractivity={setInteractivity}
         />
       );
     }
@@ -294,9 +310,10 @@ export function LessonViewer({
     if (tab === "read" && !generatedHtml) {
       return (
         <GenerateCta
-          label="Generate lesson"
+          label="Generate interactive lesson"
           loading={loadingTab === "read"}
           onClick={runGenerate}
+          extra={canManage ? <InteractivityPicker value={interactivity} onChange={setInteractivity} /> : undefined}
           secondary={
             canManage ? (
               <label className="inline-flex min-h-0 cursor-pointer items-center gap-1.5 text-xs text-text-muted transition-colors hover:text-gold">
@@ -540,6 +557,7 @@ function GenerateCta({
   disabled,
   disabledHint,
   secondary,
+  extra,
 }: {
   label: string;
   loading: boolean;
@@ -547,10 +565,12 @@ function GenerateCta({
   disabled?: boolean;
   disabledHint?: string;
   secondary?: ReactNode;
+  extra?: ReactNode;
 }) {
   return (
     <div className="flex h-full min-h-[320px] flex-col items-center justify-center gap-3 p-8 text-center">
       <p className="text-sm text-text-muted">{disabled ? disabledHint : "Not generated yet."}</p>
+      {extra && !disabled && <div className="w-full max-w-3xl">{extra}</div>}
       <button
         onClick={onClick}
         disabled={loading || disabled}
@@ -570,13 +590,18 @@ function UpdatePanel({
   onRegenerate,
   onUpdate,
   updating,
+  interactivity,
+  setInteractivity,
 }: {
   instruction: string;
   setInstruction: (v: string) => void;
   onRegenerate: () => void;
   onUpdate: () => void;
   updating: boolean;
+  interactivity: InteractivityOptions;
+  setInteractivity: (v: InteractivityOptions) => void;
 }) {
+  const [showRegen, setShowRegen] = useState(false);
   return (
     <div className="h-full overflow-y-auto p-5 sm:p-7">
       <div className="flex items-start gap-3">
@@ -599,6 +624,21 @@ function UpdatePanel({
         className="mt-4 w-full resize-none rounded-xl border border-white/10 bg-black/60 p-4 text-sm text-ink focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
       />
 
+      <div className="mt-3">
+        <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wider text-text-muted">Make it more interactive</p>
+        <div className="flex flex-wrap gap-2">
+          {INTERACTIVE_UPGRADES.map((u) => (
+            <button
+              key={u.label}
+              onClick={() => setInstruction(u.instruction)}
+              className="rounded-full border border-gold/25 px-3 py-1.5 text-xs text-gold/90 transition-colors hover:bg-gold/[0.08]"
+            >
+              {u.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       <div className="mt-3 flex flex-wrap items-center gap-2">
         {UPDATE_SUGGESTIONS.map((s) => (
           <button
@@ -618,6 +658,12 @@ function UpdatePanel({
             <RotateCw className={`h-3.5 w-3.5 ${updating ? "animate-spin" : ""}`} /> Regenerate
           </button>
           <button
+            onClick={() => setShowRegen((v) => !v)}
+            className="min-h-0 text-xs text-text-muted underline-offset-2 hover:text-gold hover:underline"
+          >
+            {showRegen ? "Hide" : "Regenerate options"}
+          </button>
+          <button
             onClick={onUpdate}
             disabled={updating || !instruction.trim()}
             className="inline-flex min-h-0 items-center gap-1.5 rounded-full bg-gold px-4 py-2 text-xs font-semibold text-[#0C0B0A] transition-colors hover:bg-gold/90 disabled:opacity-50"
@@ -626,6 +672,13 @@ function UpdatePanel({
           </button>
         </div>
       </div>
+
+      {showRegen && (
+        <div className="mt-4 rounded-xl border border-white/10 p-4">
+          <p className="mb-3 text-xs text-text-muted">Regenerate rebuilds the lesson from its source using these settings.</p>
+          <InteractivityPicker value={interactivity} onChange={setInteractivity} compact />
+        </div>
+      )}
     </div>
   );
 }

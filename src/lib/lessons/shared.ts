@@ -24,6 +24,55 @@ export interface LessonContext {
   };
 }
 
+/** Interactive building blocks a creator can ask a generated lesson to include. */
+export const INTERACTIVE_ELEMENTS = [
+  { key: "quiz", label: "Knowledge checks", hint: "Multiple-choice questions with instant feedback and explanations" },
+  { key: "fillBlank", label: "Fill in the blank", hint: "Complete a sentence or code line; checked instantly" },
+  { key: "ordering", label: "Order the steps", hint: "Click-to-reorder a process into the right sequence" },
+  { key: "matching", label: "Match pairs", hint: "Connect terms to definitions or inputs to outputs" },
+  { key: "playground", label: "Code playground", hint: "Editable code with a Run button and visible output" },
+  { key: "simulation", label: "Live simulation", hint: "Sliders/toggles that change a diagram or result in real time" },
+  { key: "scenario", label: "Branching scenario", hint: "Make decisions in a realistic situation and see consequences" },
+  { key: "flashcards", label: "Flashcards", hint: "Flip cards for key terms, with a got-it / review-again tally" },
+  { key: "reflection", label: "Reflection prompts", hint: "Short free-text prompts that reveal an expert answer" },
+  { key: "checklist", label: "Done-when checklist", hint: "Tick-off checklist that unlocks a completion message" },
+] as const;
+
+export type InteractiveElementKey = (typeof INTERACTIVE_ELEMENTS)[number]["key"];
+
+/** Overall shape of the lesson: how much reading vs. doing. */
+export const INTERACTIVE_STYLES = [
+  { key: "standard", label: "Standard", hint: "Editorial lesson with a closing quiz" },
+  { key: "guided", label: "Guided practice", hint: "Short explanations, each followed by an exercise" },
+  { key: "handson", label: "Hands-on lab", hint: "Learn by building: code playground and step-by-step tasks" },
+  { key: "story", label: "Scenario-driven", hint: "A story or case study the learner works through with decisions" },
+] as const;
+
+export type InteractiveStyleKey = (typeof INTERACTIVE_STYLES)[number]["key"];
+
+export interface InteractivityOptions {
+  style: InteractiveStyleKey;
+  elements: InteractiveElementKey[];
+  /** Free-text steer, e.g. "use a customer-support chatbot as the running example". */
+  notes?: string;
+}
+
+export const DEFAULT_INTERACTIVITY: InteractivityOptions = { style: "guided", elements: ["quiz", "ordering", "checklist"] };
+
+/** Validates untrusted input (request body) into InteractivityOptions, or undefined when absent/invalid. */
+export function parseInteractivity(input: unknown): InteractivityOptions | undefined {
+  if (!input || typeof input !== "object") return undefined;
+  const raw = input as Record<string, unknown>;
+  const style = INTERACTIVE_STYLES.find((s) => s.key === raw.style)?.key;
+  if (!style) return undefined;
+  const valid = new Set<string>(INTERACTIVE_ELEMENTS.map((e) => e.key));
+  const elements = Array.isArray(raw.elements)
+    ? ([...new Set(raw.elements.filter((e): e is string => typeof e === "string" && valid.has(e)))] as InteractiveElementKey[])
+    : [];
+  const notes = typeof raw.notes === "string" ? raw.notes.trim().slice(0, 500) : undefined;
+  return { style, elements, ...(notes ? { notes } : {}) };
+}
+
 /** The design system every generated or wrapped lesson document shares. */
 export const LESSON_TOKENS_CSS = `:root {
   color-scheme: light dark;

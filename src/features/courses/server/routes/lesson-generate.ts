@@ -10,7 +10,9 @@ import { aiPreflight } from "@/lib/ai/guard";
 import { describeAiError } from "@/lib/ai/client";
 import { AiRefusalError, generateStructured } from "@/lib/ai/structured";
 import { BRAND_VOICE } from "@/lib/ai/prompts";
+import { parseInteractivity } from "@/lib/lessons/shared";
 import { runLessonRead } from "@/lib/ai/lessonHtml";
+import { notifyReviewSubmitted } from "../notifyCreator";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -56,7 +58,9 @@ export async function POST(req: Request, { params }: RouteParams) {
     );
   }
 
-  const parsed = requestSchema.safeParse(await req.json().catch(() => ({})));
+  const body = await req.json().catch(() => ({}));
+  const interactivity = parseInteractivity((body as { interactivity?: unknown })?.interactivity);
+  const parsed = requestSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.errors[0]?.message || "Invalid request" }, { status: 400 });
   }
@@ -111,7 +115,7 @@ Build on the existing lessons without repeating them.`,
         domainDescription: cls.description,
         guidance,
         sourceText: draft.content,
-      });
+      }, interactivity);
     } catch {
       generatedHtml = null;
     }
@@ -132,6 +136,11 @@ Build on the existing lessons without repeating them.`,
         htmlUpdatedAt: generatedHtml ? new Date() : null,
       },
     });
+
+    if (!isAdminRole(session.user.role)) {
+      const course = await prisma.course.findUnique({ where: { id }, select: { id: true, title: true } });
+      if (course) await notifyReviewSubmitted({ what: "lesson", course, creatorId: session.user.id });
+    }
 
     return NextResponse.json({ message: "Lesson created", lesson }, { status: 201 });
   } catch (error) {

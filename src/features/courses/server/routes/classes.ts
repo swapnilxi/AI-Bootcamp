@@ -5,6 +5,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { canCreateClasses, isAdminRole, isInstructorRole } from "@/lib/roles";
 import { createClassSchema } from "../../schemas/class";
+import { notifyReviewSubmitted } from "../notifyCreator";
 
 export async function GET(req: Request) {
   try {
@@ -228,6 +229,10 @@ export async function POST(req: Request) {
         createdAt: true,
       },
     });
+
+    if (!isAdmin) {
+      await notifyReviewSubmitted({ what: "course", course: { id: newClass.id, title: newClass.title }, creatorId: instructorId });
+    }
 
     return NextResponse.json(
       { message: "Course created successfully", course: newClass },

@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getClassAccess } from "../access";
+import { notifyIfCourseCompleted } from "../notifyCreator";
 
 interface RouteParams {
   params: Promise<{ id: string; lessonId: string }>;
@@ -25,7 +26,7 @@ async function authorize(params: RouteParams["params"]) {
     return { error: NextResponse.json({ error: "Enroll in this class first" }, { status: 403 }) };
   }
 
-  return { userId: session.user.id, lessonId };
+  return { userId: session.user.id, lessonId, course: lesson.course };
 }
 
 /** Mark a lesson complete for the current user (idempotent). */
@@ -34,11 +35,16 @@ export async function POST(req: Request, { params }: RouteParams) {
     const auth = await authorize(params);
     if ("error" in auth) return auth.error;
 
+    const already = await prisma.lessonProgress.findUnique({
+      where: { userId_lessonId: { userId: auth.userId, lessonId: auth.lessonId } },
+      select: { id: true },
+    });
     await prisma.lessonProgress.upsert({
       where: { userId_lessonId: { userId: auth.userId, lessonId: auth.lessonId } },
       create: { userId: auth.userId, lessonId: auth.lessonId },
       update: {},
     });
+    if (!already) await notifyIfCourseCompleted(auth.userId, auth.course).catch((e) => console.error("completion notice failed:", e));
     return NextResponse.json({ completed: true });
   } catch (error) {
     console.error("Mark lesson complete error:", error);

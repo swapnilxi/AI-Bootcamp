@@ -60,6 +60,23 @@ function readContext(pathname: string): { kind: string; label: string; suggestio
   };
 }
 
+function getHoverGreeting(kind: string, label: string): string {
+  switch (kind) {
+    case "lesson":
+      return "Got questions about this lesson?";
+    case "course":
+      return "Exploring this course?";
+    case "project":
+      return "Need architecture advice?";
+    case "lab":
+      return "Need help with this lab?";
+    case "practice":
+      return "Stuck on a challenge?";
+    default:
+      return "How can I help you learn?";
+  }
+}
+
 type RobotState = "idle" | "thinking" | "searching" | "listening" | "speaking" | "working" | "happy" | "error" | "sleeping";
 
 /** Emotion sequence that plays on a loop while the bot is idle. */
@@ -69,6 +86,7 @@ const IDLE_STEP_MS = 3500;
 
 export function TutorWidget() {
   const [open, setOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const pathname = usePathname() || "/";
   const context = readContext(pathname);
   const { messages, streaming, error, needsSetup, send, reset } = useStreamingChat("/api/ai/tutor", {
@@ -88,7 +106,7 @@ export function TutorWidget() {
 
   // Idle emotion cycler — rotates through IDLE_CYCLE when nothing is happening.
   const [cycleIdx, setCycleIdx] = useState(0);
-  const isActuallyIdle = !streaming && !justFinished && !(open && messages.length > 0);
+  const isActuallyIdle = !isHovered && !streaming && !justFinished && !(open && messages.length > 0);
   useEffect(() => {
     if (!isActuallyIdle) return;
     const t = setInterval(() => {
@@ -99,6 +117,8 @@ export function TutorWidget() {
 
   const robotState: RobotState = streaming
     ? "thinking"
+    : isHovered
+    ? "happy"
     : justFinished
     ? "happy"
     : open && messages.length > 0
@@ -119,10 +139,36 @@ export function TutorWidget() {
       {!open && (
         <button
           onClick={() => setOpen(true)}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => {
+            setIsHovered(false);
+            setCycleIdx(0);
+          }}
           aria-label="Open AI Tutor"
           className="fixed bottom-4 right-4 sm:bottom-5 sm:right-5 z-[60] flex flex-col items-center group cursor-pointer select-none bg-transparent border-0 p-0 focus:outline-none transition-transform duration-200 active:scale-95"
         >
           <span className="sr-only">AI Tutor</span>
+
+          {/* Reactive hover greeting speech bubble */}
+          <div
+            role="tooltip"
+            className={`absolute bottom-full mb-3 right-1/2 translate-x-1/2 sm:translate-x-0 sm:right-2 w-max max-w-[240px] px-3.5 py-2.5 rounded-2xl bg-[#16161a]/95 border border-[#e2762a]/40 text-left backdrop-blur-md shadow-[0_12px_28px_-6px_rgba(0,0,0,0.8),0_0_16px_rgba(226,118,42,0.2)] pointer-events-none transition-all duration-200 ease-out z-20 ${
+              isHovered
+                ? "opacity-100 translate-y-0 scale-100"
+                : "opacity-0 translate-y-2 scale-95 pointer-events-none"
+            }`}
+          >
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-white">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#e2762a] animate-pulse shrink-0" />
+              <span>{getHoverGreeting(context.kind, context.label)}</span>
+            </div>
+            <p className="text-[11px] text-zinc-400 mt-0.5 leading-tight">
+              Click to chat with AI Tutor
+            </p>
+            {/* Speech bubble tail */}
+            <div className="absolute -bottom-1.5 right-1/2 translate-x-1/2 sm:translate-x-0 sm:right-12 w-3 h-3 bg-[#16161a] border-r border-b border-[#e2762a]/40 rotate-45" />
+          </div>
+
           <div className="transition-transform duration-200 group-hover:scale-105">
             <RobotHead
               shape="rectangle"
@@ -140,7 +186,13 @@ export function TutorWidget() {
 
           {/* Refined pill badge */}
           <div className="mt-2.5 px-3.5 py-1.5 rounded-full flex items-center gap-2 bg-[#16161a]/95 border border-white/15 backdrop-blur-md shadow-[0_8px_20px_-4px_rgba(0,0,0,0.7),0_0_12px_rgba(226,118,42,0.15)] group-hover:border-[#e2762a]/60 group-hover:shadow-[0_8px_24px_-4px_rgba(226,118,42,0.35)] transition-all duration-200">
-            <span className="w-2 h-2 rounded-full bg-[#e2762a] shadow-[0_0_8px_#e2762a] shrink-0" />
+            <span
+              className={`w-2 h-2 rounded-full transition-all duration-200 shrink-0 ${
+                isHovered
+                  ? "bg-[#e2762a] shadow-[0_0_12px_#e2762a] scale-110"
+                  : "bg-[#e2762a] shadow-[0_0_8px_#e2762a]"
+              }`}
+            />
             <span className="text-xs font-semibold tracking-wider uppercase text-zinc-200 group-hover:text-white leading-none">
               AI Tutor
             </span>
@@ -154,7 +206,13 @@ export function TutorWidget() {
           <header className="flex items-center justify-between gap-3 px-4 py-3 sm:px-5 sm:py-3.5 border-b border-white/[0.07]">
             <div className="flex items-center gap-2.5 min-w-0">
               {/* Single larger robot head sitting on the top */}
-              <div className="shrink-0" style={{ lineHeight: 0 }}>
+              <div
+                className="shrink-0 cursor-pointer transition-transform duration-200 hover:scale-105"
+                style={{ lineHeight: 0 }}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                title="AI Tutor — happy to help!"
+              >
                 <RobotHead
                   shape="rectangle"
                   state={robotState}

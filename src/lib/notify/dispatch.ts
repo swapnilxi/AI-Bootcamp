@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { appUrl } from "@/features/booking/server/access";
 import { sendEmail } from "./channels";
+import { sendPushToUser } from "@/lib/push/server";
 import { renderEmailHtml } from "./templates";
 
 /**
@@ -20,7 +21,14 @@ export interface NotifyPayload {
   href?: string;
   /** Also send an email. Defaults to true. */
   email?: boolean;
+  /** Also push to the user's registered browsers. Defaults to true; no-op if push isn't configured. */
+  push?: boolean;
   sentById?: string;
+  /**
+   * Fold into an unread notification of the same kind + link from the last hour instead of
+   * adding another (and skip push/email). For noisy streams like "3 lessons need review".
+   */
+  coalesce?: boolean;
 }
 
 interface Recipient {
@@ -35,12 +43,52 @@ export function absoluteUrl(href?: string): string | undefined {
 }
 
 export async function notify(to: Recipient, payload: NotifyPayload): Promise<void> {
+  if (payload.coalesce) {
+    try {
+      const existing = await prisma.notification.findFirst({
+        where: { userId: to.id, kind: payload.kind, href: payload.href ?? null, readAt: null, createdAt: { gte: new Date(Date.now() - 3_600_000) } },
+        select: { id: true },
+      });
+      if (existing) {
+        await prisma.notification.update({
+          where: { id: existing.id },
+          data: { title: payload.title, body: payload.body.slice(0, 2000), createdAt: new Date() },
+        });
+        return;
+      }
+    } catch (err) {
+      console.error("coalesce failed:", err);
+    }
+  }
+
   try {
     await prisma.notification.create({
       data: { userId: to.id, kind: payload.kind, title: payload.title, body: payload.body.slice(0, 2000), href: payload.href },
     });
   } catch (err) {
     console.error("in-app notification failed:", err);
+  }
+
+  if (payload.push !== false) {
+    const { sent, failed } = await sendPushToUser(to.id, { title: payload.title, body: payload.body, href: payload.href });
+    // Only audit-log when a device was actually attempted (most users have none).
+    if (sent + failed > 0) {
+      await prisma.notificationLog
+        .create({
+          data: {
+            channel: "PUSH",
+            kind: payload.kind,
+            recipient: to.email,
+            subject: payload.title,
+            body: payload.body.slice(0, 4000),
+            status: sent > 0 ? "SENT" : "FAILED",
+            error: failed ? `${failed} device(s) failed` : undefined,
+            userId: to.id,
+            sentById: payload.sentById,
+          },
+        })
+        .catch((err) => console.error("push log failed:", err));
+    }
   }
 
   if (payload.email === false || !to.email) return;

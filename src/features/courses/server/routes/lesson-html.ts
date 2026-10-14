@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { getClassAccess } from "../access";
 import { aiPreflight } from "@/lib/ai/guard";
 import { describeAiError } from "@/lib/ai/client";
+import { parseInteractivity } from "@/lib/lessons/shared";
 import { AiRefusalError } from "@/lib/ai/structured";
 import {
   runLessonRead,
@@ -80,6 +81,8 @@ export async function generateHandler(req: Request, { params }: RouteParams) {
   const loaded = await loadLessonWithAccess(id, lessonId, req);
   if ("error" in loaded) return loaded.error;
   const { lesson, credential } = loaded;
+  const body = await req.json().catch(() => ({}));
+  const interactivity = parseInteractivity((body as { interactivity?: unknown })?.interactivity);
 
   try {
     const html = await runLessonRead(credential, {
@@ -88,7 +91,7 @@ export async function generateHandler(req: Request, { params }: RouteParams) {
       domainDescription: lesson.course.description,
       guidance: courseGuidance(lesson.course),
       sourceText: lesson.content,
-    });
+    }, interactivity);
     const updated = await prisma.lesson.update({
       where: { id: lessonId },
       data: { generatedHtml: html, htmlUpdatedAt: new Date() },
