@@ -7,6 +7,7 @@ import { aiPreflight } from "@/lib/ai/guard";
 import { describeAiError } from "@/lib/ai/client";
 import { AiRefusalError } from "@/lib/ai/structured";
 import { parseInteractivity } from "@/lib/lessons/shared";
+import { interactivityToDb } from "@/lib/lessons/interactivityDb";
 import { runLessonRead, TruncatedGenerationError } from "@/lib/ai/lessonHtml";
 import { loadOrCreateModuleLesson, buildProjectStageContext } from "@/lib/projects/moduleLesson";
 
@@ -19,6 +20,10 @@ const requestSchema = z.object({
   documentText: z.string().trim().max(20000).optional(),
   customTitle: z.string().trim().max(140).optional(),
   showAuthor: z.boolean().default(true),
+  /** Generate and return the HTML without saving it. */
+  preview: z.boolean().optional(),
+  /** Save this previously previewed HTML instead of generating. */
+  html: z.string().max(400000).optional(),
 });
 
 function handleAiError(error: unknown) {
@@ -40,15 +45,30 @@ export async function POST(req: Request, { params }: RouteParams) {
   const { project, moduleLesson } = loaded;
 
   const session = await getServerSession(authOptions);
-  const gate = await aiPreflight(req, "project-module-lesson", session?.user?.id, 10);
-  if (!gate.ok) return gate.response;
-
   const body = await req.json().catch(() => ({}));
   const interactivity = parseInteractivity((body as { interactivity?: unknown })?.interactivity);
   const parsed = requestSchema.safeParse(body);
-  const { topic, documentText, customTitle, showAuthor } = parsed.success
+  const { topic, documentText, customTitle, showAuthor, preview, html: savedHtml } = parsed.success
     ? parsed.data
-    : { topic: undefined, documentText: undefined, customTitle: undefined, showAuthor: true };
+    : { topic: undefined, documentText: undefined, customTitle: undefined, showAuthor: true, preview: undefined, html: undefined };
+
+  if (savedHtml) {
+    if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const saved = await prisma.projectModuleLesson.update({
+      where: { id: moduleLesson.id },
+      data: {
+        generatedHtml: savedHtml,
+        htmlUpdatedAt: new Date(),
+        interactivity: interactivityToDb(interactivity),
+        authorId: session.user.id,
+        showAuthor,
+      },
+    });
+    return NextResponse.json({ generatedHtml: saved.generatedHtml, htmlUpdatedAt: saved.htmlUpdatedAt });
+  }
+
+  const gate = await aiPreflight(req, "project-module-lesson", session?.user?.id, 10);
+  if (!gate.ok) return gate.response;
 
   try {
     const extra = [topic, documentText ? `<attached_document>\n${documentText}\n</attached_document>` : null]
@@ -61,11 +81,13 @@ export async function POST(req: Request, { params }: RouteParams) {
     );
     if (customTitle) ctx.title = customTitle;
     const html = await runLessonRead(gate.credential, ctx, interactivity);
+    if (preview) return NextResponse.json({ preview: true, generatedHtml: html, title: ctx.title });
     const updated = await prisma.projectModuleLesson.update({
       where: { id: moduleLesson.id },
       data: {
         generatedHtml: html,
         htmlUpdatedAt: new Date(),
+        interactivity: interactivityToDb(interactivity),
         ...(session?.user?.id ? { authorId: session.user.id, showAuthor } : {}),
       },
     });

@@ -81,6 +81,7 @@ export async function GET(req: Request, { params }: RouteParams) {
         isCompleted: completedIds.has(lesson.id),
         generatedHtml: lesson.generatedHtml,
         variants: lesson.variants,
+        interactivity: lesson.interactivity,
         htmlUpdatedAt: lesson.htmlUpdatedAt,
         authorId: lesson.authorId,
         authorName: lesson.author?.name ?? null,

@@ -7,6 +7,7 @@ import { aiPreflight } from "@/lib/ai/guard";
 import { describeAiError } from "@/lib/ai/client";
 import { AiRefusalError } from "@/lib/ai/structured";
 import { parseInteractivity } from "@/lib/lessons/shared";
+import { interactivityToDb } from "@/lib/lessons/interactivityDb";
 import { TruncatedGenerationError, runLessonRead } from "@/lib/ai/lessonHtml";
 import { loadCustomModule, buildCustomModuleContext } from "@/lib/projects/customModule";
 
@@ -62,6 +63,7 @@ export async function POST(req: Request, { params }: RouteParams) {
       data: {
         generatedHtml: html,
         htmlUpdatedAt: new Date(),
+        interactivity: interactivityToDb(interactivity),
         ...(session?.user?.id ? { authorId: session.user.id, showAuthor } : {}),
       },
     });

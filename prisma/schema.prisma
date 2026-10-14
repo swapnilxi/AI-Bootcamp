@@ -361,6 +361,8 @@ model Lesson {
   // authored-but-not-yet-generated lesson still renders as plain text.
   generatedHtml String?
   variants      Json?
+  /// InteractivityOptions the Read view was generated with (see lib/lessons/shared.ts).
+  interactivity Json?
   htmlUpdatedAt DateTime?
 
   // Who actually wrote/generated this lesson's content, which can differ from
@@ -664,6 +666,8 @@ model ProjectModule {
   order         Int       @default(0)
   generatedHtml String?
   variants      Json?
+  /// InteractivityOptions the Read view was generated with (see lib/lessons/shared.ts).
+  interactivity Json?
   htmlUpdatedAt DateTime?
   authorId      String?
   author        User?     @relation("ProjectModuleAuthor", fields: [authorId], references: [id], onDelete: SetNull)
@@ -686,6 +690,8 @@ model ProjectModuleLesson {
   stage         ProjectStage
   generatedHtml String?
   variants      Json?
+  /// InteractivityOptions the Read view was generated with (see lib/lessons/shared.ts).
+  interactivity Json?
   htmlUpdatedAt DateTime?
   authorId      String?
   author        User?        @relation("ProjectModuleLessonAuthor", fields: [authorId], references: [id], onDelete: SetNull)

@@ -19,7 +19,7 @@ import {
 import { parseVideoUrl } from "@/lib/video";
 import { LessonAiPanel } from "@/components/ai/LessonAiPanel";
 import { LessonViewer } from "@/components/lessons/LessonViewer";
-import type { LessonVariants } from "@/lib/lessons/shared";
+import { parseInteractivity, type LessonVariants } from "@/lib/lessons/shared";
 
 interface OutlineItem {
   id: string;
@@ -43,6 +43,7 @@ interface LessonResponse {
     isCompleted: boolean;
     generatedHtml: string | null;
     variants: LessonVariants | null;
+    interactivity?: unknown;
     authorName: string | null;
     showAuthor: boolean;
   };
@@ -303,6 +304,7 @@ export default function LessonPage() {
           readTimeMinutes={lesson.durationMinutes ?? undefined}
           initialGeneratedHtml={lesson.generatedHtml}
           initialVariants={lesson.variants}
+          initialInteractivity={parseInteractivity(lesson.interactivity)}
           endpoints={{
             generate: `/api/courses/${courseId}/lessons/${lessonId}/html/generate`,
             easyRead: `/api/courses/${courseId}/lessons/${lessonId}/html/easy-read`,

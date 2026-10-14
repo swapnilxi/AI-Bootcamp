@@ -13,7 +13,7 @@ import { StageEditor } from "@/components/projects/StageEditor";
 import { LessonViewer } from "@/components/lessons/LessonViewer";
 import { loadOrCreateModuleLesson } from "@/lib/projects/moduleLesson";
 import { CustomModulePage } from "./CustomModulePage";
-import type { LessonVariants } from "@/lib/lessons/shared";
+import { parseInteractivity, type LessonVariants } from "@/lib/lessons/shared";
 
 export const revalidate = 3600;
 
@@ -103,6 +103,7 @@ export default async function ProjectModulePage({
           showAuthor={moduleLesson.showAuthor}
           initialGeneratedHtml={moduleLesson.generatedHtml}
           initialVariants={moduleLesson.variants as unknown as LessonVariants | null}
+        initialInteractivity={parseInteractivity(moduleLesson.interactivity)}
           endpoints={{
             generate: `/api/projects/${slug}/modules/${projectModule.stage}/lesson/generate`,
             easyRead: `/api/projects/${slug}/modules/${projectModule.stage}/lesson/easy-read`,

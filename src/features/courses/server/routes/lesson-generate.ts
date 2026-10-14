@@ -11,6 +11,7 @@ import { describeAiError } from "@/lib/ai/client";
 import { AiRefusalError, generateStructured } from "@/lib/ai/structured";
 import { BRAND_VOICE } from "@/lib/ai/prompts";
 import { parseInteractivity } from "@/lib/lessons/shared";
+import { interactivityToDb } from "@/lib/lessons/interactivityDb";
 import { runLessonRead } from "@/lib/ai/lessonHtml";
 import { notifyReviewSubmitted } from "../notifyCreator";
 
@@ -23,6 +24,18 @@ const requestSchema = z.object({
   documentText: z.string().trim().max(20000).optional(),
   customTitle: z.string().trim().max(140).optional(),
   showAuthor: z.boolean().default(true),
+  /** Generate and return the draft + HTML without creating the lesson. */
+  preview: z.boolean().optional(),
+  /** A previously previewed draft to save as-is (no AI call). */
+  draft: z
+    .object({
+      title: z.string().trim().min(1).max(140),
+      summary: z.string().trim().max(300),
+      content: z.string().max(40000),
+      durationMinutes: z.number(),
+      generatedHtml: z.string().max(400000).nullable(),
+    })
+    .optional(),
 });
 
 const LessonFromTopic = z4.object({
@@ -64,10 +77,14 @@ export async function POST(req: Request, { params }: RouteParams) {
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.errors[0]?.message || "Invalid request" }, { status: 400 });
   }
-  const { topic, documentText, customTitle, showAuthor } = parsed.data;
+  const { topic, documentText, customTitle, showAuthor, preview, draft: savedDraft } = parsed.data;
 
-  const preflight = await aiPreflight(req, "lesson-generate", session.user.id, 8);
-  if (!preflight.ok) return preflight.response;
+  let credential: Extract<Awaited<ReturnType<typeof aiPreflight>>, { ok: true }>["credential"] | null = null;
+  if (!savedDraft) {
+    const preflight = await aiPreflight(req, "lesson-generate", session.user.id, 8);
+    if (!preflight.ok) return preflight.response;
+    credential = preflight.credential;
+  }
 
   const existingLessons = await prisma.lesson.findMany({
     where: { courseId: id },
@@ -78,8 +95,8 @@ export async function POST(req: Request, { params }: RouteParams) {
   const sourceText = documentText ? `${topic}\n\n<attached_document>\n${documentText}\n</attached_document>` : topic;
 
   try {
-    const draft = await generateStructured({
-      credential: preflight.credential,
+    const generated = savedDraft ? null : await generateStructured({
+      credential: credential!,
       schema: LessonFromTopic,
       effort: "medium",
       system: `${BRAND_VOICE}
@@ -103,13 +120,14 @@ ${sourceText}
 Build on the existing lessons without repeating them.`,
     });
 
-    const title = (customTitle || draft.title).slice(0, 140);
+    const draft = savedDraft ?? generated!;
+    const title = (savedDraft ? savedDraft.title : customTitle || draft.title).slice(0, 140);
 
     // The interactive HTML view is a bonus on top of lesson creation — if it
     // fails, the lesson still saves and can be generated later from its page.
-    let generatedHtml: string | null = null;
-    try {
-      generatedHtml = await runLessonRead(preflight.credential, {
+    let generatedHtml: string | null = savedDraft ? savedDraft.generatedHtml : null;
+    if (!savedDraft) try {
+      generatedHtml = await runLessonRead(credential!, {
         title,
         domainLabel: cls.title,
         domainDescription: cls.description,
@@ -118,6 +136,19 @@ Build on the existing lessons without repeating them.`,
       }, interactivity);
     } catch {
       generatedHtml = null;
+    }
+
+    if (preview) {
+      return NextResponse.json({
+        preview: true,
+        draft: {
+          title,
+          summary: draft.summary.slice(0, 300),
+          content: draft.content,
+          durationMinutes: Math.min(60, Math.max(10, Math.round(draft.durationMinutes))),
+          generatedHtml,
+        },
+      });
     }
 
     const last = existingLessons.at(-1);
@@ -134,6 +165,7 @@ Build on the existing lessons without repeating them.`,
         approvalStatus: isAdminRole(session.user.role) ? "APPROVED" : "PENDING",
         generatedHtml,
         htmlUpdatedAt: generatedHtml ? new Date() : null,
+        interactivity: interactivityToDb(interactivity),
       },
     });
 

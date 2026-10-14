@@ -10,7 +10,7 @@ import { ModuleStepper, ModulePager } from "../ModuleStepper";
 import { LessonViewer } from "@/components/lessons/LessonViewer";
 import { DeleteModuleButton } from "@/components/projects/DeleteModuleButton";
 import { EditModuleButton } from "@/components/projects/EditModuleButton";
-import type { LessonVariants } from "@/lib/lessons/shared";
+import { parseInteractivity, type LessonVariants } from "@/lib/lessons/shared";
 
 /** Renders an instructor-added module (beyond the project's fixed 5 build stages). */
 export async function CustomModulePage({ slug, moduleSlug }: { slug: string; moduleSlug: string }) {
@@ -69,6 +69,7 @@ export async function CustomModulePage({ slug, moduleSlug }: { slug: string; mod
         showAuthor={customModule.showAuthor}
         initialGeneratedHtml={customModule.generatedHtml}
         initialVariants={customModule.variants as unknown as LessonVariants | null}
+        initialInteractivity={parseInteractivity(customModule.interactivity)}
         endpoints={{
           generate: `/api/projects/${slug}/custom-modules/${moduleSlug}/generate`,
           easyRead: `/api/projects/${slug}/custom-modules/${moduleSlug}/easy-read`,

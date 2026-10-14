@@ -72,6 +72,8 @@ export interface LessonViewerProps {
   showAuthor?: boolean;
   initialGeneratedHtml: string | null;
   initialVariants: LessonVariants | null;
+  /** Options the Read view was last generated with; seeds the regenerate settings. */
+  initialInteractivity?: InteractivityOptions;
   endpoints: LessonViewerEndpoints;
   canManage: boolean;
   /** DELETE this URL to clear the generated preview. Omit to hide the delete button. */
@@ -115,6 +117,7 @@ export function LessonViewer({
   showAuthor = true,
   initialGeneratedHtml,
   initialVariants,
+  initialInteractivity,
   endpoints,
   canManage,
   clearEndpoint,
@@ -136,7 +139,7 @@ export function LessonViewer({
   const [deleting, setDeleting] = useState(false);
   const [uploading, setUploading] = useState(false);
   const uploadInputRef = useRef<HTMLInputElement>(null);
-  const [interactivity, setInteractivity] = useState<InteractivityOptions>(DEFAULT_INTERACTIVITY);
+  const [interactivity, setInteractivity] = useState<InteractivityOptions>(initialInteractivity ?? DEFAULT_INTERACTIVITY);
 
   const hasRead = !!generatedHtml;
 

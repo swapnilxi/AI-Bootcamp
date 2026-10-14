@@ -35,6 +35,13 @@ interface ProjectOption {
   title: string;
 }
 
+interface PreviewData {
+  title: string;
+  html: string | null;
+  /** Course mode: the full draft to save as-is. */
+  draft?: { title: string; summary: string; content: string; durationMinutes: number; generatedHtml: string | null };
+}
+
 const fieldClass =
   "w-full px-4 py-2.5 rounded-xl border border-white/10 focus:border-gold focus:ring-1 focus:ring-gold text-ink text-sm bg-black/60";
 const labelClass = "block text-[11px] font-semibold text-text-muted uppercase tracking-wider mb-1.5";
@@ -57,6 +64,8 @@ function GenerateLessonForm() {
   const [topic, setTopic] = useState("");
   const [customTitle, setCustomTitle] = useState("");
   const [showAuthor, setShowAuthor] = useState(true);
+  const [previewData, setPreviewData] = useState<PreviewData | null>(null);
+  const [saving, setSaving] = useState(false);
   const [interactive, setInteractive] = useState(true);
   const [interactivity, setInteractivity] = useState<InteractivityOptions>(DEFAULT_INTERACTIVITY);
   const [fileName, setFileName] = useState<string | null>(null);
@@ -210,41 +219,75 @@ function GenerateLessonForm() {
     }
   }
 
-  async function generate() {
-    if (!topic.trim()) return;
+  function requestBody(extra: Record<string, unknown> = {}) {
+    return JSON.stringify({
+      topic: topic.trim(),
+      documentText: docText || undefined,
+      customTitle: customTitle.trim() || undefined,
+      showAuthor,
+      interactivity: interactive ? interactivity : undefined,
+      ...extra,
+    });
+  }
+
+  function validate(): boolean {
+    if (!topic.trim()) return false;
     if (mode === "course" && !courseId) {
       setError("Choose a subject to add this lesson to first.");
-      return;
+      return false;
     }
     if (mode === "project" && !projectSlug) {
       setError("Choose a project first.");
-      return;
+      return false;
     }
+    return true;
+  }
+
+  const endpoint =
+    mode === "course"
+      ? `/api/courses/${courseId}/lessons/generate`
+      : `/api/projects/${projectSlug}/modules/${stage}/lesson/generate`;
+
+  async function post(body: string) {
+    const res = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body });
+    const data = await res.json();
+    if (!res.ok) {
+      if (data?.code === AI_NOT_CONFIGURED_CODE) setNeedsSetup(true);
+      throw new Error(data.error || "Couldn't generate a lesson");
+    }
+    return data;
+  }
+
+  /** Step 1: generate without saving, so the creator can try the lesson before it exists. */
+  async function generatePreview() {
+    if (!validate()) return;
     setGenerating(true);
     setError(null);
     setNeedsSetup(false);
     setCreated(null);
     try {
-      const endpoint =
-        mode === "course"
-          ? `/api/courses/${courseId}/lessons/generate`
-          : `/api/projects/${projectSlug}/modules/${stage}/lesson/generate`;
-      const res = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          topic: topic.trim(),
-          documentText: docText || undefined,
-          customTitle: customTitle.trim() || undefined,
-          showAuthor,
-          interactivity: interactive ? interactivity : undefined,
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        if (data?.code === AI_NOT_CONFIGURED_CODE) setNeedsSetup(true);
-        throw new Error(data.error || "Couldn't generate a lesson");
+      const data = await post(requestBody({ preview: true }));
+      if (mode === "course") {
+        setPreviewData({ title: data.draft.title, html: data.draft.generatedHtml, draft: data.draft });
+      } else {
+        setPreviewData({ title: customTitle.trim() || "Project stage lesson", html: data.generatedHtml });
       }
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setGenerating(false);
+    }
+  }
+
+  /** Step 2: persist exactly what was previewed (no second AI call). */
+  async function savePreview() {
+    if (!previewData) return;
+    setSaving(true);
+    setError(null);
+    try {
+      const data = await post(
+        requestBody(mode === "course" ? { draft: previewData.draft } : { html: previewData.html })
+      );
       if (mode === "course") {
         setCreated({ title: data.lesson.title, href: `/courses/${courseId}/lessons/${data.lesson.id}` });
         loadCourses(pathId);
@@ -252,6 +295,7 @@ function GenerateLessonForm() {
         const moduleSlug = STAGE_MODULES.find((m) => m.stage === stage)?.slug ?? "";
         setCreated({ title: STAGE_MODULES.find((m) => m.stage === stage)?.title ?? "Lesson", href: `/projects/${projectSlug}/${moduleSlug}` });
       }
+      setPreviewData(null);
       setTopic("");
       setCustomTitle("");
       setDocText(null);
@@ -260,7 +304,7 @@ function GenerateLessonForm() {
     } catch (err) {
       setError((err as Error).message);
     } finally {
-      setGenerating(false);
+      setSaving(false);
     }
   }
 
@@ -556,14 +600,55 @@ function GenerateLessonForm() {
           </p>
         ) : null}
 
+        {previewData && (
+          <div className="space-y-3 rounded-2xl border border-gold/25 bg-gold/[0.04] p-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="min-w-0">
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-gold">Preview — not saved yet</p>
+                <p className="truncate font-serif text-lg text-text">{previewData.title}</p>
+                {previewData.draft?.summary && <p className="text-xs text-text-muted">{previewData.draft.summary}</p>}
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setPreviewData(null)}
+                  disabled={saving}
+                  className="min-h-0 rounded-full border border-white/10 px-4 py-2 text-xs text-text-muted hover:text-text disabled:opacity-50"
+                >
+                  Discard
+                </button>
+                <button
+                  onClick={savePreview}
+                  disabled={saving || generating}
+                  className="min-h-0 rounded-full bg-cream px-4 py-2 text-xs font-semibold text-[#0C0B0A] hover:bg-cream/90 disabled:opacity-50"
+                >
+                  {saving ? "Saving…" : mode === "course" ? "Save lesson" : "Save to project"}
+                </button>
+              </div>
+            </div>
+            {previewData.html ? (
+              <iframe
+                title="Lesson preview"
+                srcDoc={previewData.html}
+                sandbox="allow-scripts"
+                className="h-[560px] w-full rounded-xl border border-white/10 bg-white"
+              />
+            ) : (
+              <p className="text-xs text-text-muted">
+                The interactive view couldn&apos;t be generated, but the lesson notes can still be saved — generate the view from the lesson page later.
+              </p>
+            )}
+            <p className="text-[11px] text-text-muted">Try the activities above. Change the settings and press Regenerate preview to try a different version.</p>
+          </div>
+        )}
+
         <div className="flex justify-end">
           <button
-            onClick={generate}
-            disabled={generating || !topic.trim()}
+            onClick={generatePreview}
+            disabled={generating || saving || !topic.trim()}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-cream hover:bg-cream/90 text-[#0C0B0A] text-sm font-semibold transition-colors disabled:opacity-50"
           >
             <Sparkles className={`w-4 h-4 ${generating ? "animate-spin" : ""}`} />
-            {generating ? "Generating…" : "Generate Lesson"}
+            {generating ? "Generating preview…" : previewData ? "Regenerate preview" : "Generate preview"}
           </button>
         </div>
       </div>

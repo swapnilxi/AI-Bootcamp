@@ -8,6 +8,7 @@ import { getClassAccess } from "../access";
 import { aiPreflight } from "@/lib/ai/guard";
 import { describeAiError } from "@/lib/ai/client";
 import { parseInteractivity } from "@/lib/lessons/shared";
+import { interactivityToDb } from "@/lib/lessons/interactivityDb";
 import { AiRefusalError } from "@/lib/ai/structured";
 import {
   runLessonRead,
@@ -94,7 +95,7 @@ export async function generateHandler(req: Request, { params }: RouteParams) {
     }, interactivity);
     const updated = await prisma.lesson.update({
       where: { id: lessonId },
-      data: { generatedHtml: html, htmlUpdatedAt: new Date() },
+      data: { generatedHtml: html, htmlUpdatedAt: new Date(), interactivity: interactivityToDb(interactivity) },
     });
     return NextResponse.json({ generatedHtml: updated.generatedHtml, htmlUpdatedAt: updated.htmlUpdatedAt });
   } catch (error) {
